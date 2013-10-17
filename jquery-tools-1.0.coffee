@@ -29,11 +29,11 @@
 ###
 
 ###*
-    @name jQuery
+    @name $
     @see www.jquery.com
 ###
-## standalone do (jQuery) ->
-this.require([['jQuery', 'jquery-2.0.3']], (jQuery) ->
+## standalone do ($=jQuery) ->
+this.require([['jQuery', 'jquery-2.0.3']], ($) ->
 
 # endregion
 
@@ -41,12 +41,12 @@ this.require([['jQuery', 'jquery-2.0.3']], (jQuery) ->
 
     ###*
         This plugin provides such interface logic like generic controller
-        logic for integrating plugins into jQuery, mutual exclusion for
+        logic for integrating plugins into $, mutual exclusion for
         depending gui elements, logging additional string, array or function
         handling. A set of helper functions to parse option objects dom trees
         or handle events is also provided.
 
-        @memberOf jQuery
+        @memberOf $
         @class
     ###
     class Tools
@@ -65,7 +65,7 @@ this.require([['jQuery', 'jquery-2.0.3']], (jQuery) ->
     # region protected properties
 
         ###*
-            Saves the jQuery wrapped dom node.
+            Saves the $ wrapped dom node.
 
             @property {Object}
         ###
@@ -108,22 +108,22 @@ this.require([['jQuery', 'jquery-2.0.3']], (jQuery) ->
                          triggered if current object is created via the "new"
                          keyword.
 
-            @returns {jQuery.Tools} Returns the current instance.
+            @returns {$.Tools} Returns the current instance.
         ###
         constructor: (@_domNode) ->
             # Avoid errors in browsers that lack a console.
             for method in this._consoleMethods
                 if not window.console?
                     window.console = {}
-                # Only stub the jQuery empty method.
+                # Only stub the $ empty method.
                 if not window.console[method]?
-                    console[method] = jQuery.noop()
+                    console[method] = $.noop()
             this
         ###*
             @description This method could be overwritten normally.
                          It acts like a destructor.
 
-            @returns {jQuery.Tools} Returns the current instance.
+            @returns {$.Tools} Returns the current instance.
         ###
         destructor: ->
             this.off '*'
@@ -135,14 +135,14 @@ this.require([['jQuery', 'jquery-2.0.3']], (jQuery) ->
 
             @param {Object} options An options object.
 
-            @returns {jQuery.Tools} Returns the current instance.
+            @returns {$.Tools} Returns the current instance.
         ###
         initialize: (options={}) ->
             this._options.domNodeSelectorPrefix = this.stringFormat(
                 this._options.domNodeSelectorPrefix,
                 this.camelCaseStringToDelimited this.__name__)
             if (options)
-                this._options = jQuery.extend true, this._options, options
+                this._options = $.extend true, this._options, options
             this
 
         # endregion
@@ -166,7 +166,7 @@ this.require([['jQuery', 'jquery-2.0.3']], (jQuery) ->
             @param {Boolean} autoRelease Release the lock after execution of
                                          given callback.
 
-            @returns {jQuery.Tools} Returns the current instance.
+            @returns {$.Tools} Returns the current instance.
         ###
         acquireLock: (description, callbackFunction, autoRelease=false) ->
             ###
@@ -198,7 +198,7 @@ this.require([['jQuery', 'jquery-2.0.3']], (jQuery) ->
             @param {String} description A short string describing the criticial
                                         areas properties.
 
-            @returns {jQuery.Tools} Returns the current instance.
+            @returns {$.Tools} Returns the current instance.
         ###
         releaseLock: (description) ->
             ###
@@ -268,20 +268,20 @@ this.require([['jQuery', 'jquery-2.0.3']], (jQuery) ->
                                              has no module or log level
                                              specific annotations.
 
-            @returns {jQuery.Tools} Returns the current instance.
+            @returns {$.Tools} Returns the current instance.
         ###
         log: (object, force=false, avoidAnnotation=false, level='info') ->
             if this._options.logging or force
                 if avoidAnnotation
                     message = object
-                else if jQuery.type(object) is 'string'
+                else if $.type(object) is 'string'
                     message = (
                         "#{this.__name__} (#{level}): " +
                         this.stringFormat.apply(this, arguments))
-                else if jQuery.isNumeric object
+                else if $.isNumeric object
                     message = (
                         "#{this.__name__} (#{level}): #{object.toString()}")
-                else if jQuery.type(object) is 'boolean'
+                else if $.type(object) is 'boolean'
                     message = (
                         "#{this.__name__} (#{level}): #{object.toString()}")
                 else
@@ -289,7 +289,7 @@ this.require([['jQuery', 'jquery-2.0.3']], (jQuery) ->
                     this.log object, force, true
                     this.log "'--------------------------------------------'"
                 if message
-                    if window.console?[level]? == jQuery.noop() and force
+                    if window.console?[level]? == $.noop() and force
                         window.alert message
                     window.console[level] message
             this
@@ -306,7 +306,7 @@ this.require([['jQuery', 'jquery-2.0.3']], (jQuery) ->
                                              has no module or log level
                                              specific annotations.
 
-            @returns {jQuery.Tools} Returns the current instance.
+            @returns {$.Tools} Returns the current instance.
         ###
         info: (object, force=false, avoidAnnotation=false, level='info') ->
             this.log object, force, avoidAnnotation, level
@@ -323,7 +323,7 @@ this.require([['jQuery', 'jquery-2.0.3']], (jQuery) ->
                                              has no module or log level
                                              specific annotations.
 
-            @returns {jQuery.Tools} Returns the current instance.
+            @returns {$.Tools} Returns the current instance.
         ###
         debug: (object, force=false, avoidAnnotation=false, level='debug') ->
             this.log object, force, avoidAnnotation, level
@@ -340,7 +340,7 @@ this.require([['jQuery', 'jquery-2.0.3']], (jQuery) ->
                                              has no module or log level
                                              specific annotations.
 
-            @returns {jQuery.Tools} Returns the current instance.
+            @returns {$.Tools} Returns the current instance.
         ###
         error: (object, force=false, avoidAnnotation=false, level='error') ->
             this.log object, force, avoidAnnotation, level
@@ -357,7 +357,7 @@ this.require([['jQuery', 'jquery-2.0.3']], (jQuery) ->
                                              has no module or log level
                                              specific annotations.
 
-            @returns {jQuery.Tools} Returns the current instance.
+            @returns {$.Tools} Returns the current instance.
         ###
         warn: (object, force=false, avoidAnnotation=false, level='warn') ->
             this.log object, force, avoidAnnotation, level
@@ -370,15 +370,15 @@ this.require([['jQuery', 'jquery-2.0.3']], (jQuery) ->
         ###
         show: (object) ->
             output = ''
-            if jQuery.type(object) is 'string'
+            if $.type(object) is 'string'
                 output = object
             else
-                jQuery.each object, (key, value) ->
+                $.each object, (key, value) ->
                     if value is undefined
                         value = 'undefined'
                     output += "#{key.toString()}: #{value.toString()}\n"
             output = output.toString() if not output
-            "#{jQuery.trim(output)}\n(Type: \"#{jQuery.type(object)}\")"
+            "#{$.trim(output)}\n(Type: \"#{$.type(object)}\")"
 
         # endregion
 
@@ -398,7 +398,7 @@ this.require([['jQuery', 'jquery-2.0.3']], (jQuery) ->
                domNodeSelector.substring(
                 0, this._options.domNodeSelectorPrefix.length) is
                this._options.domNodeSelectorPrefix)
-                return jQuery.trim(domNodeSelector.substring(
+                return $.trim(domNodeSelector.substring(
                     this._options.domNodeSelectorPrefix.length))
             domNodeSelector
         ###*
@@ -411,36 +411,36 @@ this.require([['jQuery', 'jquery-2.0.3']], (jQuery) ->
             @returns {String}
 
             @example
-jQuery.Tools.getDomNodeName('&lt;div&gt;');
+$.Tools.getDomNodeName('&lt;div&gt;');
 'div'
 
-jQuery.Tools.getDomNodeName('&lt;div&gt;&lt;/div&gt;');
+$.Tools.getDomNodeName('&lt;div&gt;&lt;/div&gt;');
 'div'
 
-jQuery.Tools.getDomNodeName('&lt;br/&gt;');
+$.Tools.getDomNodeName('&lt;br/&gt;');
 'br'
         ###
         getDomNodeName: (domNode) ->
             domNode.match(new RegExp('^<?([a-zA-Z]+).*>?.*'))[1]
         ###*
             @description Converts an object of dom selectors to an array of
-                         jQuery wrapped dom nodes. Note if selector
+                         $ wrapped dom nodes. Note if selector
                          description as one of "class" or "id" as suffix
                          element will be ignored.
 
             @param {Object} domNodeSelectors An object with dom node selectors.
 
-            @returns {Object} Returns all jQuery wrapped dom nodes
-                              corressponding to given selectors.
+            @returns {Object} Returns all $ wrapped dom nodes corressponding to
+                              given selectors.
         ###
         grabDomNodes: (domNodeSelectors) ->
             domNodes = {}
-            jQuery.each(domNodeSelectors, (key, value) =>
+            $.each(domNodeSelectors, (key, value) =>
                 if(key.substring(key.length - 2) isnt 'Id' and
                    key.substring(key.length - 5) isnt 'Class')
                     match = value.match ', *'
                     if match
-                        jQuery.each(
+                        $.each(
                             value.split(match[0]), (key, valuePart) =>
                                 if key
                                     value += ', ' + this._grabDomNodesHelper(
@@ -449,10 +449,10 @@ jQuery.Tools.getDomNodeName('&lt;br/&gt;');
                                     value = valuePart)
                     value = this._grabDomNodesHelper(
                         key, value, domNodeSelectors)
-                domNodes[key] = jQuery value)
+                domNodes[key] = $ value)
             if this._options and this._options.domNodeSelectorPrefix
-                domNodes.parent = jQuery this._options.domNodeSelectorPrefix
-            domNodes.window = jQuery window
+                domNodes.parent = $ this._options.domNodeSelectorPrefix
+            domNodes.window = $ window
             domNodes
 
         # endregion
@@ -464,7 +464,7 @@ jQuery.Tools.getDomNodeName('&lt;br/&gt;');
                          referenced with "this". Otherwise "this" usualy
                          points to the object the given method was attached to.
                          If "method" doesn't match string arguments are passed
-                         through "jQuery.proxy()" with "context" setted as
+                         through "$.proxy()" with "context" setted as
                          "scope" or "this" if nothing is provided.
 
             @param {String|Function|Object} method A method name of given
@@ -489,22 +489,22 @@ jQuery.Tools.getDomNodeName('&lt;br/&gt;');
                 var parameter = this.argumentsObjectToArray(arguments);
             ###
             parameter = this.argumentsObjectToArray arguments
-            if(jQuery.type(method) is 'string' and
-               jQuery.type(scope) is 'object')
+            if($.type(method) is 'string' and
+               $.type(scope) is 'object')
                 return ->
                     if not scope[method]
                         throw Error(
                             "Method \"#{method}\" doesn't exists in " +
                             "\"#{scope}\".")
                     thisFunction = arguments.callee
-                    parameter = jQuery.Tools().argumentsObjectToArray(
+                    parameter = $.Tools().argumentsObjectToArray(
                         arguments)
                     parameter.push thisFunction
                     scope[method].apply(scope, parameter.concat(
                         additionalArguments))
             parameter.unshift scope
             parameter.unshift method
-            jQuery.proxy.apply jQuery, parameter
+            $.proxy.apply $, parameter
 
         # endregion
 
@@ -545,62 +545,62 @@ jQuery.Tools.getDomNodeName('&lt;br/&gt;');
                 return true
             false
         ###*
-            @description A wrapper method for "jQuery.delegate()".
+            @description A wrapper method for "$.delegate()".
                          It sets current plugin name as event scope if no scope
                          is given. Given arguments are modified and passed
-                         through "jQuery.delegate()".
+                         through "$.delegate()".
 
-            @returns {jQuery} Returns jQuery's grabbed dom node.
+            @returns {$} Returns $'s grabbed dom node.
         ###
         delegate: ->
             this._bindHelper arguments, false, 'delegate'
         ###*
-            @description A wrapper method for "jQuery.undelegate()".
-                         It sets current plugin name as event scope if no scope
-                         is given. Given arguments are modified and passed
-                         through "jQuery.undelegate()".
+            @description A wrapper method for "$.undelegate()". It sets current
+                         plugin name as event scope if no scope is given. Given
+                         arguments are modified and passed through
+                         "$.undelegate()".
 
-            @returns {jQuery} Returns jQuery's grabbed dom node.
+            @returns {$} Returns $'s grabbed dom node.
         ###
         undelegate: ->
             this._bindHelper arguments, true, 'undelegate'
         ###*
-            @description A wrapper method for "jQuery.on()".
+            @description A wrapper method for "$.on()".
                          It sets current plugin name as event scope if no scope
                          is given. Given arguments are modified and passed
-                         through "jQuery.on()".
+                         through "$.on()".
 
-            @returns {jQuery} Returns jQuery's grabbed dom node.
+            @returns {$} Returns $'s grabbed dom node.
         ###
         on: ->
             this._bindHelper arguments, false, 'on'
         ###*
-            @description A wrapper method fo "jQuery.off()".
+            @description A wrapper method fo "$.off()".
                          It sets current plugin name as event scope if no scope
                          is given. Given arguments are modified and passed
-                         through "jQuery.off()".
+                         through "$.off()".
 
-            @returns {jQuery} Returns jQuery's grabbed dom node.
+            @returns {$} Returns $'s grabbed dom node.
         ###
         off: ->
             this._bindHelper arguments, true, 'off'
         ###*
-            @description A wrapper method for "jQuery.bind()".
+            @description A wrapper method for "$.bind()".
                          It sets current plugin name as event scope if no scope
                          is given. Given arguments are modified and passed
-                         through "jquery.bind()".
+                         through "$.bind()".
 
-            @returns {jQuery} Returns jQuery's grabbed dom node.
+            @returns {$} Returns $'s grabbed dom node.
         ###
         bind: ->
             this._bindHelper arguments
         ###*
-            @description A wrapper method fo "jQuery.unbind()".
+            @description A wrapper method fo "$.unbind()".
                          It sets current plugin name as event scope if no scope
                          is given. Given arguments are modified and passed
-                         through "jQuery.unbind()".
+                         through "$.unbind()".
 
-            @returns {jQuery} Returns jQuery's grabbed dom node.
+            @returns {$} Returns $'s grabbed dom node.
         ###
         unbind: ->
             this._bindHelper arguments, true
@@ -657,7 +657,7 @@ jQuery.Tools.getDomNodeName('&lt;br/&gt;');
             @returns {String} The formatted string.
         ###
         stringFormat: (string) ->
-            jQuery.each(arguments, (key, value) ->
+            $.each(arguments, (key, value) ->
                 string = string.replace(
                     new RegExp("\\{#{key}\\}", 'gm'), value))
             string
@@ -685,7 +685,7 @@ jQuery.Tools.getDomNodeName('&lt;br/&gt;');
             @returns {String} The appended path.
         ###
         addSeperatorToPath: (path, pathSeperator='/') ->
-            path = jQuery.trim path
+            path = $.trim path
             if path.substr(-1) isnt pathSeperator and path.length
                 return path + pathSeperator
             path
@@ -703,12 +703,12 @@ jQuery.Tools.getDomNodeName('&lt;br/&gt;');
         ###
         getUrlVariables: (key) ->
             variables = []
-            jQuery.each(window.location.href.slice(
+            $.each(window.location.href.slice(
                 window.location.href.indexOf('?') + 1
             ).split('&'), (key, value) ->
                 variables.push value.split('=')[0]
                 variables[value.split('=')[0]] = value.split('=')[1])
-            if (jQuery.type(key) is 'string')
+            if ($.type(key) is 'string')
                 if key in variables
                     return variables[key]
                 else
@@ -731,38 +731,38 @@ jQuery.Tools.getDomNodeName('&lt;br/&gt;');
                                          was given.
             @param {String} eventFunctionName Name of function to wrap.
 
-            @returns {jQuery} Returns jQuery's wrapped dom node.
+            @returns {$} Returns $'s wrapped dom node.
         ###
         _bindHelper: (
             parameter, removeEvent=false, eventFunctionName='bind'
         ) ->
-            jQueryObject = jQuery parameter[0]
-            if jQuery.type(parameter[1]) is 'object' and not removeEvent
-                jQuery.each(parameter[1], (eventType, handler) =>
-                    this[eventFunctionName] jQueryObject, eventType, handler)
-                return jQueryObject
+            $Object = $ parameter[0]
+            if $.type(parameter[1]) is 'object' and not removeEvent
+                $.each(parameter[1], (eventType, handler) =>
+                    this[eventFunctionName] $Object, eventType, handler)
+                return $Object
             parameter = this.argumentsObjectToArray(parameter).slice 1
             if parameter.length is 0
                 parameter.push ''
             if parameter[0].indexOf('.') is -1
                 parameter[0] += ".#{this.__name__}"
             if removeEvent
-                return jQueryObject[eventFunctionName].apply(
-                    jQueryObject, parameter)
-            jQueryObject[eventFunctionName].apply jQueryObject, parameter
+                return $Object[eventFunctionName].apply(
+                    $Object, parameter)
+            $Object[eventFunctionName].apply $Object, parameter
         ###*
             @description Extends a given object with the tools attributes.
 
             @param {Object} childAttributs The attributes from child.
 
-            @returns {jQuery.Tools} Returns the current instance.
+            @returns {$.Tools} Returns the current instance.
         ###
         _extend: (childAttributes) ->
             if childAttributes
-                jQuery.extend true, this, childAttributes
+                $.extend true, this, childAttributes
             this
         ###*
-            @description Defines a generic controller for jQuery plugins.
+            @description Defines a generic controller for $ plugins.
 
             @param {Function | Object} attribute A called method from outside
                                                  via the controller.
@@ -777,11 +777,11 @@ jQuery.Tools.getDomNodeName('&lt;br/&gt;');
 
 // Call a plugins method.
 
-jQuery('body').InheritedFromTools(options).method();
+$('body').InheritedFromTools(options).method();
 
 // Call the initializer.
 
-jQuery('div#id').InheritedFromTools(options);
+$('div#id').InheritedFromTools(options);
         ###
         _controller: (attribute, additionalArguments...) ->
             ###
@@ -797,15 +797,15 @@ jQuery('div#id').InheritedFromTools(options);
             parameter = this.argumentsObjectToArray arguments
             if this[attribute]
                 return this[attribute].apply this, additionalArguments
-            else if jQuery.type(attribute) is 'object' or not attribute
+            else if $.type(attribute) is 'object' or not attribute
                 ###
                     If an options object or no method name is given the
                     initializer will be called.
                 ###
                 return this.initialize.apply this, parameter
-            jQuery.error(
+            $.error(
                 "Method \"#{attribute}\" does not exist on " +
-                "jQuery-extension \"#{this.__name__}\".")
+                "$-extension \"#{this.__name__}\".")
         ###*
             @description Converts a dom selector to a prefixed dom selector
                          string.
@@ -828,19 +828,19 @@ jQuery('div#id').InheritedFromTools(options);
 
     # endregion
 
-    # region handle jQuery extending
+    # region handle $ extending
 
     ###* @ignore ###
-    jQuery.fn.Tools = ->
+    $.fn.Tools = ->
         self = new Tools this
         self._controller.apply self, arguments
         this
     ###* @ignore ###
-    jQuery.Tools = ->
+    $.Tools = ->
         self = new Tools
         self._controller.apply self, arguments
     ###* @ignore ###
-    jQuery.Tools.class = Tools
+    $.Tools.class = Tools
 
     # endregion
 
