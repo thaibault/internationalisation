@@ -69,6 +69,19 @@ this.require([['jQuery.Tools', 'jquery-tools-1.0.coffee']], (jQuery) ->
             super options
             # Grab elements
             this._domNodes = this.grabDomNodes this._options.domNodes
+
+            jQuery('.d').contents().filter(function() {
+                return this.nodeName === '#comment'
+            }).each(function() {
+                jQuery(this.nodeValue).each(function() {
+                    $this = jQuery(this);
+                    if($this.hasClass('d')) {
+                        console.log($this);
+                        jQuery('.d').text($this.text())
+                    }
+                });
+            });
+
             this
 
         # endregion
