@@ -35,66 +35,85 @@ this.require([['jQuery.Tools', 'jquery-tools-1.0.coffee']], ($) ->
 # endregion
 
 # region plugins/classes
-
+#
     ###*
         @memberOf jQuery
         @class
-        @extends jQuery.Tools
+        @extends $.Tools
     ###
     class Lang extends $.Tools.class
 
-    # region private properties
+    # region properties
 
-        __name__: 'Lang'
-
-    # endregion
-
-    # region protected  properties
-
+        currentLanguage: ''
         ###*
             Saves default options for manipulating the Gui's behaviour.
 
             @property {Object}
         ###
-        _options: {}
+        _options:
+            domNodeSelectorPrefix: 'body'
+            default: 'enUS'
+            domNodeClassPrefix: ''
+            domNodes: {}
         _domNodes: {}
+        __name__: 'Lang'
 
     # endregion
 
     # region public methods
 
-        # region special methods
+        # region special
 
         initialize: (options={}) ->
             super options
-            # Grab elements
+            this.currentLanguage = this._options.default
             this._domNodes = this.grabDomNodes this._options.domNodes
-
-            $('.d').contents().filter(->
-                this.nodeName is '#comment'
-            ).each(->
-                $(this.nodeValue).each(->
-                    $this = $ this
-                    if $this.hasClass 'd'
-                        console.log $this
-                        $('.d').text $this.text()))
             this
 
         # endregion
 
-    # endregion
-
-    # region protected methods
-
-        # region event methods
-
-
-        # endregion
+        switch: (language) ->
+            $currentTextNodeToTranslate = false
+            self = this
+            $(this._options.domNodeSelectorPrefix).find(
+                ':not(iframe)'
+            ).contents().each(->
+                if this.nodeName is '#text' and $(this).text().replace(
+                    /^\s+|\s+$/g, ''
+                )
+                    $currentTextNodeToTranslate = $ this
+                else
+                    $currentDomNode = $ this
+                    if($currentTextNodeToTranslate and
+                       this.nodeName is '#comment')
+                        $(this.nodeValue).filter('l').each(->
+                            $this = $ this
+                            if $this.hasClass(
+                                self._options.domNodeClassPrefix +
+                                language
+                            )
+                                $currentTextNodeToTranslate.after($(
+                                    '<!--<l class="' +
+                                    self.currentLanguage + '">' +
+                                    $currentTextNodeToTranslate[0].textContent +
+                                    '</l>-->'))
+                                $currentTextNodeToTranslate[0].textContent = $this.text()
+                                $currentDomNode.remove()
+                                false
+                        )
+                        $currentTextNodeToTranslate = false
+                        true
+            )
+            this.currentLanguage = language
+            this
 
     # endregion
 
     ###* @ignore ###
-    $.Lang = Lang
+    $.Lang = ->
+        self = new Lang
+        self._controller.apply self, arguments
 
 # endregion
 

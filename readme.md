@@ -4,11 +4,11 @@ jquery-lang
 A jQuery plugin to replace alternate version of text for client side
 internationalization.
 <!--
-<div class="lang-german">
+<lang class="lang-deDE">
     Ein jQuery-Plugin zum Klientseitigem ersetzten von verschiedenen
     Textversionen.
-</div>
-<div class="lang-french">
+</lang>
+<lang class="lang-frFR">
     I don't speak french very well.
-</div>
+</lang>
 -->

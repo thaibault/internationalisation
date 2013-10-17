@@ -51,18 +51,7 @@ this.require([['jQuery', 'jquery-2.0.3']], ($) ->
     ###
     class Tools
 
-    # region private properties
-
-        ###*
-            Saves the class name for introspection.
-
-            @property {String}
-        ###
-        __name__: 'Tools'
-
-    # endregion
-
-    # region protected properties
+    # region properties
 
         ###*
             Saves the $ wrapped dom node.
@@ -96,12 +85,18 @@ this.require([['jQuery', 'jquery-2.0.3']], ($) ->
             'exception', 'group', 'groupCollapsed', 'groupEnd', 'info', 'log',
             'markTimeline', 'profile', 'profileEnd', 'table', 'time',
             'timeEnd', 'timeStamp', 'trace', 'warn']
+        ###*
+            Saves the class name for introspection.
+
+            @property {String}
+        ###
+        __name__: 'Tools'
 
     # endregion
 
     # region public methods
 
-        # region special methods
+        # region special
 
         ###*
             @description This method should be overwritten normally. It is
@@ -252,7 +247,7 @@ this.require([['jQuery', 'jquery-2.0.3']], ($) ->
 
         # endregion
 
-        # region logging methods
+        # region logging
 
         ###*
             @description Shows the given object's representation in the
@@ -719,7 +714,7 @@ $.Tools.getDomNodeName('&lt;br/&gt;');
 
     # endregion
 
-    # region protected methods
+    # region protected
 
         ###*
             @description Helper method for atach event handler methods and

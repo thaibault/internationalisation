@@ -56,11 +56,11 @@
                3. now import your own modules or packages.
                4. Sort import names alphabetically and separate the previous
                   defined parts with blank lines.
-    - rc11 Import everything by its whole name and reference path and use it by
-           its full reference path (even builtin units).
+    - rc11 Prefix global reference from global context with "this" and with
+           "window" in none global contexts.
     - rc12 Don't use any abbreviations.
-    - rc13 Try to use small cyclomatic complexity in all units.
-           (e.g. less than 20 or 30).
+    - rc13 Try to use small cyclomatic complexity in all units (less then eight
+           is a good measurement).
     - rc14 Use one of the plugin pattern described in "jQuery.Tools".
     - rc15 Use the area statement syntax to structure your code and make it
            possible to fold them in many IDE's
@@ -99,11 +99,11 @@ Structure of meta documenting classes. (see rc15)
 
         var A = function() {
 
-        // region (Public|Protected) (properties|methods)
+        // region (public|protected|private) (properties|methods)
 
-            // region Property of method or property group
+            // region property or method group
 
-                // region Subproperty of method or property group
+                // region subproperty of method or property group
 
             ...
 
@@ -489,23 +489,24 @@ class Require
                 ajaxObject.onreadystatechange = ->
                     # NOTE: Internet explorer throws an exception here instead
                     # of showing the error code in the "status" property.
+                    # TODO check in IE
                     try
-                        if ajaxObject.readyState is 4 and
-                           ajaxObject.status in [0, 200]
-                            shortcut[asyncronModulePattern](
-                                ajaxObject.responseText, module, parameter)
-                            self::_scriptLoaded module, parameter
-                            # Delete event after passing it once.
-                            ajaxObject.onreadystatechange = null
-                        else if ajaxObject.status isnt 200
-                            self::_log(
-                                "Loading resource \"#{module[1]}\" failed " +
-                                "via ajax with status \"#{ajaxObject.status}" +
-                                "\" in state \"#{ajaxObject.readyState}\".")
-                    catch error
-                        self::_log(
-                            "Loading resource \"#{module[1]}\" failed via " +
+                        readyState = ajaxObject.readyState
+                    catch
+                        throw new Error(
+                            "Running resource \"#{module[1]}\" failed via " +
                             "ajax cased by exception: \"#{error}\".")
+                    if readyState is 4 and ajaxObject.status in [0, 200]
+                        shortcut[asyncronModulePattern](
+                            ajaxObject.responseText, module, parameter)
+                        self::_scriptLoaded module, parameter
+                        # Delete event after passing it once.
+                        ajaxObject.onreadystatechange = null
+                    else if ajaxObject.status isnt 200
+                        self::_log(
+                            "Loading resource \"#{module[1]}\" failed " +
+                            "via ajax with status \"#{ajaxObject.status}" +
+                            "\" in state \"#{ajaxObject.readyState}\".")
                 ajaxObject.send null
                 isAsyncronRequest = true
                 break
