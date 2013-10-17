@@ -71,13 +71,13 @@ this.require([['jQuery.Tools', 'jquery-tools-1.0.coffee']], ($) ->
             this._domNodes = this.grabDomNodes this._options.domNodes
 
             $('.d').contents().filter(->
-                this.nodeName === '#comment'
+                this.nodeName is '#comment'
             ).each(->
                 $(this.nodeValue).each(->
                     $this = $ this
                     if $this.hasClass 'd'
                         console.log $this
-                        $('.d').text $this.text()
+                        $('.d').text $this.text()))
             this
 
         # endregion
