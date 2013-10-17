@@ -70,18 +70,14 @@ this.require([['jQuery.Tools', 'jquery-tools-1.0.coffee']], ($) ->
             # Grab elements
             this._domNodes = this.grabDomNodes this._options.domNodes
 
-            $('.d').contents().filter(function() {
-                return this.nodeName === '#comment'
-            }).each(function() {
-                $(this.nodeValue).each(function() {
-                    $this = $(this);
-                    if($this.hasClass('d')) {
-                        console.log($this);
-                        $('.d').text($this.text())
-                    }
-                });
-            });
-
+            $('.d').contents().filter(->
+                this.nodeName === '#comment'
+            ).each(->
+                $(this.nodeValue).each(->
+                    $this = $ this
+                    if $this.hasClass 'd'
+                        console.log $this
+                        $('.d').text $this.text()
             this
 
         # endregion
