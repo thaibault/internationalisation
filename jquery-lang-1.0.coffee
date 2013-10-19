@@ -55,8 +55,12 @@ this.require([['jQuery.Tools', 'jquery-tools-1.0.coffee']], ($) ->
             domNodeSelectorPrefix: 'body'
             default: 'enUS'
             domNodeClassPrefix: ''
+            fadeEffect: true
+            fadeOptions: 'slow'
             domNodes: {}
         _domNodes: {}
+        _domNodesToFade: null
+        _replacements: []
         __name__: 'Lang'
 
     # endregion
@@ -74,6 +78,8 @@ this.require([['jQuery.Tools', 'jquery-tools-1.0.coffee']], ($) ->
         # endregion
 
         switch: (language) ->
+            this._domNodesToFade = null
+            this._replacements = []
             $currentTextNodeToTranslate = false
             self = this
             $(this._options.domNodeSelectorPrefix).find(
@@ -93,19 +99,48 @@ this.require([['jQuery.Tools', 'jquery-tools-1.0.coffee']], ($) ->
                                 self._options.domNodeClassPrefix +
                                 language
                             )
-                                $currentTextNodeToTranslate.after($(
-                                    '<!--<l class="' +
-                                    self.currentLanguage + '">' +
-                                    $currentTextNodeToTranslate[0].textContent +
-                                    '</l>-->'))
-                                $currentTextNodeToTranslate[0].textContent = $this.text()
-                                $currentDomNode.remove()
+                                if self._domNodesToFade is null
+                                    self._domNodesToFade = \
+                                        $currentTextNodeToTranslate.parent()
+                                else
+                                    self._domNodesToFade = \
+                                        self._domNodesToFade.add(
+                                            $currentTextNodeToTranslate.parent())
+                                self.log $currentTextNodeToTranslate[0]
+                                self.log $currentDomNode[0]
+                                self.log $this[0]
+                                self.log '---------------------------------'
+                                self._replacements.push(
+                                    $textNodeToTranslate: $currentTextNodeToTranslate
+                                    $commentNodeToReplace: $currentDomNode
+                                    $nodeToReplace: $this)
                                 false
                         )
                         $currentTextNodeToTranslate = false
                         true
             )
-            this.currentLanguage = language
+            this.log this._replacements
+            if this._domNodesToFade?
+                this._domNodesToFade.fadeOut(this._options.fadeOptions, ->
+                    self._switchLanguage(language).currentLanguage = language
+                    $(this).fadeIn self._options.fadeOptions
+                )
+            this
+
+    # endregion
+
+    # region protected methods
+
+        _switchLanguage: (language) ->
+            for replacement in this._replacements
+                replacement.$textNodeToTranslate.after($(
+                    '<!--<l class="' +
+                    this.currentLanguage + '">' +
+                    replacement.$textNodeToTranslate[0].textContent +
+                    '</l>-->'))
+                replacement.$textNodeToTranslate[0].textContent = \
+                    replacement.$nodeToReplace.text()
+                replacement.$commentNodeToReplace.remove()
             this
 
     # endregion

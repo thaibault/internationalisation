@@ -489,10 +489,9 @@ class Require
                 ajaxObject.onreadystatechange = ->
                     # NOTE: Internet explorer throws an exception here instead
                     # of showing the error code in the "status" property.
-                    # TODO check in IE
                     try
                         readyState = ajaxObject.readyState
-                    catch
+                    catch error
                         throw new Error(
                             "Running resource \"#{module[1]}\" failed via " +
                             "ajax cased by exception: \"#{error}\".")
