@@ -27,6 +27,8 @@
     This plugin provided client side internationalisation support for websites.
 ###
 
+# TODO set lock during language switching
+
 ## standalone
 ## do ($=jQuery) ->
 this.require([['jQuery.Tools', 'jquery-tools-1.0.coffee']], ($) ->
@@ -56,10 +58,11 @@ this.require([['jQuery.Tools', 'jquery-tools-1.0.coffee']], ($) ->
             default: 'enUS'
             domNodeClassPrefix: ''
             fadeEffect: true
-            fadeOptions: 'slow'
+            fadeOptions: 'normal'
             domNodes: {}
         _domNodes: {}
         _domNodesToFade: null
+        _numberOfFadedDomNodes: 0
         _replacements: []
         __name__: 'Lang'
 
@@ -99,31 +102,30 @@ this.require([['jQuery.Tools', 'jquery-tools-1.0.coffee']], ($) ->
                                 self._options.domNodeClassPrefix +
                                 language
                             )
+                                $parent = $currentTextNodeToTranslate.parent()
                                 if self._domNodesToFade is null
-                                    self._domNodesToFade = \
-                                        $currentTextNodeToTranslate.parent()
+                                    self._domNodesToFade = $parent
                                 else
                                     self._domNodesToFade = \
-                                        self._domNodesToFade.add(
-                                            $currentTextNodeToTranslate.parent())
-                                self.log $currentTextNodeToTranslate[0]
-                                self.log $currentDomNode[0]
-                                self.log $this[0]
-                                self.log '---------------------------------'
+                                        self._domNodesToFade.add($parent)
                                 self._replacements.push(
                                     $textNodeToTranslate: $currentTextNodeToTranslate
                                     $commentNodeToReplace: $currentDomNode
-                                    $nodeToReplace: $this)
-                                false
+                                    $nodeToReplace: $this,
+                                    $parent: $parent)
+                                return false
                         )
                         $currentTextNodeToTranslate = false
                         true
             )
-            this.log this._replacements
             if this._domNodesToFade?
                 this._domNodesToFade.fadeOut(this._options.fadeOptions, ->
-                    self._switchLanguage(language).currentLanguage = language
-                    $(this).fadeIn self._options.fadeOptions
+                    self._numberOfFadedDomNodes += 1
+                    if self._numberOfFadedDomNodes is self._domNodesToFade.length
+                        self._switchLanguage(language)
+                        self.currentLanguage = language
+                        self._numberOfFadedDomNodes = 0
+                        self._domNodesToFade.fadeIn self._options.fadeOptions
                 )
             this
 
