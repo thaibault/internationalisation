@@ -32,7 +32,7 @@
     @name $
     @see www.jquery.com
 ###
-## standalone do ($=jQuery) ->
+## standalone do ($=this.jQuery) ->
 this.require([['jQuery', 'jquery-2.0.3']], ($) ->
 
 # endregion

@@ -28,7 +28,7 @@
 ###
 
 ## standalone
-## do ($=jQuery) ->
+## do ($=this.jQuery) ->
 this.require([['jQuery.Tools', 'jquery-tools-1.0.coffee']], ($) ->
 ##
 
