@@ -147,8 +147,8 @@ this.require([['jQuery', 'jquery-2.0.3']], ($) ->
         ###*
             @description Calling this method introduces a starting point for a
                          critical area with potential race conditions.
-                         The area will be binded to this string. So don't use
-                         same names for different areas.
+                         The area will be binded to given description string.
+                         So don't use same names for different areas.
 
             @param {String} description A short string describing the criticial
                                         areas properties.
@@ -186,8 +186,8 @@ this.require([['jQuery', 'jquery-2.0.3']], ($) ->
                 0)
             this
         ###*
-            @description Calling this method the given critical area will be
-                         finished and all functions given to
+            @description Calling this method  causes the given critical area to
+                         be finished and all functions given to
                          "this.acquireLock()" will be executed in right order.
 
             @param {String} description A short string describing the criticial
