@@ -45,6 +45,11 @@ this.require([['jQuery.Tools', 'jquery-tools-1.0.coffee']], ($) ->
 
     # region properties
 
+        ###*
+            Saves the currently used language version.
+
+            @property {String}
+        ###
         currentLanguage: ''
         ###*
             Saves default options for manipulating the Gui's behaviour.
@@ -63,7 +68,6 @@ this.require([['jQuery.Tools', 'jquery-tools-1.0.coffee']], ($) ->
             replaceDomNodeName: '#text'
             toolsLockDescription: '{1}Switch'
             domNodes: {}
-        _domNodes: {}
         _domNodesToFade: null
         _numberOfFadedDomNodes: 0
         _replacements: []
