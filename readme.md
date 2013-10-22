@@ -16,18 +16,16 @@ License
 
 endregion -->
 
-jQuery-incrementer
-==================
+jquery-lang
+===========
 
-This plugin extends an html input field which serves a number to be given.
-Handling validation and easy incrementing or decrementing of given value is
-provided.
-
-Examples:
---------
-
-    #!/usr/bin/env javaScript
-
-    jQuery('body form input.number').incrementer();
-
-    jQuery('body form input.number').incrementer('logging': true);
+A jQuery plugin to replace alternate version of text for client side
+internationalization.
+<!--deDE:
+    Ein jQuery-Plugin zum Klientseitigem ersetzten von verschiedenen
+    Textversionen.
+-->
+<!--frFR:
+    Un plugin jQuery pour remplacer version alternative de texte pour le côté
+    client l'internationalisation.
+-->
