@@ -452,6 +452,7 @@ $.Tools.getDomNodeName('&lt;br/&gt;');
             if this._options and this._options.domNodeSelectorPrefix
                 domNodes.parent = $ this._options.domNodeSelectorPrefix
             domNodes.window = $ window
+            domNodes.document = $ document
             domNodes
 
         # endregion
