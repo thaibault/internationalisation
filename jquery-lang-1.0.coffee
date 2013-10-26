@@ -75,12 +75,12 @@ this.require([
             languageHashPrefix: 'lang-'
             currentLanguageIndicatorClassName: 'current'
             cookieDescription: '{1}Last'
-            domNodes: {}
             languageMapping:
                 deDE: ['de', 'de-de']
                 enUS: ['en', 'en-us']
                 enEN: ['en-en']
                 frFR: ['fr', 'fr-fr']
+            onSwitched: $.noop()
         ###*
             During switching language this property holds a collection of
             dom nodes to fade.
@@ -128,12 +128,12 @@ this.require([
                 this._options.toolsLockDescription, this.__name__)
             this._options.cookieDescription = this.stringFormat(
                 this._options.cookieDescription, this.__name__)
-            this._domNodes = this.grabDomNodes this._options.domNodes
+            this._domNodes = this.grabDomNodes()
+            this._domNodes.switchLanguageButtons = $(
+                "a[href^=\"##{this._options.languageHashPrefix}\"]")
             this.currentLanguage = this._options.default
             this.switch this._determineUsefulLanguage()
-            this.on $(
-                "a[href^=\"##{this._options.languageHashPrefix}\"]"
-            ), 'click', (event) =>
+            this.on this._domNodes.switchLanguageButtons, 'click', (event) =>
                 event.preventDefault()
                 this.switch $(event.target).attr('href').substr(
                     this._options.languageHashPrefix.length + 1)
@@ -150,9 +150,9 @@ this.require([
             @returns {$.Lang} Returns the current instance.
         ###
         switch: (language) ->
-            language = this._normalizeLanguage language
-            this.debug 'Switch to {1}', language
             this.acquireLock(this._options.toolsLockDescription, =>
+                language = this._normalizeLanguage language
+                this.debug 'Switch to {1}', language
                 this._domNodesToFade = null
                 this._replacements = []
                 $currentTextNodeToTranslate = null
@@ -377,6 +377,8 @@ this.require([
                 replacement.$commentNodeToReplace.remove()
             this._switchCurrentLanguageIndicator language
             $.cookie this._options.cookieDescription, language
+            this.fireEvent(
+                'switched', true, this, this.currentLanguage, language)
             this.currentLanguage = language
             this
         ###*

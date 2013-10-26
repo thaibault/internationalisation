@@ -425,26 +425,30 @@ $.Tools.getDomNodeName('&lt;br/&gt;');
 
             @param {Object} domNodeSelectors An object with dom node selectors.
 
-            @returns {Object} Returns all $ wrapped dom nodes corressponding to
+            @returns {Object} Returns all $ wrapped dom nodes corresponding to
                               given selectors.
         ###
         grabDomNodes: (domNodeSelectors) ->
             domNodes = {}
-            $.each(domNodeSelectors, (key, value) =>
-                if(key.substring(key.length - 2) isnt 'Id' and
-                   key.substring(key.length - 5) isnt 'Class')
-                    match = value.match ', *'
-                    if match
-                        $.each(
-                            value.split(match[0]), (key, valuePart) =>
-                                if key
-                                    value += ', ' + this._grabDomNodesHelper(
-                                        key, valuePart, domNodeSelectors)
-                                else
-                                    value = valuePart)
-                    value = this._grabDomNodesHelper(
-                        key, value, domNodeSelectors)
-                domNodes[key] = $ value)
+            if domNodeSelectors
+                $.each(domNodeSelectors, (key, value) =>
+                    if(key.substring(key.length - 2) isnt 'Id' and
+                       key.substring(key.length - 5) isnt 'Class')
+                        match = value.match ', *'
+                        if match
+                            $.each(
+                                value.split(match[0]), (key, valuePart) =>
+                                    if key
+                                        value += ', ' +
+                                            this._grabDomNodesHelper(
+                                                key, valuePart,
+                                                domNodeSelectors)
+                                    else
+                                        value = valuePart
+                            )
+                        value = this._grabDomNodesHelper(
+                            key, value, domNodeSelectors)
+                    domNodes[key] = $ value)
             if this._options and this._options.domNodeSelectorPrefix
                 domNodes.parent = $ this._options.domNodeSelectorPrefix
             domNodes.window = $ window
