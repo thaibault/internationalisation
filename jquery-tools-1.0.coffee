@@ -439,10 +439,8 @@ $.Tools.getDomNodeName('&lt;br/&gt;');
                             $.each(
                                 value.split(match[0]), (key, valuePart) =>
                                     if key
-                                        value += ', ' +
-                                            this._grabDomNodesHelper(
-                                                key, valuePart,
-                                                domNodeSelectors)
+                                        value += ", #{this._grabDomNodesHelper(
+                                            key, valuePart, domNodeSelectors)}"
                                     else
                                         value = valuePart
                             )
