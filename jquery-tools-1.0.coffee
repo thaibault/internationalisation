@@ -509,6 +509,22 @@ $.Tools.getDomNodeName('&lt;br/&gt;');
         # region event handling
 
         ###*
+            @description Prevents event functions from triggering to often by
+                         defining a minimal span between each function call.
+
+            @returns {Function} Returns the wrapped method.
+        ###
+        debounce: (eventFunction, thresholdInMilliseconds=300) ->
+            timeoutID = null
+            ->
+                if timeoutID?
+                    window.clearTimeout timeoutID
+                    timeoutID = setTimeout(
+                        eventFunction, thresholdInMilliseconds)
+                else
+                    eventFunction()
+                    timeoutID = setTimeout $.noop(), thresholdInMilliseconds
+        ###*
             @description Searches for internal event handler methods and runs
                          them by default. In addition this method searches for
                          a given event method by the options object.
