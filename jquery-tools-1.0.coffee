@@ -37,6 +37,8 @@ this.require([['jQuery', 'jquery-2.0.3']], ($) ->
 
 # endregion
 
+# TODO bind instance to data abject.
+
 # region plugins/classes
 
     ###*
