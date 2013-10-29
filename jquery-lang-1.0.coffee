@@ -234,12 +234,20 @@ this.require([
         ###
         _determineUsefulLanguage: ->
             if $.cookie(this._options.cookieDescription)?
+                this.debug(
+                    'Determine "{1}", because of cookie information.',
+                    $.cookie this._options.cookieDescription)
                 return $.cookie this._options.cookieDescription
-            this.log navigator.language
             if navigator.language?
                 $.cookie this._options.cookieDescription, navigator.language
+                this.debug(
+                    'Determine "{1}", because of browser settings.',
+                    $.cookie this._options.cookieDescription)
                 return navigator.language
             $.cookie this._options.cookieDescription, this._options.default
+            this.debug(
+                'Determine "{1}", because of default option.',
+                $.cookie this._options.cookieDescription)
             this._options.default
         ###*
             @description Depending an activated switching effect this method
