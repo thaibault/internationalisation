@@ -37,8 +37,6 @@ this.require([['jQuery', 'jquery-2.0.3']], ($) ->
 
 # endregion
 
-# TODO bind instance to data abject.
-
 # region plugins/classes
 
     ###*
@@ -60,7 +58,7 @@ this.require([['jQuery', 'jquery-2.0.3']], ($) ->
 
             @property {Object}
         ###
-        _domNode: null
+        $domNode: null
         ###*
             Saves default options for manipulating the default behaviour.
 
@@ -69,6 +67,7 @@ this.require([['jQuery', 'jquery-2.0.3']], ($) ->
         _options:
             logging: false
             domNodeSelectorPrefix: 'body'
+            domNode: {}
         ###*
             Used for internal mutual exclusion in critical areas. To prevent
             race conditions. Represents a map with critical area description
@@ -107,7 +106,8 @@ this.require([['jQuery', 'jquery-2.0.3']], ($) ->
 
             @returns {$.Tools} Returns the current instance.
         ###
-        constructor: (@_domNode) ->
+        # TODO check where we can use this cool property setter.
+        constructor: (@$domNode) ->
             # Avoid errors in browsers that lack a console.
             for method in this._consoleMethods
                 if not window.console?
@@ -138,9 +138,39 @@ this.require([['jQuery', 'jquery-2.0.3']], ($) ->
             this._options.domNodeSelectorPrefix = this.stringFormat(
                 this._options.domNodeSelectorPrefix,
                 this.camelCaseStringToDelimited this.__name__)
-            if (options)
+            if options
                 this._options = $.extend true, this._options, options
             this
+        ###*
+            @description Defines a generic controller for $ plugins.
+
+            @param {Object|String} object The object or class to control.
+                                          If "object" is a class an instance
+                                          will be generated.
+            @param {Arguments} parameter The initially given arguments object.
+
+            @returns {Mixed} Returns whatever the initializer method returns.
+        ###
+        controller: (object, parameter, $domNode=null) ->
+            parameter = this.argumentsObjectToArray parameter
+            if not object.__name__?
+                object = new object $domNode
+            if $domNode?
+                if $domNode.data object.__name__
+                    object = $domNode.data object.__name__
+                else
+                    $domNode.data object.__name__, object
+            if object[parameter[0]]?
+                return object[parameter[0]].apply object, parameter.slice 1
+            else if not parameter.length or $.type(parameter[0]) is 'object'
+                ###
+                    If an options object or no method name is given the
+                    initializer will be called.
+                ###
+                return object.initialize.apply object, parameter
+            $.error(
+                "Method \"#{parameter[0]}\" does not exist on $-extension " +
+                "#{object.__name__}\".")
 
         # endregion
 
@@ -430,9 +460,9 @@ $.Tools.getDomNodeName('&lt;br/&gt;');
             @returns {Object} Returns all $ wrapped dom nodes corresponding to
                               given selectors.
         ###
-        grabDomNodes: (domNodeSelectors) ->
+        grabDomNode: (domNodeSelectors) ->
             domNodes = {}
-            if domNodeSelectors
+            if domNodeSelectors?
                 $.each(domNodeSelectors, (key, value) =>
                     if(key.substring(key.length - 2) isnt 'Id' and
                        key.substring(key.length - 5) isnt 'Class')
@@ -441,13 +471,13 @@ $.Tools.getDomNodeName('&lt;br/&gt;');
                             $.each(
                                 value.split(match[0]), (key, valuePart) =>
                                     if key
-                                        value += ", "
-                                        value += this._grabDomNodesHelper(
-                                            key, valuePart, domNodeSelectors)
+                                        value += ", #{this._grabDomNodeHelper(
+                                            key, valuePart, domNodeSelectors
+                                        )}"
                                     else
                                         value = valuePart
                             )
-                        value = this._grabDomNodesHelper(
+                        value = this._grabDomNodeHelper(
                             key, value, domNodeSelectors)
                     domNodes[key] = $ value)
             if this._options and this._options.domNodeSelectorPrefix
@@ -494,7 +524,7 @@ $.Tools.getDomNodeName('&lt;br/&gt;');
                $.type(scope) is 'object')
                 return ->
                     if not scope[method]
-                        throw Error(
+                        $.error(
                             "Method \"#{method}\" doesn't exists in " +
                             "\"#{scope}\".")
                     thisFunction = arguments.callee
@@ -779,51 +809,6 @@ $.Tools.getDomNodeName('&lt;br/&gt;');
                 $.extend true, this, childAttributes
             this
         ###*
-            @description Defines a generic controller for $ plugins.
-
-            @param {Function | Object} attribute A called method from outside
-                                                 via the controller.
-                                                 Default value is "initialize".
-                                                 If the initializer is called
-                                                 implicit an options object is
-                                                 expected.
-
-            @returns {Mixed} Returns the result of called method.
-
-            @example
-
-// Call a plugins method.
-
-$('body').InheritedFromTools(options).method();
-
-// Call the initializer.
-
-$('div#id').InheritedFromTools(options);
-        ###
-        _controller: (attribute, additionalArguments...) ->
-            ###
-                This following outcomment line would be responsible for a bug
-                in yuicompressor.
-                Because of declaration of arguments the parser things that
-                arguments is a local variable and could be renamed.
-                It doesn't care about that the magic arguments object is
-                neccessary to generate the arguments array in this context.
-
-                var arguments = this.argumentsObjectToArray(arguments);
-            ###
-            parameter = this.argumentsObjectToArray arguments
-            if this[attribute]
-                return this[attribute].apply this, additionalArguments
-            else if $.type(attribute) is 'object' or not attribute
-                ###
-                    If an options object or no method name is given the
-                    initializer will be called.
-                ###
-                return this.initialize.apply this, parameter
-            $.error(
-                "Method \"#{attribute}\" does not exist on " +
-                "$-extension \"#{this.__name__}\".")
-        ###*
             @description Converts a dom selector to a prefixed dom selector
                          string.
 
@@ -833,7 +818,7 @@ $('div#id').InheritedFromTools(options);
 
             @returns {Object}
         ###
-        _grabDomNodesHelper: (key, selector, domNodeSelectors) ->
+        _grabDomNodeHelper: (key, selector, domNodeSelectors) ->
             domNodeSelectorPrefix = 'body'
             if this._options and this._options.domNodeSelectorPrefix
                 domNodeSelectorPrefix = this._options.domNodeSelectorPrefix
@@ -848,14 +833,9 @@ $('div#id').InheritedFromTools(options);
     # region handle $ extending
 
     ###* @ignore ###
-    $.fn.Tools = ->
-        self = new Tools this
-        self._controller.apply self, arguments
-        this
+    $.fn.Tools = -> new Tools().controller Tools, arguments, this
     ###* @ignore ###
-    $.Tools = ->
-        self = new Tools
-        self._controller.apply self, arguments
+    $.Tools = -> new Tools().controller Tools, arguments
     ###* @ignore ###
     $.Tools.class = Tools
 

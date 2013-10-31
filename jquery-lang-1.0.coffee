@@ -66,7 +66,9 @@ this.require([
             default: 'enUS'
             domNodeClassPrefix: ''
             fadeEffect: true
-            fadeOptions: 'normal'
+            textNodeParent:
+                fadeIn: duration: 'normal'
+                fadeOut: duration: 'normal'
             replacementLanguagePattern: '^([a-z]{2}[A-Z]{2}):((.|\\s)*)$'
             currentLanguagePattern: '^[a-z]{2}[A-Z]{2}$'
             replacementDomNodeName: '#comment'
@@ -87,7 +89,7 @@ this.require([
 
             @property {$}
         ###
-        _domNodesToFade: null
+        _$domNodeToFade: null
         ###*
             Saves the number of iterated dom nodes during language switching.
 
@@ -128,12 +130,19 @@ this.require([
                 this._options.toolsLockDescription, this.__name__)
             this._options.cookieDescription = this.stringFormat(
                 this._options.cookieDescription, this.__name__)
-            this._domNodes = this.grabDomNodes()
-            this._domNodes.switchLanguageButtons = $(
+            this._options.textNodeParent.fadeIn.always = =>
+                this._numberOfFadedDomNodes += 1
+                if(this._numberOfFadedDomNodes is
+                   this._$domNodeToFade.length)
+                    this._numberOfFadedDomNodes = 0
+                    this.releaseLock(
+                        this._options.toolsLockDescription)
+            this.$domNode = this.grabDomNode()
+            this.$domNode.switchLanguageButtons = $(
                 "a[href^=\"##{this._options.languageHashPrefix}\"]")
             this.currentLanguage = this._options.default
             this.switch this._determineUsefulLanguage()
-            this.on this._domNodes.switchLanguageButtons, 'click', (event) =>
+            this.on this.$domNode.switchLanguageButtons, 'click', (event) =>
                 event.preventDefault()
                 this.switch $(event.target).attr('href').substr(
                     this._options.languageHashPrefix.length + 1)
@@ -153,7 +162,7 @@ this.require([
             this.acquireLock(this._options.toolsLockDescription, =>
                 language = this._normalizeLanguage language
                 this.debug 'Switch to {1}', language
-                this._domNodesToFade = null
+                this._$domNodeToFade = null
                 this._replacements = []
                 $currentTextNodeToTranslate = null
                 $currentLanguageDomNode = null
@@ -259,11 +268,11 @@ this.require([
             @returns {$.Lang} Returns the current instance.
         ###
         _handleSwitchEffect: (language) ->
-            if this._options.fadeEffect and this._domNodesToFade?
-                this._domNodesToFade.fadeOut(
-                    duration: this._options.fadeOptions
-                    always: this.getMethod(
-                        this._handleLanguageSwitching, this, language))
+            if this._options.fadeEffect and this._$domNodeToFade?
+                this._options.textNodeParent.fadeOut.always = this.getMethod(
+                    this._handleLanguageSwitching, this, language)
+                this._$domNodeToFade.fadeOut(
+                    this._options.textNodeParent.fadeOut)
             else
                 this._handleLanguageSwitching(
                     this._handleLanguageSwitching, this, language)
@@ -288,10 +297,10 @@ this.require([
             $currentLanguageDomNode
         ) ->
             $parent = $currentTextNodeToTranslate.parent()
-            if this._domNodesToFade is null
-                this._domNodesToFade = $parent
+            if this._$domNodeToFade is null
+                this._$domNodeToFade = $parent
             else
-                this._domNodesToFade = this._domNodesToFade.add $parent
+                this._$domNodeToFade = this._$domNodeToFade.add $parent
             this._replacements.push(
                 $textNodeToTranslate: $currentTextNodeToTranslate
                 $commentNodeToReplace: $currentDomNode
@@ -333,19 +342,12 @@ this.require([
         ###
         _handleLanguageSwitching: (thisFunction, self, language) ->
             this._numberOfFadedDomNodes += 1
-            if this._options.fadeEffect and this._domNodesToFade?
-                if this._numberOfFadedDomNodes is this._domNodesToFade.length
+            if this._options.fadeEffect and this._$domNodeToFade?
+                if this._numberOfFadedDomNodes is this._$domNodeToFade.length
                     this._switchLanguage language
                     this._numberOfFadedDomNodes = 0
-                    this._domNodesToFade.fadeIn(
-                        duration: this._options.fadeOptions
-                        always: =>
-                            this._numberOfFadedDomNodes += 1
-                            if(this._numberOfFadedDomNodes is
-                               this._domNodesToFade.length)
-                                this._numberOfFadedDomNodes = 0
-                                this.releaseLock(
-                                    this._options.toolsLockDescription))
+                    this._$domNodeToFade.fadeIn(
+                        this._options.textNodeParent.fadeIn)
             else
                 this._switchLanguage language
                 this._numberOfFadedDomNodes = 0
@@ -411,9 +413,9 @@ this.require([
     # endregion
 
     ###* @ignore ###
-    $.Lang = ->
-        self = new Lang
-        self._controller.apply self, arguments
+    $.Lang = -> $.Tools().controller Lang, arguments
+    ###* @ignore ###
+    $.Lang.class = Lang
 
 # endregion
 
