@@ -167,9 +167,7 @@ this.require([
                 $lastTextNodeToTranslate = null
                 $lastLanguageDomNode = null
                 self = this
-                $(this._options.domNodeSelectorPrefix).find(
-                    ':not(iframe)'
-                ).contents().each ->
+                this.$domNodes.parent.find(':not(iframe)').contents().each ->
                     if this.nodeName is self._options.replaceDomNodeName
                         # NOTE: We skip empty text nodes.
                         if $.trim $(this).text()
