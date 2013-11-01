@@ -174,7 +174,7 @@
           $lastTextNodeToTranslate = null;
           $lastLanguageDomNode = null;
           self = _this;
-          $(_this._options.domNodeSelectorPrefix).find(':not(iframe)').contents().each(function() {
+          _this.$domNodes.parent.find(':not(iframe)').contents().each(function() {
             var $currentDomNode, match;
             if (this.nodeName === self._options.replaceDomNodeName) {
               if ($.trim($(this).text())) {
