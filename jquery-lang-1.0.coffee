@@ -30,10 +30,8 @@
 ## standalone
 ## do ($=this.jQuery) ->
 this.require([
-    ['jQuery', 'jquery-2.0.3']
-    ['jQuery.cookie', 'jquery-cookie-1.4.0.js']
-
     ['jQuery.Tools', 'jquery-tools-1.0.coffee']
+    ['jQuery.cookie', 'jquery-cookie-1.4.0.js']
 ], ($) ->
 ##
 
@@ -412,10 +410,14 @@ this.require([
 
     # endregion
 
+    # region handle $ extending
+
     ###* @ignore ###
     $.Lang = -> $.Tools().controller Lang, arguments
     ###* @ignore ###
     $.Lang.class = Lang
+
+    # endregion
 
 # endregion
 
