@@ -112,7 +112,6 @@ this.require([['jQuery', 'jquery-2.0.3']], ($) ->
 
             @returns {$.Tools} Returns the current instance.
         ###
-        # TODO check where we can use this cool property setter.
         constructor: (@$domNode) ->
             # Avoid errors in browsers that lack a console.
             for method in this._consoleMethods

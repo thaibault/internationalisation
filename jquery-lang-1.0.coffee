@@ -118,7 +118,7 @@ this.require([
 
         ###*
             @description Initializes the plugin. Current language is set and
-                         later needed dom nodes are graped.
+                         later needed dom nodes are grabbed.
 
             @param {Object} options An options object.
 
