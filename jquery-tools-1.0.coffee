@@ -92,6 +92,12 @@ this.require([['jQuery', 'jquery-2.0.3']], ($) ->
             @property {String}
         ###
         __name__: 'Tools'
+        ###*
+            Indicates if an instance was derived from this class.
+
+            @property {Boolean}
+        ###
+        __tools__: true
 
     # endregion
 
@@ -141,6 +147,11 @@ this.require([['jQuery', 'jquery-2.0.3']], ($) ->
             if options
                 this._options = $.extend true, this._options, options
             this
+
+        # endregion
+
+        # region object orientation
+
         ###*
             @description Defines a generic controller for $ plugins.
 
@@ -155,6 +166,8 @@ this.require([['jQuery', 'jquery-2.0.3']], ($) ->
             parameter = this.argumentsObjectToArray parameter
             if not object.__name__?
                 object = new object $domNode
+                if not object.__tools__?
+                    object = this.extend object
             if $domNode?
                 if $domNode.data object.__name__
                     object = $domNode.data object.__name__
@@ -171,6 +184,17 @@ this.require([['jQuery', 'jquery-2.0.3']], ($) ->
             $.error(
                 "Method \"#{parameter[0]}\" does not exist on $-extension " +
                 "#{object.__name__}\".")
+        ###*
+            @description Extends a given object with the tools attributes.
+
+            @param {Object} childAttributs The attributes from child.
+
+            @returns {$.Tools} Returns the current instance.
+        ###
+        extend: (childAttributes) ->
+            if childAttributes
+                $.extend true, this, childAttributes
+            this
 
         # endregion
 
@@ -797,17 +821,6 @@ $.Tools.getDomNodeName('&lt;br/&gt;');
                 return $Object[eventFunctionName].apply(
                     $Object, parameter)
             $Object[eventFunctionName].apply $Object, parameter
-        ###*
-            @description Extends a given object with the tools attributes.
-
-            @param {Object} childAttributs The attributes from child.
-
-            @returns {$.Tools} Returns the current instance.
-        ###
-        _extend: (childAttributes) ->
-            if childAttributes
-                $.extend true, this, childAttributes
-            this
         ###*
             @description Converts a dom selector to a prefixed dom selector
                          string.
