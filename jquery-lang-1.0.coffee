@@ -135,12 +135,12 @@ this.require([
                     this._numberOfFadedDomNodes = 0
                     this.releaseLock(
                         this._options.toolsLockDescription)
-            this.$domNode = this.grabDomNode()
-            this.$domNode.switchLanguageButtons = $(
+            this.$domNodes = this.grabDomNode()
+            this.$domNodes.switchLanguageButtons = $(
                 "a[href^=\"##{this._options.languageHashPrefix}\"]")
             this.currentLanguage = this._options.default
             this.switch this._determineUsefulLanguage()
-            this.on this.$domNode.switchLanguageButtons, 'click', (event) =>
+            this.on this.$domNodes.switchLanguageButtons, 'click', (event) =>
                 event.preventDefault()
                 this.switch $(event.target).attr('href').substr(
                     this._options.languageHashPrefix.length + 1)
