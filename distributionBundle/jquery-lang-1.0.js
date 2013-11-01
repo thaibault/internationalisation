@@ -140,11 +140,11 @@
             return _this.releaseLock(_this._options.toolsLockDescription);
           }
         };
-        this.$domNode = this.grabDomNode();
-        this.$domNode.switchLanguageButtons = $("a[href^=\"#" + this._options.languageHashPrefix + "\"]");
+        this.$domNodes = this.grabDomNode();
+        this.$domNodes.switchLanguageButtons = $("a[href^=\"#" + this._options.languageHashPrefix + "\"]");
         this.currentLanguage = this._options["default"];
         this["switch"](this._determineUsefulLanguage());
-        this.on(this.$domNode.switchLanguageButtons, 'click', function(event) {
+        this.on(this.$domNodes.switchLanguageButtons, 'click', function(event) {
           event.preventDefault();
           return _this["switch"]($(event.target).attr('href').substr(_this._options.languageHashPrefix.length + 1));
         });
