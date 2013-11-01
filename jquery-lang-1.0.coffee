@@ -169,7 +169,7 @@ this.require([
                 self = this
                 $(this._options.domNodeSelectorPrefix).find(
                     ':not(iframe)'
-                ).contents().each(->
+                ).contents().each ->
                     if this.nodeName is self._options.replaceDomNodeName
                         # NOTE: We skip empty text nodes.
                         if $.trim $(this).text()
@@ -208,7 +208,6 @@ this.require([
                             $currentTextNodeToTranslate = null
                             $currentDomNode = null
                     return true
-                )
                 this._checkLastTextNodeHavingLanguageIndicator(
                     $lastTextNodeToTranslate, $lastLanguageDomNode)
                 this._handleSwitchEffect language
