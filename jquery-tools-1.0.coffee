@@ -177,8 +177,6 @@ this.require [['jQuery', 'jquery-2.0.3']], ($) ->
             if not object.__name__?
                 object = new object $domNode
                 if not object.__tools__?
-                    # TODO
-                    console.log 'Post extending'
                     object = $.extend true, new Tools(), object
             if $domNode?
                 if $domNode.data object.__name__
