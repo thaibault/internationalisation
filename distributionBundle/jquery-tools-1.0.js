@@ -207,7 +207,6 @@
         if (object.__name__ == null) {
           object = new object($domNode);
           if (object.__tools__ == null) {
-            console.log('Post extending');
             object = $.extend(true, new Tools(), object);
           }
         }
