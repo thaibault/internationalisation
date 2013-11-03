@@ -437,6 +437,8 @@ this.require [['jQuery', 'jquery-2.0.3']], ($) ->
                 $.each object, (key, value) ->
                     if value is undefined
                         value = 'undefined'
+                    else if value is null
+                        value = 'null'
                     output += "#{key.toString()}: #{value.toString()}\n"
             output = output.toString() if not output
             "#{$.trim(output)}\n(Type: \"#{$.type(object)}\")"
@@ -498,23 +500,18 @@ $.Tools.getDomNodeName('&lt;br/&gt;');
             domNodes = {}
             if domNodeSelectors?
                 $.each(domNodeSelectors, (key, value) =>
-                    if(key.substring(key.length - 2) isnt 'Id' and
-                       key.substring(key.length - 5) isnt 'Class')
-                        match = value.match ', *'
-                        if match
-                            $.each(
-                                value.split(match[0]), (key, valuePart) =>
-                                    if key
-                                        value += ", #{this._grabDomNodeHelper(
-                                            key, valuePart, domNodeSelectors
-                                        )}"
-                                    else
-                                        value = valuePart
-                            )
-                        value = this._grabDomNodeHelper(
-                            key, value, domNodeSelectors)
-                    domNodes[key] = $ value)
-            if this._options and this._options.domNodeSelectorPrefix
+                    match = value.match ', *'
+                    if match
+                        $.each value.split(match[0]), (key, valuePart) =>
+                            if key
+                                value += ", " + this._grabDomNodeHelper(
+                                    key, valuePart, domNodeSelectors)
+                            else
+                                value = valuePart
+                    domNodes[key] = $ this._grabDomNodeHelper(
+                        key, value, domNodeSelectors)
+                )
+            if this._options.domNodeSelectorPrefix
                 domNodes.parent = $ this._options.domNodeSelectorPrefix
             domNodes.window = $ window
             domNodes.document = $ document
@@ -842,13 +839,13 @@ $.Tools.getDomNodeName('&lt;br/&gt;');
             @returns {Object}
         ###
         _grabDomNodeHelper: (key, selector, domNodeSelectors) ->
-            domNodeSelectorPrefix = 'body'
-            if this._options and this._options.domNodeSelectorPrefix
-                domNodeSelectorPrefix = this._options.domNodeSelectorPrefix
+            domNodeSelectorPrefix = ''
+            if this._options.domNodeSelectorPrefix
+                domNodeSelectorPrefix = this._options.domNodeSelectorPrefix +
+                    ' '
             if (selector.substr(0, domNodeSelectorPrefix.length) isnt
                     domNodeSelectorPrefix)
-                return domNodeSelectors[key] =
-                    "#{domNodeSelectorPrefix} #{selector}"
+                return domNodeSelectors[key] = domNodeSelectorPrefix + selector
             selector
 
     # endregion
