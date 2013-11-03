@@ -561,6 +561,8 @@
           $.each(object, function(key, value) {
             if (value === void 0) {
               value = 'undefined';
+            } else if (value === null) {
+              value = 'null';
             }
             return output += "" + (key.toString()) + ": " + (value.toString()) + "\n";
           });
@@ -635,23 +637,20 @@
         if (domNodeSelectors != null) {
           $.each(domNodeSelectors, function(key, value) {
             var match;
-            if (key.substring(key.length - 2) !== 'Id' && key.substring(key.length - 5) !== 'Class') {
-              match = value.match(', *');
-              if (match) {
-                $.each(value.split(match[0]), function(key, valuePart) {
-                  if (key) {
-                    return value += ", " + (_this._grabDomNodeHelper(key, valuePart, domNodeSelectors));
-                  } else {
-                    return value = valuePart;
-                  }
-                });
-              }
-              value = _this._grabDomNodeHelper(key, value, domNodeSelectors);
+            match = value.match(', *');
+            if (match) {
+              $.each(value.split(match[0]), function(key, valuePart) {
+                if (key) {
+                  return value += ", " + _this._grabDomNodeHelper(key, valuePart, domNodeSelectors);
+                } else {
+                  return value = valuePart;
+                }
+              });
             }
-            return domNodes[key] = $(value);
+            return domNodes[key] = $(_this._grabDomNodeHelper(key, value, domNodeSelectors));
           });
         }
-        if (this._options && this._options.domNodeSelectorPrefix) {
+        if (this._options.domNodeSelectorPrefix) {
           domNodes.parent = $(this._options.domNodeSelectorPrefix);
         }
         domNodes.window = $(window);
@@ -1057,12 +1056,12 @@
 
       Tools.prototype._grabDomNodeHelper = function(key, selector, domNodeSelectors) {
         var domNodeSelectorPrefix;
-        domNodeSelectorPrefix = 'body';
-        if (this._options && this._options.domNodeSelectorPrefix) {
-          domNodeSelectorPrefix = this._options.domNodeSelectorPrefix;
+        domNodeSelectorPrefix = '';
+        if (this._options.domNodeSelectorPrefix) {
+          domNodeSelectorPrefix = this._options.domNodeSelectorPrefix + ' ';
         }
         if (selector.substr(0, domNodeSelectorPrefix.length) !== domNodeSelectorPrefix) {
-          return domNodeSelectors[key] = "" + domNodeSelectorPrefix + " " + selector;
+          return domNodeSelectors[key] = domNodeSelectorPrefix + selector;
         }
         return selector;
       };
