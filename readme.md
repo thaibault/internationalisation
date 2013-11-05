@@ -33,8 +33,6 @@ internationalization.
 Example:
 --------
 
-<!--showExample-->
-
     #!HTML
 
     <script type="text/javascript" src="distributionBundle/jquery-2.0.3.js"></script>
