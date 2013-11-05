@@ -29,3 +29,50 @@ internationalization.
     Un plugin jQuery pour remplacer version alternative de texte pour le côté
     client l'internationalisation.
 -->
+
+Example:
+--------
+
+    #!HTML
+
+    <script type="text/javascript" src="distributionBundle/jquery-2.0.3.js"></script>
+    <script type="text/javascript" src="distributionBundle/jquery-tools-1.0.js"></script>
+    <script type="text/javascript" src="distributionBundle/jquery-lang-1.0.js"></script>
+    <script type="text/javascript">
+        $.Lang({
+            domNodeSelectorPrefix: 'body',
+            default: 'enUS',
+            domNodeClassPrefix: '',
+            fadeEffect: true,
+            textNodeParent: {
+                fadeIn: duration: 'normal'
+                fadeOut: duration: 'normal'
+            },
+            replacementLanguagePattern: '^([a-z]{2}[A-Z]{2}):((.|\\s)*)$',
+            currentLanguagePattern: '^[a-z]{2}[A-Z]{2}$',
+            replacementDomNodeName: '#comment',
+            replaceDomNodeName: '#text',
+            toolsLockDescription: '{1}Switch',
+            languageHashPrefix: 'lang-',
+            currentLanguageIndicatorClassName: 'current',
+            cookieDescription: '{1}Last',
+            languageMapping: {
+                deDE: ['de', 'de-de'],
+                enUS: ['en', 'en-us'],
+                enEN: ['en-en'],
+                frFR: ['fr', 'fr-fr'],
+            }
+            onSwitched: $.noop()
+        });
+    </script>
+
+With the above initialisation you can simple add this markup everywhere in your
+page to switch language.
+
+<!--showExample-->
+
+    #!HTML
+
+    <a href="#lang-deDE">de</a>
+    <a href="#lang-enUS">en</a>
+    <a href="#lang-frFR">fr</a>
