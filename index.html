@@ -197,7 +197,24 @@
         <span class="nx">onSwitched</span><span class="o">:</span> <span class="nx">$</span><span class="p">.</span><span class="nx">noop</span><span class="p">()</span>
     <span class="p">});</span>
 <span class="nt">&lt;/script&gt;</span>
-</pre></div></td></tr></table><p>With the above initialisation you can simple add this links everywhere in your page to switch language. On click you will switch the current language interactively. Try it by yourself: <!--deDE: Mit der oben aufgezeigten Konfiguration können Sie einfach folgenden Links an beliebiger Stelle im Markup plazieren. Beim Klicken auf die Sprach-Wechsel-Links wird die Sprache Ihrer Webseite entsprechend angepasst. Versuchen Sie selbst: --> <!--frFR: TODO --></p><!--showExample--><table class=codehilitetable><tr><td class=linenos><div class=linenodiv><pre>1
+</pre></div></td></tr></table><p>To add two versions of a text string you can simply add your translation directly in markup. See how easy it is:</p><!--showExample--><table class=codehilitetable><tr><td class=linenos><div class=linenodiv><pre>1
+2
+3
+4
+5
+6
+7
+8
+9</pre></div></td><td class=code><div class=codehilite><pre><span class="nt">&lt;p&gt;</span>
+    Your englisch version.
+    <span class="c">&lt;!--deDE:</span>
+<span class="c">        Ihre deutsche Variante.</span>
+<span class="c">    --&gt;</span>
+    <span class="c">&lt;!--frFR:</span>
+<span class="c">        Sa version française.</span>
+<span class="c">    --&gt;</span>
+<span class="nt">&lt;/p&gt;</span>
+</pre></div></td></tr></table><p>With the above initialisation you can simple add this links everywhere in your page to switch language. On click you will switch the current language interactively. Try it by yourself: <!--deDE: Mit der oben aufgezeigten Konfiguration können Sie einfach folgenden Links an beliebiger Stelle im Markup plazieren. Beim Klicken auf die Sprach-Wechsel-Links wird die Sprache Ihrer Webseite entsprechend angepasst. Versuchen Sie selbst: --> <!--frFR: Avec la configuration ci-dessus, vous pouvez simplement identifié les liens suivants placer n'importe où dans le balisage. Lorsque vous cliquez sur l'     Langue échange de liens est la langue de votre site en conséquence     ajustée. Essayez par vous-même: --></p><!--showExample--><table class=codehilitetable><tr><td class=linenos><div class=linenodiv><pre>1
 2
 3</pre></div></td><td class=code><div class=codehilite><pre><span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#lang-deDE&quot;</span><span class="nt">&gt;</span>de<span class="nt">&lt;/a&gt;</span>
 <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#lang-enUS&quot;</span><span class="nt">&gt;</span>en<span class="nt">&lt;/a&gt;</span>
