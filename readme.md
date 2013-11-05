@@ -68,6 +68,23 @@ Example:
         });
     </script>
 
+To add two versions of a text string you can simply add your translation
+directly in markup. See how easy it is:
+
+<!--showExample-->
+
+    #!HTML
+
+    <p>
+        Your englisch version.
+        <!--deDE:
+            Ihre deutsche Variante.
+        -->
+        <!--frFR:
+            Sa version française.
+        -->
+    </p>
+
 With the above initialisation you can simple add this links everywhere in your
 page to switch language. On click you will switch the current language
 interactively. Try it by yourself:
@@ -78,7 +95,10 @@ interactively. Try it by yourself:
     angepasst. Versuchen Sie selbst:
 -->
 <!--frFR:
-    TODO
+    Avec la configuration ci-dessus, vous pouvez simplement identifié les liens
+    suivants placer n'importe où dans le balisage. Lorsque vous cliquez sur l'
+    Langue échange de liens est la langue de votre site en conséquence
+    ajustée. Essayez par vous-même:
 -->
 
 <!--showExample-->
