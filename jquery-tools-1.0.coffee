@@ -630,8 +630,7 @@ $.Tools.getDomNodeName('&lt;br/&gt;');
 
             @returns {$} Returns $'s grabbed dom node.
         ###
-        delegate: ->
-            this._bindHelper arguments, false, 'delegate'
+        delegate: -> this._bindHelper arguments, false, 'delegate'
         ###*
             @description A wrapper method for "$.undelegate()". It sets current
                          plugin name as event scope if no scope is given. Given
@@ -640,8 +639,7 @@ $.Tools.getDomNodeName('&lt;br/&gt;');
 
             @returns {$} Returns $'s grabbed dom node.
         ###
-        undelegate: ->
-            this._bindHelper arguments, true, 'undelegate'
+        undelegate: -> this._bindHelper arguments, true, 'undelegate'
         ###*
             @description A wrapper method for "$.on()".
                          It sets current plugin name as event scope if no scope
@@ -650,8 +648,7 @@ $.Tools.getDomNodeName('&lt;br/&gt;');
 
             @returns {$} Returns $'s grabbed dom node.
         ###
-        on: ->
-            this._bindHelper arguments, false, 'on'
+        on: -> this._bindHelper arguments, false, 'on'
         ###*
             @description A wrapper method fo "$.off()".
                          It sets current plugin name as event scope if no scope
@@ -660,8 +657,7 @@ $.Tools.getDomNodeName('&lt;br/&gt;');
 
             @returns {$} Returns $'s grabbed dom node.
         ###
-        off: ->
-            this._bindHelper arguments, true, 'off'
+        off: -> this._bindHelper arguments, true, 'off'
         ###*
             @description A wrapper method for "$.bind()".
                          It sets current plugin name as event scope if no scope
@@ -670,8 +666,7 @@ $.Tools.getDomNodeName('&lt;br/&gt;');
 
             @returns {$} Returns $'s grabbed dom node.
         ###
-        bind: ->
-            this._bindHelper arguments
+        bind: -> this._bindHelper arguments
         ###*
             @description A wrapper method fo "$.unbind()".
                          It sets current plugin name as event scope if no scope
@@ -680,8 +675,7 @@ $.Tools.getDomNodeName('&lt;br/&gt;');
 
             @returns {$} Returns $'s grabbed dom node.
         ###
-        unbind: ->
-            this._bindHelper arguments, true
+        unbind: -> this._bindHelper arguments, true
         ###*
             @description Converts a given argument object to an array.
 
