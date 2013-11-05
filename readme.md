@@ -68,6 +68,16 @@ Example:
 
 To add two versions of a text string you can simply add your translation
 directly in markup. See how easy it is:
+<!--deDE:
+    Um zwei Sprachversionen eines Text Knotens im Markup anzubieten müssen
+    einfach nur per Kommentar alternative Versionen hinter dem zu übersetzenden
+    String gesetzt werden.
+-->
+<!--frFR:
+    Doit offrir deux versions linguistiques d'un nœud de texte dans la balise
+    facile à traduire que par Commentez versions alternatives derrière le
+    Chaîne à être réglé.
+-->
 
 <!--showExample-->
 
