@@ -62,8 +62,8 @@ Example:
                 deDE: ['de', 'de-de'],
                 enUS: ['en', 'en-us'],
                 enEN: ['en-en'],
-                frFR: ['fr', 'fr-fr'],
-            }
+                frFR: ['fr', 'fr-fr']
+            },
             onSwitched: $.noop()
         });
     </script>
