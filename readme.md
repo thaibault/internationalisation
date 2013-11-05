@@ -33,6 +33,8 @@ internationalization.
 Example:
 --------
 
+<!--showExample-->
+
     #!HTML
 
     <script type="text/javascript" src="distributionBundle/jquery-2.0.3.js"></script>
@@ -66,8 +68,18 @@ Example:
         });
     </script>
 
-With the above initialisation you can simple add this markup everywhere in your
-page to switch language.
+With the above initialisation you can simple add this links everywhere in your
+page to switch language. On click you will switch the current language
+interactively. Try it by yourself:
+<!--deDE:
+    Mit der oben aufgezeigten Konfiguration können Sie einfach folgenden Links
+    an beliebiger Stelle im Markup plazieren. Beim Klicken auf die
+    Sprach-Wechsel-Links wird die Sprache Ihrer Webseite entsprechend
+    angepasst. Versuchen Sie selbst:
+-->
+<!--frFR:
+    TODO
+-->
 
 <!--showExample-->
 
