@@ -47,7 +47,7 @@ Example:
             domNodeClassPrefix: '',
             fadeEffect: true,
             textNodeParent: {
-                fadeIn: duration: 'normal'
+                fadeIn: duration: 'normal',
                 fadeOut: duration: 'normal'
             },
             replacementLanguagePattern: '^([a-z]{2}[A-Z]{2}):((.|\\s)*)$',
