@@ -22,7 +22,7 @@ jquery-lang
 A jQuery plugin to replace alternate version of text for client side
 internationalization.
 <!--deDE:
-    Ein jQuery-Plugin zum Klientseitigem ersetzten von verschiedenen
+    Ein jQuery-Plugin zum Klient seitigem Ersetzten von verschiedenen
     Textversionen.
 -->
 <!--frFR:
