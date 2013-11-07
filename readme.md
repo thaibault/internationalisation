@@ -33,39 +33,6 @@ internationalization.
 Example:
 --------
 
-    #!HTML
-
-    <script type="text/javascript" src="distributionBundle/jquery-2.0.3.js"></script>
-    <script type="text/javascript" src="distributionBundle/jquery-tools-1.0.js"></script>
-    <script type="text/javascript" src="distributionBundle/jquery-lang-1.0.js"></script>
-    <script type="text/javascript">
-        $.Lang({
-            domNodeSelectorPrefix: 'body',
-            default: 'enUS',
-            domNodeClassPrefix: '',
-            fadeEffect: true,
-            textNodeParent: {
-                fadeIn: {duration: 'normal'},
-                fadeOut: {duration: 'normal'}
-            },
-            replacementLanguagePattern: '^([a-z]{2}[A-Z]{2}):((.|\\s)*)$',
-            currentLanguagePattern: '^[a-z]{2}[A-Z]{2}$',
-            replacementDomNodeName: '#comment',
-            replaceDomNodeName: '#text',
-            toolsLockDescription: '{1}Switch',
-            languageHashPrefix: 'lang-',
-            currentLanguageIndicatorClassName: 'current',
-            cookieDescription: '{1}Last',
-            languageMapping: {
-                deDE: ['de', 'de-de'],
-                enUS: ['en', 'en-us'],
-                enEN: ['en-en'],
-                frFR: ['fr', 'fr-fr']
-            },
-            onSwitched: $.noop()
-        });
-    </script>
-
 To add two versions of a text string you can simply add your translation
 directly in markup. See how easy it is:
 <!--deDE:
@@ -116,3 +83,47 @@ interactively. Try it by yourself:
     <a href="#lang-deDE">de</a>
     <a href="#lang-enUS">en</a>
     <a href="#lang-frFR">fr</a>
+
+Here you can see all available options to initialize the plugin with different
+configuration.
+<!--deDE:
+    Hier können sie alle verfügbaren Optionen betrachten, um das Plugin in
+    verschiedenen Konfigurationen zu initialisieren.
+-->
+<!--frFR:
+    Ici vous pouvez voir toutes les options disponibles pour le plug-in
+    différentes configurations pour initialiser.
+-->
+
+    #!HTML
+
+    <script type="text/javascript" src="distributionBundle/jquery-2.0.3.js"></script>
+    <script type="text/javascript" src="distributionBundle/jquery-tools-1.0.js"></script>
+    <script type="text/javascript" src="distributionBundle/jquery-lang-1.0.js"></script>
+    <script type="text/javascript">
+        $.Lang({
+            domNodeSelectorPrefix: 'body',
+            default: 'enUS',
+            domNodeClassPrefix: '',
+            fadeEffect: true,
+            textNodeParent: {
+                fadeIn: {duration: 'normal'},
+                fadeOut: {duration: 'normal'}
+            },
+            replacementLanguagePattern: '^([a-z]{2}[A-Z]{2}):((.|\\s)*)$',
+            currentLanguagePattern: '^[a-z]{2}[A-Z]{2}$',
+            replacementDomNodeName: '#comment',
+            replaceDomNodeName: '#text',
+            toolsLockDescription: '{1}Switch',
+            languageHashPrefix: 'lang-',
+            currentLanguageIndicatorClassName: 'current',
+            cookieDescription: '{1}Last',
+            languageMapping: {
+                deDE: ['de', 'de-de'],
+                enUS: ['en', 'en-us'],
+                enEN: ['en-en'],
+                frFR: ['fr', 'fr-fr']
+            },
+            onSwitched: $.noop()
+        });
+    </script>
