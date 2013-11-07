@@ -138,85 +138,52 @@
     This module provides common reusable logic a simple project documentation
     web page.
 */
-(function(){var a={}.hasOwnProperty,b=function(f,d){for(var c in d){if(a.call(d,c)){f[c]=d[c]}}function e(){this.constructor=f}e.prototype=d.prototype;f.prototype=new e();f.__super__=d.prototype;return f};(function(d){var e,c;e=(function(f){b(g,f);function g(){c=g.__super__.constructor.apply(this,arguments);return c}g.prototype._options={onExamplesLoaded:d.noop(),domNodeSelectorPrefix:"body.{1}",showExamplePattern:"^ *showExample(: *([^ ]+))? *$",showExampleDomNodeName:"#comment",domNode:{tableOfContentLinks:'div.toc > ul > li > a[href^="#"]',aboutThisWebsiteLink:'a[href="#about-this-website"]',homeLink:'a[href="#home"]',aboutThisWebsiteSection:"section.about-this-website",mainSection:"section.main-content",codeWrapper:"div.codehilite",codeChildren:"pre"},trackingCode:"UA-0-0",section:{aboutThisWebsite:{fadeOut:{duration:"slow"},fadeIn:{duration:"slow"}},main:{fadeOut:{duration:"slow"},fadeIn:{duration:"slow"}}}};g.prototype.__name__="Documentation";g.prototype.initialize=function(h){var i=this;h.activateLanguageSupport=false;g.__super__.initialize.call(this,h);if(!window.location.hash){window.location.hash=this.$domNodes.homeLink.attr("href")}this.$domNodes.aboutThisWebsiteSection.hide();this._showExamples()._makeCodeEllipsis();this.on(this.$domNodes.tableOfContentLinks,"click",function(){return d.scrollTo(d(this).attr("href"),"slow")});this._options.section.aboutThisWebsite.fadeOut.always=function(){return i.$domNodes.mainSection.fadeIn(i._options.section.main.fadeIn)};this._options.section.main.fadeOut.always=function(){return i.$domNodes.aboutThisWebsiteSection.fadeIn(i._options.section.aboutThisWebsite.fadeIn)};this.on(this.$domNodes.aboutThisWebsiteLink,"click",function(){return i.$domNodes.mainSection.fadeOut(i._options.section.main.fadeOut)});this.on(this.$domNodes.homeLink,"click",function(j){return i.$domNodes.aboutThisWebsiteSection.fadeOut(i._options.section.aboutThisWebsite.fadeOut)});return this};g.prototype._onExamplesLoaded=function(){this.$domNodes=this.grabDomNode(this._options.domNode);this._languageHandler=d.Lang(this._options.language);return this};g.prototype._onSwitchSection=function(h){this.$domNodes.tableOfContentLinks.add(this.$domNodes.aboutThisWebsiteLink).filter('a[href="'+h+'"]').trigger("click");return g.__super__._onSwitchSection.call(this)};g.prototype._onStartUpAnimationComplete=function(){this.$domNodes.tableOfContentLinks.add(this.$domNodes.aboutThisWebsiteLink).filter('a[href="'+(window.location.href.substr(window.location.href.indexOf("#")))+'"]').trigger("click");return g.__super__._onStartUpAnimationComplete.call(this)};g.prototype._makeCodeEllipsis=function(){var h;h=this;this.$domNodes.codeWrapper.children(this.$domNodes.codeChildren).each(function(){var k,j,i;k=d(this);i="";j=k.html().split("\n");d.each(j,function(n,o){var m,l;l=0;try{l=d(o).text().length-79}catch(p){m=p;if(o.length>79){o=""+(o.substr(0,76))+"..."}}if(l>0){i+=h._replaceExcessWithDots(o,l)}else{i+=o}if(n+1!==j.length){return i+="\n"}});return k.html(i)});return this};g.prototype._replaceExcessWithDots=function(j,i){var h;i+=3;h="";d(d(j).get().reverse()).each(function(){var k,l;k=d(this).wrap("<div>").parent();l=k.html();if(!l){l=this.textContent}if(i){if(this.textContent.length<i){i-=this.textContent.length;l=""}else{if(this.textContent.length>=i){this.textContent=""+(this.textContent.substr(0,this.textContent.length-i-1))+"...";i=0;l=k.html();if(!l){l=this.textContent}}}}return h=l+h});return h};g.prototype._showExamples=function(){var h;h=this;this.$domNodes.parent.find(":not(iframe)").contents().each(function(){var k,l,j,i;if(this.nodeName===h._options.showExampleDomNodeName){j=this.textContent.match(new RegExp(h._options.showExamplePattern));if(j){k=d(this).next();l=k.find(h.$domNodes.codeWrapper).text();if(!l){l=k.text()}if(d.inArray((i=j[2])!=null?i.toLowerCase():void 0,["javascript","js"])!==-1){return k.after(d("<script>").attr("type","text/javascript").text(l))}else{if((j[2]!=null)&&d.inArray(j[2].toLowerCase(),["css","cascadingstylesheets","stylesheets","sheets","style"])!==-1){return k.after(d("<style>").attr("type","text/css").text(l))}else{return k.after(l)}}}}});this.fireEvent("examplesLoaded");return this};return g})(d.Website["class"]);d.Documentation=function(){return d.Tools().controller(e,arguments)};return d.Documentation["class"]=e})(this.jQuery)}).call(this);(function(){this.jQuery(function(a){return a.Documentation({googleTrackingCode:"UA-44942474-1"})})}).call(this);</script></head><!-- endregion --> <!-- region body --><body class=documentation><div class=window-loading-cover><div></div></div> <!-- region header --> <div class="header-wrap outer"> <header class=inner> <a class="start-up-animation-number-2 forkme-banner" href="//github.com/thaibault/jQuery-lang">View on GitHub<!--deDE:GitHub-Projekt--><!--frFR:GitHub-Project--><i class=icon-github></i></a><h1 class="start-up-animation-number-3 project-title"><a href="//thaibault.github.io/jQuery-lang">jQuery-lang</a></h1><h2 class="start-up-animation-number-4 project-tagline">A jQuery-Plugin to replace alternate version of text for client side internationalization.<!--deDE:Ein jQuery-Plugin zum Klientseitigem ersetzten von verschiedenen Textversionen.--><!--frFR:Un plugin jQuery pour remplacer version alternative de texte pour le côté client l'internationalisation.--><br/></h2><section class=header-links> <a href="#lang-deDE" class=start-up-animation-number-5>de</a> <a href="#lang-enUS" class=start-up-animation-number-6>en</a> <a href="#lang-frFR" class=start-up-animation-number-7>fr</a> <i class="start-up-animation-number-8 icon-download-tarball"></i> <a class="start-up-animation-number-10 zip-source-download" href="//github.com/thaibault/jQuery-lang/zipball/master">src.zip</a> <a class="start-up-animation-number-9 zip-distribution-bundle-download" href="distributionBundle.zip">app.zip</a> </section> </header> </div> <!-- endregion --> <!-- region sections --> <div class="main-content-wrap outer"> <!-- region main content --> <section class="main-content inner start-up-animation-number-10"> <!-- region modline vim: set tabstop=4 shiftwidth=4 expandtab: vim: foldmethod=marker foldmarker=region,endregion: endregion region header Copyright Torben Sickert 16.12.2012 License This library written by Torben Sickert stand under a creative commons naming 3.0 unported license. see http://creativecommons.org/licenses/by/3.0/deed.de endregion --><h1 id=jquery-lang>jquery-lang</h1><p>A jQuery plugin to replace alternate version of text for client side internationalization. <!--deDE: Ein jQuery-Plugin zum Klientseitigem ersetzten von verschiedenen Textversionen. --> <!--frFR: Un plugin jQuery pour remplacer version alternative de texte pour le côté client l'internationalisation. --></p><h2 id=example>Example:</h2><table class=codehilitetable><tr><td class=linenos><div class=linenodiv><pre> 1
- 2
- 3
- 4
- 5
- 6
- 7
- 8
- 9
-10
-11
-12
-13
-14
-15
-16
-17
-18
-19
-20
-21
-22
-23
-24
-25
-26
-27
-28
-29
-30</pre></div></td><td class=code><div class=codehilite><pre><span class="nt">&lt;script </span><span class="na">type=</span><span class="s">&quot;text/javascript&quot;</span> <span class="na">src=</span><span class="s">&quot;distributionBundle/jquery-2.0.3.js&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>
-<span class="nt">&lt;script </span><span class="na">type=</span><span class="s">&quot;text/javascript&quot;</span> <span class="na">src=</span><span class="s">&quot;distributionBundle/jquery-tools-1.0.js&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>
-<span class="nt">&lt;script </span><span class="na">type=</span><span class="s">&quot;text/javascript&quot;</span> <span class="na">src=</span><span class="s">&quot;distributionBundle/jquery-lang-1.0.js&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>
-<span class="nt">&lt;script </span><span class="na">type=</span><span class="s">&quot;text/javascript&quot;</span><span class="nt">&gt;</span>
-    <span class="nx">$</span><span class="p">.</span><span class="nx">Lang</span><span class="p">({</span>
-        <span class="nx">domNodeSelectorPrefix</span><span class="o">:</span> <span class="s1">&#39;body&#39;</span><span class="p">,</span>
-        <span class="k">default</span><span class="o">:</span> <span class="s1">&#39;enUS&#39;</span><span class="p">,</span>
-        <span class="nx">domNodeClassPrefix</span><span class="o">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
-        <span class="nx">fadeEffect</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
-        <span class="nx">textNodeParent</span><span class="o">:</span> <span class="p">{</span>
-            <span class="nx">fadeIn</span><span class="o">:</span> <span class="p">{</span><span class="nx">duration</span><span class="o">:</span> <span class="s1">&#39;normal&#39;</span><span class="p">},</span>
-            <span class="nx">fadeOut</span><span class="o">:</span> <span class="p">{</span><span class="nx">duration</span><span class="o">:</span> <span class="s1">&#39;normal&#39;</span><span class="p">}</span>
-        <span class="p">},</span>
-        <span class="nx">replacementLanguagePattern</span><span class="o">:</span> <span class="s1">&#39;^([a-z]{2}[A-Z]{2}):((.|\\s)*)$&#39;</span><span class="p">,</span>
-        <span class="nx">currentLanguagePattern</span><span class="o">:</span> <span class="s1">&#39;^[a-z]{2}[A-Z]{2}$&#39;</span><span class="p">,</span>
-        <span class="nx">replacementDomNodeName</span><span class="o">:</span> <span class="s1">&#39;#comment&#39;</span><span class="p">,</span>
-        <span class="nx">replaceDomNodeName</span><span class="o">:</span> <span class="s1">&#39;#text&#39;</span><span class="p">,</span>
-        <span class="nx">toolsLockDescription</span><span class="o">:</span> <span class="s1">&#39;{1}Switch&#39;</span><span class="p">,</span>
-        <span class="nx">languageHashPrefix</span><span class="o">:</span> <span class="s1">&#39;lang-&#39;</span><span class="p">,</span>
-        <span class="nx">currentLanguageIndicatorClassName</span><span class="o">:</span> <span class="s1">&#39;current&#39;</span><span class="p">,</span>
-        <span class="nx">cookieDescription</span><span class="o">:</span> <span class="s1">&#39;{1}Last&#39;</span><span class="p">,</span>
-        <span class="nx">languageMapping</span><span class="o">:</span> <span class="p">{</span>
-            <span class="nx">deDE</span><span class="o">:</span> <span class="p">[</span><span class="s1">&#39;de&#39;</span><span class="p">,</span> <span class="s1">&#39;de-de&#39;</span><span class="p">],</span>
-            <span class="nx">enUS</span><span class="o">:</span> <span class="p">[</span><span class="s1">&#39;en&#39;</span><span class="p">,</span> <span class="s1">&#39;en-us&#39;</span><span class="p">],</span>
-            <span class="nx">enEN</span><span class="o">:</span> <span class="p">[</span><span class="s1">&#39;en-en&#39;</span><span class="p">],</span>
-            <span class="nx">frFR</span><span class="o">:</span> <span class="p">[</span><span class="s1">&#39;fr&#39;</span><span class="p">,</span> <span class="s1">&#39;fr-fr&#39;</span><span class="p">]</span>
-        <span class="p">},</span>
-        <span class="nx">onSwitched</span><span class="o">:</span> <span class="nx">$</span><span class="p">.</span><span class="nx">noop</span><span class="p">()</span>
-    <span class="p">});</span>
-<span class="nt">&lt;/script&gt;</span>
-</pre></div></td></tr></table><p>To add two versions of a text string you can simply add your translation directly in markup. See how easy it is: <!--deDE: Um zwei Sprachversionen eines Text Knotens im Markup anzubieten müssen einfach nur per Kommentar alternative Versionen hinter dem zu übersetzenden String gesetzt werden. --> <!--frFR: Doit offrir deux versions linguistiques d'un nœud de texte dans la balise     facile à traduire que par Commentez versions alternatives derrière le     Chaîne à être réglé. --></p><!--showExample--><table class=codehilitetable><tr><td class=linenos><div class=linenodiv><pre>1
-2
-3
-4
-5
-6
-7
-8
-9</pre></div></td><td class=code><div class=codehilite><pre><span class="nt">&lt;p&gt;</span>
+(function(){var a={}.hasOwnProperty,b=function(f,d){for(var c in d){if(a.call(d,c)){f[c]=d[c]}}function e(){this.constructor=f}e.prototype=d.prototype;f.prototype=new e();f.__super__=d.prototype;return f};(function(d){var e,c;e=(function(f){b(g,f);function g(){c=g.__super__.constructor.apply(this,arguments);return c}g.prototype._options={onExamplesLoaded:d.noop(),domNodeSelectorPrefix:"body.{1}",showExamplePattern:"^ *showExample(: *([^ ]+))? *$",showExampleDomNodeName:"#comment",domNode:{tableOfContentLinks:'div.toc > ul > li > a[href^="#"]',aboutThisWebsiteLink:'a[href="#about-this-website"]',homeLink:'a[href="#home"]',aboutThisWebsiteSection:"section.about-this-website",mainSection:"section.main-content",codeWrapper:"div.codehilite",codeChildren:"pre"},trackingCode:"UA-0-0",section:{aboutThisWebsite:{fadeOut:{duration:"slow"},fadeIn:{duration:"slow"}},main:{fadeOut:{duration:"slow"},fadeIn:{duration:"slow"}}}};g.prototype.__name__="Documentation";g.prototype.initialize=function(h){var i=this;h.activateLanguageSupport=false;g.__super__.initialize.call(this,h);if(!window.location.hash){window.location.hash=this.$domNodes.homeLink.attr("href")}this.$domNodes.aboutThisWebsiteSection.hide();this._showExamples()._makeCodeEllipsis();this.on(this.$domNodes.tableOfContentLinks,"click",function(){return d.scrollTo(d(this).attr("href"),"slow")});this._options.section.aboutThisWebsite.fadeOut.always=function(){return i.$domNodes.mainSection.fadeIn(i._options.section.main.fadeIn)};this._options.section.main.fadeOut.always=function(){return i.$domNodes.aboutThisWebsiteSection.fadeIn(i._options.section.aboutThisWebsite.fadeIn)};this.on(this.$domNodes.aboutThisWebsiteLink,"click",function(){return i.$domNodes.mainSection.fadeOut(i._options.section.main.fadeOut)});this.on(this.$domNodes.homeLink,"click",function(j){return i.$domNodes.aboutThisWebsiteSection.fadeOut(i._options.section.aboutThisWebsite.fadeOut)});return this};g.prototype._onExamplesLoaded=function(){this.$domNodes=this.grabDomNode(this._options.domNode);this._languageHandler=d.Lang(this._options.language);return this};g.prototype._onSwitchSection=function(h){this.$domNodes.tableOfContentLinks.add(this.$domNodes.aboutThisWebsiteLink).filter('a[href="'+h+'"]').trigger("click");return g.__super__._onSwitchSection.call(this)};g.prototype._onStartUpAnimationComplete=function(){this.$domNodes.tableOfContentLinks.add(this.$domNodes.aboutThisWebsiteLink).filter('a[href="'+(window.location.href.substr(window.location.href.indexOf("#")))+'"]').trigger("click");return g.__super__._onStartUpAnimationComplete.call(this)};g.prototype._makeCodeEllipsis=function(){var h;h=this;this.$domNodes.codeWrapper.children(this.$domNodes.codeChildren).each(function(){var k,j,i;k=d(this);i="";j=k.html().split("\n");d.each(j,function(n,o){var m,l;l=0;try{l=d(o).text().length-79}catch(p){m=p;if(o.length>79){o=""+(o.substr(0,76))+"..."}}if(l>0){i+=h._replaceExcessWithDots(o,l)}else{i+=o}if(n+1!==j.length){return i+="\n"}});return k.html(i)});return this};g.prototype._replaceExcessWithDots=function(j,i){var h;i+=3;h="";d(d(j).get().reverse()).each(function(){var k,l;k=d(this).wrap("<div>").parent();l=k.html();if(!l){l=this.textContent}if(i){if(this.textContent.length<i){i-=this.textContent.length;l=""}else{if(this.textContent.length>=i){this.textContent=""+(this.textContent.substr(0,this.textContent.length-i-1))+"...";i=0;l=k.html();if(!l){l=this.textContent}}}}return h=l+h});return h};g.prototype._showExamples=function(){var h;h=this;this.$domNodes.parent.find(":not(iframe)").contents().each(function(){var k,l,j,i;if(this.nodeName===h._options.showExampleDomNodeName){j=this.textContent.match(new RegExp(h._options.showExamplePattern));if(j){k=d(this).next();l=k.find(h.$domNodes.codeWrapper).text();if(!l){l=k.text()}if(d.inArray((i=j[2])!=null?i.toLowerCase():void 0,["javascript","js"])!==-1){return k.after(d("<script>").attr("type","text/javascript").text(l))}else{if((j[2]!=null)&&d.inArray(j[2].toLowerCase(),["css","cascadingstylesheets","stylesheets","sheets","style"])!==-1){return k.after(d("<style>").attr("type","text/css").text(l))}else{return k.after(l)}}}}});this.fireEvent("examplesLoaded");return this};return g})(d.Website["class"]);d.Documentation=function(){return d.Tools().controller(e,arguments)};return d.Documentation["class"]=e})(this.jQuery)}).call(this);(function(){this.jQuery(function(a){return a.Documentation({googleTrackingCode:"UA-44942474-1"})})}).call(this);</script></head><!-- endregion --> <!-- region body --><body class=documentation><div class=window-loading-cover><div></div></div> <!-- region header --> <div class="header-wrap outer"> <header class=inner> <a class="start-up-animation-number-2 forkme-banner" href="//github.com/thaibault/jQuery-lang">View on GitHub<!--deDE:GitHub-Projekt--><!--frFR:GitHub-Project--><i class=icon-github></i></a><h1 class="start-up-animation-number-3 project-title"><a href="//thaibault.github.io/jQuery-lang">jQuery-lang</a></h1><h2 class="start-up-animation-number-4 project-tagline">A jQuery-Plugin to replace alternate version of text for client side internationalization.<!--deDE:Ein jQuery-Plugin zum Klientseitigem ersetzten von verschiedenen Textversionen.--><!--frFR:Un plugin jQuery pour remplacer version alternative de texte pour le côté client l'internationalisation.--><br/></h2><section class=header-links> <a href="#lang-deDE" class=start-up-animation-number-5>de</a> <a href="#lang-enUS" class=start-up-animation-number-6>en</a> <a href="#lang-frFR" class=start-up-animation-number-7>fr</a> <i class="start-up-animation-number-8 icon-download-tarball"></i> <a class="start-up-animation-number-10 zip-source-download" href="//github.com/thaibault/jQuery-lang/zipball/master">src.zip</a> <a class="start-up-animation-number-9 zip-distribution-bundle-download" href="distributionBundle.zip">app.zip</a> </section> </header> </div> <!-- endregion --> <!-- region sections --> <div class="main-content-wrap outer"> <!-- region main content --> <section class="main-content inner start-up-animation-number-10"> <!-- region modline vim: set tabstop=4 shiftwidth=4 expandtab: vim: foldmethod=marker foldmarker=region,endregion: endregion region header Copyright Torben Sickert 16.12.2012 License This library written by Torben Sickert stand under a creative commons naming 3.0 unported license. see http://creativecommons.org/licenses/by/3.0/deed.de endregion --><h1 id=jquery-lang>jquery-lang</h1><p>A jQuery plugin to replace alternate version of text for client side internationalization. <!--deDE: Ein jQuery-Plugin zum Klient seitigem Ersetzten von verschiedenen Textversionen. --> <!--frFR: Un plugin jQuery pour remplacer version alternative de texte pour le côté client l'internationalisation. --></p><h2 id=example>Example:</h2><pre><code>#!HTML
+
+&lt;script type="text/javascript" src="distributionBundle/jquery-2.0.3.js"&gt;&lt;/script&gt;
+&lt;script type="text/javascript" src="distributionBundle/jquery-tools-1.0.js"&gt;&lt;/script&gt;
+&lt;script type="text/javascript" src="distributionBundle/jquery-lang-1.0.js"&gt;&lt;/script&gt;
+&lt;script type="text/javascript"&gt;
+    $.Lang({
+        domNodeSelectorPrefix: 'body',
+        default: 'enUS',
+        domNodeClassPrefix: '',
+        fadeEffect: true,
+        textNodeParent: {
+            fadeIn: {duration: 'normal'},
+            fadeOut: {duration: 'normal'}
+        },
+        replacementLanguagePattern: '^([a-z]{2}[A-Z]{2}):((.|\\s)*)$',
+        currentLanguagePattern: '^[a-z]{2}[A-Z]{2}$',
+        replacementDomNodeName: '#comment',
+        replaceDomNodeName: '#text',
+        toolsLockDescription: '{1}Switch',
+        languageHashPrefix: 'lang-',
+        currentLanguageIndicatorClassName: 'current',
+        cookieDescription: '{1}Last',
+        languageMapping: {
+            deDE: ['de', 'de-de'],
+            enUS: ['en', 'en-us'],
+            enEN: ['en-en'],
+            frFR: ['fr', 'fr-fr']
+        },
+        onSwitched: $.noop()
+    });
+&lt;/script&gt;
+</code></pre><p>To add two versions of a text string you can simply add your translation directly in markup. See how easy it is: <!--deDE: Um zwei Sprachversionen eines Text Knotens im Markup anzubieten müssen einfach nur per Kommentar alternative Versionen hinter dem zu übersetzenden String gesetzt werden. --> <!--frFR: Doit offrir deux versions linguistiques d'un nœud de texte dans la balise     facile à traduire que par Commentez versions alternatives derrière le     Chaîne à être réglé. --></p><p><!--showExample--></p><pre><code>#!HTML
+
+&lt;p&gt;
     Your englisch version.
-    <span class="c">&lt;!--deDE:</span>
-<span class="c">        Ihre deutsche Variante.</span>
-<span class="c">    --&gt;</span>
-    <span class="c">&lt;!--frFR:</span>
-<span class="c">        Sa version française.</span>
-<span class="c">    --&gt;</span>
-<span class="nt">&lt;/p&gt;</span>
-</pre></div></td></tr></table><p>With the above initialisation you can simple add this links everywhere in your page to switch language. On click you will switch the current language interactively. Try it by yourself: <!--deDE: Mit der oben aufgezeigten Konfiguration können Sie einfach folgenden Links an beliebiger Stelle im Markup plazieren. Beim Klicken auf die Sprach-Wechsel-Links wird die Sprache Ihrer Webseite entsprechend angepasst. Versuchen Sie selbst: --> <!--frFR: Avec la configuration ci-dessus, vous pouvez simplement identifié les liens suivants placer n'importe où dans le balisage. Lorsque vous cliquez sur l'     Langue échange de liens est la langue de votre site en conséquence     ajustée. Essayez par vous-même: --></p><!--showExample--><table class=codehilitetable><tr><td class=linenos><div class=linenodiv><pre>1
-2
-3</pre></div></td><td class=code><div class=codehilite><pre><span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#lang-deDE&quot;</span><span class="nt">&gt;</span>de<span class="nt">&lt;/a&gt;</span>
-<span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#lang-enUS&quot;</span><span class="nt">&gt;</span>en<span class="nt">&lt;/a&gt;</span>
-<span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#lang-frFR&quot;</span><span class="nt">&gt;</span>fr<span class="nt">&lt;/a&gt;</span>
-</pre></div></td></tr></table></section> <!-- endregion --> <!-- region about this website --> <section class="about-this-website inner"><h1>About this website <!--deDE:Impressum--> <!--frFR:Mentions légales--></h1><p>Provider of <!--deDE:Anbieter von --> <!--frFR:Fournisseur de --> <a href="//thaibault.github.io/jQuery-lang">http://thaibault.github.io/jQuery-lang</a>:<br/>Torben Sickert<br/>Christoph-Mang-Str. 14<br/>79100 Freiburg<br/>Tel. 0049 (0) 176 / 10248185<br/>Email: <a href="mailto:t.sickert@gmail.com">t.sickert@gmail.com</a><br/>Website: <!--deDE:Webseite:--> <!--frFR:Site:--> <a href="//thaibault.github.io/website">http://thaibault.github.io/website</a><br/><span class="glyphicon glyphicon-arrow-left arrow-left-home"></span> <a href="#home">home<!--deDE:Startseite--><!--frFR:Maison--></a></p></section> </div> <!-- endregion --> <!-- endregion --> <!-- region footer --> <div class="footer-wrap outer"> <footer class=inner><p class="start-up-animation-number-11 copyright">jQuery-lang maintained by <!--deDE:jQuery-lang betrieben von --> <!--frFR:jQuery-lang exploité par --> <a href="//github.com/thaibault">thaibault</a> &middot; &copy; 2013 Torben Sickert, Inc. &middot; <a href="#about-this-website">about this website<!--deDE:Impressum--><!--frFR:Mentions légales--></a></p></footer> </div> <!-- endregion --> <a href="#top">top</a></body><!-- endregion --></html>
+    &lt;!--deDE:
+        Ihre deutsche Variante.
+    --&gt;
+    &lt;!--frFR:
+        Sa version française.
+    --&gt;
+&lt;/p&gt;
+</code></pre><p>With the above initialisation you can simple add this links everywhere in your page to switch language. On click you will switch the current language interactively. Try it by yourself: <!--deDE: Mit der oben aufgezeigten Konfiguration können Sie einfach folgenden Links an beliebiger Stelle im Markup plazieren. Beim Klicken auf die Sprach-Wechsel-Links wird die Sprache Ihrer Webseite entsprechend angepasst. Versuchen Sie selbst: --> <!--frFR: Avec la configuration ci-dessus, vous pouvez simplement identifié les liens suivants placer n'importe où dans le balisage. Lorsque vous cliquez sur l'     Langue échange de liens est la langue de votre site en conséquence     ajustée. Essayez par vous-même: --></p><p><!--showExample--></p><pre><code>#!HTML
+
+&lt;a href="#lang-deDE"&gt;de&lt;/a&gt;
+&lt;a href="#lang-enUS"&gt;en&lt;/a&gt;
+&lt;a href="#lang-frFR"&gt;fr&lt;/a&gt;
+</code></pre> </section> <!-- endregion --> <!-- region about this website --> <section class="about-this-website inner"><h1>About this website <!--deDE:Impressum--> <!--frFR:Mentions légales--></h1><p>Provider of <!--deDE:Anbieter von --> <!--frFR:Fournisseur de --> <a href="//thaibault.github.io/jQuery-lang">http://thaibault.github.io/jQuery-lang</a>:<br/>Torben Sickert<br/>Christoph-Mang-Str. 14<br/>79100 Freiburg<br/>Tel. 0049 (0) 176 / 10248185<br/>Email: <a href="mailto:t.sickert@gmail.com">t.sickert@gmail.com</a><br/>Website: <!--deDE:Webseite:--> <!--frFR:Site:--> <a href="//thaibault.github.io/website">http://thaibault.github.io/website</a><br/><span class="glyphicon glyphicon-arrow-left arrow-left-home"></span> <a href="#home">home<!--deDE:Startseite--><!--frFR:Maison--></a></p></section> </div> <!-- endregion --> <!-- endregion --> <!-- region footer --> <div class="footer-wrap outer"> <footer class=inner><p class="start-up-animation-number-11 copyright">jQuery-lang maintained by <!--deDE:jQuery-lang betrieben von --> <!--frFR:jQuery-lang exploité par --> <a href="//github.com/thaibault">thaibault</a> &middot; &copy; 2013 Torben Sickert, Inc. &middot; <a href="#about-this-website">about this website<!--deDE:Impressum--><!--frFR:Mentions légales--></a></p></footer> </div> <!-- endregion --> <a href="#top">top</a></body><!-- endregion --></html>
