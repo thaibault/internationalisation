@@ -30,8 +30,8 @@ internationalization.
     client l'internationalisation.
 -->
 
-Example:
---------
+Usage<!--deDE:Anwendung--><!--frFR:demande--!>:
+-----------------------------------------------
 
 To add two versions of a text string you can simply add your translation
 directly in markup. See how easy it is:

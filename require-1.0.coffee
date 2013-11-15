@@ -298,7 +298,7 @@ class Require
                 # NOTE: Additional commend syntax with "/*...*/" is necessary
                 # to support internet explorer.
                 window.eval(
-                    js + '\n/*//@ sourceMappingURL=data:application/json;' +
+                    js + '\n/*//# sourceMappingURL=data:application/json;' +
                     'base64,' +
                     (btoa unescape encodeURIComponent v3SourceMap) + '\n//@ ' +
                     'sourceURL=' + module[1] + '*/')
