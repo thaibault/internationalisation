@@ -30,7 +30,7 @@ internationalization.
     client l'internationalisation.
 -->
 
-Usage<!--deDE:Anwendung--><!--frFR:demande--!>:
+Usage<!--deDE:Anwendung--><!--frFR:demande-->:
 -----------------------------------------------
 
 To add two versions of a text string you can simply add your translation
