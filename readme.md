@@ -60,7 +60,7 @@ directly in markup. See how easy it is:
         -->
     </p>
 
-With the above initialisation you can simple add this links everywhere in your
+With the below initialisation you can simple add this links everywhere in your
 page to switch language. On click you will switch the current language
 interactively. Try it by yourself:
 <!--deDE:
