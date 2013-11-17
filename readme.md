@@ -16,8 +16,8 @@ License
 
 endregion -->
 
-Einsatz
-=======
+Use case<!--deDE:Einsatz--><!--frFR:Utilisier-->
+================================================
 
 A jQuery plugin to replace alternate version of text for client side
 internationalization.
