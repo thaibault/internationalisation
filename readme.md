@@ -102,29 +102,31 @@ to initialize the plugin with different configuration.
     <script type="text/javascript" src="distributionBundle/jquery-tools-1.0.js"></script>
     <script type="text/javascript" src="distributionBundle/jquery-lang-1.0.js"></script>
     <script type="text/javascript">
-        $.Lang({
-            domNodeSelectorPrefix: 'body',
-            default: 'enUS',
-            domNodeClassPrefix: '',
-            fadeEffect: true,
-            textNodeParent: {
-                fadeIn: {duration: 'normal'},
-                fadeOut: {duration: 'normal'}
-            },
-            replacementLanguagePattern: '^([a-z]{2}[A-Z]{2}):((.|\\s)*)$',
-            currentLanguagePattern: '^[a-z]{2}[A-Z]{2}$',
-            replacementDomNodeName: '#comment',
-            replaceDomNodeName: '#text',
-            toolsLockDescription: '{1}Switch',
-            languageHashPrefix: 'lang-',
-            currentLanguageIndicatorClassName: 'current',
-            cookieDescription: '{1}Last',
-            languageMapping: {
-                deDE: ['de', 'de-de'],
-                enUS: ['en', 'en-us'],
-                enEN: ['en-en'],
-                frFR: ['fr', 'fr-fr']
-            },
-            onSwitched: $.noop()
+        $(function() {
+            $.Lang({
+                domNodeSelectorPrefix: 'body',
+                default: 'enUS',
+                domNodeClassPrefix: '',
+                fadeEffect: true,
+                textNodeParent: {
+                    fadeIn: {duration: 'normal'},
+                    fadeOut: {duration: 'normal'}
+                },
+                replacementLanguagePattern: '^([a-z]{2}[A-Z]{2}):((.|\\s)*)$',
+                currentLanguagePattern: '^[a-z]{2}[A-Z]{2}$',
+                replacementDomNodeName: '#comment',
+                replaceDomNodeName: '#text',
+                toolsLockDescription: '{1}Switch',
+                languageHashPrefix: 'lang-',
+                currentLanguageIndicatorClassName: 'current',
+                cookieDescription: '{1}Last',
+                languageMapping: {
+                    deDE: ['de', 'de-de'],
+                    enUS: ['en', 'en-us'],
+                    enEN: ['en-en'],
+                    frFR: ['fr', 'fr-fr']
+                },
+                onSwitched: $.noop()
+            });
         });
     </script>
