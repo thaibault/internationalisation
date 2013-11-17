@@ -75,10 +75,7 @@ this.require [['jQuery', 'jquery-2.0.3']], ($) ->
 
             @property {Object}
         ###
-        _options:
-            logging: false
-            domNodeSelectorPrefix: 'body'
-            domNode: {}
+        _options: logging: false, domNodeSelectorPrefix: 'body', domNode: {}
         ###*
             Used for internal mutual exclusion in critical areas. To prevent
             race conditions. Represents a map with critical area description
@@ -133,8 +130,8 @@ this.require [['jQuery', 'jquery-2.0.3']], ($) ->
                     console[method] = $.noop()
             this
         ###*
-            @description This method could be overwritten normally.
-                         It acts like a destructor.
+            @description This method could be overwritten normally. It acts
+                         like a destructor.
 
             @returns {$.Tools} Returns the current instance.
         ###
@@ -151,8 +148,12 @@ this.require [['jQuery', 'jquery-2.0.3']], ($) ->
             @returns {$.Tools} Returns the current instance.
         ###
         initialize: (options={}) ->
+            # TODO initialize instance properties like in python
+            this._locks = {}
             if options
-                this._options = $.extend true, this._options, options
+                # NOTE: We have to create a new options object instance to
+                # avoid changing a static options object.
+                this._options = $.extend true, {}, this._options, options
             # The selector prefix should be parsed after extending options
             # because the selector would be overwritten otherwise.
             this._options.domNodeSelectorPrefix = this.stringFormat(
@@ -196,17 +197,6 @@ this.require [['jQuery', 'jquery-2.0.3']], ($) ->
             $.error(
                 "Method \"#{parameter[0]}\" does not exist on $-extension " +
                 "#{object.__name__}\".")
-        ###*
-            @description Extends a given object with the tools attributes.
-
-            @param {Object} childAttributs The attributes from child.
-
-            @returns {$.Tools} Returns the current instance.
-        ###
-        extend: (childAttributes) ->
-            if childAttributes
-                $.extend true, this, childAttributes
-            this
 
         # endregion
 
@@ -239,19 +229,15 @@ this.require [['jQuery', 'jquery-2.0.3']], ($) ->
                 If you want to understand more about that,
                 "What are event loops?" might be a good question.
             ###
-            window.setTimeout(
-                (=>
-                    wrappedCallbackFunction = (description) =>
-                        callbackFunction(description)
-                        if autoRelease
-                            this.releaseLock(description)
-                    if not this._locks[description]?
-                        this._locks[description] = []
-                        wrappedCallbackFunction description
-                    else
-                        this._locks[description].push wrappedCallbackFunction
-                ),
-                0)
+            wrappedCallbackFunction = (description) =>
+                callbackFunction(description)
+                if autoRelease
+                    this.releaseLock(description)
+            if not this._locks[description]?
+                this._locks[description] = []
+                wrappedCallbackFunction description
+            else
+                this._locks[description].push wrappedCallbackFunction
             this
         ###*
             @description Calling this method  causes the given critical area to
@@ -271,16 +257,13 @@ this.require [['jQuery', 'jquery-2.0.3']], ($) ->
                 If you want to understand more about that,
                 "What are event loops?" might be a good question.
             ###
-            window.setTimeout(
-                (=>
-                    if this._locks[description]?
-                        if this._locks[description].length
-                            this._locks[description].shift()(description)
-                            if not this._locks[description].length
-                                this._locks[description] = undefined
-                        else
-                            this._locks[description] = undefined),
-                0)
+            if this._locks[description]?
+                if this._locks[description].length
+                    this._locks[description].shift()(description)
+                    if not this._locks[description].length
+                        this._locks[description] = undefined
+                else
+                    this._locks[description] = undefined
             this
 
         # endregion
@@ -288,13 +271,12 @@ this.require [['jQuery', 'jquery-2.0.3']], ($) ->
         # region language fixes
 
         ###*
-            @description This method fixes an ugly javascript bug.
-                         If you add a mouseout event listener to a dom node
-                         the given handler will be called each time any dom
-                         node inside the observed dom node triggers a mouseout
-                         event. This methods guarantees that the given event
-                         handler is only called if the observed dom node was
-                         leaved.
+            @description This method fixes an ugly javaScript bug. If you add a
+                         mouseout event listener to a dom node the given
+                         handler will be called each time any dom node inside
+                         the observed dom node triggers a mouseout event. This
+                         methods guarantees that the given event handler is
+                         only called if the observed dom node was leaved.
 
             @param {Function} eventHandler The mouse out event handler.
 
@@ -324,7 +306,7 @@ this.require [['jQuery', 'jquery-2.0.3']], ($) ->
 
             @param {Mixed} object Any type to show.
             @param {Boolean} force If set to "true" given input will be shown
-                                   independly from current logging
+                                   independently from current logging
                                    configuration or interpreter's console
                                    implementation.
             @param {Boolean} avoidAnnotation If set to "true" given input
@@ -352,7 +334,7 @@ this.require [['jQuery', 'jquery-2.0.3']], ($) ->
                     this.log object, force, true
                     this.log "'--------------------------------------------'"
                 if message
-                    if window.console?[level]? == $.noop() and force
+                    if window.console?[level]? is $.noop() and force
                         window.alert message
                     window.console[level] message
             this
@@ -362,7 +344,7 @@ this.require [['jQuery', 'jquery-2.0.3']], ($) ->
 
             @param {Mixed} object Any type to show.
             @param {Boolean} force If set to "true" given input will be shown
-                                   independly from current logging
+                                   independently from current logging
                                    configuration or interpreter's console
                                    implementation.
             @param {Boolean} avoidAnnotation If set to "true" given input
@@ -379,7 +361,7 @@ this.require [['jQuery', 'jquery-2.0.3']], ($) ->
 
             @param {Mixed} object Any type to show.
             @param {Boolean} force If set to "true" given input will be shown
-                                   independly from current logging
+                                   independently from current logging
                                    configuration or interpreter's console
                                    implementation.
             @param {Boolean} avoidAnnotation If set to "true" given input
@@ -396,7 +378,7 @@ this.require [['jQuery', 'jquery-2.0.3']], ($) ->
 
             @param {Mixed} object Any type to show.
             @param {Boolean} force If set to "true" given input will be shown
-                                   independly from current logging
+                                   independently from current logging
                                    configuration or interpreter's console
                                    implementation.
             @param {Boolean} avoidAnnotation If set to "true" given input
@@ -413,7 +395,7 @@ this.require [['jQuery', 'jquery-2.0.3']], ($) ->
 
             @param {Mixed} object Any type to show.
             @param {Boolean} force If set to "true" given input will be shown
-                                   independly from current logging
+                                   independently from current logging
                                    configuration or interpreter's console
                                    implementation.
             @param {Boolean} avoidAnnotation If set to "true" given input
@@ -429,7 +411,7 @@ this.require [['jQuery', 'jquery-2.0.3']], ($) ->
 
             @param {Object} object Any type.
 
-            @returns {String} Returns the searialized object.
+            @returns {String} Returns the serialized object.
         ###
         show: (object) ->
             output = ''
@@ -810,20 +792,19 @@ $.Tools.getDomNodeName('&lt;br/&gt;');
         _bindHelper: (
             parameter, removeEvent=false, eventFunctionName='bind'
         ) ->
-            $Object = $ parameter[0]
+            $domNode = $ parameter[0]
             if $.type(parameter[1]) is 'object' and not removeEvent
                 $.each(parameter[1], (eventType, handler) =>
-                    this[eventFunctionName] $Object, eventType, handler)
-                return $Object
+                    this[eventFunctionName] $domNode, eventType, handler)
+                return $domNode
             parameter = this.argumentsObjectToArray(parameter).slice 1
             if parameter.length is 0
                 parameter.push ''
             if parameter[0].indexOf('.') is -1
                 parameter[0] += ".#{this.__name__}"
             if removeEvent
-                return $Object[eventFunctionName].apply(
-                    $Object, parameter)
-            $Object[eventFunctionName].apply $Object, parameter
+                return $domNode[eventFunctionName].apply $domNode, parameter
+            $domNode[eventFunctionName].apply $domNode, parameter
         ###*
             @description Converts a dom selector to a prefixed dom selector
                          string.
