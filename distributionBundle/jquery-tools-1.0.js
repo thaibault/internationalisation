@@ -153,8 +153,8 @@
       }
 
       /**
-          @description This method could be overwritten normally.
-                       It acts like a destructor.
+          @description This method could be overwritten normally. It acts
+                       like a destructor.
       
           @returns {$.Tools} Returns the current instance.
       */
@@ -180,8 +180,9 @@
         if (options == null) {
           options = {};
         }
+        this._locks = {};
         if (options) {
-          this._options = $.extend(true, this._options, options);
+          this._options = $.extend(true, {}, this._options, options);
         }
         this._options.domNodeSelectorPrefix = this.stringFormat(this._options.domNodeSelectorPrefix, this.camelCaseStringToDelimited(this.__name__));
         return this;
@@ -231,22 +232,6 @@
       };
 
       /**
-          @description Extends a given object with the tools attributes.
-      
-          @param {Object} childAttributs The attributes from child.
-      
-          @returns {$.Tools} Returns the current instance.
-      */
-
-
-      Tools.prototype.extend = function(childAttributes) {
-        if (childAttributes) {
-          $.extend(true, this, childAttributes);
-        }
-        return this;
-      };
-
-      /**
           @description Calling this method introduces a starting point for a
                        critical area with potential race conditions.
                        The area will be binded to given description string.
@@ -268,7 +253,8 @@
 
 
       Tools.prototype.acquireLock = function(description, callbackFunction, autoRelease) {
-        var _this = this;
+        var wrappedCallbackFunction,
+          _this = this;
         if (autoRelease == null) {
           autoRelease = false;
         }
@@ -280,21 +266,18 @@
             "What are event loops?" might be a good question.
         */
 
-        window.setTimeout((function() {
-          var wrappedCallbackFunction;
-          wrappedCallbackFunction = function(description) {
-            callbackFunction(description);
-            if (autoRelease) {
-              return _this.releaseLock(description);
-            }
-          };
-          if (_this._locks[description] == null) {
-            _this._locks[description] = [];
-            return wrappedCallbackFunction(description);
-          } else {
-            return _this._locks[description].push(wrappedCallbackFunction);
+        wrappedCallbackFunction = function(description) {
+          callbackFunction(description);
+          if (autoRelease) {
+            return _this.releaseLock(description);
           }
-        }), 0);
+        };
+        if (this._locks[description] == null) {
+          this._locks[description] = [];
+          wrappedCallbackFunction(description);
+        } else {
+          this._locks[description].push(wrappedCallbackFunction);
+        }
         return this;
       };
 
@@ -319,30 +302,26 @@
             "What are event loops?" might be a good question.
         */
 
-        var _this = this;
-        window.setTimeout((function() {
-          if (_this._locks[description] != null) {
-            if (_this._locks[description].length) {
-              _this._locks[description].shift()(description);
-              if (!_this._locks[description].length) {
-                return _this._locks[description] = void 0;
-              }
-            } else {
-              return _this._locks[description] = void 0;
+        if (this._locks[description] != null) {
+          if (this._locks[description].length) {
+            this._locks[description].shift()(description);
+            if (!this._locks[description].length) {
+              this._locks[description] = void 0;
             }
+          } else {
+            this._locks[description] = void 0;
           }
-        }), 0);
+        }
         return this;
       };
 
       /**
-          @description This method fixes an ugly javascript bug.
-                       If you add a mouseout event listener to a dom node
-                       the given handler will be called each time any dom
-                       node inside the observed dom node triggers a mouseout
-                       event. This methods guarantees that the given event
-                       handler is only called if the observed dom node was
-                       leaved.
+          @description This method fixes an ugly javaScript bug. If you add a
+                       mouseout event listener to a dom node the given
+                       handler will be called each time any dom node inside
+                       the observed dom node triggers a mouseout event. This
+                       methods guarantees that the given event handler is
+                       only called if the observed dom node was leaved.
       
           @param {Function} eventHandler The mouse out event handler.
       
@@ -377,7 +356,7 @@
       
           @param {Mixed} object Any type to show.
           @param {Boolean} force If set to "true" given input will be shown
-                                 independly from current logging
+                                 independently from current logging
                                  configuration or interpreter's console
                                  implementation.
           @param {Boolean} avoidAnnotation If set to "true" given input
@@ -429,7 +408,7 @@
       
           @param {Mixed} object Any type to show.
           @param {Boolean} force If set to "true" given input will be shown
-                                 independly from current logging
+                                 independently from current logging
                                  configuration or interpreter's console
                                  implementation.
           @param {Boolean} avoidAnnotation If set to "true" given input
@@ -459,7 +438,7 @@
       
           @param {Mixed} object Any type to show.
           @param {Boolean} force If set to "true" given input will be shown
-                                 independly from current logging
+                                 independently from current logging
                                  configuration or interpreter's console
                                  implementation.
           @param {Boolean} avoidAnnotation If set to "true" given input
@@ -489,7 +468,7 @@
       
           @param {Mixed} object Any type to show.
           @param {Boolean} force If set to "true" given input will be shown
-                                 independly from current logging
+                                 independently from current logging
                                  configuration or interpreter's console
                                  implementation.
           @param {Boolean} avoidAnnotation If set to "true" given input
@@ -519,7 +498,7 @@
       
           @param {Mixed} object Any type to show.
           @param {Boolean} force If set to "true" given input will be shown
-                                 independly from current logging
+                                 independently from current logging
                                  configuration or interpreter's console
                                  implementation.
           @param {Boolean} avoidAnnotation If set to "true" given input
@@ -548,7 +527,7 @@
       
           @param {Object} object Any type.
       
-          @returns {String} Returns the searialized object.
+          @returns {String} Returns the serialized object.
       */
 
 
@@ -1014,7 +993,7 @@
 
 
       Tools.prototype._bindHelper = function(parameter, removeEvent, eventFunctionName) {
-        var $Object,
+        var $domNode,
           _this = this;
         if (removeEvent == null) {
           removeEvent = false;
@@ -1022,12 +1001,12 @@
         if (eventFunctionName == null) {
           eventFunctionName = 'bind';
         }
-        $Object = $(parameter[0]);
+        $domNode = $(parameter[0]);
         if ($.type(parameter[1]) === 'object' && !removeEvent) {
           $.each(parameter[1], function(eventType, handler) {
-            return _this[eventFunctionName]($Object, eventType, handler);
+            return _this[eventFunctionName]($domNode, eventType, handler);
           });
-          return $Object;
+          return $domNode;
         }
         parameter = this.argumentsObjectToArray(parameter).slice(1);
         if (parameter.length === 0) {
@@ -1037,9 +1016,9 @@
           parameter[0] += "." + this.__name__;
         }
         if (removeEvent) {
-          return $Object[eventFunctionName].apply($Object, parameter);
+          return $domNode[eventFunctionName].apply($domNode, parameter);
         }
-        return $Object[eventFunctionName].apply($Object, parameter);
+        return $domNode[eventFunctionName].apply($domNode, parameter);
       };
 
       /**
