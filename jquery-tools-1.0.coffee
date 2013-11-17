@@ -143,7 +143,7 @@ this.require [['jQuery', 'jquery-2.0.3']], ($) ->
             this
         ###*
             @description This method should be overwritten normally. It is
-                         triggered if current opject was created via the "new"
+                         triggered if current object was created via the "new"
                          keyword and is called now.
 
             @param {Object} options An options object.
@@ -151,11 +151,13 @@ this.require [['jQuery', 'jquery-2.0.3']], ($) ->
             @returns {$.Tools} Returns the current instance.
         ###
         initialize: (options={}) ->
+            if options
+                this._options = $.extend true, this._options, options
+            # The selector prefix should be parsed after extending options
+            # because the selector would be overwritten otherwise.
             this._options.domNodeSelectorPrefix = this.stringFormat(
                 this._options.domNodeSelectorPrefix,
                 this.camelCaseStringToDelimited this.__name__)
-            if options
-                this._options = $.extend true, this._options, options
             this
 
         # endregion
