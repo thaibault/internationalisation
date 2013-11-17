@@ -1,8 +1,8 @@
 {
     "name": "jQuery-lang",
-    "tagline": "A jQuery-Plugin to replace alternate version of text for client side internationalization.<!--deDE:Ein jQuery-Plugin zum Klientseitigem ersetzten von verschiedenen Textversionen.--><!--frFR:Un plugin jQuery pour remplacer version alternative de texte pour le côté client l'internationalisation.-->",
+    "tagline": "Expand your audience",
     "body": "",
     "google": "UA-44942474-1",
     "language": "en",
-    "note":"Don't delete this file! It's used internally to help with page regeneration."
+    "note": "Don't delete this file! It's used internally to help with page regeneration."
 }
