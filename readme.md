@@ -16,7 +16,7 @@ License
 
 endregion -->
 
-jquery-lang
+jQuery-lang
 ===========
 
 A jQuery plugin to replace alternate version of text for client side
@@ -30,7 +30,7 @@ internationalization.
     client l'internationalisation.
 -->
 
-Usage<!--deDE:Anwendung--><!--frFR:demande-->:
+Usage<!--deDE:Verwendung--><!--frFR:Demande-->:
 -----------------------------------------------
 
 To add two versions of a text string you can simply add your translation
@@ -84,11 +84,12 @@ interactively. Try it by yourself:
     <a href="#lang-enUS">en</a>
     <a href="#lang-frFR">fr</a>
 
-Here you can see all available options to initialize the plugin with different
-configuration.
+Here you can see a complete initialisation example with all available options
+to initialize the plugin with different configuration.
 <!--deDE:
-    Hier können sie alle verfügbaren Optionen betrachten, um das Plugin in
-    verschiedenen Konfigurationen zu initialisieren.
+    Hier können Sie ein Komplettbeispiel der Initialisierung sehen und alle
+    verfügbaren Optionen betrachten, um das Plugin in verschiedenen
+    Konfigurationen zu verwenden.
 -->
 <!--frFR:
     Ici vous pouvez voir toutes les options disponibles pour le plug-in
