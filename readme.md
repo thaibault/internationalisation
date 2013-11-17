@@ -22,7 +22,7 @@ jQuery-lang
 A jQuery plugin to replace alternate version of text for client side
 internationalization.
 <!--deDE:
-    Ein jQuery-Plugin zum Klient seitigem Ersetzten von verschiedenen
+    Ein jQuery-Plugin zum klientseitigem Ersetzten von verschiedenen
     Textversionen.
 -->
 <!--frFR:
@@ -30,8 +30,8 @@ internationalization.
     client l'internationalisation.
 -->
 
-Usage<!--deDE:Verwendung--><!--frFR:Demande-->:
------------------------------------------------
+Usage<!--deDE:Verwendung--><!--frFR:Demande-->
+----------------------------------------------
 
 To add two versions of a text string you can simply add your translation
 directly in markup. See how easy it is:
