@@ -710,6 +710,9 @@ $.Tools.getDomNodeName('&lt;br/&gt;');
 
             @param {String} string The string to format.
 
+            Additional arguments are interpreted as replacements for string
+            formating.
+
             @returns {String} The formatted string.
         ###
         stringFormat: (string) ->
