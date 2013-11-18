@@ -17,7 +17,7 @@ License
 endregion -->
 
 Use case<!--deDE:Einsatz--><!--frFR:Utilisier-->
-================================================
+------------------------------------------------
 
 A jQuery plugin to replace alternate version of text for client side
 internationalization.
@@ -30,8 +30,7 @@ internationalization.
     client l'internationalisation.
 -->
 
-Usage<!--deDE:Verwendung--><!--frFR:Demande-->
-----------------------------------------------
+### Usage<!--deDE:Verwendung--><!--frFR:Demande-->
 
 To add two versions of a text string you can simply add your translation
 directly in markup. See how easy it is:
