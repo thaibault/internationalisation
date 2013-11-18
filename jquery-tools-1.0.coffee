@@ -578,9 +578,8 @@ $.Tools.getDomNodeName('&lt;br/&gt;');
                          a given event method by the options object.
 
             @param {String} eventName An event name.
-            @param {Boolean} callOnlyOptionsMethod Prevents from trying to
-                                                   call an internal event
-                                                   handler.
+            @param {Boolean} callOnlyOptionsMethod Prevents from trying to call
+                                                   an internal event handler.
             @param {Object} scope The scope from where the given event handler
                                   should be called.
 
@@ -607,32 +606,13 @@ $.Tools.getDomNodeName('&lt;br/&gt;');
                 return true
             false
         ###*
-            @description A wrapper method for "$.delegate()".
-                         It sets current plugin name as event scope if no scope
-                         is given. Given arguments are modified and passed
-                         through "$.delegate()".
+            @description A wrapper method for "$.on()". It sets current plugin
+                         name as event scope if no scope is given. Given
+                         arguments are modified and passed through "$.on()".
 
             @returns {$} Returns $'s grabbed dom node.
         ###
-        delegate: -> this._bindHelper arguments, false, 'delegate'
-        ###*
-            @description A wrapper method for "$.undelegate()". It sets current
-                         plugin name as event scope if no scope is given. Given
-                         arguments are modified and passed through
-                         "$.undelegate()".
-
-            @returns {$} Returns $'s grabbed dom node.
-        ###
-        undelegate: -> this._bindHelper arguments, true, 'undelegate'
-        ###*
-            @description A wrapper method for "$.on()".
-                         It sets current plugin name as event scope if no scope
-                         is given. Given arguments are modified and passed
-                         through "$.on()".
-
-            @returns {$} Returns $'s grabbed dom node.
-        ###
-        on: -> this._bindHelper arguments, false, 'on'
+        on: -> this._bindHelper arguments, false,
         ###*
             @description A wrapper method fo "$.off()".
                          It sets current plugin name as event scope if no scope
@@ -642,31 +622,6 @@ $.Tools.getDomNodeName('&lt;br/&gt;');
             @returns {$} Returns $'s grabbed dom node.
         ###
         off: -> this._bindHelper arguments, true, 'off'
-        ###*
-            @description A wrapper method for "$.bind()".
-                         It sets current plugin name as event scope if no scope
-                         is given. Given arguments are modified and passed
-                         through "$.bind()".
-
-            @returns {$} Returns $'s grabbed dom node.
-        ###
-        bind: -> this._bindHelper arguments
-        ###*
-            @description A wrapper method fo "$.unbind()".
-                         It sets current plugin name as event scope if no scope
-                         is given. Given arguments are modified and passed
-                         through "$.unbind()".
-
-            @returns {$} Returns $'s grabbed dom node.
-        ###
-        unbind: -> this._bindHelper arguments, true
-        ###*
-            @description Converts a given argument object to an array.
-
-            @param {Object} argumentsObject The arguments object to convert.
-
-            @returns {Object[]} Returns the given arguments as array.
-        ###
 
         # endregion
 
@@ -715,8 +670,9 @@ $.Tools.getDomNodeName('&lt;br/&gt;');
 
             @returns {String} The formatted string.
         ###
-        stringFormat: (string) ->
-            $.each(arguments, (key, value) ->
+        stringFormat: (string, additionalArguments...) ->
+            additionalArguments.unshift string
+            $.each(additionalArguments, (key, value) ->
                 string = string.replace(
                     new RegExp("\\{#{key}\\}", 'gm'), value))
             string
@@ -793,7 +749,7 @@ $.Tools.getDomNodeName('&lt;br/&gt;');
             @returns {$} Returns $'s wrapped dom node.
         ###
         _bindHelper: (
-            parameter, removeEvent=false, eventFunctionName='bind'
+            parameter, removeEvent=false, eventFunctionName='on'
         ) ->
             $domNode = $ parameter[0]
             if $.type(parameter[1]) is 'object' and not removeEvent
@@ -825,8 +781,9 @@ $.Tools.getDomNodeName('&lt;br/&gt;');
                     ' '
             if (selector.substr(0, domNodeSelectorPrefix.length) isnt
                     domNodeSelectorPrefix)
-                return domNodeSelectors[key] = domNodeSelectorPrefix + selector
-            selector
+                domNodeSelectors[key] = domNodeSelectorPrefix + selector
+                return $.trim domNodeSelectors[key]
+            $.trim selector
 
     # endregion
 
