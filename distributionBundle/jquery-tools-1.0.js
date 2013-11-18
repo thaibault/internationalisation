@@ -723,9 +723,8 @@
                        a given event method by the options object.
       
           @param {String} eventName An event name.
-          @param {Boolean} callOnlyOptionsMethod Prevents from trying to
-                                                 call an internal event
-                                                 handler.
+          @param {Boolean} callOnlyOptionsMethod Prevents from trying to call
+                                                 an internal event handler.
           @param {Object} scope The scope from where the given event handler
                                 should be called.
       
@@ -762,45 +761,16 @@
       };
 
       /**
-          @description A wrapper method for "$.delegate()".
-                       It sets current plugin name as event scope if no scope
-                       is given. Given arguments are modified and passed
-                       through "$.delegate()".
-      
-          @returns {$} Returns $'s grabbed dom node.
-      */
-
-
-      Tools.prototype.delegate = function() {
-        return this._bindHelper(arguments, false, 'delegate');
-      };
-
-      /**
-          @description A wrapper method for "$.undelegate()". It sets current
-                       plugin name as event scope if no scope is given. Given
-                       arguments are modified and passed through
-                       "$.undelegate()".
-      
-          @returns {$} Returns $'s grabbed dom node.
-      */
-
-
-      Tools.prototype.undelegate = function() {
-        return this._bindHelper(arguments, true, 'undelegate');
-      };
-
-      /**
-          @description A wrapper method for "$.on()".
-                       It sets current plugin name as event scope if no scope
-                       is given. Given arguments are modified and passed
-                       through "$.on()".
+          @description A wrapper method for "$.on()". It sets current plugin
+                       name as event scope if no scope is given. Given
+                       arguments are modified and passed through "$.on()".
       
           @returns {$} Returns $'s grabbed dom node.
       */
 
 
       Tools.prototype.on = function() {
-        return this._bindHelper(arguments, false, 'on');
+        return this._bindHelper(arguments, false);
       };
 
       /**
@@ -816,43 +786,6 @@
       Tools.prototype.off = function() {
         return this._bindHelper(arguments, true, 'off');
       };
-
-      /**
-          @description A wrapper method for "$.bind()".
-                       It sets current plugin name as event scope if no scope
-                       is given. Given arguments are modified and passed
-                       through "$.bind()".
-      
-          @returns {$} Returns $'s grabbed dom node.
-      */
-
-
-      Tools.prototype.bind = function() {
-        return this._bindHelper(arguments);
-      };
-
-      /**
-          @description A wrapper method fo "$.unbind()".
-                       It sets current plugin name as event scope if no scope
-                       is given. Given arguments are modified and passed
-                       through "$.unbind()".
-      
-          @returns {$} Returns $'s grabbed dom node.
-      */
-
-
-      Tools.prototype.unbind = function() {
-        return this._bindHelper(arguments, true);
-      };
-
-      /**
-          @description Converts a given argument object to an array.
-      
-          @param {Object} argumentsObject The arguments object to convert.
-      
-          @returns {Object[]} Returns the given arguments as array.
-      */
-
 
       /**
           @description Converts the interpreter given magic arguments
@@ -900,8 +833,11 @@
       */
 
 
-      Tools.prototype.stringFormat = function(string) {
-        $.each(arguments, function(key, value) {
+      Tools.prototype.stringFormat = function() {
+        var additionalArguments, string;
+        string = arguments[0], additionalArguments = 2 <= arguments.length ? __slice.call(arguments, 1) : [];
+        additionalArguments.unshift(string);
+        $.each(additionalArguments, function(key, value) {
           return string = string.replace(new RegExp("\\{" + key + "\\}", 'gm'), value);
         });
         return string;
@@ -1002,7 +938,7 @@
           removeEvent = false;
         }
         if (eventFunctionName == null) {
-          eventFunctionName = 'bind';
+          eventFunctionName = 'on';
         }
         $domNode = $(parameter[0]);
         if ($.type(parameter[1]) === 'object' && !removeEvent) {
@@ -1043,9 +979,10 @@
           domNodeSelectorPrefix = this._options.domNodeSelectorPrefix + ' ';
         }
         if (selector.substr(0, domNodeSelectorPrefix.length) !== domNodeSelectorPrefix) {
-          return domNodeSelectors[key] = domNodeSelectorPrefix + selector;
+          domNodeSelectors[key] = domNodeSelectorPrefix + selector;
+          return $.trim(domNodeSelectors[key]);
         }
-        return selector;
+        return $.trim(selector);
       };
 
       return Tools;
