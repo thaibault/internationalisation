@@ -32,90 +32,6 @@
       }
 
       /**
-          Saves the current active language.
-      
-          @property {String}
-      */
-
-
-      Lang.prototype.currentLanguage = '';
-
-      /**
-          Saves default options for manipulating the Gui's behaviour.
-      
-          @property {Object}
-      */
-
-
-      Lang.prototype._options = {
-        domNodeSelectorPrefix: 'body',
-        "default": 'enUS',
-        domNodeClassPrefix: '',
-        fadeEffect: true,
-        textNodeParent: {
-          fadeIn: {
-            duration: 'normal'
-          },
-          fadeOut: {
-            duration: 'normal'
-          }
-        },
-        replacementLanguagePattern: '^([a-z]{2}[A-Z]{2}):((.|\\s)*)$',
-        currentLanguagePattern: '^[a-z]{2}[A-Z]{2}$',
-        replacementDomNodeName: '#comment',
-        replaceDomNodeName: '#text',
-        toolsLockDescription: '{1}Switch',
-        languageHashPrefix: 'lang-',
-        currentLanguageIndicatorClassName: 'current',
-        cookieDescription: '{1}Last',
-        languageMapping: {
-          deDE: ['de', 'de-de'],
-          enUS: ['en', 'en-us'],
-          enEN: ['en-en'],
-          frFR: ['fr', 'fr-fr']
-        },
-        onSwitched: $.noop()
-      };
-
-      /**
-          During switching language this property holds a collection of
-          dom nodes to fade.
-      
-          @property {$}
-      */
-
-
-      Lang.prototype._$domNodeToFade = null;
-
-      /**
-          Saves the number of iterated dom nodes during language switching.
-      
-          @property {Number}
-      */
-
-
-      Lang.prototype._numberOfFadedDomNodes = 0;
-
-      /**
-          Saves a list of replacement objects. This list is collected during
-          language switching procedure.
-      
-          @property {Object[]}
-      */
-
-
-      Lang.prototype._replacements = [];
-
-      /**
-          Saves the class name for introspection.
-      
-          @property {String}
-      */
-
-
-      Lang.prototype.__name__ = 'Lang';
-
-      /**
           @description Initializes the plugin. Current language is set and
                        later needed dom nodes are grabbed.
       
@@ -125,11 +41,51 @@
       */
 
 
-      Lang.prototype.initialize = function(options) {
+      Lang.prototype.initialize = function(options, currentLanguage, _$domNodeToFade, _numberOfFadedDomNodes, _replacements, __name__) {
         var _this = this;
         if (options == null) {
           options = {};
         }
+        this.currentLanguage = currentLanguage != null ? currentLanguage : '';
+        this._$domNodeToFade = _$domNodeToFade != null ? _$domNodeToFade : null;
+        this._numberOfFadedDomNodes = _numberOfFadedDomNodes != null ? _numberOfFadedDomNodes : 0;
+        this._replacements = _replacements != null ? _replacements : [];
+        this.__name__ = __name__ != null ? __name__ : 'Lang';
+        /**
+            Saves default options for manipulating the Gui's behaviour.
+        
+            @property {Object}
+        */
+
+        this._options = {
+          domNodeSelectorPrefix: 'body',
+          "default": 'enUS',
+          domNodeClassPrefix: '',
+          fadeEffect: true,
+          textNodeParent: {
+            fadeIn: {
+              duration: 'normal'
+            },
+            fadeOut: {
+              duration: 'normal'
+            }
+          },
+          replacementLanguagePattern: '^([a-z]{2}[A-Z]{2}):((.|\\s)*)$',
+          currentLanguagePattern: '^[a-z]{2}[A-Z]{2}$',
+          replacementDomNodeName: '#comment',
+          replaceDomNodeName: '#text',
+          toolsLockDescription: '{1}Switch',
+          languageHashPrefix: 'lang-',
+          currentLanguageIndicatorClassName: 'current',
+          cookieDescription: '{1}Last',
+          languageMapping: {
+            deDE: ['de', 'de-de'],
+            enUS: ['en', 'en-us'],
+            enEN: ['en-en'],
+            frFR: ['fr', 'fr-fr']
+          },
+          onSwitched: $.noop()
+        };
         Lang.__super__.initialize.call(this, options);
         this._options.toolsLockDescription = this.stringFormat(this._options.toolsLockDescription, this.__name__);
         this._options.cookieDescription = this.stringFormat(this._options.cookieDescription, this.__name__);

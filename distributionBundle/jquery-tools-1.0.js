@@ -37,19 +37,10 @@
     var Tools;
     Tools = (function() {
       /**
-          Saves the $ wrapped dom node.
-      
-          @property {Object}
-      */
-
-      Tools.prototype.$domNode = null;
-
-      /**
           Saves a mapping from key codes to their corresponding name.
       
           @property {Object}
       */
-
 
       Tools.prototype.keyCode = {
         BACKSPACE: 8,
@@ -77,46 +68,12 @@
       };
 
       /**
-          Saves default options for manipulating the default behaviour.
-      
-          @property {Object}
-      */
-
-
-      Tools.prototype._options = {
-        logging: false,
-        domNodeSelectorPrefix: 'body',
-        domNode: {}
-      };
-
-      /**
-          Used for internal mutual exclusion in critical areas. To prevent
-          race conditions. Represents a map with critical area description
-          and queues saving all functions waiting for unlocking their
-          mapped critical area.
-      
-          @property {Object}
-      */
-
-
-      Tools.prototype._locks = {};
-
-      /**
           This variable contains a collection of methods usually binded to
           the console object.
       */
 
 
       Tools.prototype._consoleMethods = ['assert', 'clear', 'count', 'debug', 'dir', 'dirxml', 'error', 'exception', 'group', 'groupCollapsed', 'groupEnd', 'info', 'log', 'markTimeline', 'profile', 'profileEnd', 'table', 'time', 'timeEnd', 'timeStamp', 'trace', 'warn'];
-
-      /**
-          Saves the class name for introspection.
-      
-          @property {String}
-      */
-
-
-      Tools.prototype.__name__ = 'Tools';
 
       /**
           Indicates if an instance was derived from this class.
@@ -136,9 +93,15 @@
       */
 
 
-      function Tools($domNode) {
+      function Tools($domNode, _options, _locks, __name__) {
         var method, _i, _len, _ref;
-        this.$domNode = $domNode;
+        this.$domNode = $domNode != null ? $domNode : null;
+        this._options = _options != null ? _options : {
+          logging: false,
+          domNodeSelectorPrefix: 'body'
+        };
+        this._locks = _locks != null ? _locks : {};
+        this.__name__ = __name__ != null ? __name__ : 'Tools';
         _ref = this._consoleMethods;
         for (_i = 0, _len = _ref.length; _i < _len; _i++) {
           method = _ref[_i];
@@ -180,10 +143,7 @@
         if (options == null) {
           options = {};
         }
-        this._locks = {};
-        if (options) {
-          this._options = $.extend(true, {}, this._options, options);
-        }
+        $.extend(true, this._options, options);
         this._options.domNodeSelectorPrefix = this.stringFormat(this._options.domNodeSelectorPrefix, this.camelCaseStringToDelimited(this.__name__));
         return this;
       };
