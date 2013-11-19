@@ -32,6 +32,15 @@
       }
 
       /**
+          Holds the class name to provide inspection features.
+      
+          @property {String}
+      */
+
+
+      Lang.prototype.__name__ = 'Lang';
+
+      /**
           @description Initializes the plugin. Current language is set and
                        later needed dom nodes are grabbed.
       
@@ -41,7 +50,7 @@
       */
 
 
-      Lang.prototype.initialize = function(options, currentLanguage, _$domNodeToFade, _numberOfFadedDomNodes, _replacements, __name__) {
+      Lang.prototype.initialize = function(options, currentLanguage, _$domNodeToFade, _numberOfFadedDomNodes, _replacements) {
         var _this = this;
         if (options == null) {
           options = {};
@@ -50,7 +59,6 @@
         this._$domNodeToFade = _$domNodeToFade != null ? _$domNodeToFade : null;
         this._numberOfFadedDomNodes = _numberOfFadedDomNodes != null ? _numberOfFadedDomNodes : 0;
         this._replacements = _replacements != null ? _replacements : [];
-        this.__name__ = __name__ != null ? __name__ : 'Lang';
         /**
             Saves default options for manipulating the Gui's behaviour.
         

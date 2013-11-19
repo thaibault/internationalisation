@@ -85,6 +85,15 @@
       Tools.prototype.__tools__ = true;
 
       /**
+          Holds the class name to provide inspection features.
+      
+          @property {String}
+      */
+
+
+      Tools.prototype.__name__ = 'Tools';
+
+      /**
           @description This method should be overwritten normally. It is
                        triggered if current object is created via the "new"
                        keyword.
@@ -93,7 +102,7 @@
       */
 
 
-      function Tools($domNode, _options, _locks, __name__) {
+      function Tools($domNode, _options, _locks) {
         var method, _i, _len, _ref;
         this.$domNode = $domNode != null ? $domNode : null;
         this._options = _options != null ? _options : {
@@ -101,7 +110,6 @@
           domNodeSelectorPrefix: 'body'
         };
         this._locks = _locks != null ? _locks : {};
-        this.__name__ = __name__ != null ? __name__ : 'Tools';
         _ref = this._consoleMethods;
         for (_i = 0, _len = _ref.length; _i < _len; _i++) {
           method = _ref[_i];
