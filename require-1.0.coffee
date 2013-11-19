@@ -159,13 +159,13 @@ window.require([['jQuery', 'jquery-3.0.1']], function() {
 });
 ###
 class Require
+
+    # region properties
+
     ###
         These properties could be understand as static (or class instead of
         object) properties.
     ###
-
-    # region public properties
-
     ###
         @ignore
 
@@ -250,10 +250,6 @@ class Require
         @property {Object}
     ###
     this.context
-
-    # endregion
-
-    # region protected properties
 
     ###*
         Saves function calls to require for running them in right order to
@@ -436,8 +432,7 @@ class Require
                     If module is currently not loading put current function
                     call initialize loading needed resource.
                 ###
-                if typeof(module) is 'string'
-                    module = ['', module]
+                module = ['', module] if typeof(module) is 'string'
                 if self.passiv
                     self::_log(
                         "Prevent loading module \"#{module[0]}\" in passiv " +

@@ -46,70 +46,6 @@ this.require([
     ###
     class Lang extends $.Tools.class
 
-    # region properties
-    #
-        ###*
-            Saves the current active language.
-
-            @property {String}
-        ###
-        currentLanguage: ''
-        ###*
-            Saves default options for manipulating the Gui's behaviour.
-
-            @property {Object}
-        ###
-        _options:
-            domNodeSelectorPrefix: 'body'
-            default: 'enUS'
-            domNodeClassPrefix: ''
-            fadeEffect: true
-            textNodeParent:
-                fadeIn: duration: 'normal'
-                fadeOut: duration: 'normal'
-            replacementLanguagePattern: '^([a-z]{2}[A-Z]{2}):((.|\\s)*)$'
-            currentLanguagePattern: '^[a-z]{2}[A-Z]{2}$'
-            replacementDomNodeName: '#comment'
-            replaceDomNodeName: '#text'
-            toolsLockDescription: '{1}Switch'
-            languageHashPrefix: 'lang-'
-            currentLanguageIndicatorClassName: 'current'
-            cookieDescription: '{1}Last'
-            languageMapping:
-                deDE: ['de', 'de-de']
-                enUS: ['en', 'en-us']
-                enEN: ['en-en']
-                frFR: ['fr', 'fr-fr']
-            onSwitched: $.noop()
-        ###*
-            During switching language this property holds a collection of
-            dom nodes to fade.
-
-            @property {$}
-        ###
-        _$domNodeToFade: null
-        ###*
-            Saves the number of iterated dom nodes during language switching.
-
-            @property {Number}
-        ###
-        _numberOfFadedDomNodes: 0
-        ###*
-            Saves a list of replacement objects. This list is collected during
-            language switching procedure.
-
-            @property {Object[]}
-        ###
-        _replacements: []
-        ###*
-            Saves the class name for introspection.
-
-            @property {String}
-        ###
-        __name__: 'Lang'
-
-    # endregion
-
     # region public methods
 
         # region special
@@ -122,7 +58,37 @@ this.require([
 
             @returns {$.Lang} Returns the current instance.
         ###
-        initialize: (options={}) ->
+        initialize: (
+            options={}, @currentLanguage='', @_$domNodeToFade=null,
+            @_numberOfFadedDomNodes=0, @_replacements=[], @__name__='Lang'
+        ) ->
+            ###*
+                Saves default options for manipulating the Gui's behaviour.
+
+                @property {Object}
+            ###
+            this._options =
+                domNodeSelectorPrefix: 'body'
+                default: 'enUS'
+                domNodeClassPrefix: ''
+                fadeEffect: true
+                textNodeParent:
+                    fadeIn: duration: 'normal'
+                    fadeOut: duration: 'normal'
+                replacementLanguagePattern: '^([a-z]{2}[A-Z]{2}):((.|\\s)*)$'
+                currentLanguagePattern: '^[a-z]{2}[A-Z]{2}$'
+                replacementDomNodeName: '#comment'
+                replaceDomNodeName: '#text'
+                toolsLockDescription: '{1}Switch'
+                languageHashPrefix: 'lang-'
+                currentLanguageIndicatorClassName: 'current'
+                cookieDescription: '{1}Last'
+                languageMapping:
+                    deDE: ['de', 'de-de']
+                    enUS: ['en', 'en-us']
+                    enEN: ['en-en']
+                    frFR: ['fr', 'fr-fr']
+                onSwitched: $.noop()
             super options
             this._options.toolsLockDescription = this.stringFormat(
                 this._options.toolsLockDescription, this.__name__)

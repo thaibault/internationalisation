@@ -54,12 +54,6 @@ this.require [['jQuery', 'jquery-2.0.3']], ($) ->
     # region properties
 
         ###*
-            Saves the $ wrapped dom node.
-
-            @property {Object}
-        ###
-        $domNode: null
-        ###*
             Saves a mapping from key codes to their corresponding name.
 
             @property {Object}
@@ -71,21 +65,6 @@ this.require [['jQuery', 'jquery-2.0.3']], ($) ->
             NUMPAD_MULTIPLY: 106, NUMPAD_SUBTRACT: 109, PAGE_DOWN: 34
             PAGE_UP: 33, PERIOD: 190, RIGHT: 39, SPACE: 32, TAB: 9, UP: 38
         ###*
-            Saves default options for manipulating the default behaviour.
-
-            @property {Object}
-        ###
-        _options: logging: false, domNodeSelectorPrefix: 'body', domNode: {}
-        ###*
-            Used for internal mutual exclusion in critical areas. To prevent
-            race conditions. Represents a map with critical area description
-            and queues saving all functions waiting for unlocking their
-            mapped critical area.
-
-            @property {Object}
-        ###
-        _locks: {}
-        ###*
             This variable contains a collection of methods usually binded to
             the console object.
         ###
@@ -94,12 +73,6 @@ this.require [['jQuery', 'jquery-2.0.3']], ($) ->
             'exception', 'group', 'groupCollapsed', 'groupEnd', 'info', 'log',
             'markTimeline', 'profile', 'profileEnd', 'table', 'time',
             'timeEnd', 'timeStamp', 'trace', 'warn']
-        ###*
-            Saves the class name for introspection.
-
-            @property {String}
-        ###
-        __name__: 'Tools'
         ###*
             Indicates if an instance was derived from this class.
 
@@ -120,14 +93,16 @@ this.require [['jQuery', 'jquery-2.0.3']], ($) ->
 
             @returns {$.Tools} Returns the current instance.
         ###
-        constructor: (@$domNode) ->
+        constructor: (
+            @$domNode=null, @_options={
+                logging: false, domNodeSelectorPrefix: 'body'
+            }, @_locks={}, @__name__='Tools'
+        ) ->
             # Avoid errors in browsers that lack a console.
             for method in this._consoleMethods
-                if not window.console?
-                    window.console = {}
+                window.console = {} if not window.console?
                 # Only stub the $ empty method.
-                if not window.console[method]?
-                    console[method] = $.noop()
+                console[method] = $.noop() if not window.console[method]?
             this
         ###*
             @description This method could be overwritten normally. It acts
@@ -148,12 +123,9 @@ this.require [['jQuery', 'jquery-2.0.3']], ($) ->
             @returns {$.Tools} Returns the current instance.
         ###
         initialize: (options={}) ->
-            # TODO initialize instance properties like in python
-            this._locks = {}
-            if options
-                # NOTE: We have to create a new options object instance to
-                # avoid changing a static options object.
-                this._options = $.extend true, {}, this._options, options
+            # NOTE: We have to create a new options object instance to
+            # avoid changing a static options object.
+            $.extend true, this._options, options
             # The selector prefix should be parsed after extending options
             # because the selector would be overwritten otherwise.
             this._options.domNodeSelectorPrefix = this.stringFormat(
