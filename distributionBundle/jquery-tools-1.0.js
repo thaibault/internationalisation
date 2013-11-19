@@ -102,10 +102,11 @@
       */
 
 
-      function Tools($domNode, _options, _locks) {
+      function Tools($domNode, _options, _defaultOptions, _locks) {
         var method, _i, _len, _ref;
         this.$domNode = $domNode != null ? $domNode : null;
-        this._options = _options != null ? _options : {
+        this._options = _options != null ? _options : {};
+        this._defaultOptions = _defaultOptions != null ? _defaultOptions : {
           logging: false,
           domNodeSelectorPrefix: 'body'
         };
@@ -151,7 +152,7 @@
         if (options == null) {
           options = {};
         }
-        $.extend(true, this._options, options);
+        $.extend(true, this._options, this._defaultOptions, options);
         this._options.domNodeSelectorPrefix = this.stringFormat(this._options.domNodeSelectorPrefix, this.camelCaseStringToDelimited(this.__name__));
         return this;
       };
@@ -330,13 +331,17 @@
           @param {Boolean} avoidAnnotation If set to "true" given input
                                            has no module or log level
                                            specific annotations.
+          @param {String} level Description of log messages importance.
+      
+          Additional arguments are used for string formating.
       
           @returns {$.Tools} Returns the current instance.
       */
 
 
-      Tools.prototype.log = function(object, force, avoidAnnotation, level) {
-        var message, _ref;
+      Tools.prototype.log = function() {
+        var additionalArguments, avoidAnnotation, force, level, message, object, _ref;
+        object = arguments[0], force = arguments[1], avoidAnnotation = arguments[2], level = arguments[3], additionalArguments = 5 <= arguments.length ? __slice.call(arguments, 4) : [];
         if (force == null) {
           force = false;
         }
@@ -350,7 +355,8 @@
           if (avoidAnnotation) {
             message = object;
           } else if ($.type(object) === 'string') {
-            message = ("" + this.__name__ + " (" + level + "): ") + this.stringFormat.apply(this, arguments);
+            additionalArguments.unshift(object);
+            message = ("" + this.__name__ + " (" + level + "): ") + this.stringFormat.apply(this, additionalArguments);
           } else if ($.isNumeric(object)) {
             message = "" + this.__name__ + " (" + level + "): " + (object.toString());
           } else if ($.type(object) === 'boolean') {
@@ -375,29 +381,17 @@
                        provided by interpreter.
       
           @param {Mixed} object Any type to show.
-          @param {Boolean} force If set to "true" given input will be shown
-                                 independently from current logging
-                                 configuration or interpreter's console
-                                 implementation.
-          @param {Boolean} avoidAnnotation If set to "true" given input
-                                           has no module or log level
-                                           specific annotations.
+      
+          Additional arguments are used for string formating.
       
           @returns {$.Tools} Returns the current instance.
       */
 
 
-      Tools.prototype.info = function(object, force, avoidAnnotation, level) {
-        if (force == null) {
-          force = false;
-        }
-        if (avoidAnnotation == null) {
-          avoidAnnotation = false;
-        }
-        if (level == null) {
-          level = 'info';
-        }
-        return this.log(object, force, avoidAnnotation, level);
+      Tools.prototype.info = function() {
+        var additionalArguments, object;
+        object = arguments[0], additionalArguments = 2 <= arguments.length ? __slice.call(arguments, 1) : [];
+        return this.log.apply(this, [object, false, false, 'info'].concat(additionalArguments));
       };
 
       /**
@@ -405,29 +399,17 @@
                        provided by interpreter.
       
           @param {Mixed} object Any type to show.
-          @param {Boolean} force If set to "true" given input will be shown
-                                 independently from current logging
-                                 configuration or interpreter's console
-                                 implementation.
-          @param {Boolean} avoidAnnotation If set to "true" given input
-                                           has no module or log level
-                                           specific annotations.
+      
+          Additional arguments are used for string formating.
       
           @returns {$.Tools} Returns the current instance.
       */
 
 
-      Tools.prototype.debug = function(object, force, avoidAnnotation, level) {
-        if (force == null) {
-          force = false;
-        }
-        if (avoidAnnotation == null) {
-          avoidAnnotation = false;
-        }
-        if (level == null) {
-          level = 'debug';
-        }
-        return this.log(object, force, avoidAnnotation, level);
+      Tools.prototype.debug = function() {
+        var additionalArguments, object;
+        object = arguments[0], additionalArguments = 2 <= arguments.length ? __slice.call(arguments, 1) : [];
+        return this.log.apply(this, [object, false, false, 'debug'].concat(additionalArguments));
       };
 
       /**
@@ -435,29 +417,17 @@
                        provided by interpreter.
       
           @param {Mixed} object Any type to show.
-          @param {Boolean} force If set to "true" given input will be shown
-                                 independently from current logging
-                                 configuration or interpreter's console
-                                 implementation.
-          @param {Boolean} avoidAnnotation If set to "true" given input
-                                           has no module or log level
-                                           specific annotations.
+      
+          Additional arguments are used for string formating.
       
           @returns {$.Tools} Returns the current instance.
       */
 
 
-      Tools.prototype.error = function(object, force, avoidAnnotation, level) {
-        if (force == null) {
-          force = false;
-        }
-        if (avoidAnnotation == null) {
-          avoidAnnotation = false;
-        }
-        if (level == null) {
-          level = 'error';
-        }
-        return this.log(object, force, avoidAnnotation, level);
+      Tools.prototype.error = function() {
+        var additionalArguments, object;
+        object = arguments[0], additionalArguments = 2 <= arguments.length ? __slice.call(arguments, 1) : [];
+        return this.log.apply(this, [object, false, false, 'error'].concat(additionalArguments));
       };
 
       /**
@@ -465,29 +435,17 @@
                        provided by interpreter.
       
           @param {Mixed} object Any type to show.
-          @param {Boolean} force If set to "true" given input will be shown
-                                 independently from current logging
-                                 configuration or interpreter's console
-                                 implementation.
-          @param {Boolean} avoidAnnotation If set to "true" given input
-                                           has no module or log level
-                                           specific annotations.
+      
+          Additional arguments are used for string formating.
       
           @returns {$.Tools} Returns the current instance.
       */
 
 
-      Tools.prototype.warn = function(object, force, avoidAnnotation, level) {
-        if (force == null) {
-          force = false;
-        }
-        if (avoidAnnotation == null) {
-          avoidAnnotation = false;
-        }
-        if (level == null) {
-          level = 'warn';
-        }
-        return this.log(object, force, avoidAnnotation, level);
+      Tools.prototype.warn = function() {
+        var additionalArguments, object;
+        object = arguments[0], additionalArguments = 2 <= arguments.length ? __slice.call(arguments, 1) : [];
+        return this.log.apply(this, [object, false, false, 'warn'].concat(additionalArguments));
       };
 
       /**
