@@ -107,11 +107,9 @@ this.require([
                 this._options.cookieDescription, this.__name__)
             this._options.textNodeParent.fadeIn.always = =>
                 this._numberOfFadedDomNodes += 1
-                if(this._numberOfFadedDomNodes is
-                   this._$domNodeToFade.length)
+                if this._numberOfFadedDomNodes is this._$domNodeToFade.length
                     this._numberOfFadedDomNodes = 0
-                    this.releaseLock(
-                        this._options.toolsLockDescription)
+                    this.releaseLock this._options.toolsLockDescription
             this.$domNodes = this.grabDomNode()
             this.$domNodes.switchLanguageButtons = $(
                 "a[href^=\"##{this._options.languageHashPrefix}\"]")

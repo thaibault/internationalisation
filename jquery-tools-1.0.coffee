@@ -100,7 +100,7 @@ this.require [['jQuery', 'jquery-2.0.3']], ($) ->
             @returns {$.Tools} Returns the current instance.
         ###
         constructor: (
-            @$domNode=null, @_options={
+            @$domNode=null, @_options={}, @_defaultOptions={
                 logging: false, domNodeSelectorPrefix: 'body'
             }, @_locks={}
         ) ->
@@ -131,7 +131,7 @@ this.require [['jQuery', 'jquery-2.0.3']], ($) ->
         initialize: (options={}) ->
             # NOTE: We have to create a new options object instance to
             # avoid changing a static options object.
-            $.extend true, this._options, options
+            $.extend true, this._options, this._defaultOptions, options
             # The selector prefix should be parsed after extending options
             # because the selector would be overwritten otherwise.
             this._options.domNodeSelectorPrefix = this.stringFormat(
@@ -290,17 +290,24 @@ this.require [['jQuery', 'jquery-2.0.3']], ($) ->
             @param {Boolean} avoidAnnotation If set to "true" given input
                                              has no module or log level
                                              specific annotations.
+            @param {String} level Description of log messages importance.
+
+            Additional arguments are used for string formating.
 
             @returns {$.Tools} Returns the current instance.
         ###
-        log: (object, force=false, avoidAnnotation=false, level='info') ->
+        log: (
+            object, force=false, avoidAnnotation=false, level='info',
+            additionalArguments...
+        ) ->
             if this._options.logging or force
                 if avoidAnnotation
                     message = object
                 else if $.type(object) is 'string'
+                    additionalArguments.unshift object
                     message = (
                         "#{this.__name__} (#{level}): " +
-                        this.stringFormat.apply(this, arguments))
+                        this.stringFormat.apply this, additionalArguments)
                 else if $.isNumeric object
                     message = (
                         "#{this.__name__} (#{level}): #{object.toString()}")
@@ -321,69 +328,57 @@ this.require [['jQuery', 'jquery-2.0.3']], ($) ->
                          provided by interpreter.
 
             @param {Mixed} object Any type to show.
-            @param {Boolean} force If set to "true" given input will be shown
-                                   independently from current logging
-                                   configuration or interpreter's console
-                                   implementation.
-            @param {Boolean} avoidAnnotation If set to "true" given input
-                                             has no module or log level
-                                             specific annotations.
+
+            Additional arguments are used for string formating.
 
             @returns {$.Tools} Returns the current instance.
         ###
-        info: (object, force=false, avoidAnnotation=false, level='info') ->
-            this.log object, force, avoidAnnotation, level
+        info: (object, additionalArguments...) ->
+            this.log.apply(
+                this, [object, false, false, 'info'].concat(
+                    additionalArguments))
         ###*
             @description Wrapper method for the native console method usually
                          provided by interpreter.
 
             @param {Mixed} object Any type to show.
-            @param {Boolean} force If set to "true" given input will be shown
-                                   independently from current logging
-                                   configuration or interpreter's console
-                                   implementation.
-            @param {Boolean} avoidAnnotation If set to "true" given input
-                                             has no module or log level
-                                             specific annotations.
+
+            Additional arguments are used for string formating.
 
             @returns {$.Tools} Returns the current instance.
         ###
-        debug: (object, force=false, avoidAnnotation=false, level='debug') ->
-            this.log object, force, avoidAnnotation, level
+        debug: (object, additionalArguments...) ->
+            this.log.apply(
+                this, [object, false, false, 'debug'].concat(
+                    additionalArguments))
         ###*
             @description Wrapper method for the native console method usually
                          provided by interpreter.
 
             @param {Mixed} object Any type to show.
-            @param {Boolean} force If set to "true" given input will be shown
-                                   independently from current logging
-                                   configuration or interpreter's console
-                                   implementation.
-            @param {Boolean} avoidAnnotation If set to "true" given input
-                                             has no module or log level
-                                             specific annotations.
+
+            Additional arguments are used for string formating.
 
             @returns {$.Tools} Returns the current instance.
         ###
-        error: (object, force=false, avoidAnnotation=false, level='error') ->
-            this.log object, force, avoidAnnotation, level
+        error: (object, additionalArguments...) ->
+            this.log.apply(
+                this, [object, false, false, 'error'].concat(
+                    additionalArguments))
         ###*
             @description Wrapper method for the native console method usually
                          provided by interpreter.
 
             @param {Mixed} object Any type to show.
-            @param {Boolean} force If set to "true" given input will be shown
-                                   independently from current logging
-                                   configuration or interpreter's console
-                                   implementation.
-            @param {Boolean} avoidAnnotation If set to "true" given input
-                                             has no module or log level
-                                             specific annotations.
+
+            Additional arguments are used for string formating.
 
             @returns {$.Tools} Returns the current instance.
         ###
-        warn: (object, force=false, avoidAnnotation=false, level='warn') ->
-            this.log object, force, avoidAnnotation, level
+        warn: (object, additionalArguments...) ->
+            this.log.apply(
+                this, [object, false, false, 'warn'].concat(
+                    additionalArguments))
         ###*
             @description Dumps a given object in a human readable format.
 
