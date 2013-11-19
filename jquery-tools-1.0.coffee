@@ -79,6 +79,12 @@ this.require [['jQuery', 'jquery-2.0.3']], ($) ->
             @property {Boolean}
         ###
         __tools__: true
+        ###*
+            Holds the class name to provide inspection features.
+
+            @property {String}
+        ###
+        __name__: 'Tools'
 
     # endregion
 
@@ -96,7 +102,7 @@ this.require [['jQuery', 'jquery-2.0.3']], ($) ->
         constructor: (
             @$domNode=null, @_options={
                 logging: false, domNodeSelectorPrefix: 'body'
-            }, @_locks={}, @__name__='Tools'
+            }, @_locks={}
         ) ->
             # Avoid errors in browsers that lack a console.
             for method in this._consoleMethods

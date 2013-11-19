@@ -46,6 +46,17 @@ this.require([
     ###
     class Lang extends $.Tools.class
 
+    # region properties
+
+        ###*
+            Holds the class name to provide inspection features.
+
+            @property {String}
+        ###
+        __name__: 'Lang'
+
+    # endregion
+
     # region public methods
 
         # region special
@@ -60,7 +71,7 @@ this.require([
         ###
         initialize: (
             options={}, @currentLanguage='', @_$domNodeToFade=null,
-            @_numberOfFadedDomNodes=0, @_replacements=[], @__name__='Lang'
+            @_numberOfFadedDomNodes=0, @_replacements=[]
         ) ->
             ###*
                 Saves default options for manipulating the Gui's behaviour.
