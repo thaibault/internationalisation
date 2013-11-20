@@ -633,12 +633,14 @@
         }
         timeoutID = null;
         return function() {
+          var result;
           if (timeoutID != null) {
             window.clearTimeout(timeoutID);
             return timeoutID = setTimeout(eventFunction, thresholdInMilliseconds);
           } else {
-            eventFunction();
-            return timeoutID = setTimeout($.noop(), thresholdInMilliseconds);
+            result = eventFunction();
+            timeoutID = setTimeout($.noop(), thresholdInMilliseconds);
+            return result;
           }
         };
       };
