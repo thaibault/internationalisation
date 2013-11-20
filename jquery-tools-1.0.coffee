@@ -109,7 +109,8 @@ this.require [['jQuery', 'jquery-2.0.3']], ($) ->
                 window.console = {} if not window.console?
                 # Only stub the $ empty method.
                 console[method] = $.noop() if not window.console[method]?
-            this
+            # NOTE: A constructor doesn't return last statement by default.
+            return this
         ###*
             @description This method could be overwritten normally. It acts
                          like a destructor.

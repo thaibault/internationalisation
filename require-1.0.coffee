@@ -229,7 +229,7 @@ class Require
 
         @property {Mixed}
     ###
-    this.referenceSafe
+    this.referenceBackup
     ###*
         Describes all supported scripts with their needed properties to
         load them. A Mapping from file endings to their script node types.
@@ -332,8 +332,8 @@ class Require
         # Set class property default values.
         if not self.context?
             self.context = this
-        if not self.referenceSafe?
-            self.referenceSafe = Require
+        if not self.referenceBackup?
+            self.referenceBackup = Require
         if not self.basePath?
             self.basePath = {}
             for scriptNode in document.getElementsByTagName 'script'
@@ -369,7 +369,8 @@ class Require
                 self.asyncronModulePatternHandling[pattern] = handler
         if not self._callQueue?
             self._callQueue = []
-        self::_load.apply Require, arguments
+        # NOTE: A constructor doesn't return last statement by default.
+        return self::_load.apply Require, arguments
 
         # endregion
 
@@ -456,9 +457,7 @@ class Require
                 self._callQueue[self._callQueue.length - 1])
             )
                 self::_load.apply Require, self._callQueue.pop()[1]
-        if Require and self._handleNoConflict
-            return self::_handleNoConflict()
-        self
+        self::_handleNoConflict()
     ###*
         @description Initialize loading of needed resources.
 
@@ -631,16 +630,17 @@ class Require
         self
     ###*
         @description If "noConflict" property is set it will be handled
-                     by this method. It clear the called scope from the
+                     by this method. It clears the called scope from the
                      "Require" name and optionally runs a callback
                      function given by the "noConflict" property after all
-                     dependencies are solved.
+                     dependencies are resolved.
 
         @returns {Require} Returns the current function (class).
     ###
     _handleNoConflict: ->
         if self._callQueue.length is 0 and self.initializedLoadings.length is 0
             self::_log 'All resources are loaded so far.'
+            # TODO
             if Require and self.noConflict
                 if self.noConflict is true
                     ###
@@ -649,10 +649,9 @@ class Require
                     ###
                     Require = self.referenceSafe
                 else
-                    # Workaround to copy not only the reference.
-                    callback = self.noConflict.slice()
-                    Require = undefined
-                    callback[0].apply self.context, callback.slice 1
+                    callback = self.noConflict
+                    Require = require = window.require = undefined
+                    callback[0].apply self.context, callback
         self
     ###*
         @description Determines if the given "moduleObject" is currently
