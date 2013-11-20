@@ -121,7 +121,7 @@
             console[method] = $.noop();
           }
         }
-        this;
+        return this;
       }
 
       /**
