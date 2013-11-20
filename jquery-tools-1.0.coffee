@@ -544,8 +544,9 @@ $.Tools.getDomNodeName('&lt;br/&gt;');
                     timeoutID = setTimeout(
                         eventFunction, thresholdInMilliseconds)
                 else
-                    eventFunction()
+                    result = eventFunction()
                     timeoutID = setTimeout $.noop(), thresholdInMilliseconds
+                    result
         ###*
             @description Searches for internal event handler methods and runs
                          them by default. In addition this method searches for
