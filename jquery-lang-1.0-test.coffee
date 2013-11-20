@@ -14,63 +14,67 @@
 #    naming 3.0 unported license.
 #    see http://creativecommons.org/licenses/by/3.0/deed.de
 
-module 'Lang'
+module 'lang'
 
 # endregion
 
 # region tests
 
+    # region mock-up
+
+lang = $.Lang()
+
+    # endregion
+
     # region public methods
 
         # region special
 
-test 'initialize', -> ok $.Lang()
+test 'initialize', -> ok lang
 
         # endregion
 
-test 'switch', -> ok $.Lang().switch 'en'
+test 'switch', -> strictEqual lang.switch('en'), lang
 
     # endregion
 
     # region protected methods
 
 test '_normalizeLanguage', ->
-    strictEqual $.Lang()._normalizeLanguage('de'), 'deDE'
-    strictEqual $.Lang()._normalizeLanguage('de-de'), 'deDE'
-    strictEqual $.Lang()._normalizeLanguage('en-us'), 'enUS'
-    strictEqual $.Lang()._normalizeLanguage('fr'), 'frFR'
-    strictEqual $.Lang()._normalizeLanguage(''), 'enUS'
+    strictEqual lang._normalizeLanguage('de'), 'deDE'
+    strictEqual lang._normalizeLanguage('de-de'), 'deDE'
+    strictEqual lang._normalizeLanguage('en-us'), 'enUS'
+    strictEqual lang._normalizeLanguage('fr'), 'frFR'
+    strictEqual lang._normalizeLanguage(''), 'enUS'
 test '_determineUsefulLanguage', ->
-    $.cookie $.Lang()._options.cookieDescription, 'enUS'
+    $.cookie lang._options.cookieDescription, 'enUS'
 
-    strictEqual $.Lang()._determineUsefulLanguage(), 'enUS'
+    strictEqual lang._determineUsefulLanguage(), 'enUS'
 
-    $.removeCookie $.Lang()._options.cookieDescription
+    $.removeCookie lang._options.cookieDescription
 
-    if navigator.language?
-        strictEqual(
-            $.Lang()._determineUsefulLanguage(),
-            $.Lang()._normalizeLanguage navigator.language)
-    else
-        strictEqual(
-            $.Lang()._determineUsefulLanguage(),
-            $.Lang()._options.default)
-test '_handleSwitchEffect', -> ok $.Lang()._handleSwitchEffect 'deDE'
+    referenceLanguage = lang._options.default
+    referenceLanguage = navigator.language if navigator.language?
+    strictEqual(
+        lang._normalizeLanguage(lang._determineUsefulLanguage()),
+        lang._normalizeLanguage referenceLanguage)
+test '_handleSwitchEffect', ->
+    strictEqual lang._handleSwitchEffect('deDE'), lang
 test '_registerTextNodeToChange', ->
-    lang = $.Lang()
     lang._registerTextNodeToChange $('body'), 1, [1, 2, 3], 1
 
     strictEqual lang._replacements.length, 1
 test '_checkLastTextNodeHavingLanguageIndicator', ->
-    strictEqual $.Lang()._checkLastTextNodeHavingLanguageIndicator(null, 1), 1
-test '_handleLanguageSwitching', -> ok $.Lang()._handleLanguageSwitching()
+    strictEqual lang._checkLastTextNodeHavingLanguageIndicator(null, 1), 1
+test '_handleLanguageSwitching', ->
+    lang = $.Lang()
+    strictEqual lang._handleLanguageSwitching(), lang
 test '_switchLanguage', ->
     lang = $.Lang()
-    lang._switchLanguage 'deDE'
-
+    strictEqual lang._switchLanguage('deDE'), lang
     strictEqual lang.currentLanguage, 'deDE'
 test '_switchCurrentLanguageIndicator', ->
-    ok $.Lang()._switchCurrentLanguageIndicator 'deDE'
+    strictEqual lang._switchCurrentLanguageIndicator('deDE'), lang
 
     # endregion
 

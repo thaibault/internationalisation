@@ -224,13 +224,6 @@ class Require
     ###
     this.passiv
     ###*
-        Saves the initially pointed target of global variable
-        "window.require" to reset that reference in "noConflict" mode.
-
-        @property {Mixed}
-    ###
-    this.referenceBackup
-    ###*
         Describes all supported scripts with their needed properties to
         load them. A Mapping from file endings to their script node types.
 
@@ -250,7 +243,13 @@ class Require
         @property {Object}
     ###
     this.context
+    ###*
+        Saves a callback function triggered if all scripts where loaded
+        completely.
 
+        @property {Function}
+    ###
+    this.onEverythingIsLoaded
     ###*
         Saves function calls to require for running them in right order to
         guarantee dependencies. It consist of a list of tuples storing
@@ -260,6 +259,13 @@ class Require
         @property {Object[]}
     ###
     this._callQueue
+    ###*
+        Saves the initially pointed target of global variable
+        "window.require" to reset that reference in "noConflict" mode.
+
+        @property {Mixed}
+    ###
+    this._referenceBackup = window.require
     ###*
         Handles all default asynchron module pattern handler.
 
@@ -332,8 +338,6 @@ class Require
         # Set class property default values.
         if not self.context?
             self.context = this
-        if not self.referenceBackup?
-            self.referenceBackup = Require
         if not self.basePath?
             self.basePath = {}
             for scriptNode in document.getElementsByTagName 'script'
@@ -364,6 +368,8 @@ class Require
             self.scriptTypes = '.js': 'text/javascript'
         if not self.asyncronModulePatternHandling?
             self.asyncronModulePatternHandling = {}
+        if not self.onEverythingIsLoaded?
+            self.onEverythingIsLoaded = ->
         for pattern, handler of self._defaultAsynchronModulePatternHandler
             if not self.asyncronModulePatternHandling[pattern]?
                 self.asyncronModulePatternHandling[pattern] = handler
@@ -619,7 +625,7 @@ class Require
         @returns {Require} Returns the current function (class).
     ###
     _scriptLoaded: (module, parameters) ->
-        for key, value in self.initializedLoadings
+        for value, key in self.initializedLoadings
             if module[0] is value
                 self.initializedLoadings.splice key, 1
                 break
@@ -640,18 +646,11 @@ class Require
     _handleNoConflict: ->
         if self._callQueue.length is 0 and self.initializedLoadings.length is 0
             self::_log 'All resources are loaded so far.'
-            # TODO
-            if Require and self.noConflict
-                if self.noConflict is true
-                    ###
-                        Restore previous setted value to the "Require"
-                        reference.
-                    ###
-                    Require = self.referenceSafe
-                else
-                    callback = self.noConflict
-                    Require = require = window.require = undefined
-                    callback[0].apply self.context, callback
+            if self.noConflict
+                # Restore previous setted value to the "Require" reference.
+                window.require = self._referenceBackup
+            self.onEverythingIsLoaded()
+            self.onEverythingIsLoaded = ->
         self
     ###*
         @description Determines if the given "moduleObject" is currently
