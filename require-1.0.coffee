@@ -276,7 +276,15 @@ class Require
 
         @property {Object}
     ###
-      if self.basePath.coffee
+    this._defaultAsynchronModulePatternHandler =
+        '^.+\.css$': (cssContent) ->
+            styleNode = document.createElement 'style'
+            styleNode.type = 'text/css'
+            styleNode.appendChild document.createTextNode cssContent
+            self.injectingNode.appendChild styleNode
+        '^.+\.coffee$': (coffeeScriptCode, module) ->
+            sourceRootPath = self.basePath.default
+            if self.basePath.coffee
                 sourceRootPath = self.basePath.coffee
             coffeeScriptCompilerOptions =
                 header: false
