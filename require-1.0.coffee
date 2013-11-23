@@ -195,30 +195,32 @@ class Require
     ###
     this.basePath
     ###*
-        If the require scope should be deleted after serving all
-        dependencies this property should be an array with a callback
-        function and its arguments following. The function will be called
-        after last dependency was solved. Simply define true is also
-        valid.
+        If the require scope should be deleted after serving all dependencies are
+        loaded this property should be set to "true".
 
         @property {Boolean}
     ###
     this.noConflict
     ###*
-        Caches a reference to the head for injecting needed script tags.
+        Caches a reference to the dom node for injecting needed script tags.
+        You can alter this property to specify where to inject required
+        scripts. Default is the head node.
 
         @property {DomNode}
     ###
-    this.headNode
+    this.injectingNode
     ###*
         Saves all loaded script resources to prevent double script
-        loading.
+        loading. You can alter this property to specify where to inject
+        required scripts.
+        You can add scripts you have loaded via other mechanisms.
 
         @property {String[]}
     ###
     this.initializedLoadings
     ###*
-        Indicates if require should load resource on its own.
+        Indicates if require should load resource on its own. If set to false
+        require doesn't load any scripts.
 
         @property {Boolean}
     ###
@@ -231,21 +233,24 @@ class Require
     ###
     this.scriptTypes
     ###*
-        Describes a mapping from regular expression pattern which detects all
-        modules to load via ajax to their corresponding handler functions.
+        Defines a mapping from regular expression pattern which detects all
+        modules to load via ajax to their corresponding handler functions. A
+        css, JavaScript and CoffeeScript loader is included by default.
 
         @property {Object}
     ###
     this.asyncronModulePatternHandling
     ###*
-        Defines in which scope the required dependencies have to be present.
+        Defines scope where the required dependencies have to be present. In
+        other words "require.context" will reference "this" in given callback
+        functions.
 
         @property {Object}
     ###
     this.context
     ###*
         Saves a callback function triggered if all scripts where loaded
-        completely.
+        completely. The defined value references to "this".
 
         @property {Function}
     ###
@@ -271,15 +276,7 @@ class Require
 
         @property {Object}
     ###
-    this._defaultAsynchronModulePatternHandler =
-        '^.+\.css$': (cssContent) ->
-            styleNode = document.createElement 'style'
-            styleNode.type = 'text/css'
-            styleNode.appendChild document.createTextNode cssContent
-            self.headNode.appendChild styleNode
-        '^.+\.coffee$': (coffeeScriptCode, module) ->
-            sourceRootPath = self.basePath.default
-            if self.basePath.coffee
+      if self.basePath.coffee
                 sourceRootPath = self.basePath.coffee
             coffeeScriptCompilerOptions =
                 header: false
@@ -362,8 +359,8 @@ class Require
             self.noConflict = false
         if not self.initializedLoadings?
             self.initializedLoadings = []
-        if not self.headNode?
-            self.headNode = document.getElementsByTagName('head')[0]
+        if not self.injectingNode?
+            self.injectingNode = document.getElementsByTagName('head')[0]
         if not self.scriptTypes?
             self.scriptTypes = '.js': 'text/javascript'
         if not self.asyncronModulePatternHandling?
@@ -421,6 +418,7 @@ class Require
             parameter.push parameter[0].slice 0
             # Mark array as initialized.
             parameter.push Require
+        parameter[0] = [parameter[0]] if typeof parameter[0] is 'string'
         if parameter[0].length
             # Grab first needed dependency from given queue.
             module = parameter[0].shift()
@@ -570,7 +568,7 @@ class Require
                 self::_scriptLoaded module, parameters
                 # Delete event after passing it once.
                 scriptNode.onload = null
-        self.headNode.appendChild scriptNode
+        self.injectingNode.appendChild scriptNode
         self
     ###*
         @description Creates a new script loading tag.
