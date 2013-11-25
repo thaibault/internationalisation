@@ -183,6 +183,12 @@ class Require
     ###
     this.appendTimeStamp
     ###*
+        Current scope indicator set by module.
+
+        @property {String}
+    ###
+    this.scopeIndicator = ''
+    ###*
         Indicates if debugging is active.
 
         @property {Boolean}
@@ -195,8 +201,8 @@ class Require
     ###
     this.basePath
     ###*
-        If the require scope should be deleted after serving all dependencies are
-        loaded this property should be set to "true".
+        If the require scope should be deleted after serving all dependencies
+        are loaded this property should be set to "true".
 
         @property {Boolean}
     ###
@@ -617,20 +623,29 @@ class Require
         scriptNode
     ###*
         @description If script was loaded it will be deleted from the
-                     "initializedLoading" array. If all dependencies for
-                     this module are available the sequence could continue
-                     otherwise the current sequence status
-                     (the parameter array) will be saved in a queue for
-                     continue later.
+                     "initializedLoading" array. If all dependencies for this
+                     module are available the sequence could continue otherwise
+                     the current sequence status (the parameter array) will be
+                     saved in a queue for continue later.
 
-        @param {String[]} module A tuple of module name to indicate if a
-                          module is presence and its file path resource.
+        @param {String[]} module A tuple of module name to indicate if a module
+                          is presence and its file path resource.
         @param {Object[]} parameters Saves arguments indented to be given
                                      to the on load function.
 
         @returns {Require} Returns the current function (class).
     ###
     _scriptLoaded: (module, parameters) ->
+        hasScopeIndicator = module[0] isnt ''
+        if self.scopeIndicator and not module[0]
+            module[0] = self.scopeIndicator
+        self.scopeIndicator = ''
+        if typeof parameters[2] is 'string'
+            parameters[2] = [parameters[2]]
+        for value, key in parameters[2]
+            if(not hasScopeIndicator and typeof value is 'string' and
+               module[1] is value)
+                parameters[2][key] = module
         for value, key in self.initializedLoadings
             if module[0] is value
                 self.initializedLoadings.splice key, 1
@@ -641,11 +656,10 @@ class Require
             self._callQueue.push [module[0], parameters]
         self
     ###*
-        @description If "noConflict" property is set it will be handled
-                     by this method. It clears the called scope from the
-                     "Require" name and optionally runs a callback
-                     function given by the "noConflict" property after all
-                     dependencies are resolved.
+        @description If "noConflict" property is set it will be handled by this
+                     method. It clears the called scope from the "Require" name
+                     and optionally runs a callback function given by the
+                     "noConflict" property after all dependencies are resolved.
 
         @returns {Require} Returns the current function (class).
     ###

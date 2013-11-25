@@ -64,6 +64,7 @@ test '_registerTextNodeToChange', ->
     lang._registerTextNodeToChange $('body'), 1, [1, 2, 3], 1
 
     strictEqual lang._replacements.length, 1
+    lang._replacements.pop()
 test '_checkLastTextNodeHavingLanguageIndicator', ->
     strictEqual lang._checkLastTextNodeHavingLanguageIndicator(null, 1), 1
 test '_handleLanguageSwitching', ->

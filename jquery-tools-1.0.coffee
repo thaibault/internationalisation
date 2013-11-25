@@ -32,8 +32,11 @@
     @name $
     @see www.jquery.com
 ###
-## standalone do ($=this.jQuery) ->
+## standalone
+## do ($=this.jQuery) ->
+this.require.scopeIndicator = 'jQuery.Tools'
 this.require [['jQuery', 'jquery-2.0.3']], ($) ->
+##
 
 # endregion
 
