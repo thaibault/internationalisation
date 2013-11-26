@@ -59,6 +59,33 @@ directly in markup. See how easy it is:
         -->
     </p>
 
+Sometime you need to explicit mark a text node as text to replace with next
+translation node. In this case you can simple wrap a self defined dom node.
+<!--deDE:
+    Manchmal muss man Textknoten explizit als übersetzbar markieren, da sie
+    beispielsweise selbst aus mehr als nur einem Knoten bestehen. In solchen
+    Fällen kann einfach ein selbst definierter DOM-Knoten ummantelt werden.
+-->
+<!--frFR:
+    Parfois, vous devez sélectionner explicitement les nœuds de texte comme
+    traduisible, car ils Ainsi, même consister en plus d'un noeud. dans ce Cas
+    peuvent être facilement enveloppé d'un noeud DOM auto-défini.
+-->
+
+<!--showExample-->
+
+    #!HTML
+
+    <langreplace>
+        Your englisch version with <strong>dom nodes</strong> inside.
+    </langreplace>
+    <!--deDE:
+        Ihre deutsche Variante mit eingebetteten <strong>dom Knoten</strong>.
+    -->
+    <!--frFR:
+        Votre version englisch <strong>dom nodes</strong> à l'intérieur.
+    -->
+
 With the below initialisation you can simple add this links everywhere in your
 page to switch language. On click you will switch the current language
 interactively. Try it by yourself:
