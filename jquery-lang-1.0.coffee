@@ -89,7 +89,7 @@ this.require([
                 replacementLanguagePattern: '^([a-z]{2}[A-Z]{2}):((.|\\s)*)$'
                 currentLanguagePattern: '^[a-z]{2}[A-Z]{2}$'
                 replacementDomNodeName: '#comment'
-                replaceDomNodeName: '#text'
+                replaceDomNodeNames: ['#text', 'langreplace']
                 toolsLockDescription: '{1}Switch'
                 languageHashPrefix: 'lang-'
                 currentLanguageIndicatorClassName: 'current'
@@ -143,13 +143,19 @@ this.require([
                 $lastLanguageDomNode = null
                 self = this
                 this.$domNodes.parent.find(':not(iframe)').contents().each ->
-                    if this.nodeName is self._options.replaceDomNodeName
-                        # NOTE: We skip empty text nodes.
-                        if $.trim $(this).text()
+                    if $.inArray(
+                        this.nodeName.toLowerCase(),
+                        self._options.replaceDomNodeNames
+                    ) isnt -1
+                        $this = $ this
+                        # NOTE: We skip empty and nested text nodes
+                        if $.trim($this.text()) and $this.parents(
+                            self._options.replaceDomNodeNames.join()
+                        ).length is 0
                             $lastLanguageDomNode = \
                             self._checkLastTextNodeHavingLanguageIndicator(
                                 $lastTextNodeToTranslate, $lastLanguageDomNode)
-                            $currentTextNodeToTranslate = $ this
+                            $currentTextNodeToTranslate = $this
                     else
                         $currentDomNode = $ this
                         if $currentTextNodeToTranslate?
@@ -295,8 +301,8 @@ this.require([
             $lastTextNodeToTranslate, $lastLanguageDomNode
         ) ->
             if $lastTextNodeToTranslate? and not $lastLanguageDomNode?
-                # Last text node doesn't have a current
-                # language indicating dom node.
+                # Last text node doesn't have a current language indicating
+                # dom node.
                 $lastLanguageDomNode = $ "<!--#{this.currentLanguage}-->"
                 $lastTextNodeToTranslate.after $lastLanguageDomNode
             $lastLanguageDomNode
@@ -346,13 +352,21 @@ this.require([
                             currentDomNodeFound = true
                         true
                     )
+                currentText = replacement.$textNodeToTranslate.html()
+                if replacement.$textNodeToTranslate[0].nodeName is '#text'
+                    currentText =
+                        replacement.$textNodeToTranslate[0].textContent
                 replacement.$textNodeToTranslate.after($(
                     "<!--" +
                     "#{replacement.$currentLanguageDomNode[0].textContent}:" +
-                    "#{replacement.$textNodeToTranslate[0].textContent}-->"
+                    "#{currentText}-->"
                 )).after($("<!--#{language}-->"))
-                replacement.$textNodeToTranslate[0].textContent = \
-                    "#{replacement.textToReplace}"
+                if replacement.$textNodeToTranslate[0].nodeName is '#text'
+                    replacement.$textNodeToTranslate[0].textContent =
+                        replacement.textToReplace
+                else
+                    replacement.$textNodeToTranslate.html(
+                        replacement.textToReplace)
                 replacement.$currentLanguageDomNode.remove()
                 replacement.$commentNodeToReplace.remove()
             this._switchCurrentLanguageIndicator language
