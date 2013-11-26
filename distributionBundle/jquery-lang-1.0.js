@@ -81,7 +81,7 @@
           replacementLanguagePattern: '^([a-z]{2}[A-Z]{2}):((.|\\s)*)$',
           currentLanguagePattern: '^[a-z]{2}[A-Z]{2}$',
           replacementDomNodeName: '#comment',
-          replaceDomNodeName: '#text',
+          replaceDomNodeNames: ['#text', 'langreplace'],
           toolsLockDescription: '{1}Switch',
           languageHashPrefix: 'lang-',
           currentLanguageIndicatorClassName: 'current',
@@ -139,11 +139,12 @@
           $lastLanguageDomNode = null;
           self = _this;
           _this.$domNodes.parent.find(':not(iframe)').contents().each(function() {
-            var $currentDomNode, match;
-            if (this.nodeName === self._options.replaceDomNodeName) {
-              if ($.trim($(this).text())) {
+            var $currentDomNode, $this, match;
+            if ($.inArray(this.nodeName.toLowerCase(), self._options.replaceDomNodeNames) !== -1) {
+              $this = $(this);
+              if ($.trim($this.text()) && $this.parents(self._options.replaceDomNodeNames.join()).length === 0) {
                 $lastLanguageDomNode = self._checkLastTextNodeHavingLanguageIndicator($lastTextNodeToTranslate, $lastLanguageDomNode);
-                $currentTextNodeToTranslate = $(this);
+                $currentTextNodeToTranslate = $this;
               }
             } else {
               $currentDomNode = $(this);
@@ -343,7 +344,7 @@
 
 
       Lang.prototype._switchLanguage = function(language) {
-        var currentDomNodeFound, replacement, _i, _len, _ref1;
+        var currentDomNodeFound, currentText, replacement, _i, _len, _ref1;
         _ref1 = this._replacements;
         for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
           replacement = _ref1[_i];
@@ -360,8 +361,16 @@
               return true;
             });
           }
-          replacement.$textNodeToTranslate.after($("<!--" + ("" + replacement.$currentLanguageDomNode[0].textContent + ":") + ("" + replacement.$textNodeToTranslate[0].textContent + "-->"))).after($("<!--" + language + "-->"));
-          replacement.$textNodeToTranslate[0].textContent = "" + replacement.textToReplace;
+          currentText = replacement.$textNodeToTranslate.html();
+          if (replacement.$textNodeToTranslate[0].nodeName === '#text') {
+            currentText = replacement.$textNodeToTranslate[0].textContent;
+          }
+          replacement.$textNodeToTranslate.after($("<!--" + ("" + replacement.$currentLanguageDomNode[0].textContent + ":") + ("" + currentText + "-->"))).after($("<!--" + language + "-->"));
+          if (replacement.$textNodeToTranslate[0].nodeName === '#text') {
+            replacement.$textNodeToTranslate[0].textContent = replacement.textToReplace;
+          } else {
+            replacement.$textNodeToTranslate.html(replacement.textToReplace);
+          }
           replacement.$currentLanguageDomNode.remove();
           replacement.$commentNodeToReplace.remove();
         }
