@@ -141,7 +141,7 @@ to initialize the plugin with different configuration.
                 replacementLanguagePattern: '^([a-z]{2}[A-Z]{2}):((.|\\s)*)$',
                 currentLanguagePattern: '^[a-z]{2}[A-Z]{2}$',
                 replacementDomNodeName: '#comment',
-                replaceDomNodeName: '#text',
+                replaceDomNodeName: {'#text', 'langreplace'],
                 toolsLockDescription: '{1}Switch',
                 languageHashPrefix: 'lang-',
                 currentLanguageIndicatorClassName: 'current',
