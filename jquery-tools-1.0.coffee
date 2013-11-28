@@ -601,7 +601,7 @@ this.require [['jQuery', 'jquery-2.0.3']], ($) ->
 
                 **returns {$}** - Returns $'s grabbed dom node.
             ###
-             this._bindHelper arguments, false,
+            this._bindHelper arguments, false,
         off: ->
             ###
                 A wrapper method fo "$.off()". It sets current plugin name as event
