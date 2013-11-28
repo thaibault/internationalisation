@@ -324,6 +324,7 @@ class Require
                                             and the module name (basename of
                                             script file with or without file
                                             extension).
+
             **onLoaded {Function}**       - A callback function to load after
                                             all dependences are available.
 
@@ -469,6 +470,7 @@ class Require
             **module {String[]}**    - A tuple (consisting of module indicator
                                        and module file path) which should be
                                        loaded.
+
             **parameter {Object[]}** - Saves arguments indented to be given to
                                        the on load function.
 
@@ -542,9 +544,11 @@ class Require
 
             **scriptNode {DomNode}**  - Dom node where to append script loading
                                         node.
+
             **module {String[]}**     - A tuple (consisting of module indicator
                                         and module file path) which should be
                                         loaded.
+
             **parameters {Object[]}** - Saves arguments indented to be given to
                                         the on load function.
 
@@ -616,6 +620,7 @@ class Require
             **module {String[]}**     - A tuple of module name to indicate if a
                                         module is presence and its file path
                                         resource.
+
             **parameters {Object[]}** - Saves arguments indented to be given
                                         to the on load function.
 
@@ -665,6 +670,7 @@ class Require
 
             **moduleName {String}**   - A module object to indicate if a module
                                         is presence.
+
             **parameters {Object[]}** - The current status of solving the
                                         initially described arguments.
 
