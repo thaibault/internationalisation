@@ -266,11 +266,14 @@ Version
         
             **$currentTextNodeToTranslate {$}**  - Text node with content
                                                    to translate.
+        
             **$currentDomNode {$}**              - A comment node with
                                                    replacement content.
+        
             **match {String[]}**                 - A matching array of
                                                    replacement's text
                                                    content.
+        
             **$currentLanguageDomNode {$|null}** - A potential given text
                                                    node indicating the
                                                    language of given text
@@ -304,6 +307,7 @@ Version
         
             **$lastTextNodeToTranslate {$|null}** - Last text to node to
                                                     check.
+        
             **$lastLanguageDomNode {$|null}**     - A potential given
                                                     language indication
                                                     commend node.
@@ -327,7 +331,9 @@ Version
             specified.
         
             **thisFunction {Function}** - The function itself.
+        
             **self {$.Lang}**           - The current instance.
+        
             **language {String}**       - The new language to switch to.
         
             **returns {$.Lang}**        - Returns the current instance.

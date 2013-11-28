@@ -170,6 +170,7 @@ Version
             **object {Object|String}** - The object or class to control. If
                                          "object" is a class an instance
                                          will be generated.
+        
             **parameter {Arguments}**  - The initially given arguments
                                          object.
         
@@ -218,6 +219,7 @@ Version
         
             **description {String}**        - A short string describing the
                                               critical areas properties.
+        
             **callbackFunction {Function}** - A procedure which should only
                                               be executed if the
                                               interpreter isn't in the
@@ -225,6 +227,7 @@ Version
                                               description string will be
                                               given to the callback
                                               function.
+        
             **autoRelease {Boolean}**       - Release the lock after
                                               execution of given callback.
         
@@ -336,14 +339,17 @@ Version
             fallback.
         
             **object {Mixed}**            - Any object to print.
+        
             **force {Boolean}**           - If set to "true" given input
                                             will be shown independently
                                             from current logging
                                             configuration or interpreter's
                                             console implementation.
+        
             **avoidAnnotation {Boolean}** - If set to "true" given input
                                             has no module or log level
                                             specific annotations.
+        
             **level {String}**            - Description of log messages
                                             importance.
         
@@ -572,6 +578,7 @@ Version
         
             **method {String|Function|Object}** - A method name of given
                                                   scope.
+        
             **scope {Object|String}**           - A given scope.
         
             **returns {Mixed}**                 - Returns the given methods
@@ -652,9 +659,11 @@ Version
             method by the options object.
         
             **eventName {String}                - An event name.
+        
             **callOnlyOptionsMethod {Boolean}** - Prevents from trying to
                                                   call an internal event
                                                   handler.
+        
             **scope {Object}**                  - The scope from where the
                                                   given event handler
                                                   should be called.
@@ -684,9 +693,9 @@ Version
 
       Tools.prototype.on = function() {
         /*
-            A wrapper method for "$.on()". It sets current plugin name as event
-            scope if no scope is given. Given arguments are modified and passed
-            through "$.on()".
+            A wrapper method for "$.on()". It sets current plugin name as
+            event scope if no scope is given. Given arguments are modified
+            and passed through "$.on()".
         
             **returns {$}** - Returns $'s grabbed dom node.
         */
@@ -696,9 +705,9 @@ Version
 
       Tools.prototype.off = function() {
         /*
-            A wrapper method fo "$.off()". It sets current plugin name as event
-            scope if no scope is given. Given arguments are modified and passed
-            through "$.off()".
+            A wrapper method fo "$.off()". It sets current plugin name as
+            event scope if no scope is given. Given arguments are modified
+            and passed through "$.off()".
         
             **returns {$}** - Returns $'s grabbed dom node.
         */
@@ -729,6 +738,7 @@ Version
             Rounds a given number accurate to given number of digits.
         
             **number {Float}**   - The number to round.
+        
             **digits {Integer}** - The number of digits after comma.
         
             **returns {Float}**  - Returns the rounded number.
@@ -768,6 +778,7 @@ Version
             between each camel case separation.
         
             **string {String}**    - The string to format.
+        
             **delimiter {String}** - The string tu put between each camel
                                      case separation.
         
@@ -788,6 +799,7 @@ Version
             yet.
         
             **path {String}**          - The path for appending a selector.
+        
             **pathSeparator {String}** - The selector for appending to
                                          path.
         
@@ -847,8 +859,10 @@ Version
             **parameter** {Object}**       - Arguments object given to
                                              methods like "bind()" or
                                              "unbind()".
+        
             **removeEvent {Boolean}**      - Indicates if "unbind()" or
                                              "bind()" was given.
+        
             **eventFunctionName {String}** - Name of function to wrap.
         
             **returns {$}**                - Returns $'s wrapped dom node.
@@ -881,7 +895,9 @@ Version
             **key {Integer}**             - Current element in options
                                             array to
                                             grab.
+        
             **selector {String}**         - A dom node selector.
+        
             **domNodeSelectors {Object}** - An object with dom node
                                             selectors.
         
