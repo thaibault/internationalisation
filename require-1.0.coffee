@@ -9,30 +9,24 @@
 
 # region header
 
-# Copyright Torben Sickert 16.12.2012
+###
+    This native javaScript module provides a full featured import mechanism
+    like python, php, c++ etc..
 
-# License
-#    This library written by Torben Sickert stand under a creative commons
-#    naming 3.0 unported license.
-#    see http://creativecommons.org/licenses/by/3.0/deed.de
-
-###!
     Copyright
+    ---------
 
     Torben Sickert 16.12.2012
 
     License
+    -------
 
-    require von Torben Sickert steht unter einer Creative Commons
-    Namensnennung 3.0 Unported Lizenz.
-
+    This library written by Torben Sickert stand under a creative commons
+    naming 3.0 unported license.
     see http://creativecommons.org/licenses/by/3.0/deed.de
 
-    @author t.sickert@gmail.com (Torben Sickert)
-    @version 1.0 stable
-    @fileOverview
-    This native javaScript module provides a full featured import mechanism
-    like python, php, c++ etc..
+    Extending this module
+    ---------------------
 
     Conventions (rcX := require convention number x)
 
@@ -91,7 +85,7 @@ Structure of meta documenting classes. (see rc15)
 
     // region header
 
-    window.require([['ia', 'ia-1.0'], ['ib', 'ib-2.0']]), function(ia) {
+    window.require([['ia', 'ia-1.0'], ['ib', 'ib-2.0']]), function(ia, ib) {
 
     // endregion
 
@@ -133,32 +127,38 @@ Structure of dependencies
 
     This means that a module in level "i" could only import a full module
     in its header in level "j" if "j < i" is valid.
+
+    Author
+    ------
+
+    t.sickert@gmail.com (Torben Sickert)
+
+    Version
+    -------
+
+    1.0 stable
 ###
-
-
-###* @name window ###
 
 # endregion
 
 # region classes
 
-###*
-    This class can be used as function for defining dependencies for
-    modules.
-    Note that this function searches in the same resource as the first
-    javaScript include tag in your markup if given dependency resource
-    doesn't start with "http://".
-    You can manually change this behavior by adding a search base via
-    "window.require.basePath".
-    @memberOf window
-    @class
-
-    @example
-window.require([['jQuery', 'jquery-3.0.1']], function() {
-    jQuery('div#id').show('slow');
-});
-###
 class Require
+    ###
+        This class can be used as function for defining dependencies for
+        modules.
+        Note that this function searches in the same resource as the first
+        javaScript include tag in your markup if given dependency resource
+        doesn't start with "http://".
+        You can manually change this behavior by adding a search base via
+        "window.require.basePath".
+
+        **example**
+
+        >>> window.require([['jQuery', 'jquery-3.0.1']], function() {
+        ...     jQuery('div#id').show('slow');
+        ... });
+    ###
 
     # region properties
 
@@ -167,120 +167,104 @@ class Require
         object) properties.
     ###
     ###
-        @ignore
-
+        **self {Require}**
         This variable saves a static reference to this class to make self
         referencing via introspection possible.
     ###
     self = Require
-    ###*
+    ###
+        **appendTimeStamp {Boolean}**
         If setted all resources will be appended by a timestamp string to
         make each request unique.
         This is useful to workaround some browsers caching mechanisms
         which aren't required.
-
-        @property {Boolean}
     ###
     this.appendTimeStamp
-    ###*
+    ###
+        **scopeIndicator {String}**
         Current scope indicator set by module.
-
-        @property {String}
     ###
     this.scopeIndicator = ''
-    ###*
+    ###
+        **logging** {Boolean}
         Indicates if debugging is active.
-
-        @property {Boolean}
     ###
     this.logging
-    ###*
+    ###
+        **basePath {Object}**
         Saves the base path for relative defined module locations.
-
-        @property {Object}
     ###
     this.basePath
-    ###*
+    ###
+        **noConflict {Boolean}**
         If the require scope should be deleted after serving all dependencies
         are loaded this property should be set to "true".
-
-        @property {Boolean}
     ###
     this.noConflict
-    ###*
+    ###
+        **injectingNode {DomNode}**
         Caches a reference to the dom node for injecting needed script tags.
         You can alter this property to specify where to inject required
         scripts. Default is the head node.
-
-        @property {DomNode}
     ###
     this.injectingNode
-    ###*
+    ###
+        **initializedLoadings {String[]}**
         Saves all loaded script resources to prevent double script
         loading. You can alter this property to specify where to inject
         required scripts.
         You can add scripts you have loaded via other mechanisms.
-
-        @property {String[]}
     ###
     this.initializedLoadings
-    ###*
+    ###
+        **passiv {Boolean}**
         Indicates if require should load resource on its own. If set to false
         require doesn't load any scripts.
-
-        @property {Boolean}
     ###
     this.passiv
-    ###*
+    ###
+        **scriptTypes {Object}**
         Describes all supported scripts with their needed properties to
         load them. A Mapping from file endings to their script node types.
-
-        @property {Object}
     ###
     this.scriptTypes
-    ###*
+    ###
+        **asyncronModulePatternHandling {Object}**
         Defines a mapping from regular expression pattern which detects all
         modules to load via ajax to their corresponding handler functions. A
         css, JavaScript and CoffeeScript loader is included by default.
-
-        @property {Object}
     ###
     this.asyncronModulePatternHandling
-    ###*
+    ###
+        **context {Object}**
         Defines scope where the required dependencies have to be present. In
         other words "require.context" will reference "this" in given callback
         functions.
-
-        @property {Object}
     ###
     this.context
-    ###*
+    ###
+        **onEverythingIsLoaded {Function}**
         Saves a callback function triggered if all scripts where loaded
         completely. The defined value references to "this".
-
-        @property {Function}
     ###
     this.onEverythingIsLoaded
-    ###*
+    ###
+        **_callQueue {Object[]}**
         Saves function calls to require for running them in right order to
         guarantee dependencies. It consist of a list of tuples storing
         needed dependency as string and arguments to be given to callback
         function if dependency is determined.
-
-        @property {Object[]}
     ###
     this._callQueue
-    ###*
+    ###
+        **_referenceBackup {Mixed}**
         Saves the initially pointed target of global variable
         "window.require" to reset that reference in "noConflict" mode.
-
-        @property {Mixed}
     ###
     this._referenceBackup = window.require
-    ###*
+    ###
+        **_defaultAsynchronModulePatternHandler {Object}**
         Handles all default asynchron module pattern handler.
-
-        @property {Object}
     ###
     this._defaultAsynchronModulePatternHandler =
         '^.+\.css$': (cssContent) ->
@@ -325,27 +309,28 @@ class Require
 
         # region special methods
 
-    ###*
-        @description This method is used as initializer. Class properties
-                     will be initialized if its the first call to require.
-                     This methods gets the same arguments as the global
-                     "require" constructor.
+    constructor: (modules, onLoaded, onLoadedArguments...) ->
+        ###
+            This method is used as initializer. Class properties will be
+            initialized if its the first call to require. This methods gets the
+            same arguments as the global "require" constructor.
 
-        @param {Array[String[]]} modules A list of string array which describes
-                                         needed modules. Every element is a
-                                         tuple consisting of an object
-                                         reference which has to be available
-                                         after script was loading and the
-                                         module name (basename of script file
-                                         with or without file extension).
-        @param {Function} onLoaded A callback function to load after all
-                                   dependences are available.
-        @param {Object} onLoadedArguments A various number of arguments given
-                                          to the "onLoaded" callback function.
+            **modules {Array[String[]]}** - A list of string array which
+                                            describes needed modules. Every
+                                            element is a tuple consisting of an
+                                            object reference which has to be
+                                            available after script was loading
+                                            and the module name (basename of
+                                            script file with or without file
+                                            extension).
+            **onLoaded {Function}**       - A callback function to load after
+                                            all dependences are available.
 
-        @returns {Require} Returns the current function (class).
-    ###
-    constructor: (modules, onLoaded, onLoadedArguments) ->
+            Additional arguments are forwarded to given callback function.
+
+            **returns {Require}**         - Returns the current function
+                                            (class).
+        ###
         # Set class property default values.
         if not self.context?
             self.context = this
@@ -395,16 +380,16 @@ class Require
 
     # region protected methods
 
-    ###*
-        @description Loads needed modules and run the "onLoaded" callback
-                     function. This methods gets the same arguments as the
-                     global "Require" constructor.
-
-        @returns {Require} Returns the current function (class).
-    ###
     _load: (parameter...) ->
         ###
-            This method is alway working with arguments array for easy
+            Loads needed modules and run the "onLoaded" callback function. This
+            methods gets the same arguments as the global "Require"
+            constructor.
+
+            **returns {Require}** - Returns the current function (class).
+        ###
+        ###
+            This method is alway working with argument array for easy
             recursive calling itself with a dynamic number of arguments.
         ###
         ###
@@ -476,18 +461,18 @@ class Require
             )
                 self::_load.apply Require, self._callQueue.pop()[1]
         self::_handleNoConflict()
-    ###*
-        @description Initialize loading of needed resources.
-
-        @param {String[]} module A tuple (consisting of module indicator
-                                 and module file path) which should be
-                                 loaded.
-        @param {Object[]} parameters Saves arguments indented to be given
-                                     to the on load function.
-
-        @returns {Require} Returns the current function (class).
-    ###
     _initializeResourceLoading: (module, parameter) ->
+        ###
+            Initialize loading of needed resources.
+
+            **module {String[]}**    - A tuple (consisting of module indicator
+                                       and module file path) which should be
+                                       loaded.
+            **parameter {Object[]}** - Saves arguments indented to be given to
+                                       the on load function.
+
+            **returns {Require}**    - Returns the current function (class).
+        ###
         isAsyncronRequest = false
         shortcut = self.asyncronModulePatternHandling
         for asyncronModulePattern, callback of shortcut
@@ -529,17 +514,16 @@ class Require
             type = 'ajax'
         self::_log "Initialized loading of \"#{module[1]}\" via #{type}."
         self
-    ###*
-        @description Generates an array of arguments from initially given
-                     arguments to the require constructor. The generated
-                     arguments are designed to give loaded handler a useful
-                     scope
-
-        @param {Object[]} parameters Initially given arguments.
-
-        @returns {Object[]} Returns an array of arguments.
-    ###
     _generateLoadedHandlerArguments: (parameters) ->
+        ###
+            Generates an array of arguments from initially given arguments to
+            the require constructor. The generated arguments are designed to
+            give loaded handler a useful scope
+
+            **parameters {Object[]}** - Initially given arguments.
+
+            **returns {Object[]}**    - Returns an array of arguments.
+        ###
         additionalArguments = []
         for index in [0..parameters[parameters.length - 2].length - 1]
             if parameters[parameters.length - 2][index].length is 2
@@ -551,21 +535,20 @@ class Require
                     additionalArguments.push query
         parameters.slice(2, parameters.length - 2).concat(
             additionalArguments, parameters[parameters.length - 2])
-    ###*
-        @description Appends a given script loading tag inside the dom
-                     tree.
-
-        @param {DomNode} ScriptNode Dom node where to append script
-                                    loading node.
-        @param {String[]} module A tuple (consisting of module indicator
-                                 and module file path) which should be
-                                 loaded.
-        @param {Object[]} parameters Saves arguments indented to be given
-                                     to the on load function.
-
-        @returns {Require} Returns the current function (class).
-    ###
     _appendResourceDomNode: (scriptNode, module, parameters) ->
+        ###
+            Appends a given script loading tag inside the dom tree.
+
+            **scriptNode {DomNode}**  - Dom node where to append script loading
+                                        node.
+            **module {String[]}**     - A tuple (consisting of module indicator
+                                        and module file path) which should be
+                                        loaded.
+            **parameters {Object[]}** - Saves arguments indented to be given to
+                                        the on load function.
+
+            **returns {Require}**     - Returns the current function (class).
+        ###
         ###
             Internet explorer workaround for capturing event when
             script is loaded.
@@ -584,14 +567,14 @@ class Require
                 scriptNode.onload = null
         self.injectingNode.appendChild scriptNode
         self
-    ###*
-        @description Creates a new script loading tag.
-
-        @param {String} scriptFilePath Path pointing to the file resource.
-
-        @returns {String} The absolute path to needed resource.
-    ###
     _getScriptFilePath: (scriptFilePath) ->
+        ###
+            Creates a new script loading tag.
+
+            **scriptFilePath {String}** - Path pointing to the file resource.
+
+            **returns {String}**        - The absolute path to needed resource.
+        ###
         if scriptFilePath.substring(0, 'http://'.length) is 'http://'
             return scriptFilePath
         extension = scriptFilePath.substring(
@@ -599,15 +582,15 @@ class Require
         if self.basePath[extension]
             return self.basePath[extension] + scriptFilePath
         self.basePath.default + scriptFilePath
-    ###*
-        @description Creates a new script loading tag.
-
-        @param {String} scriptFilePath Path pointing to the file resource.
-
-        @returns {DomNode} Returns script node needed to load given script
-                           resource.
-    ###
     _createScriptLoadingNode: (scriptFilePath) ->
+        ###
+            Creates a new script loading tag.
+
+            **scriptFilePath {String}** - Path pointing to the file resource.
+
+            **returns {DomNode}**       - Returns script node needed to load
+                                          given script resource.
+        ###
         scriptNode = document.createElement 'script'
         scriptNode.src = self::_getScriptFilePath scriptFilePath
         hasExtension = false
@@ -621,21 +604,22 @@ class Require
         if self.appendTimeStamp
             scriptNode.src += "?timestamp=#{(new Date).getTime()}"
         scriptNode
-    ###*
-        @description If script was loaded it will be deleted from the
-                     "initializedLoading" array. If all dependencies for this
-                     module are available the sequence could continue otherwise
-                     the current sequence status (the parameter array) will be
-                     saved in a queue for continue later.
-
-        @param {String[]} module A tuple of module name to indicate if a module
-                          is presence and its file path resource.
-        @param {Object[]} parameters Saves arguments indented to be given
-                                     to the on load function.
-
-        @returns {Require} Returns the current function (class).
-    ###
     _scriptLoaded: (module, parameters) ->
+        ###
+            If script was loaded it will be deleted from the
+            "initializedLoading" array. If all dependencies for this module are
+            available the sequence could continue otherwise the current
+            sequence status (the parameter array) will be saved in a queue for
+            continue later.
+
+            **module {String[]}**     - A tuple of module name to indicate if a
+                                        module is presence and its file path
+                                        resource.
+            **parameters {Object[]}** - Saves arguments indented to be given
+                                        to the on load function.
+
+            **returns {Require}**     -  Returns the current function (class).
+        ###
         hasScopeIndicator = module[0] isnt ''
         if self.scopeIndicator and not module[0]
             module[0] = self.scopeIndicator
@@ -655,15 +639,15 @@ class Require
         else
             self._callQueue.push [module[0], parameters]
         self
-    ###*
-        @description If "noConflict" property is set it will be handled by this
-                     method. It clears the called scope from the "Require" name
-                     and optionally runs a callback function given by the
-                     "noConflict" property after all dependencies are resolved.
-
-        @returns {Require} Returns the current function (class).
-    ###
     _handleNoConflict: ->
+        ###
+            If "noConflict" property is set it will be handled by this method.
+            It clears the called scope from the "Require" name and optionally
+            runs a callback function given by the "noConflict" property after
+            all dependencies are resolved.
+
+            **returns {Require}** - Returns the current function (class).
+        ###
         if self._callQueue.length is 0 and self.initializedLoadings.length is 0
             self::_log 'All resources are loaded so far.'
             if self.noConflict
@@ -672,21 +656,21 @@ class Require
             self.onEverythingIsLoaded()
             self.onEverythingIsLoaded = ->
         self
-    ###*
-        @description Determines if the given "moduleObject" is currently
-                     loading. If the given module is currently loading
-                     the current sequence status will be stored in the
-                     "callQueue" for continuing later.
-
-        @param {String} moduleName A module object to indicate if a module
-                                   is presence.
-        @param {Object[]} parameters The current status of solving the
-                                     initially described arguments.
-
-        @returns {Boolean} If given module object is currently loading
-                           "true" will be given back and "false" otherwise.
-    ###
     _isLoadingInitialized: (moduleName, parameters) ->
+        ###
+            Determines if the given "moduleObject" is currently loading. If the
+            given module is currently loading the current sequence status will
+            be stored in the "callQueue" for continuing later.
+
+            **moduleName {String}**   - A module object to indicate if a module
+                                        is presence.
+            **parameters {Object[]}** - The current status of solving the
+                                        initially described arguments.
+
+            **returns {Boolean}**     - If given module object is currently
+                                        loading "true" will be given back and
+                                        "false" otherwise.
+        ###
         for key, value in self.initializedLoadings
             if moduleName is value
                 self._callQueue.push [moduleName, parameters]
@@ -694,17 +678,18 @@ class Require
         if moduleName
             self.initializedLoadings.push moduleName
         false
-    ###*
-        @description Determines if the given "moduleObject" is present in the
-                     global (window) scope.
-
-        @param {String[]} module A tuple of module name to indicate if a
-                                 module is presence and its file path.
-
-        @returns {Boolean} If given module object is present this method
-                           will return "true" and "false" otherwise.
-    ###
     _isModuleLoaded: (module) ->
+        ###
+            Determines if the given "moduleObject" is present in the global
+            (window) scope.
+
+            **module {String[]}** - A tuple of module name to indicate if a
+                                    module is presence and its file path.
+
+            **returns {Boolean}** - If given module object is present this
+                                    method will return "true" and "false"
+                                    otherwise.
+        ###
         query = self.context
         if module[0]
             moduleObjects = module[0].split '.'
@@ -721,19 +706,19 @@ class Require
         else
             self::_log "\"#{module[1]}\" is loaded complete."
         true
-    ###*
-        @description If logging is enabled. Method shows the given message
-                     in the browsers console if possible or in a standalone
-                     alert-window as fallback.
-
-        @param {String} message A logging message.
-
-        @returns {undefined|false} Returns the return value of
-                                   "window.console.log()" or
-                                   "window.alert()" or "false" if logging
-                                   is disabled.
-    ###
     _log: (message) ->
+        ###
+            If logging is enabled. Method shows the given message in the
+            browsers console if possible or in a standalone alert-window as
+            fallback.
+
+            **message {String}** - A logging message.
+
+            **returns {undefined|false}** - Returns the return value of
+                                            "window.console.log()" or
+                                            "window.alert()" or "false" if
+                                            logging is disabled.
+        ###
         if self.logging
             if window.console and window.console.log
                 return window.console.log "require: #{message}"
@@ -742,7 +727,6 @@ class Require
 
     # endregion
 
-###* @ignore ###
 this.require = Require
 
 # endregion
