@@ -29,59 +29,74 @@ Extending this module
 
 Conventions (rcX := require convention number x)
 
-- rc1 Capitalized variables are constant and shouldn't be mutable.
-- rc2 Properties with preceding underscores shouldn't be accessed from the
-      outer scope. They could accessed in inherited objects (protected
-      attributes).
-- rc3 Property with two preceding underscore shouldn't be accessed from any
-      location then the object itself (private attributes).
-- rc4 Follow the javascript OOP conventions like camel-case class-names methods
-      and property names.
-- rc5 Class-names have a leading upper case letter.
-- rc6 Methods and functions are starting with a lower case letter.
-- rc7 Do not use more chars then 79 in one line.
-- rc8 Use short and/or long description doc-strings for all definitions.
-- rc9 Write qunit tests for each unit it is possible and try to reach 100% path
-      coverage.
+- rc1
+Capitalized variables are constant and shouldn't be mutable.
+- rc2
+Properties with preceding underscores shouldn't be accessed from the outer
+scope. They could accessed in inherited objects (protected attributes).
+- rc3
+Property with two preceding underscore shouldn't be accessed from any location
+then the object itself (private attributes).
+- rc4
+Follow the javascript OOP conventions like camel-case class-names methods and
+property names.
+- rc5
+Class-names have a leading upper case letter.
+- rc6
+Methods and functions are starting with a lower case letter.
+- rc7
+Do not use more chars then 79 in one line.
+- rc8
+Use short and/or long description doc-strings for all definitions.
+- rc9
+Write qunit tests for each unit it is possible and try to reach 100% path
+coverage.
+
 - rc10 Sorting imports as following:
     1. Import all standard modules and packages,
     2. then all from third party,
     3. now import your own modules or packages.
-    4. Sort import names alphabetically and separate the previous
-  defined parts with blank lines.
-- rc11 Prefix global reference from global context with "this" and with
-       "window" in none global contexts.
-- rc12 Don't use any abbreviations.
-- rc13 Try to use small cyclomatic complexity in all units (less then eight
-       is a good measurement).
-- rc14 Use one of the plugin pattern described in "jQuery.Tools".
-- rc15 Use the area statement syntax to structure your code and make it
-       possible to fold them in many IDE's
-       (see Structure of meta documenting below).
-- rc16 Always think that code is more read than written.
+    4. Sort import names alphabetically and separate the previous defined parts
+       with blank lines.
+- rc11
+Prefix global reference from global context with "this" and with "window" in
+none global contexts.
+- rc12
+Don't use any abbreviations.
+- rc13
+Try to use small cyclomatic complexity in all units (less then eight is a good
+measurement).
+- rc14
+Use one of the plugin pattern described in "jQuery.Tools".
+- rc15
+Use the area statement syntax to structure your code and make it possible to
+fold them in many IDE's (see Structure of meta documenting below).
+- rc16
+Always think that code is more read than written.
 - rc17 By choosing witch quotes to use follow this priority.
-           1. Single quote (')
-           2. Double quote (")
-- rc18 Indent function parameter which doesn't match in one line like:
+    1. Single quote (')
+    2. Double quote (")
+- rc18
+Indent function parameter which doesn't match in one line like:
 
-    function(
-        parameter1, parameter2, parameter3,
-        parameter4)
+        function(
+            parameter1, parameter2, parameter3,
+            parameter4)
 
-    instead of:
+        instead of:
 
-    function(parameter1,
-             parameter2,
-             parameter3,
-             parameter4)
+        function(parameter1,
+                 parameter2,
+                 parameter3,
+                 parameter4)
 
-    or:
+        or:
 
-    function(parameter1, parameter2, parameter3,
-             parameter4)
+        function(parameter1, parameter2, parameter3,
+                 parameter4)
 
-Structure of meta documenting classes. (see rc15)
--------------------------------------------------
+Structure of meta documenting (see rc15)
+----------------------------------------
 
     // region header
 
