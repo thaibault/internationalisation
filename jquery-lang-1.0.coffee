@@ -42,7 +42,7 @@ Version
 ## standalone
 ## do ($=this.jQuery) ->
 this.require.scopeIndicator = 'jQuery.Lang'
-this.require([
+this.require [
     'jquery-tools-1.0.coffee', ['jQuery.cookie', 'jquery-cookie-1.4.0.js']
 ], ($) ->
 ##
@@ -425,6 +425,3 @@ this.require([
     # endregion
 
 # endregion
-
-## standalone
-)
