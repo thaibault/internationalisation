@@ -10,35 +10,33 @@
 # region header
 
 ###
-    This module provides common reusable logic for every jQuery non trivial
-    plugin.
+This module provides common reusable logic for every jQuery non trivial plugin.
 
-    Copyright
-    ---------
+Copyright
+---------
 
-    Torben Sickert 16.12.2012
+Torben Sickert 16.12.2012
 
-    License
-    -------
+License
+-------
 
-    This library written by Torben Sickert stand under a creative commons
-    naming 3.0 unported license.
-    see http://creativecommons.org/licenses/by/3.0/deed.de
+This library written by Torben Sickert stand under a creative commons naming
+3.0 unported license. see http://creativecommons.org/licenses/by/3.0/deed.de
 
-    Extending this module
-    ---------------------
+Extending this module
+---------------------
 
-    For conventions see require on https://github.com/thaibault/require
+For conventions see require on https://github.com/thaibault/require
 
-    Author
-    ------
+Author
+------
 
-    t.sickert@gmail.com (Torben Sickert)
+t.sickert@gmail.com (Torben Sickert)
 
-    Version
-    -------
+Version
+-------
 
-    1.0 stable
+1.0 stable
 ###
 
 ## standalone
