@@ -10,7 +10,7 @@
 # region header
 
 ###
-This module provides common reusable logic for every jQuery non trivial plugin.
+This module provides common reusable logic for every non trivial jQuery plugin.
 
 Copyright
 ---------
