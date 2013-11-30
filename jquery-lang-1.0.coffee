@@ -10,7 +10,7 @@
 # region header
 
 ###
-[Project page](https://github.com/thaibault/jQuery-lang)
+[Project page](https://thaibault.github.com/jQuery-lang)
 
 This plugin provided client side internationalisation support for websites.
 

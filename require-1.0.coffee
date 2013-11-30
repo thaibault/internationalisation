@@ -10,7 +10,7 @@
 # region header
 
 ###
-[Project page](https://github.com/thaibault/require)
+[Project page](https://thaibault.github.com/require)
 
 This native javaScript module provides a full featured import mechanism like
 python, php, c++ etc..

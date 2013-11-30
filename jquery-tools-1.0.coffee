@@ -10,7 +10,7 @@
 # region header
 
 ###
-[Project page](https://github.com/thaibault/jQuery-tools)
+[Project page](https://thaibault.github.com/jQuery-tools)
 
 This module provides common reusable logic for every non trivial jQuery plugin.
 
