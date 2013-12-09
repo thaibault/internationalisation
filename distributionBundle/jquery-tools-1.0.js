@@ -157,7 +157,7 @@ Version
             **returns {$.Tools}** - Returns the current instance.
         */
 
-        $.extend(true, this._options, this._defaultOptions, options);
+        this._options = $.extend(true, {}, this._defaultOptions, this._options, options);
         this._options.domNodeSelectorPrefix = this.stringFormat(this._options.domNodeSelectorPrefix, this.camelCaseStringToDelimited(this.__name__));
         return this;
       };
