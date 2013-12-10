@@ -691,7 +691,7 @@ this.require [['jQuery', 'jquery-2.0.3']], ($) ->
             string.replace(new RegExp('(.)([A-Z])', 'g'), ->
                 arguments[1] + delimiter + arguments[2]
             ).toLowerCase()
-        addSeperatorToPath: (path, pathSeperator='/') ->
+        addSeparatorToPath: (path, pathSeparator='/') ->
             ###
                 Appends a path selector to the given path if there isn't one
                 yet.
