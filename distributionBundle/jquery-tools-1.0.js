@@ -792,9 +792,9 @@ Version
         }).toLowerCase();
       };
 
-      Tools.prototype.addSeperatorToPath = function(path, pathSeperator) {
-        if (pathSeperator == null) {
-          pathSeperator = '/';
+      Tools.prototype.addSeparatorToPath = function(path, pathSeparator) {
+        if (pathSeparator == null) {
+          pathSeparator = '/';
         }
         /*
             Appends a path selector to the given path if there isn't one
