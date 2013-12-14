@@ -1,7 +1,7 @@
 {
     "name": "lang",
-    "version": "1.0.0",
-    "title": "client side internationalisation",
+    "version": "1.0.1",
+    "title": "jQuery lang",
     "author": {
         "name": "Torben Sickert",
         "email": "t.sickert@gmail.com",
@@ -15,7 +15,7 @@
         "jquery": ">=1.10.2",
         "jquery-tools": ">=1.0"
     },
-    "description": "This plugin provided client side internationalisation support for websites.",
+    "description": "client side internationalisation",
     "keywords": ["tools", "language", "lang", "internationalisation", "audience", "multilanguage"],
     "homepage": "http://thaibault.github.io/jQuery-lang",
     "docs": "http://thaibault.github.io/jQuery-lang/api",
