@@ -1,6 +1,6 @@
 {
     "name": "lang",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "title": "jQuery lang",
     "author": {
         "name": "Torben Sickert",
@@ -17,10 +17,10 @@
     },
     "description": "client side internationalisation",
     "keywords": ["tools", "language", "lang", "internationalisation", "audience", "multilanguage"],
-    "homepage": "http://thaibault.github.io/jQuery-lang",
-    "docs": "http://thaibault.github.io/jQuery-lang/api",
-    "demo": "http://thaibault.github.io/jQuery-lang",
-    "download": "http://thaibault.github.io/jQuery-lang/distributionBundle.zip",
+    "homepage": "http://thaibault.github.com/jQuery-lang",
+    "docs": "http://thaibault.github.com/jQuery-lang/api",
+    "demo": "http://thaibault.github.com/jQuery-lang",
+    "download": "http://thaibault.github.com/jQuery-lang/distributionBundle.zip",
     "bugs": "https://github.com/thaibault/jQuery-lang/issues",
     "maintainers": [{
         "name": "Torben Sickert",
