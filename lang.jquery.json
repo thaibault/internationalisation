@@ -1,0 +1,30 @@
+{
+    "name": "lang",
+    "version": "1.0.0",
+    "title": "client side internationalisation",
+    "author": {
+        "name": "Torben Sickert",
+        "email": "t.sickert@gmail.com",
+        "url": "http://thaibault.github.com"
+    },
+    "licenses": [{
+        "type": "creativecommons",
+        "url": "http://creativecommons.org/licenses/by/3.0/deed.de"
+    }],
+    "dependencies": {
+        "jquery": ">=1.10.2",
+        "jquery-tools": ">=1.0"
+    },
+    "description": "This plugin provided client side internationalisation support for websites.",
+    "keywords": ["tools", "language", "lang", "internationalisation", "audience", "multilanguage"],
+    "homepage": "http://thaibault.github.io/jQuery-lang",
+    "docs": "http://thaibault.github.io/jQuery-lang/api",
+    "demo": "http://thaibault.github.io/jQuery-lang",
+    "download": "http://thaibault.github.io/jQuery-lang/distributionBundle.zip",
+    "bugs": "https://github.com/thaibault/jQuery-lang/issues",
+    "maintainers": [{
+        "name": "Torben Sickert",
+        "email": "t.sickert@gmail.com",
+        "url": "http://thaibault.github.com"
+    }]
+}
