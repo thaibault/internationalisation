@@ -115,13 +115,6 @@ Version
         Lang.__super__.initialize.call(this, options);
         this._options.toolsLockDescription = this.stringFormat(this._options.toolsLockDescription, this.__name__);
         this._options.cookieDescription = this.stringFormat(this._options.cookieDescription, this.__name__);
-        this._options.textNodeParent.fadeIn.always = function() {
-          _this._numberOfFadedDomNodes += 1;
-          if (_this._numberOfFadedDomNodes === _this._$domNodeToFade.length) {
-            _this._numberOfFadedDomNodes = 0;
-            return _this.releaseLock(_this._options.toolsLockDescription);
-          }
-        };
         this.$domNodes = this.grabDomNode();
         this.$domNodes.switchLanguageButtons = $("a[href^=\"#" + this._options.languageHashPrefix + "\"]");
         this.currentLanguage = this._options["default"];
@@ -329,7 +322,7 @@ Version
 
       Lang.prototype._handleLanguageSwitching = function(thisFunction, self, language) {
         /*
-            Initialized the language switch an performs an effect if
+            Initialized the language switch and performs an effect if
             specified.
         
             **thisFunction {Function}** - The function itself.
@@ -341,16 +334,28 @@ Version
             **returns {$.Lang}**        - Returns the current instance.
         */
 
+        var oldLanguage,
+          _this = this;
         this._numberOfFadedDomNodes += 1;
+        oldLanguage = this.currentLanguage;
         if (this._options.fadeEffect && (this._$domNodeToFade != null)) {
           if (this._numberOfFadedDomNodes === this._$domNodeToFade.length) {
             this._switchLanguage(language);
             this._numberOfFadedDomNodes = 0;
+            this._options.textNodeParent.fadeIn.always = function() {
+              _this._numberOfFadedDomNodes += 1;
+              if (_this._numberOfFadedDomNodes === _this._$domNodeToFade.length) {
+                _this._numberOfFadedDomNodes = 0;
+                _this.fireEvent('switched', true, _this, oldLanguage, language);
+                return _this.releaseLock(_this._options.toolsLockDescription);
+              }
+            };
             this._$domNodeToFade.fadeIn(this._options.textNodeParent.fadeIn);
           }
         } else {
           this._switchLanguage(language);
           this._numberOfFadedDomNodes = 0;
+          this.fireEvent('switched', true, this, oldLanguage, language);
           this.releaseLock(this._options.toolsLockDescription);
         }
         return this;
@@ -398,7 +403,6 @@ Version
         }
         this._switchCurrentLanguageIndicator(language);
         $.cookie(this._options.cookieDescription, language);
-        this.fireEvent('switched', true, this, this.currentLanguage, language);
         this.currentLanguage = language;
         return this;
       };
