@@ -106,10 +106,10 @@ this.require [
                 currentLanguageIndicatorClassName: 'current'
                 cookieDescription: '{1}Last'
                 languageMapping:
-                    deDE: ['de', 'de-de']
+                    deDE: ['de', 'de-de', 'german', 'deutsch']
                     enUS: ['en', 'en-us']
-                    enEN: ['en-en']
-                    frFR: ['fr', 'fr-fr']
+                    enEN: ['en-en', 'english']
+                    frFR: ['fr', 'fr-fr', 'french']
                 onSwitched: $.noop()
             super options
             this._options.toolsLockDescription = this.stringFormat(
