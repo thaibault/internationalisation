@@ -222,13 +222,12 @@ this.require [['jQuery', 'jquery-2.0.3']], ($) ->
             ###
             wrappedCallbackFunction = (description) =>
                 callbackFunction(description)
-                if autoRelease
-                    this.releaseLock(description)
-            if not this._locks[description]?
+                this.releaseLock(description) if autoRelease
+            if this._locks[description]?
+                this._locks[description].push wrappedCallbackFunction
+            else
                 this._locks[description] = []
                 wrappedCallbackFunction description
-            else
-                this._locks[description].push wrappedCallbackFunction
             this
         releaseLock: (description) ->
             ###
@@ -251,7 +250,8 @@ this.require [['jQuery', 'jquery-2.0.3']], ($) ->
             if this._locks[description]?
                 if this._locks[description].length
                     this._locks[description].shift()(description)
-                    if not this._locks[description].length
+                    if(this._locks[description]? and
+                       not this._locks[description].length)
                         this._locks[description] = undefined
                 else
                     this._locks[description] = undefined

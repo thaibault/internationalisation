@@ -153,6 +153,7 @@ to initialize the plugin with different configuration.
                     frFR: ['fr', 'fr-fr']
                 },
                 onSwitched: $.noop()
+                onSwitch: $.noop()
             });
         });
     </script>
