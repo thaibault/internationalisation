@@ -90,10 +90,10 @@ Version
           fadeEffect: true,
           textNodeParent: {
             fadeIn: {
-              duration: 'normal'
+              duration: 'fast'
             },
             fadeOut: {
-              duration: 'normal'
+              duration: 'fast'
             }
           },
           replacementLanguagePattern: '^([a-z]{2}[A-Z]{2}):((.|\\s)*)$',
@@ -110,7 +110,8 @@ Version
             enEN: ['en-en', 'english'],
             frFR: ['fr', 'fr-fr', 'french']
           },
-          onSwitched: $.noop()
+          onSwitched: $.noop(),
+          onSwitch: $.noop()
         };
         Lang.__super__.initialize.call(this, options);
         this._options.toolsLockDescription = this.stringFormat(this._options.toolsLockDescription, this.__name__);
@@ -140,51 +141,56 @@ Version
         this.acquireLock(this._options.toolsLockDescription, function() {
           var $currentLanguageDomNode, $currentTextNodeToTranslate, $lastLanguageDomNode, $lastTextNodeToTranslate, self;
           language = _this._normalizeLanguage(language);
-          _this.debug('Switch to {1}', language);
-          _this._$domNodeToFade = null;
-          _this._replacements = [];
-          $currentTextNodeToTranslate = null;
-          $currentLanguageDomNode = null;
-          $lastTextNodeToTranslate = null;
-          $lastLanguageDomNode = null;
-          self = _this;
-          _this.$domNodes.parent.find(':not(iframe)').contents().each(function() {
-            var $currentDomNode, $this, match;
-            if ($.inArray(this.nodeName.toLowerCase(), self._options.replaceDomNodeNames) !== -1) {
-              $this = $(this);
-              if ($.trim($this.text()) && $this.parents(self._options.replaceDomNodeNames.join()).length === 0) {
-                $lastLanguageDomNode = self._checkLastTextNodeHavingLanguageIndicator($lastTextNodeToTranslate, $lastLanguageDomNode);
-                $currentTextNodeToTranslate = $this;
-              }
-            } else {
-              $currentDomNode = $(this);
-              if ($currentTextNodeToTranslate != null) {
-                if (this.nodeName === self._options.replacementDomNodeName) {
-                  match = this.textContent.match(new RegExp(self._options.replacementLanguagePattern));
-                  if (match && match[1] === language) {
-                    self._registerTextNodeToChange($currentTextNodeToTranslate, $currentDomNode, match, $currentLanguageDomNode);
-                    $lastTextNodeToTranslate = $currentTextNodeToTranslate;
-                    $lastLanguageDomNode = $currentLanguageDomNode;
-                    $currentTextNodeToTranslate = null;
-                    $currentLanguageDomNode = null;
-                  } else {
-                    match = this.textContent.match(new RegExp(self._options.currentLanguagePattern));
-                    if (match) {
-                      $currentLanguageDomNode = $currentDomNode;
-                    }
-                  }
-                  return true;
+          if (_this.currentLanguage !== language) {
+            _this.debug('Switch to {1}', language);
+            _this.fireEvent('switch', true, _this, _this.currentLanguage, language);
+            _this._$domNodeToFade = null;
+            _this._replacements = [];
+            $currentTextNodeToTranslate = null;
+            $currentLanguageDomNode = null;
+            $lastTextNodeToTranslate = null;
+            $lastLanguageDomNode = null;
+            self = _this;
+            _this.$domNodes.parent.find(':not(iframe)').contents().each(function() {
+              var $currentDomNode, $this, match;
+              if ($.inArray(this.nodeName.toLowerCase(), self._options.replaceDomNodeNames) !== -1) {
+                $this = $(this);
+                if ($.trim($this.text()) && $this.parents(self._options.replaceDomNodeNames.join()).length === 0) {
+                  $lastLanguageDomNode = self._checkLastTextNodeHavingLanguageIndicator($lastTextNodeToTranslate, $lastLanguageDomNode);
+                  $currentTextNodeToTranslate = $this;
                 }
-                $lastTextNodeToTranslate = $currentTextNodeToTranslate;
-                $lastLanguageDomNode = $currentLanguageDomNode;
-                $currentTextNodeToTranslate = null;
-                $currentDomNode = null;
+              } else {
+                $currentDomNode = $(this);
+                if ($currentTextNodeToTranslate != null) {
+                  if (this.nodeName === self._options.replacementDomNodeName) {
+                    match = this.textContent.match(new RegExp(self._options.replacementLanguagePattern));
+                    if (match && match[1] === language) {
+                      self._registerTextNodeToChange($currentTextNodeToTranslate, $currentDomNode, match, $currentLanguageDomNode);
+                      $lastTextNodeToTranslate = $currentTextNodeToTranslate;
+                      $lastLanguageDomNode = $currentLanguageDomNode;
+                      $currentTextNodeToTranslate = null;
+                      $currentLanguageDomNode = null;
+                    } else {
+                      match = this.textContent.match(new RegExp(self._options.currentLanguagePattern));
+                      if (match) {
+                        $currentLanguageDomNode = $currentDomNode;
+                      }
+                    }
+                    return true;
+                  }
+                  $lastTextNodeToTranslate = $currentTextNodeToTranslate;
+                  $lastLanguageDomNode = $currentLanguageDomNode;
+                  $currentTextNodeToTranslate = null;
+                  $currentDomNode = null;
+                }
               }
-            }
-            return true;
-          });
-          _this._checkLastTextNodeHavingLanguageIndicator($lastTextNodeToTranslate, $lastLanguageDomNode);
-          return _this._handleSwitchEffect(language);
+              return true;
+            });
+            _this._checkLastTextNodeHavingLanguageIndicator($lastTextNodeToTranslate, $lastLanguageDomNode);
+            return _this._handleSwitchEffect(language);
+          } else {
+            return _this.releaseLock(_this._options.toolsLockDescription);
+          }
         });
         return this;
       };

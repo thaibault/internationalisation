@@ -249,11 +249,11 @@ Version
             return _this.releaseLock(description);
           }
         };
-        if (this._locks[description] == null) {
+        if (this._locks[description] != null) {
+          this._locks[description].push(wrappedCallbackFunction);
+        } else {
           this._locks[description] = [];
           wrappedCallbackFunction(description);
-        } else {
-          this._locks[description].push(wrappedCallbackFunction);
         }
         return this;
       };
@@ -281,7 +281,7 @@ Version
         if (this._locks[description] != null) {
           if (this._locks[description].length) {
             this._locks[description].shift()(description);
-            if (!this._locks[description].length) {
+            if ((this._locks[description] != null) && !this._locks[description].length) {
               this._locks[description] = void 0;
             }
           } else {
