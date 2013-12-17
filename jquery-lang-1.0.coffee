@@ -122,6 +122,7 @@ this.require [
                 "a[href^=\"##{this._options.languageHashPrefix}\"]")
             this.currentLanguage = this._options.default
             this.switch this._determineUsefulLanguage()
+            this._switchCurrentLanguageIndicator this.currentLanguage
             this.on this.$domNodes.switchLanguageButtons, 'click', (event) =>
                 event.preventDefault()
                 this.switch $(event.target).attr('href').substr(
