@@ -120,6 +120,7 @@ Version
         this.$domNodes.switchLanguageButtons = $("a[href^=\"#" + this._options.languageHashPrefix + "\"]");
         this.currentLanguage = this._options["default"];
         this["switch"](this._determineUsefulLanguage());
+        this._switchCurrentLanguageIndicator(this.currentLanguage);
         this.on(this.$domNodes.switchLanguageButtons, 'click', function(event) {
           event.preventDefault();
           return _this["switch"]($(event.target).attr('href').substr(_this._options.languageHashPrefix.length + 1));
