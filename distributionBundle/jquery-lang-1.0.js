@@ -143,6 +143,7 @@ Version
           language = _this._normalizeLanguage(language);
           if (_this.currentLanguage !== language) {
             _this.debug('Switch to {1}', language);
+            _this._switchCurrentLanguageIndicator(language);
             _this.fireEvent('switch', true, _this, _this.currentLanguage, language);
             _this._$domNodeToFade = null;
             _this._replacements = [];
@@ -407,7 +408,6 @@ Version
           replacement.$currentLanguageDomNode.remove();
           replacement.$commentNodeToReplace.remove();
         }
-        this._switchCurrentLanguageIndicator(language);
         $.cookie(this._options.cookieDescription, language);
         this.currentLanguage = language;
         return this;
