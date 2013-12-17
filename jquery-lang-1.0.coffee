@@ -144,6 +144,7 @@ this.require [
                 language = this._normalizeLanguage language
                 if this.currentLanguage isnt language
                     this.debug 'Switch to {1}', language
+                    this._switchCurrentLanguageIndicator language
                     this.fireEvent(
                         'switch', true, this, this.currentLanguage, language)
                     this._$domNodeToFade = null
@@ -409,7 +410,6 @@ this.require [
                         replacement.textToReplace)
                 replacement.$currentLanguageDomNode.remove()
                 replacement.$commentNodeToReplace.remove()
-            this._switchCurrentLanguageIndicator language
             $.cookie this._options.cookieDescription, language
             this.currentLanguage = language
             this
