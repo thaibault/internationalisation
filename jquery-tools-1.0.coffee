@@ -790,8 +790,9 @@ this.require [['jQuery', 'jquery-2.0.3']], ($) ->
             if this._options.domNodeSelectorPrefix
                 domNodeSelectorPrefix = this._options.domNodeSelectorPrefix +
                     ' '
-            if (selector.substr(0, domNodeSelectorPrefix.length) isnt
-                    domNodeSelectorPrefix)
+            if(selector.substr(0, domNodeSelectorPrefix.length) isnt
+                   domNodeSelectorPrefix and
+               $.trim(selector).substr(0, 1) isnt '<')
                 domNodeSelectors[key] = domNodeSelectorPrefix + selector
                 return $.trim domNodeSelectors[key]
             $.trim selector

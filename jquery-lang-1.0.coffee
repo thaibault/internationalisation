@@ -140,7 +140,6 @@ this.require [
 
                 **returns {$.Lang}**  - Returns the current instance.
             ###
-            # TODO reduce complexity
             this.acquireLock this._options.toolsLockDescription, =>
                 language = this._normalizeLanguage language
                 if this.currentLanguage isnt language
@@ -150,62 +149,8 @@ this.require [
                         'switch', true, this, this.currentLanguage, language)
                     this._$domNodeToFade = null
                     this._replacements = []
-                    $currentTextNodeToTranslate = null
-                    $currentLanguageDomNode = null
-                    $lastTextNodeToTranslate = null
-                    $lastLanguageDomNode = null
-                    self = this
-                    this.$domNodes.parent.find(
-                        ':not(iframe)'
-                    ).contents().each ->
-                        if $.inArray(
-                            this.nodeName.toLowerCase(),
-                            self._options.replaceDomNodeNames
-                        ) isnt -1
-                            $this = $ this
-                            # NOTE: We skip empty and nested text nodes
-                            if $.trim($this.text()) and $this.parents(
-                                self._options.replaceDomNodeNames.join()
-                            ).length is 0
-                                $lastLanguageDomNode = \
-                                self._checkLastTextNodeHavingLanguageIndicator(
-                                    $lastTextNodeToTranslate,
-                                    $lastLanguageDomNode)
-                                $currentTextNodeToTranslate = $this
-                        else
-                            $currentDomNode = $ this
-                            if $currentTextNodeToTranslate?
-                                if(this.nodeName is
-                                   self._options.replacementDomNodeName)
-                                    match = this.textContent.match(new RegExp(
-                                        self._options
-                                            .replacementLanguagePattern))
-                                    if match and match[1] is language
-                                        self._registerTextNodeToChange(
-                                            $currentTextNodeToTranslate,
-                                            $currentDomNode, match,
-                                            $currentLanguageDomNode)
-                                        $lastTextNodeToTranslate = \
-                                            $currentTextNodeToTranslate
-                                        $lastLanguageDomNode = \
-                                            $currentLanguageDomNode
-                                        $currentTextNodeToTranslate = null
-                                        $currentLanguageDomNode = null
-                                    else
-                                        match = this.textContent.match(
-                                            new RegExp(
-                                                self._options
-                                                    .currentLanguagePattern))
-                                        if match
-                                            $currentLanguageDomNode = \
-                                                $currentDomNode
-                                    return true
-                                $lastTextNodeToTranslate = \
-                                    $currentTextNodeToTranslate
-                                $lastLanguageDomNode = $currentLanguageDomNode
-                                $currentTextNodeToTranslate = null
-                                $currentDomNode = null
-                        return true
+                    [$lastTextNodeToTranslate, $lastLanguageDomNode] =
+                        this._collectTextNodesToReplace language
                     this._checkLastTextNodeHavingLanguageIndicator(
                         $lastTextNodeToTranslate, $lastLanguageDomNode)
                     this._handleSwitchEffect language
@@ -216,6 +161,63 @@ this.require [
     # endregion
 
     # region protected methods
+
+        _collectTextNodesToReplace: (language) ->
+            ###
+                Normalizes a given language string.
+
+                **language {String}** - New language.
+
+                **returns {domNode[]}**  - Return a tuple og last text and
+                                           language dom node to translate.
+            ###
+            $currentTextNodeToTranslate = null
+            $currentLanguageDomNode = null
+            $lastTextNodeToTranslate = null
+            $lastLanguageDomNode = null
+            self = this
+            this.$domNodes.parent.find(':not(iframe)').contents().each ->
+                if $.inArray(
+                    this.nodeName.toLowerCase(),
+                    self._options.replaceDomNodeNames
+                ) isnt -1
+                    $this = $ this
+                    # NOTE: We skip empty and nested text nodes
+                    if $.trim($this.text()) and $this.parents(
+                        self._options.replaceDomNodeNames.join()
+                    ).length is 0
+                        $lastLanguageDomNode = \
+                        self._checkLastTextNodeHavingLanguageIndicator(
+                            $lastTextNodeToTranslate, $lastLanguageDomNode)
+                        $currentTextNodeToTranslate = $this
+                else
+                    $currentDomNode = $ this
+                    if $currentTextNodeToTranslate?
+                        if(this.nodeName is
+                           self._options.replacementDomNodeName)
+                            match = this.textContent.match(new RegExp(
+                                self._options.replacementLanguagePattern))
+                            if match and match[1] is language
+                                self._registerTextNodeToChange(
+                                    $currentTextNodeToTranslate,
+                                    $currentDomNode, match,
+                                    $currentLanguageDomNode)
+                                $lastTextNodeToTranslate = \
+                                    $currentTextNodeToTranslate
+                                $lastLanguageDomNode = $currentLanguageDomNode
+                                $currentTextNodeToTranslate = null
+                                $currentLanguageDomNode = null
+                            else
+                                $currentLanguageDomNode = $currentDomNode if(
+                                    this.textContent.match(new RegExp(
+                                        self._options.currentLanguagePattern)))
+                            return true
+                        $lastTextNodeToTranslate = $currentTextNodeToTranslate
+                        $lastLanguageDomNode = $currentLanguageDomNode
+                        $currentTextNodeToTranslate = null
+                        $currentDomNode = null
+                true
+            [$lastTextNodeToTranslate, $lastLanguageDomNode]
 
         _normalizeLanguage: (language) ->
             ###
