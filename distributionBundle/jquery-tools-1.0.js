@@ -912,7 +912,7 @@ Version
         if (this._options.domNodeSelectorPrefix) {
           domNodeSelectorPrefix = this._options.domNodeSelectorPrefix + ' ';
         }
-        if (selector.substr(0, domNodeSelectorPrefix.length) !== domNodeSelectorPrefix) {
+        if (selector.substr(0, domNodeSelectorPrefix.length) !== domNodeSelectorPrefix && $.trim(selector).substr(0, 1) !== '<') {
           domNodeSelectors[key] = domNodeSelectorPrefix + selector;
           return $.trim(domNodeSelectors[key]);
         }
