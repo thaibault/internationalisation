@@ -426,7 +426,7 @@ this.require [
                 **returns {$.Lang}**  - Returns the current instance.
             ###
             $(
-                "a[href=\"##{this._options.languageHashPrefix}" +
+                "a[href^=\"##{this._options.languageHashPrefix}" +
                 "#{this.currentLanguage}\"]." +
                 this._options.currentLanguageIndicatorClassName
             ).removeClass this._options.currentLanguageIndicatorClassName
