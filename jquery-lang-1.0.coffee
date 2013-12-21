@@ -128,8 +128,13 @@ this.require [
                 "a[href^=\"##{this._options.languageHashPrefix}\"]")
             this._movePreReplacementNodes()
             this.currentLanguage = this._options.default
-            this.switch this._determineUsefulLanguage()
-            this._switchCurrentLanguageIndicator this.currentLanguage
+            # NOTE: Only determine current language indicator if we haven't an
+            # initial language switch.
+            newLanguage = this._determineUsefulLanguage()
+            if this.currentLanguage is newLanguage
+                this._switchCurrentLanguageIndicator this.currentLanguage
+            else
+                this.switch newLanguage
             this.on(
                 this.$domNodes.switchLanguageButtons, 'click', (event) =>
                     event.preventDefault()
@@ -151,7 +156,7 @@ this.require [
             this.acquireLock this._options.toolsLockDescription, =>
                 language = this._normalizeLanguage language
                 if this.currentLanguage isnt language
-                    this.debug 'Switch to {1}', language
+                    this.debug 'Switch to "{1}".', language
                     this._switchCurrentLanguageIndicator language
                     this.fireEvent(
                         'switch', true, this, this.currentLanguage, language)
@@ -189,10 +194,7 @@ this.require [
                         $this = $ this
                         selfFound = false
                         $this.parent().contents().each ->
-                            if selfFound
-                                console.log $this
-                                console.log this
-                                $this.insertAfter this
+                            $this.insertAfter this if selfFound
                             selfFound = $this[0] is this
             this
         _collectTextNodesToReplace: (language) ->
