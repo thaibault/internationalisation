@@ -162,9 +162,9 @@ Version
         /*
             Normalizes a given language string.
         
-            **language {String}** - New language.
+            **language {String}**    - New language.
         
-            **returns {domNode[]}**  - Return a tuple og last text and
+            **returns {domNode[]}**  - Return a tuple of last text and
                                        language dom node to translate.
         */
 
@@ -175,36 +175,33 @@ Version
         $lastLanguageDomNode = null;
         self = this;
         this.$domNodes.parent.find(':not(iframe)').contents().each(function() {
-          var $currentDomNode, $this, match;
+          var $currentDomNode, match;
+          $currentDomNode = $(this);
           if ($.inArray(this.nodeName.toLowerCase(), self._options.replaceDomNodeNames) !== -1) {
-            $this = $(this);
-            if ($.trim($this.text()) && $this.parents(self._options.replaceDomNodeNames.join()).length === 0) {
+            if ($.trim($currentDomNode.text()) && $currentDomNode.parents(self._options.replaceDomNodeNames.join()).length === 0) {
               $lastLanguageDomNode = self._checkLastTextNodeHavingLanguageIndicator($lastTextNodeToTranslate, $lastLanguageDomNode);
-              $currentTextNodeToTranslate = $this;
+              $currentTextNodeToTranslate = $currentDomNode;
             }
-          } else {
-            $currentDomNode = $(this);
-            if ($currentTextNodeToTranslate != null) {
-              if (this.nodeName === self._options.replacementDomNodeName) {
-                match = this.textContent.match(new RegExp(self._options.replacementLanguagePattern));
-                if (match && match[1] === language) {
-                  self._registerTextNodeToChange($currentTextNodeToTranslate, $currentDomNode, match, $currentLanguageDomNode);
-                  $lastTextNodeToTranslate = $currentTextNodeToTranslate;
-                  $lastLanguageDomNode = $currentLanguageDomNode;
-                  $currentTextNodeToTranslate = null;
-                  $currentLanguageDomNode = null;
-                } else {
-                  if (this.textContent.match(new RegExp(self._options.currentLanguagePattern))) {
-                    $currentLanguageDomNode = $currentDomNode;
-                  }
+          } else if ($currentTextNodeToTranslate != null) {
+            if (this.nodeName === self._options.replacementDomNodeName) {
+              match = this.textContent.match(new RegExp(self._options.replacementLanguagePattern));
+              if (match && match[1] === language) {
+                self._registerTextNodeToChange($currentTextNodeToTranslate, $currentDomNode, match, $currentLanguageDomNode);
+                $lastTextNodeToTranslate = $currentTextNodeToTranslate;
+                $lastLanguageDomNode = $currentLanguageDomNode;
+                $currentTextNodeToTranslate = null;
+                $currentLanguageDomNode = null;
+              } else {
+                if (this.textContent.match(new RegExp(self._options.currentLanguagePattern))) {
+                  $currentLanguageDomNode = $currentDomNode;
                 }
-                return true;
               }
-              $lastTextNodeToTranslate = $currentTextNodeToTranslate;
-              $lastLanguageDomNode = $currentLanguageDomNode;
-              $currentTextNodeToTranslate = null;
-              $currentDomNode = null;
+              return true;
             }
+            $lastTextNodeToTranslate = $currentTextNodeToTranslate;
+            $lastLanguageDomNode = $currentLanguageDomNode;
+            $currentTextNodeToTranslate = null;
+            $currentDomNode = null;
           }
           return true;
         });
