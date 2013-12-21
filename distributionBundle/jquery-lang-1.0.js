@@ -96,6 +96,7 @@ Version
               duration: 'fast'
             }
           },
+          preReplacementLanguagePattern: '^\\|({1})$',
           replacementLanguagePattern: '^([a-z]{2}[A-Z]{2}):((.|\\s)*)$',
           currentLanguagePattern: '^[a-z]{2}[A-Z]{2}$',
           replacementDomNodeName: '#comment',
@@ -114,10 +115,12 @@ Version
           onSwitch: $.noop()
         };
         Lang.__super__.initialize.call(this, options);
+        this._options.preReplacementLanguagePattern = this.stringFormat(this._options.preReplacementLanguagePattern, this._options.replacementLanguagePattern.substr(1, this._options.replacementLanguagePattern.length - 2));
         this._options.toolsLockDescription = this.stringFormat(this._options.toolsLockDescription, this.__name__);
         this._options.cookieDescription = this.stringFormat(this._options.cookieDescription, this.__name__);
         this.$domNodes = this.grabDomNode();
         this.$domNodes.switchLanguageButtons = $("a[href^=\"#" + this._options.languageHashPrefix + "\"]");
+        this._movePreReplacementNodes();
         this.currentLanguage = this._options["default"];
         this["switch"](this._determineUsefulLanguage());
         this._switchCurrentLanguageIndicator(this.currentLanguage);
@@ -153,6 +156,39 @@ Version
             return _this._handleSwitchEffect(language);
           } else {
             return _this.releaseLock(_this._options.toolsLockDescription);
+          }
+        });
+        return this;
+      };
+
+      Lang.prototype._movePreReplacementNodes = function() {
+        /*
+            Moves pre replacement dom nodes behind translation text to use
+            the same translation algorithm for both.
+        
+            **returns {$.Lang}**  - Returns the current instance.
+        */
+
+        var self;
+        self = this;
+        this.$domNodes.parent.find(':not(iframe)').contents().each(function() {
+          var $this, match, regex, selfFound;
+          if (this.nodeName === self._options.replacementDomNodeName) {
+            regex = new RegExp(self._options.preReplacementLanguagePattern);
+            match = this.textContent.match(regex);
+            if (match && match[0]) {
+              this.textContent = this.textContent.replace(regex, match[1]);
+              $this = $(this);
+              selfFound = false;
+              return $this.parent().contents().each(function() {
+                if (selfFound) {
+                  console.log($this);
+                  console.log(this);
+                  $this.insertAfter(this);
+                }
+                return selfFound = $this[0] === this;
+              });
+            }
           }
         });
         return this;
