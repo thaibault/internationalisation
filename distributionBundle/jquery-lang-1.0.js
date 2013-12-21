@@ -61,7 +61,8 @@ Version
       Lang.prototype.__name__ = 'Lang';
 
       Lang.prototype.initialize = function(options, currentLanguage, _$domNodeToFade, _numberOfFadedDomNodes, _replacements) {
-        var _this = this;
+        var newLanguage,
+          _this = this;
         if (options == null) {
           options = {};
         }
@@ -122,8 +123,12 @@ Version
         this.$domNodes.switchLanguageButtons = $("a[href^=\"#" + this._options.languageHashPrefix + "\"]");
         this._movePreReplacementNodes();
         this.currentLanguage = this._options["default"];
-        this["switch"](this._determineUsefulLanguage());
-        this._switchCurrentLanguageIndicator(this.currentLanguage);
+        newLanguage = this._determineUsefulLanguage();
+        if (this.currentLanguage === newLanguage) {
+          this._switchCurrentLanguageIndicator(this.currentLanguage);
+        } else {
+          this["switch"](newLanguage);
+        }
         this.on(this.$domNodes.switchLanguageButtons, 'click', function(event) {
           event.preventDefault();
           return _this["switch"]($(event.target).attr('href').substr(_this._options.languageHashPrefix.length + 1));
@@ -146,7 +151,7 @@ Version
           var $lastLanguageDomNode, $lastTextNodeToTranslate, _ref1;
           language = _this._normalizeLanguage(language);
           if (_this.currentLanguage !== language) {
-            _this.debug('Switch to {1}', language);
+            _this.debug('Switch to "{1}".', language);
             _this._switchCurrentLanguageIndicator(language);
             _this.fireEvent('switch', true, _this, _this.currentLanguage, language);
             _this._$domNodeToFade = null;
@@ -182,8 +187,6 @@ Version
               selfFound = false;
               return $this.parent().contents().each(function() {
                 if (selfFound) {
-                  console.log($this);
-                  console.log(this);
                   $this.insertAfter(this);
                 }
                 return selfFound = $this[0] === this;
