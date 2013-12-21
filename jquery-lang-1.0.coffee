@@ -97,6 +97,7 @@ this.require [
                 textNodeParent:
                     fadeIn: duration: 'fast'
                     fadeOut: duration: 'fast'
+                preReplacementLanguagePattern: '^\\|({1})$'
                 replacementLanguagePattern: '^([a-z]{2}[A-Z]{2}):((.|\\s)*)$'
                 currentLanguagePattern: '^[a-z]{2}[A-Z]{2}$'
                 replacementDomNodeName: '#comment'
@@ -113,6 +114,11 @@ this.require [
                 onSwitched: $.noop()
                 onSwitch: $.noop()
             super options
+            # TODO document new features.
+            this._options.preReplacementLanguagePattern = this.stringFormat(
+                this._options.preReplacementLanguagePattern,
+                this._options.replacementLanguagePattern.substr(
+                    1, this._options.replacementLanguagePattern.length - 2))
             this._options.toolsLockDescription = this.stringFormat(
                 this._options.toolsLockDescription, this.__name__)
             this._options.cookieDescription = this.stringFormat(
@@ -120,13 +126,15 @@ this.require [
             this.$domNodes = this.grabDomNode()
             this.$domNodes.switchLanguageButtons = $(
                 "a[href^=\"##{this._options.languageHashPrefix}\"]")
+            this._movePreReplacementNodes()
             this.currentLanguage = this._options.default
             this.switch this._determineUsefulLanguage()
             this._switchCurrentLanguageIndicator this.currentLanguage
-            this.on this.$domNodes.switchLanguageButtons, 'click', (event) =>
-                event.preventDefault()
-                this.switch $(event.target).attr('href').substr(
-                    this._options.languageHashPrefix.length + 1)
+            this.on(
+                this.$domNodes.switchLanguageButtons, 'click', (event) =>
+                    event.preventDefault()
+                    this.switch $(event.target).attr('href').substr(
+                        this._options.languageHashPrefix.length + 1))
             this
 
         # endregion
@@ -162,6 +170,31 @@ this.require [
 
     # region protected methods
 
+        _movePreReplacementNodes: ->
+            ###
+                Moves pre replacement dom nodes behind translation text to use
+                the same translation algorithm for both.
+
+                **returns {$.Lang}**  - Returns the current instance.
+            ###
+            self = this
+            this.$domNodes.parent.find(':not(iframe)').contents().each ->
+                if this.nodeName is self._options.replacementDomNodeName
+                    regex = new RegExp(
+                        self._options.preReplacementLanguagePattern)
+                    match = this.textContent.match regex
+                    if match and match[0]
+                        this.textContent = this.textContent.replace(
+                            regex, match[1])
+                        $this = $ this
+                        selfFound = false
+                        $this.parent().contents().each ->
+                            if selfFound
+                                console.log $this
+                                console.log this
+                                $this.insertAfter this
+                            selfFound = $this[0] is this
+            this
         _collectTextNodesToReplace: (language) ->
             ###
                 Normalizes a given language string.
