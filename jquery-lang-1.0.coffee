@@ -180,7 +180,7 @@ this.require [
                 Moves pre replacement dom nodes behind translation text to use
                 the same translation algorithm for both.
 
-                **returns {$.Lang}**  - Returns the current instance.
+                **returns {$.Lang}** - Returns the current instance.
             ###
             self = this
             this.$domNodes.parent.find(':not(iframe)').contents().each ->
@@ -194,24 +194,31 @@ this.require [
                         $this = $ this
                         selfFound = false
                         $this.parent().contents().each ->
-                            $this.insertAfter this if selfFound
-                            selfFound = $this[0] is this
+                            if selfFound and $.trim this.textContent
+                                $this.insertAfter this
+                            if $this[0] is this
+                                selfFound = true
+                            true
             this
         _collectTextNodesToReplace: (language) ->
             ###
                 Normalizes a given language string.
 
-                **language {String}**    - New language.
+                **language {String}**   - New language.
 
-                **returns {domNode[]}**  - Return a tuple of last text and
-                                           language dom node to translate.
+                **returns {domNode[]}** - Return a tuple of last text and
+                                          language dom node to translate.
             ###
             $currentTextNodeToTranslate = null
             $currentLanguageDomNode = null
             $lastTextNodeToTranslate = null
             $lastLanguageDomNode = null
             self = this
-            this.$domNodes.parent.find(':not(iframe)').contents().each ->
+            $nodesToIterate = this.$domNodes.parent.find(
+                ':not(iframe)'
+            ).contents()
+            console.log $nodesToIterate
+            $nodesToIterate.each ->
                 $currentDomNode = $ this
                 if $.inArray(
                     this.nodeName.toLowerCase(),
@@ -251,7 +258,6 @@ this.require [
                     $currentDomNode = null
                 true
             [$lastTextNodeToTranslate, $lastLanguageDomNode]
-
         _normalizeLanguage: (language) ->
             ###
                 Normalizes a given language string.
@@ -451,8 +457,8 @@ this.require [
             this
         _switchCurrentLanguageIndicator: (language) ->
             ###
-                Switches the current language indicator in language triggered
-                dom nodes.
+                Switches the current language indicator in language switch
+                triggered dom nodes.
 
                 **language {String}** - The new language to switch to.
 
