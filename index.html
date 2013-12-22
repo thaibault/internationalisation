@@ -122,6 +122,23 @@
 <span class="c">&lt;!--frFR:</span>
 <span class="c">    Votre version englisch &lt;strong&gt;dom nodes&lt;/strong&gt; à l&#39;intérieur.</span>
 <span class="c">--&gt;</span>
+</pre></div></td></tr></table><p>Usually the language dom node precedes the text node to translate. It is possible to write a special syntax to use a replacement for the next dom node containing text. <!--deDE: Normalerweise folgt der Sprach-DOM-Knoten auf den Textknoten der übersetzt werden soll. Es ist mit einer speziellen Syntax möglich einen Sprach-DOM-Knoten für den darauf folgenden DOM-Knoten anzuwenden. --> <!--frFR: Normalement, le nœud DOM voix suit le nœud de texte de la traduction     devrait être. Il est doté d'une syntaxe spéciale possible une Nœud voix Dom pour le nœud DOM prochaine à utiliser. --></p><!--showExample--><table class=codehilitetable><tr><td class=linenos><div class=linenodiv><pre>1
+2
+3
+4
+5
+6
+7
+8
+9</pre></div></td><td class=code><div class=codehilite><pre><span class="c">&lt;!--|deDE:</span>
+<span class="c">    Ihre deutsche Variante mit eingebetteten &lt;strong&gt;dom Knoten&lt;/strong&gt;.</span>
+<span class="c">--&gt;</span>
+<span class="c">&lt;!--|frFR:</span>
+<span class="c">    Votre version englisch &lt;strong&gt;dom nodes&lt;/strong&gt; à l&#39;intérieur.</span>
+<span class="c">--&gt;</span>
+<span class="nt">&lt;langreplace&gt;</span>
+    Your englisch version with <span class="nt">&lt;strong&gt;</span>dom nodes<span class="nt">&lt;/strong&gt;</span> inside.
+<span class="nt">&lt;/langreplace&gt;</span>
 </pre></div></td></tr></table><p>With the below initialisation you can simple add this links everywhere in your page to switch language. On click you will switch the current language interactively. Try it by yourself: <!--deDE: Mit der oben aufgezeigten Konfiguration können Sie einfach folgenden Links an beliebiger Stelle im Markup plazieren. Beim Klicken auf die Sprach-Wechsel-Links wird die Sprache Ihrer Webseite entsprechend angepasst. Versuchen Sie selbst: --> <!--frFR: Avec la configuration ci-dessus, vous pouvez simplement identifié les liens suivants placer n'importe où dans le balisage. Lorsque vous cliquez sur l'     Langue échange de liens est la langue de votre site en conséquence     ajustée. Essayez par vous-même: --></p><!--showExample--><table class=codehilitetable><tr><td class=linenos><div class=linenodiv><pre>1
 2
 3</pre></div></td><td class=code><div class=codehilite><pre><span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#lang-deDE&quot;</span><span class="nt">&gt;</span>de<span class="nt">&lt;/a&gt;</span>
