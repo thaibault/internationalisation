@@ -188,9 +188,8 @@ Version
               selfFound = false;
               return $this.parent().contents().each(function() {
                 if (selfFound && $.trim($(this).text())) {
-                  console.log($this);
-                  console.log(this);
                   $this.appendTo(this);
+                  return false;
                 }
                 if ($this[0] === this) {
                   selfFound = true;
