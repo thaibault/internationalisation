@@ -168,8 +168,9 @@ Version
 
       Lang.prototype._movePreReplacementNodes = function() {
         /*
-            Moves pre replacement dom nodes behind translation text to use
-            the same translation algorithm for both.
+            Moves pre replacement dom nodes into next dom node behind
+            translation text to use the same translation algorithm for
+            both.
         
             **returns {$.Lang}** - Returns the current instance.
         */
@@ -186,8 +187,10 @@ Version
               $this = $(this);
               selfFound = false;
               return $this.parent().contents().each(function() {
-                if (selfFound && $.trim(this.textContent)) {
-                  $this.insertAfter(this);
+                if (selfFound && $.trim($(this).text())) {
+                  console.log($this);
+                  console.log(this);
+                  $this.appendTo(this);
                 }
                 if ($this[0] === this) {
                   selfFound = true;
@@ -210,15 +213,13 @@ Version
                                       language dom node to translate.
         */
 
-        var $currentLanguageDomNode, $currentTextNodeToTranslate, $lastLanguageDomNode, $lastTextNodeToTranslate, $nodesToIterate, self;
+        var $currentLanguageDomNode, $currentTextNodeToTranslate, $lastLanguageDomNode, $lastTextNodeToTranslate, self;
         $currentTextNodeToTranslate = null;
         $currentLanguageDomNode = null;
         $lastTextNodeToTranslate = null;
         $lastLanguageDomNode = null;
         self = this;
-        $nodesToIterate = this.$domNodes.parent.find(':not(iframe)').contents();
-        console.log($nodesToIterate);
-        $nodesToIterate.each(function() {
+        this.$domNodes.parent.find(':not(iframe)').contents().each(function() {
           var $currentDomNode, match;
           $currentDomNode = $(this);
           if ($.inArray(this.nodeName.toLowerCase(), self._options.replaceDomNodeNames) !== -1) {
