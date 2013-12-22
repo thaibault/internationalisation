@@ -56,9 +56,7 @@ directly in markup. See how easy it is:
 
     <p>
         Your englisch version.
-        <!--deDE:
-            Ihre deutsche Variante.
-        -->
+        <!--deDE:Ihre deutsche Variante.-->
         <!--frFR:
             Sa version française.
         -->
@@ -88,7 +86,7 @@ translation node. In this case you can simple wrap a self defined dom node.
         Ihre deutsche Variante mit eingebetteten <strong>dom Knoten</strong>.
     -->
     <!--frFR:
-        Votre version englisch <strong>dom nodes</strong> à l'intérieur.
+        Votre version français <strong>dom nodes</strong> à l'intérieur.
     -->
 
 Usually the language dom node precedes the text node to translate. It is
@@ -109,15 +107,8 @@ containing text.
 
     #!HTML
 
-    <!--|deDE:
-        Ihre deutsche Variante mit eingebetteten <strong>dom Knoten</strong>.
-    -->
-    <!--|frFR:
-        Votre version englisch <strong>dom nodes</strong> à l'intérieur.
-    -->
-    <langreplace>
-        Your englisch version with <strong>dom nodes</strong> inside.
-    </langreplace>
+    <!--|deDE:Ihre deutsche Variante.--><!--|frFR:Votre version français.-->
+    <p>Your englisch version.</p>
 
 With the below initialisation you can simple add this links everywhere in your
 page to switch language. On click you will switch the current language
