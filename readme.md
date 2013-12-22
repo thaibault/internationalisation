@@ -91,6 +91,34 @@ translation node. In this case you can simple wrap a self defined dom node.
         Votre version englisch <strong>dom nodes</strong> à l'intérieur.
     -->
 
+Usually the language dom node precedes the text node to translate. It is
+possible to write a special syntax to use a replacement for the next dom node
+containing text.
+<!--deDE:
+    Normalerweise folgt der Sprach-DOM-Knoten auf den Textknoten der übersetzt
+    werden soll. Es ist mit einer speziellen Syntax möglich einen
+    Sprach-DOM-Knoten für den darauf folgenden DOM-Knoten anzuwenden.
+-->
+<!--frFR:
+    Normalement, le nœud DOM voix suit le nœud de texte de la traduction
+    devrait être. Il est doté d'une syntaxe spéciale possible une Nœud voix Dom
+    pour le nœud DOM prochaine à utiliser.
+-->
+
+<!--showExample-->
+
+    #!HTML
+
+    <!--|deDE:
+        Ihre deutsche Variante mit eingebetteten <strong>dom Knoten</strong>.
+    -->
+    <!--|frFR:
+        Votre version englisch <strong>dom nodes</strong> à l'intérieur.
+    -->
+    <langreplace>
+        Your englisch version with <strong>dom nodes</strong> inside.
+    </langreplace>
+
 With the below initialisation you can simple add this links everywhere in your
 page to switch language. On click you will switch the current language
 interactively. Try it by yourself:
