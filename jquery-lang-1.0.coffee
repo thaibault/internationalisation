@@ -177,8 +177,9 @@ this.require [
 
         _movePreReplacementNodes: ->
             ###
-                Moves pre replacement dom nodes behind translation text to use
-                the same translation algorithm for both.
+                Moves pre replacement dom nodes into next dom node behind
+                translation text to use the same translation algorithm for
+                both.
 
                 **returns {$.Lang}** - Returns the current instance.
             ###
@@ -194,8 +195,10 @@ this.require [
                         $this = $ this
                         selfFound = false
                         $this.parent().contents().each ->
-                            if selfFound and $.trim this.textContent
-                                $this.insertAfter this
+                            if selfFound and $.trim $(this).text()
+                                console.log $this
+                                console.log this
+                                $this.appendTo this
                             if $this[0] is this
                                 selfFound = true
                             true
@@ -214,11 +217,7 @@ this.require [
             $lastTextNodeToTranslate = null
             $lastLanguageDomNode = null
             self = this
-            $nodesToIterate = this.$domNodes.parent.find(
-                ':not(iframe)'
-            ).contents()
-            console.log $nodesToIterate
-            $nodesToIterate.each ->
+            this.$domNodes.parent.find(':not(iframe)').contents().each ->
                 $currentDomNode = $ this
                 if $.inArray(
                     this.nodeName.toLowerCase(),
