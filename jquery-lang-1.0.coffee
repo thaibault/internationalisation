@@ -114,7 +114,6 @@ this.require [
                 onSwitched: $.noop()
                 onSwitch: $.noop()
             super options
-            # TODO document new features.
             this._options.preReplacementLanguagePattern = this.stringFormat(
                 this._options.preReplacementLanguagePattern,
                 this._options.replacementLanguagePattern.substr(

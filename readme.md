@@ -16,7 +16,8 @@ License
 
 endregion -->
 
-<!--|deDE:Einsatz--><!--|frFR:Utilisier-->
+<!--|deDE:Einsatz-->
+<!--|frFR:Utilisier-->
 Use case
 --------
 
@@ -31,7 +32,8 @@ internationalization.
     client l'internationalisation.
 -->
 
-<!--deDE:Verwendung--><!--frFR:Demande-->
+<!--|deDE:Verwendung-->
+<!--|frFR:Demande-->
 Usage
 -----
 
