@@ -171,7 +171,7 @@ Version
             Moves pre replacement dom nodes behind translation text to use
             the same translation algorithm for both.
         
-            **returns {$.Lang}**  - Returns the current instance.
+            **returns {$.Lang}** - Returns the current instance.
         */
 
         var self;
@@ -186,10 +186,13 @@ Version
               $this = $(this);
               selfFound = false;
               return $this.parent().contents().each(function() {
-                if (selfFound) {
+                if (selfFound && $.trim(this.textContent)) {
                   $this.insertAfter(this);
                 }
-                return selfFound = $this[0] === this;
+                if ($this[0] === this) {
+                  selfFound = true;
+                }
+                return true;
               });
             }
           }
@@ -201,19 +204,21 @@ Version
         /*
             Normalizes a given language string.
         
-            **language {String}**    - New language.
+            **language {String}**   - New language.
         
-            **returns {domNode[]}**  - Return a tuple of last text and
-                                       language dom node to translate.
+            **returns {domNode[]}** - Return a tuple of last text and
+                                      language dom node to translate.
         */
 
-        var $currentLanguageDomNode, $currentTextNodeToTranslate, $lastLanguageDomNode, $lastTextNodeToTranslate, self;
+        var $currentLanguageDomNode, $currentTextNodeToTranslate, $lastLanguageDomNode, $lastTextNodeToTranslate, $nodesToIterate, self;
         $currentTextNodeToTranslate = null;
         $currentLanguageDomNode = null;
         $lastTextNodeToTranslate = null;
         $lastLanguageDomNode = null;
         self = this;
-        this.$domNodes.parent.find(':not(iframe)').contents().each(function() {
+        $nodesToIterate = this.$domNodes.parent.find(':not(iframe)').contents();
+        console.log($nodesToIterate);
+        $nodesToIterate.each(function() {
           var $currentDomNode, match;
           $currentDomNode = $(this);
           if ($.inArray(this.nodeName.toLowerCase(), self._options.replaceDomNodeNames) !== -1) {
@@ -466,8 +471,8 @@ Version
 
       Lang.prototype._switchCurrentLanguageIndicator = function(language) {
         /*
-            Switches the current language indicator in language triggered
-            dom nodes.
+            Switches the current language indicator in language switch
+            triggered dom nodes.
         
             **language {String}** - The new language to switch to.
         
