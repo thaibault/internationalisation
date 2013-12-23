@@ -74,8 +74,9 @@ this.require [
         # region special
 
         initialize: (
-            options={}, @currentLanguage='', @_$domNodeToFade=null,
-            @_numberOfFadedDomNodes=0, @_replacements=[]
+            options={}, @currentLanguage='', @knownLanguage={},
+            @_$domNodeToFade=null, @_numberOfFadedDomNodes=0,
+            @_replacements=[], @_textNodesWithKnownLanguage={}
         ) ->
             ###
                 Initializes the plugin. Current language is set and later
@@ -113,6 +114,7 @@ this.require [
                     frFR: ['fr', 'fr-fr', 'french']
                 onSwitched: $.noop()
                 onSwitch: $.noop()
+                domNode: knownLanguage: 'div.toc'
             super options
             this._options.preReplacementLanguagePattern = this.stringFormat(
                 this._options.preReplacementLanguagePattern,
@@ -122,7 +124,7 @@ this.require [
                 this._options.toolsLockDescription, this.__name__)
             this._options.cookieDescription = this.stringFormat(
                 this._options.cookieDescription, this.__name__)
-            this.$domNodes = this.grabDomNode()
+            this.$domNodes = this.grabDomNode this._options.domNode
             this.$domNodes.switchLanguageButtons = $(
                 "a[href^=\"##{this._options.languageHashPrefix}\"]")
             this._movePreReplacementNodes()
@@ -214,6 +216,7 @@ this.require [
             $currentLanguageDomNode = null
             $lastTextNodeToTranslate = null
             $lastLanguageDomNode = null
+            this.knownLanguage = {}
             self = this
             this.$domNodes.parent.find(':not(iframe)').contents().each ->
                 $currentDomNode = $ this
@@ -235,6 +238,9 @@ this.require [
                         match = this.textContent.match new RegExp(
                             self._options.replacementLanguagePattern)
                         if match and match[1] is language
+                            self.knownLanguage[$.trim(
+                                $currentTextNodeToTranslate.text()
+                            )] = $.trim match[2]
                             self._registerTextNodeToChange(
                                 $currentTextNodeToTranslate,
                                 $currentDomNode, match,
@@ -254,6 +260,26 @@ this.require [
                     $currentTextNodeToTranslate = null
                     $currentDomNode = null
                 true
+
+            # TODO
+            this._textNodesWithKnownLanguage = {}
+            self = this
+            this.$domNodes.knownLanguage.find(
+                ':not(iframe)'
+            ).contents().each ->
+                $currentDomNode = $ this
+                # NOTE: We skip empty and nested text nodes
+                if($.inArray(
+                    this.nodeName.toLowerCase(),
+                    self._options.replaceDomNodeNames
+                ) isnt -1 and $.trim($currentDomNode.text()) and
+                    $currentDomNode.parents(
+                        self._options.replaceDomNodeNames.join()
+                    ).length is 0 and self.knownLanguage[$.trim(this.textContent)]?
+                )
+                    self._registerTextNodeToChange $currentDomNode
+                    self._textNodesWithKnownLanguage[self.knownLanguage[$.trim(this.textContent)]] = this
+
             [$lastTextNodeToTranslate, $lastLanguageDomNode]
         _normalizeLanguage: (language) ->
             ###
@@ -342,12 +368,13 @@ this.require [
                 this._$domNodeToFade = $parent
             else
                 this._$domNodeToFade = this._$domNodeToFade.add $parent
-            this._replacements.push(
-                $textNodeToTranslate: $currentTextNodeToTranslate
-                $commentNodeToReplace: $currentDomNode
-                textToReplace: match[2]
-                $parent: $parent
-                $currentLanguageDomNode: $currentLanguageDomNode)
+            if $currentDomNode?
+                this._replacements.push(
+                    $textNodeToTranslate: $currentTextNodeToTranslate
+                    $commentNodeToReplace: $currentDomNode
+                    textToReplace: match[2]
+                    $parent: $parent
+                    $currentLanguageDomNode: $currentLanguageDomNode)
             this
         _checkLastTextNodeHavingLanguageIndicator: (
             $lastTextNodeToTranslate, $lastLanguageDomNode
@@ -449,6 +476,11 @@ this.require [
                         replacement.textToReplace)
                 replacement.$currentLanguageDomNode.remove()
                 replacement.$commentNodeToReplace.remove()
+
+            # TODO
+            $.each this._textNodesWithKnownLanguage, (key, value) ->
+                value.textContent = key
+
             $.cookie this._options.cookieDescription, language
             this.currentLanguage = language
             this
