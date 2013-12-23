@@ -110,6 +110,33 @@ containing text.
     <!--|deDE:Ihre deutsche Variante.--><!--|frFR:Votre version français.-->
     <p>Your englisch version.</p>
 
+Its possible to save one translation once if you specify the area with known
+translations.
+<!--deDE:
+    Es ist möglich eine Übersetzung an nur einem Ort zu speichern, sofern der
+    Bereich mit bekannten Übersetzungen markiert wird.
+-->
+<!--frFR:
+    Il est possible d'enregistrer une traduction en un seul endroit, à moins
+    que le Région est marquée avec des traductions connues.
+-->
+
+<!--showExample-->
+
+    #!HTML
+
+    <!--The "div.toc" selector defines the default known language area.-->
+    <div class="toc">
+      <ul>
+        <li><a href="title-1">title 1</a></li>
+          <ul>
+            <li><a href="title-2">title 2</a></li>
+          </ul>
+      </ul>
+    </div>
+    <h1 id="title-1">title 1<!--deDE:Titel 1--><!--frFR:titre 1--></h1>
+    <h2 id="title-2">title 2<!--deDE:Titel 2--><!--frFR:titre 2--></h2>
+
 With the below initialisation you can simple add this links everywhere in your
 page to switch language. On click you will switch the current language
 interactively. Try it by yourself:
@@ -159,25 +186,27 @@ to initialize the plugin with different configuration.
                 domNodeClassPrefix: '',
                 fadeEffect: true,
                 textNodeParent: {
-                    fadeIn: {duration: 'normal'},
-                    fadeOut: {duration: 'normal'}
+                    fadeIn: {duration: 'fast'},
+                    fadeOut: {duration: 'fast']
                 },
+                preReplacementLanguagePattern: '^\\|({1})$',
                 replacementLanguagePattern: '^([a-z]{2}[A-Z]{2}):((.|\\s)*)$',
                 currentLanguagePattern: '^[a-z]{2}[A-Z]{2}$',
                 replacementDomNodeName: '#comment',
-                replaceDomNodeName: {'#text', 'langreplace'],
+                replaceDomNodeNames: ['#text', 'langreplace'],
                 toolsLockDescription: '{1}Switch',
                 languageHashPrefix: 'lang-',
                 currentLanguageIndicatorClassName: 'current',
                 cookieDescription: '{1}Last',
                 languageMapping: {
-                    deDE: ['de', 'de-de'],
+                    deDE: ['de', 'de-de', 'german', 'deutsch'],
                     enUS: ['en', 'en-us'],
-                    enEN: ['en-en'],
-                    frFR: ['fr', 'fr-fr']
-                },
-                onSwitched: $.noop()
-                onSwitch: $.noop()
+                    enEN: ['en-en', 'english'],
+                    frFR: ['fr', 'fr-fr', 'french']
+                }
+                onSwitched: $.noop(),
+                onSwitch: $.noop(),
+                domNode: {knownLanguage: 'div.toc'}
             });
         });
     </script>
