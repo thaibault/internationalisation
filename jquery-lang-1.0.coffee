@@ -128,12 +128,13 @@ this.require [
             this.$domNodes.switchLanguageButtons = $(
                 "a[href^=\"##{this._options.languageHashPrefix}\"]")
             this._movePreReplacementNodes()
-            this.currentLanguage = this._options.default
+            this.currentLanguage = this._normalizeLanguage(
+                this._options.default)
             # NOTE: Only determine current language indicator if we haven't an
             # initial language switch.
             newLanguage = this._determineUsefulLanguage()
             if this.currentLanguage is newLanguage
-                this._switchCurrentLanguageIndicator this.currentLanguage
+                this._switchCurrentLanguageIndicator newLanguage
             else
                 this.switch newLanguage
             this.on(
@@ -317,18 +318,20 @@ this.require [
                 this.debug(
                     'Determine "{1}", because of cookie information.',
                     $.cookie this._options.cookieDescription)
-                return $.cookie this._options.cookieDescription
-            if navigator.language?
+                result = $.cookie this._options.cookieDescription
+            else if navigator.language?
                 $.cookie this._options.cookieDescription, navigator.language
                 this.debug(
                     'Determine "{1}", because of browser settings.',
                     $.cookie this._options.cookieDescription)
-                return navigator.language
-            $.cookie this._options.cookieDescription, this._options.default
-            this.debug(
-                'Determine "{1}", because of default option.',
-                $.cookie this._options.cookieDescription)
-            this._options.default
+                result = navigator.language
+            else
+                $.cookie this._options.cookieDescription, this._options.default
+                this.debug(
+                    'Determine "{1}", because of default option.',
+                    $.cookie this._options.cookieDescription)
+                result = this._options.default
+            this._normalizeLanguage result
         _handleSwitchEffect: (language) ->
             ###
                 Depending an activated switching effect this method initialized
