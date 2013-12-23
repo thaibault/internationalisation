@@ -127,10 +127,10 @@ Version
         this.$domNodes = this.grabDomNode(this._options.domNode);
         this.$domNodes.switchLanguageButtons = $("a[href^=\"#" + this._options.languageHashPrefix + "\"]");
         this._movePreReplacementNodes();
-        this.currentLanguage = this._options["default"];
+        this.currentLanguage = this._normalizeLanguage(this._options["default"]);
         newLanguage = this._determineUsefulLanguage();
         if (this.currentLanguage === newLanguage) {
-          this._switchCurrentLanguageIndicator(this.currentLanguage);
+          this._switchCurrentLanguageIndicator(newLanguage);
         } else {
           this["switch"](newLanguage);
         }
@@ -314,18 +314,20 @@ Version
             **returns {String}** - Returns the determined language.
         */
 
+        var result;
         if ($.cookie(this._options.cookieDescription) != null) {
           this.debug('Determine "{1}", because of cookie information.', $.cookie(this._options.cookieDescription));
-          return $.cookie(this._options.cookieDescription);
-        }
-        if (navigator.language != null) {
+          result = $.cookie(this._options.cookieDescription);
+        } else if (navigator.language != null) {
           $.cookie(this._options.cookieDescription, navigator.language);
           this.debug('Determine "{1}", because of browser settings.', $.cookie(this._options.cookieDescription));
-          return navigator.language;
+          result = navigator.language;
+        } else {
+          $.cookie(this._options.cookieDescription, this._options["default"]);
+          this.debug('Determine "{1}", because of default option.', $.cookie(this._options.cookieDescription));
+          result = this._options["default"];
         }
-        $.cookie(this._options.cookieDescription, this._options["default"]);
-        this.debug('Determine "{1}", because of default option.', $.cookie(this._options.cookieDescription));
-        return this._options["default"];
+        return this._normalizeLanguage(result);
       };
 
       Lang.prototype._handleSwitchEffect = function(language) {
