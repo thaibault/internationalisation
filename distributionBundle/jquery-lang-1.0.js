@@ -60,16 +60,18 @@ Version
 
       Lang.prototype.__name__ = 'Lang';
 
-      Lang.prototype.initialize = function(options, currentLanguage, _$domNodeToFade, _numberOfFadedDomNodes, _replacements) {
+      Lang.prototype.initialize = function(options, currentLanguage, knownLanguage, _$domNodeToFade, _numberOfFadedDomNodes, _replacements, _textNodesWithKnownLanguage) {
         var newLanguage,
           _this = this;
         if (options == null) {
           options = {};
         }
         this.currentLanguage = currentLanguage != null ? currentLanguage : '';
+        this.knownLanguage = knownLanguage != null ? knownLanguage : {};
         this._$domNodeToFade = _$domNodeToFade != null ? _$domNodeToFade : null;
         this._numberOfFadedDomNodes = _numberOfFadedDomNodes != null ? _numberOfFadedDomNodes : 0;
         this._replacements = _replacements != null ? _replacements : [];
+        this._textNodesWithKnownLanguage = _textNodesWithKnownLanguage != null ? _textNodesWithKnownLanguage : {};
         /*
             Initializes the plugin. Current language is set and later
             needed dom nodes are grabbed.
@@ -113,13 +115,16 @@ Version
             frFR: ['fr', 'fr-fr', 'french']
           },
           onSwitched: $.noop(),
-          onSwitch: $.noop()
+          onSwitch: $.noop(),
+          domNode: {
+            knownLanguage: 'div.toc'
+          }
         };
         Lang.__super__.initialize.call(this, options);
         this._options.preReplacementLanguagePattern = this.stringFormat(this._options.preReplacementLanguagePattern, this._options.replacementLanguagePattern.substr(1, this._options.replacementLanguagePattern.length - 2));
         this._options.toolsLockDescription = this.stringFormat(this._options.toolsLockDescription, this.__name__);
         this._options.cookieDescription = this.stringFormat(this._options.cookieDescription, this.__name__);
-        this.$domNodes = this.grabDomNode();
+        this.$domNodes = this.grabDomNode(this._options.domNode);
         this.$domNodes.switchLanguageButtons = $("a[href^=\"#" + this._options.languageHashPrefix + "\"]");
         this._movePreReplacementNodes();
         this.currentLanguage = this._options["default"];
@@ -217,6 +222,7 @@ Version
         $currentLanguageDomNode = null;
         $lastTextNodeToTranslate = null;
         $lastLanguageDomNode = null;
+        this.knownLanguage = {};
         self = this;
         this.$domNodes.parent.find(':not(iframe)').contents().each(function() {
           var $currentDomNode, match;
@@ -230,6 +236,7 @@ Version
             if (this.nodeName === self._options.replacementDomNodeName) {
               match = this.textContent.match(new RegExp(self._options.replacementLanguagePattern));
               if (match && match[1] === language) {
+                self.knownLanguage[$.trim($currentTextNodeToTranslate.text())] = $.trim(match[2]);
                 self._registerTextNodeToChange($currentTextNodeToTranslate, $currentDomNode, match, $currentLanguageDomNode);
                 $lastTextNodeToTranslate = $currentTextNodeToTranslate;
                 $lastLanguageDomNode = $currentLanguageDomNode;
@@ -248,6 +255,16 @@ Version
             $currentDomNode = null;
           }
           return true;
+        });
+        this._textNodesWithKnownLanguage = {};
+        self = this;
+        this.$domNodes.knownLanguage.find(':not(iframe)').contents().each(function() {
+          var $currentDomNode;
+          $currentDomNode = $(this);
+          if ($.inArray(this.nodeName.toLowerCase(), self._options.replaceDomNodeNames) !== -1 && $.trim($currentDomNode.text()) && $currentDomNode.parents(self._options.replaceDomNodeNames.join()).length === 0 && (self.knownLanguage[$.trim(this.textContent)] != null)) {
+            self._registerTextNodeToChange($currentDomNode);
+            return self._textNodesWithKnownLanguage[self.knownLanguage[$.trim(this.textContent)]] = this;
+          }
         });
         return [$lastTextNodeToTranslate, $lastLanguageDomNode];
       };
@@ -348,13 +365,15 @@ Version
         } else {
           this._$domNodeToFade = this._$domNodeToFade.add($parent);
         }
-        this._replacements.push({
-          $textNodeToTranslate: $currentTextNodeToTranslate,
-          $commentNodeToReplace: $currentDomNode,
-          textToReplace: match[2],
-          $parent: $parent,
-          $currentLanguageDomNode: $currentLanguageDomNode
-        });
+        if ($currentDomNode != null) {
+          this._replacements.push({
+            $textNodeToTranslate: $currentTextNodeToTranslate,
+            $commentNodeToReplace: $currentDomNode,
+            textToReplace: match[2],
+            $parent: $parent,
+            $currentLanguageDomNode: $currentLanguageDomNode
+          });
+        }
         return this;
       };
 
@@ -464,6 +483,9 @@ Version
           replacement.$currentLanguageDomNode.remove();
           replacement.$commentNodeToReplace.remove();
         }
+        $.each(this._textNodesWithKnownLanguage, function(key, value) {
+          return value.textContent = key;
+        });
         $.cookie(this._options.cookieDescription, language);
         this.currentLanguage = language;
         return this;
