@@ -548,23 +548,32 @@ this.require [['jQuery', 'jquery-2.0.3']], ($) ->
 
         # region event handling
 
-        debounce: (eventFunction, thresholdInMilliseconds=300) ->
+        debounce: (
+            eventFunction, thresholdInMilliseconds=600, additionalArguments...
+        ) ->
             ###
                 Prevents event functions from triggering to often by defining a
-                minimal span between each function call.
+                minimal span between each function call. Additional arguments
+                given to this function will be forwarded to given event
+                function call.
 
-                **returns {Function}** - Returns the wrapped method.
+                **eventFunction** {Function}         - The function to call
+                                                       debounced
+
+                **thresholdInMilliseconds** {Number} - The minimum time span
+                                                       between each function
+                                                       call
+
+                **returns {Function}**               - Returns the wrapped
+                                                       method
             ###
-            timeoutID = null
+            lock = false
             ->
-                if timeoutID?
-                    window.clearTimeout timeoutID
+                if not lock
+                    lock = true
                     timeoutID = setTimeout(
-                        eventFunction, thresholdInMilliseconds)
-                else
-                    result = eventFunction()
-                    timeoutID = setTimeout $.noop(), thresholdInMilliseconds
-                    result
+                        (-> lock = false), thresholdInMilliseconds)
+                    eventFunction.apply this, additionalArguments
         fireEvent: (
             eventName, callOnlyOptionsMethod=false, scope=this,
             additionalArguments...
@@ -572,7 +581,8 @@ this.require [['jQuery', 'jquery-2.0.3']], ($) ->
             ###
                 Searches for internal event handler methods and runs them by
                 default. In addition this method searches for a given event
-                method by the options object.
+                method by the options object. Additional arguments are
+                forwareded to respective event functions.
 
                 **eventName {String}                - An event name.
 
