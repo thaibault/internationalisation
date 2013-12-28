@@ -289,10 +289,18 @@ as &quot;scope&quot; or &quot;this&quot; if nothing is provided.</p>
                 </div>
                 
                 <div class="method">
-                  <h4>debounce(eventFunction, thresholdInMilliseconds)</h4>
+                  <h4>debounce(eventFunction, thresholdInMilliseconds, additionalArguments...)</h4>
                   <p>Prevents event functions from triggering to often by defining a
-minimal span between each function call.</p>
-<p><strong>returns {Function}</strong> - Returns the wrapped method.</p>
+minimal span between each function call. Additional arguments
+given to this function will be forwarded to given event
+function call.</p>
+<p><strong>eventFunction</strong> {Function}         - The function to call
+                                       debounced</p>
+<p><strong>thresholdInMilliseconds</strong> {Number} - The minimum time span
+                                       between each function
+                                       call</p>
+<p><strong>returns {Function}</strong>               - Returns the wrapped
+                                       method</p>
 
                 </div>
                 
@@ -300,7 +308,8 @@ minimal span between each function call.</p>
                   <h4>fireEvent(eventName, callOnlyOptionsMethod, scope, additionalArguments...)</h4>
                   <p>Searches for internal event handler methods and runs them by
 default. In addition this method searches for a given event
-method by the options object.</p>
+method by the options object. Additional arguments are
+forwareded to respective event functions.</p>
 <p>**eventName {String}                - An event name.</p>
 <p><strong>callOnlyOptionsMethod {Boolean}</strong> - Prevents from trying to
                                       call an internal event

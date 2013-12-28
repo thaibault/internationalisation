@@ -620,28 +620,38 @@ Version
         return $.proxy.apply($, parameter);
       };
 
-      Tools.prototype.debounce = function(eventFunction, thresholdInMilliseconds) {
-        var timeoutID;
+      Tools.prototype.debounce = function() {
+        var additionalArguments, eventFunction, lock, thresholdInMilliseconds;
+        eventFunction = arguments[0], thresholdInMilliseconds = arguments[1], additionalArguments = 3 <= arguments.length ? __slice.call(arguments, 2) : [];
         if (thresholdInMilliseconds == null) {
-          thresholdInMilliseconds = 300;
+          thresholdInMilliseconds = 600;
         }
         /*
             Prevents event functions from triggering to often by defining a
-            minimal span between each function call.
+            minimal span between each function call. Additional arguments
+            given to this function will be forwarded to given event
+            function call.
         
-            **returns {Function}** - Returns the wrapped method.
+            **eventFunction** {Function}         - The function to call
+                                                   debounced
+        
+            **thresholdInMilliseconds** {Number} - The minimum time span
+                                                   between each function
+                                                   call
+        
+            **returns {Function}**               - Returns the wrapped
+                                                   method
         */
 
-        timeoutID = null;
+        lock = false;
         return function() {
-          var result;
-          if (timeoutID != null) {
-            window.clearTimeout(timeoutID);
-            return timeoutID = setTimeout(eventFunction, thresholdInMilliseconds);
-          } else {
-            result = eventFunction();
-            timeoutID = setTimeout($.noop(), thresholdInMilliseconds);
-            return result;
+          var timeoutID;
+          if (!lock) {
+            lock = true;
+            timeoutID = setTimeout((function() {
+              return lock = false;
+            }), thresholdInMilliseconds);
+            return eventFunction.apply(this, additionalArguments);
           }
         };
       };
@@ -658,7 +668,8 @@ Version
         /*
             Searches for internal event handler methods and runs them by
             default. In addition this method searches for a given event
-            method by the options object.
+            method by the options object. Additional arguments are
+            forwareded to respective event functions.
         
             **eventName {String}                - An event name.
         
