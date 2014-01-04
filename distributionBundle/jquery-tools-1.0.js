@@ -108,7 +108,11 @@ Version
         this._options = _options != null ? _options : {};
         this._defaultOptions = _defaultOptions != null ? _defaultOptions : {
           logging: false,
-          domNodeSelectorPrefix: 'body'
+          domNodeSelectorPrefix: 'body',
+          domNodes: {
+            hideJavaScriptEnabled: '.hidden-on-javascript-enabled',
+            showJavaScriptEnabled: '.visible-on-javascript-enabled'
+          }
         };
         this._locks = _locks != null ? _locks : {};
         /*
@@ -128,6 +132,8 @@ Version
             console[method] = $.noop();
           }
         }
+        $(this._defaultOptions.domNodeSelectorPrefix + ' ' + this._defaultOptions.domNodes.hideJavaScriptEnabled).hide();
+        $(this._defaultOptions.domNodeSelectorPrefix + ' ' + this._defaultOptions.domNodes.showJavaScriptEnabled).show();
         return this;
       }
 
