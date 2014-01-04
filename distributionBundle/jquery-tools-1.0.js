@@ -132,8 +132,16 @@ Version
             console[method] = $.noop();
           }
         }
-        $(this._defaultOptions.domNodeSelectorPrefix + ' ' + this._defaultOptions.domNodes.hideJavaScriptEnabled).hide();
-        $(this._defaultOptions.domNodeSelectorPrefix + ' ' + this._defaultOptions.domNodes.showJavaScriptEnabled).show();
+        /* TODO $(
+            this._defaultOptions.domNodeSelectorPrefix + ' ' +
+            this._defaultOptions.domNodes.hideJavaScriptEnabled
+        ).hide()
+        $(
+            this._defaultOptions.domNodeSelectorPrefix + ' ' +
+            this._defaultOptions.domNodes.showJavaScriptEnabled
+        ).show()
+        */
+
         return this;
       }
 
