@@ -118,14 +118,14 @@ this.require [['jQuery', 'jquery-2.0.3']], ($) ->
                 window.console = {} if not window.console?
                 # Only stub the $ empty method.
                 console[method] = $.noop() if not window.console[method]?
-            ### TODO $(
+            $(
                 this._defaultOptions.domNodeSelectorPrefix + ' ' +
                 this._defaultOptions.domNodes.hideJavaScriptEnabled
             ).hide()
             $(
                 this._defaultOptions.domNodeSelectorPrefix + ' ' +
                 this._defaultOptions.domNodes.showJavaScriptEnabled
-            ).show()###
+            ).show()
             # NOTE: A constructor doesn't return last statement by default.
             return this
         destructor: ->
