@@ -133,11 +133,15 @@ this.require [['jQuery', 'jquery-2.0.3']], ($) ->
                 $(
                     this._defaultOptions.domNodeSelectorPrefix + ' ' +
                     this._defaultOptions.domNodes.hideJavaScriptEnabled
-                ).hide()
+                ).filter(->
+                    not $(this).data 'javaScriptDependentContentHide'
+                ).data('javaScriptDependentContentHide', true).hide()
                 $(
                     this._defaultOptions.domNodeSelectorPrefix + ' ' +
                     this._defaultOptions.domNodes.showJavaScriptEnabled
-                ).show()
+                ).filter(->
+                    not $(this).data 'javaScriptDependentContentShow'
+                ).data('javaScriptDependentContentShow', true).show()
             # NOTE: A constructor doesn't return last statement by default.
             return this
         destructor: ->
