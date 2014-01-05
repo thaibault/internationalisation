@@ -282,10 +282,10 @@ this.require [
                     this.nodeName.toLowerCase(),
                     self._options.replaceDomNodeNames
                 ) isnt -1 and $.trim($currentDomNode.text()) and
-                    $currentDomNode.parents(
-                        self._options.replaceDomNodeNames.join()
-                    ).length is 0 and self.knownLanguage[$.trim(
-                        this.textContent)]?
+                $currentDomNode.parents(
+                    self._options.replaceDomNodeNames.join()
+                ).length is 0 and self.knownLanguage[$.trim(
+                    this.textContent)]?
                 )
                     self._registerTextNodeToChange $currentDomNode
                     self._textNodesWithKnownLanguage[self.knownLanguage[$.trim(
