@@ -48,9 +48,17 @@ Version
       */
 
       /*
+          **self {Tools}**
+          Saves a reference to this class useful for introspection.
+      */
+
+      Tools.prototype.self = Tools;
+
+      /*
           **keyCode {Object}**
           Saves a mapping from key codes to their corresponding name.
       */
+
 
       Tools.prototype.keyCode = {
         BACKSPACE: 8,
@@ -85,6 +93,14 @@ Version
 
 
       Tools.prototype._consoleMethods = ['assert', 'clear', 'count', 'debug', 'dir', 'dirxml', 'error', 'exception', 'group', 'groupCollapsed', 'groupEnd', 'info', 'log', 'markTimeline', 'profile', 'profileEnd', 'table', 'time', 'timeEnd', 'timeStamp', 'trace', 'warn'];
+
+      /*
+          **_javaScriptDependentContentHandled {Boolean}**
+          Indicates weather javaScript dependent content where hide or shown.
+      */
+
+
+      Tools.prototype._javaScriptDependentContentHandled = false;
 
       /*
           **__tools__ {Boolean}**
@@ -132,8 +148,11 @@ Version
             console[method] = $.noop();
           }
         }
-        $(this._defaultOptions.domNodeSelectorPrefix + ' ' + this._defaultOptions.domNodes.hideJavaScriptEnabled).hide();
-        $(this._defaultOptions.domNodeSelectorPrefix + ' ' + this._defaultOptions.domNodes.showJavaScriptEnabled).show();
+        if (!this.self.prototype._javaScriptDependentContentHandled) {
+          this.self.prototype._javaScriptDependentContentHandled = true;
+          $(this._defaultOptions.domNodeSelectorPrefix + ' ' + this._defaultOptions.domNodes.hideJavaScriptEnabled).hide();
+          $(this._defaultOptions.domNodeSelectorPrefix + ' ' + this._defaultOptions.domNodes.showJavaScriptEnabled).show();
+        }
         return this;
       }
 
