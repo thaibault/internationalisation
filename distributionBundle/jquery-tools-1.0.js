@@ -150,8 +150,12 @@ Version
         }
         if (!this.self.prototype._javaScriptDependentContentHandled) {
           this.self.prototype._javaScriptDependentContentHandled = true;
-          $(this._defaultOptions.domNodeSelectorPrefix + ' ' + this._defaultOptions.domNodes.hideJavaScriptEnabled).hide();
-          $(this._defaultOptions.domNodeSelectorPrefix + ' ' + this._defaultOptions.domNodes.showJavaScriptEnabled).show();
+          $(this._defaultOptions.domNodeSelectorPrefix + ' ' + this._defaultOptions.domNodes.hideJavaScriptEnabled).filter(function() {
+            return !$(this).data('javaScriptDependentContentHide');
+          }).data('javaScriptDependentContentHide', true).hide();
+          $(this._defaultOptions.domNodeSelectorPrefix + ' ' + this._defaultOptions.domNodes.showJavaScriptEnabled).filter(function() {
+            return !$(this).data('javaScriptDependentContentShow');
+          }).data('javaScriptDependentContentShow', true).show();
         }
         return this;
       }
