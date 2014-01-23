@@ -285,17 +285,15 @@ this.require [
                 ).length is 0 and self.knownLanguage[$.trim(
                     this.textContent)]?
                 )
-                    self._registerTextNodeToChange $currentDomNode
-                    if self._textNodesWithKnownLanguage[self.knownLanguage[$.trim(
-                        this.textContent
-                    )]]?
-                        self._textNodesWithKnownLanguage[self.knownLanguage[$.trim(
-                            this.textContent
-                        )]].push this
+                    self._textNodesWithKnownLanguage
+                    if(self._textNodesWithKnownLanguage\
+                        [self.knownLanguage[$.trim(this.textContent)]]?
+                    )
+                        self._textNodesWithKnownLanguage[self.knownLanguage\
+                            [$.trim(this.textContent)]].push this
                     else
-                        self._textNodesWithKnownLanguage[self.knownLanguage[$.trim(
-                            this.textContent
-                        )]] = [this]
+                        self._textNodesWithKnownLanguage[self.knownLanguage\
+                            [$.trim(this.textContent)]] = [this]
             this
         _normalizeLanguage: (language) ->
             ###
