@@ -259,7 +259,7 @@ Version
 
       Lang.prototype._registerKnownTextNodes = function() {
         /*
-            Iterates all text nodes in known an area with known
+            Iterates all text nodes in language known area with known
             translations.
         
             **returns {$.Lang}**  - Returns the current instance.
@@ -273,7 +273,11 @@ Version
           $currentDomNode = $(this);
           if ($.inArray(this.nodeName.toLowerCase(), self._options.replaceDomNodeNames) !== -1 && $.trim($currentDomNode.text()) && $currentDomNode.parents(self._options.replaceDomNodeNames.join()).length === 0 && (self.knownLanguage[$.trim(this.textContent)] != null)) {
             self._registerTextNodeToChange($currentDomNode);
-            return self._textNodesWithKnownLanguage[self.knownLanguage[$.trim(this.textContent)]] = this;
+            if (self._textNodesWithKnownLanguage[self.knownLanguage[$.trim(this.textContent)]] != null) {
+              return self._textNodesWithKnownLanguage[self.knownLanguage[$.trim(this.textContent)]].push(this);
+            } else {
+              return self._textNodesWithKnownLanguage[self.knownLanguage[$.trim(this.textContent)]] = [this];
+            }
           }
         });
         return this;
@@ -496,7 +500,9 @@ Version
           replacement.$commentNodeToReplace.remove();
         }
         $.each(this._textNodesWithKnownLanguage, function(key, value) {
-          return value.textContent = key;
+          return $.each(value, function(subKey, value) {
+            return value.textContent = key;
+          });
         });
         $.cookie(this._options.cookieDescription, language);
         this.currentLanguage = language;
