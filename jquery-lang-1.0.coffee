@@ -264,7 +264,7 @@ this.require [
             [$lastTextNodeToTranslate, $lastLanguageDomNode]
         _registerKnownTextNodes: ->
             ###
-                Iterates all text nodes in known an area with known
+                Iterates all text nodes in language known area with known
                 translations.
 
                 **returns {$.Lang}**  - Returns the current instance.
@@ -286,9 +286,16 @@ this.require [
                     this.textContent)]?
                 )
                     self._registerTextNodeToChange $currentDomNode
-                    self._textNodesWithKnownLanguage[self.knownLanguage[$.trim(
+                    if self._textNodesWithKnownLanguage[self.knownLanguage[$.trim(
                         this.textContent
-                    )]] = this
+                    )]]?
+                        self._textNodesWithKnownLanguage[self.knownLanguage[$.trim(
+                            this.textContent
+                        )]].push this
+                    else
+                        self._textNodesWithKnownLanguage[self.knownLanguage[$.trim(
+                            this.textContent
+                        )]] = [this]
             this
         _normalizeLanguage: (language) ->
             ###
@@ -489,7 +496,8 @@ this.require [
                 replacement.$commentNodeToReplace.remove()
             # Translate registered known text nodes.
             $.each this._textNodesWithKnownLanguage, (key, value) ->
-                value.textContent = key
+                $.each value, (subKey, value) ->
+                    value.textContent = key
             $.cookie this._options.cookieDescription, language
             this.currentLanguage = language
             this
