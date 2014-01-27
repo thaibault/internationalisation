@@ -30,7 +30,7 @@ nosetests.xml
 
 # Vim temporary file
 *.swp
-.roperproject
+.ropeproject
 
 # PHPStorm and other IDE Files
 *.idea
