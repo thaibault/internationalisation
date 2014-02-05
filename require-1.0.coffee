@@ -441,8 +441,8 @@ class Require
             if(typeof(module) is 'object' and
                self::_isModuleLoaded module)
                 ###
-                    If module is already there make a recursive call with
-                    one module dependency less.
+                    If module is already there make a recursive call with one
+                    module dependency less.
                 ###
                 self::_load.apply Require, parameter
             else if (
@@ -470,8 +470,8 @@ class Require
                     self.context, self::_generateLoadedHandlerArguments(
                         parameter))
             ###
-                If other dependencies aren't determined yet try to
-                determine it now after a new dependency was loaded.
+                If other dependencies aren't determined yet try to determine it
+                now after a new dependency was loaded.
             ###
             if(self._callQueue.length and self::_isModuleLoaded(
                 self._callQueue[self._callQueue.length - 1])
@@ -536,7 +536,7 @@ class Require
         ###
             Generates an array of arguments from initially given arguments to
             the require constructor. The generated arguments are designed to
-            give loaded handler a useful scope
+            give the loaded handler a useful scope.
 
             **parameters {Object[]}** - Initially given arguments.
 
