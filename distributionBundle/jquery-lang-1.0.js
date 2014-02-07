@@ -176,6 +176,16 @@ Version
         return this;
       };
 
+      Lang.prototype.refresh = function() {
+        /*
+            Ensures current selected language.
+        
+            **returns {$.Lang}**  - Returns the current instance.
+        */
+
+        return this["switch"](this.currentLanguage, true);
+      };
+
       Lang.prototype._movePreReplacementNodes = function() {
         /*
             Moves pre replacement dom nodes into next dom node behind
