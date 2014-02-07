@@ -138,7 +138,11 @@ Version
         return this;
       };
 
-      Lang.prototype["switch"] = function(language) {
+      Lang.prototype["switch"] = function(language, force) {
+        var _this = this;
+        if (force == null) {
+          force = false;
+        }
         /*
             Switches the current language to given language. This method is
             mutual synchronized.
@@ -148,11 +152,10 @@ Version
             **returns {$.Lang}**  - Returns the current instance.
         */
 
-        var _this = this;
         this.acquireLock(this._options.toolsLockDescription, function() {
           var $lastLanguageDomNode, $lastTextNodeToTranslate, _ref1;
           language = _this._normalizeLanguage(language);
-          if (_this.currentLanguage !== language) {
+          if (force || _this.currentLanguage !== language) {
             _this.debug('Switch to "{1}".', language);
             _this._switchCurrentLanguageIndicator(language);
             _this.fireEvent('switch', true, _this, _this.currentLanguage, language);
