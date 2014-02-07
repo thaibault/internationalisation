@@ -176,6 +176,14 @@ this.require [
                     this.releaseLock this._options.toolsLockDescription
             this
 
+        refresh: ->
+            ###
+                Ensures current selected language.
+
+                **returns {$.Lang}**  - Returns the current instance.
+            ###
+            this.switch this.currentLanguage, true
+
     # endregion
 
     # region protected methods
