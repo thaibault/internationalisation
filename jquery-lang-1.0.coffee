@@ -151,6 +151,11 @@ this.require [
 
                 **language {String}** - New language.
 
+                **force {Boolean}**   - Indicates if the whole dom should be
+                                        checked again current language to
+                                        ensure every text node has right
+                                        content.
+
                 **returns {$.Lang}**  - Returns the current instance.
             ###
             this.acquireLock this._options.toolsLockDescription, =>
