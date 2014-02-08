@@ -128,8 +128,8 @@ this.require [
             this._movePreReplacementNodes()
             this.currentLanguage = this._normalizeLanguage(
                 this._options.default)
-            # NOTE: Only determine current language indicator if we haven't an
-            # initial language switch.
+            # NOTE: Only switch current language indicator if we haven't an
+            # initial language switch which will perform the indicator switch.
             newLanguage = this._determineUsefulLanguage()
             if this.currentLanguage is newLanguage
                 this._switchCurrentLanguageIndicator newLanguage
