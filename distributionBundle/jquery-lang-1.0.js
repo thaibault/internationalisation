@@ -571,9 +571,9 @@ Version
             }
             nodeName = replacement.$nodeToReplace[0].nodeName.toLowerCase();
             if (nodeName === '#comment') {
-              replacement.$textNodeToTranslate.after($("<!--" + lang + ":" + currentText + "-->"));
+              replacement.$textNodeToTranslate.after($("<!--" + currentLanguage + ":" + currentText + "-->"));
             } else {
-              replacement.$textNodeToTranslate.after($("<" + nodeName + ">" + lang + ":" + currentText + "</" + nodeName + ">").hide());
+              replacement.$textNodeToTranslate.after($(("<" + nodeName + ">" + currentLanguage + ":" + currentText + "<") + ("/" + nodeName + ">")).hide());
             }
             replacement.$textNodeToTranslate.after($("<!--" + language + "-->"));
             if (replacement.$textNodeToTranslate[0].nodeName === '#text') {
