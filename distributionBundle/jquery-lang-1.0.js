@@ -87,6 +87,10 @@ Version
           domNodeSelectorPrefix: 'body',
           "default": 'enUS',
           domNodeClassPrefix: '',
+          templateDelimiter: {
+            pre: '{{',
+            post: '}}'
+          },
           fadeEffect: true,
           textNodeParent: {
             fadeIn: {
@@ -99,7 +103,7 @@ Version
           preReplacementLanguagePattern: '^\\|({1})$',
           replacementLanguagePattern: '^([a-z]{2}[A-Z]{2}):((.|\\s)*)$',
           currentLanguagePattern: '^[a-z]{2}[A-Z]{2}$',
-          replacementDomNodeName: '#comment',
+          replacementDomNodeName: ['#comment', 'langreplacement'],
           replaceDomNodeNames: ['#text', 'langreplace'],
           toolsLockDescription: '{1}Switch',
           languageHashPrefix: 'lang-',
@@ -211,8 +215,12 @@ Version
         var self;
         self = this;
         this.$domNodes.parent.find(':not(iframe)').contents().each(function() {
-          var $this, match, regex, selfFound;
-          if (this.nodeName === self._options.replacementDomNodeName) {
+          var $this, match, nodeName, regex, selfFound;
+          nodeName = this.nodeName.toLowerCase();
+          if ($.inArray(nodeName, self._options.replacementDomNodeName) !== -1) {
+            if ($.inArray(nodeName, ['#comment', '#text']) === -1) {
+              $(this).hide();
+            }
             regex = new RegExp(self._options.preReplacementLanguagePattern);
             match = this.textContent.match(regex);
             if (match && match[0]) {
@@ -258,15 +266,16 @@ Version
         this.knownLanguage = {};
         self = this;
         this.$domNodes.parent.find(':not(iframe)').contents().each(function() {
-          var $currentDomNode, match;
+          var $currentDomNode, match, nodeName;
           $currentDomNode = $(this);
-          if ($.inArray(this.nodeName.toLowerCase(), self._options.replaceDomNodeNames) !== -1) {
+          nodeName = this.nodeName.toLowerCase();
+          if ($.inArray(nodeName.toLowerCase(), self._options.replaceDomNodeNames) !== -1) {
             if ($.trim($currentDomNode.text()) && $currentDomNode.parents(self._options.replaceDomNodeNames.join()).length === 0) {
               $lastLanguageDomNode = self._checkLastTextNodeHavingLanguageIndicator($lastTextNodeToTranslate, $lastLanguageDomNode, ensure);
               $currentTextNodeToTranslate = $currentDomNode;
             }
           } else if ($currentTextNodeToTranslate != null) {
-            if (this.nodeName === self._options.replacementDomNodeName) {
+            if ($.inArray(nodeName, self._options.replacementDomNodeName) !== -1) {
               match = this.textContent.match(new RegExp(self._options.replacementLanguagePattern));
               if (match && match[1] === language) {
                 self.knownLanguage[$.trim($currentTextNodeToTranslate.text())] = $.trim(match[2]);
@@ -421,7 +430,7 @@ Version
         if ($currentDomNode != null) {
           this._replacements.push({
             $textNodeToTranslate: $currentTextNodeToTranslate,
-            $commentNodeToReplace: $currentDomNode,
+            $nodeToReplace: $currentDomNode,
             textToReplace: match[2],
             $parent: $parent,
             $currentLanguageDomNode: $currentLanguageDomNode
@@ -520,38 +529,47 @@ Version
             **returns {$.Lang}**  - Returns the current instance.
         */
 
-        var currentDomNodeFound, currentText, replacement, _i, _len, _ref1;
+        var currentDomNodeFound, currentText, nodeName, replacement, trimmedText, _i, _len, _ref1;
         _ref1 = this._replacements;
         for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
           replacement = _ref1[_i];
-          if (replacement.$currentLanguageDomNode == null) {
-            currentDomNodeFound = false;
-            replacement.$textNodeToTranslate.parent().contents().each(function() {
-              if (currentDomNodeFound) {
-                replacement.$currentLanguageDomNode = $(this);
-                return false;
-              }
-              if (this === replacement.$textNodeToTranslate[0]) {
-                currentDomNodeFound = true;
-              }
-              return true;
-            });
-          }
           currentText = replacement.$textNodeToTranslate.html();
           if (replacement.$textNodeToTranslate[0].nodeName === '#text') {
             currentText = replacement.$textNodeToTranslate[0].textContent;
           }
-          if (language === replacement.$currentLanguageDomNode[0].textContent) {
-            throw Error(("Text node \"" + replacement.textToReplace + "\" is ") + 'marked as "' + replacement.$currentLanguageDomNode[0].textContent + '" and has same translation language as it already ' + 'is.');
+          trimmedText = $.trim(currentText);
+          if (!this._options.templateDelimiter || trimmedText.substr(-this._options.templateDelimiter.post.length) !== this._options.templateDelimiter.post && this._options.templateDelimiter.post) {
+            if (replacement.$currentLanguageDomNode == null) {
+              currentDomNodeFound = false;
+              replacement.$textNodeToTranslate.parent().contents().each(function() {
+                if (currentDomNodeFound) {
+                  replacement.$currentLanguageDomNode = $(this);
+                  return false;
+                }
+                if (this === replacement.$textNodeToTranslate[0]) {
+                  currentDomNodeFound = true;
+                }
+                return true;
+              });
+            }
+            if (language === replacement.$currentLanguageDomNode[0].textContent) {
+              throw Error(("Text node \"" + replacement.textToReplace + "\" is ") + 'marked as "' + replacement.$currentLanguageDomNode[0].textContent + '" and has same translation language as it already ' + 'is.');
+            }
+            nodeName = replacement.$nodeToReplace[0].nodeName.toLowerCase();
+            if (nodeName === '#comment') {
+              replacement.$textNodeToTranslate.after($("<!--" + replacement.$currentLanguageDomNode[0].textContent + (":" + currentText + "-->")));
+            } else {
+              replacement.$textNodeToTranslate.after($(("<" + nodeName + ">") + replacement.$currentLanguageDomNode[0].textContent + (":" + currentText + "</" + nodeName + ">")).hide());
+            }
+            replacement.$textNodeToTranslate.after($("<!--" + language + "-->"));
+            if (replacement.$textNodeToTranslate[0].nodeName === '#text') {
+              replacement.$textNodeToTranslate[0].textContent = replacement.textToReplace;
+            } else {
+              replacement.$textNodeToTranslate.html(replacement.textToReplace);
+            }
+            replacement.$currentLanguageDomNode.remove();
+            replacement.$nodeToReplace.remove();
           }
-          replacement.$textNodeToTranslate.after($("<!--" + ("" + replacement.$currentLanguageDomNode[0].textContent + ":") + ("" + currentText + "-->"))).after($("<!--" + language + "-->"));
-          if (replacement.$textNodeToTranslate[0].nodeName === '#text') {
-            replacement.$textNodeToTranslate[0].textContent = replacement.textToReplace;
-          } else {
-            replacement.$textNodeToTranslate.html(replacement.textToReplace);
-          }
-          replacement.$currentLanguageDomNode.remove();
-          replacement.$commentNodeToReplace.remove();
         }
         $.each(this._textNodesWithKnownLanguage, function(key, value) {
           return $.each(value, function(subKey, value) {
