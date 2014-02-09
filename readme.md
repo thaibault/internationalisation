@@ -90,6 +90,26 @@ translation node. In this case you can simple wrap a self defined dom node.
         Votre version français <strong>dom nodes</strong> à l'intérieur.
     -->
 
+It is also possible to use an alternative replacement node.
+<!--deDE:Man kann auch einen alternative Ersetzungsknoten einsetzten.-->
+<!--frFR:
+    Donc, il est possible d'utiliser alternative à nœud de remplacement.
+-->
+
+<!--showExample-->
+
+    #!HTML
+
+    <langreplace>
+        Your englisch version with <strong>dom nodes</strong> inside.
+    </langreplace>
+    <langreplacement>deDE:
+        Ihre deutsche Variante mit eingebetteten <strong>dom Knoten</strong>.
+    </langreplacement>
+    <langreplacement>frFR:
+        Votre version français <strong>dom nodes</strong> à l'intérieur.
+    </langreplacement>
+
 Usually the language dom node precedes the text node to translate. It is
 possible to write a special syntax to use a replacement for the next dom node
 containing text.
@@ -185,6 +205,10 @@ to initialize the plugin with different configuration.
                 domNodeSelectorPrefix: 'body',
                 default: 'enUS',
                 domNodeClassPrefix: '',
+                templateDelimiter: {
+                    pre: '{{',
+                    post: '}}'
+                },
                 fadeEffect: true,
                 textNodeParent: {
                     fadeIn: {duration: 'fast'},
@@ -193,7 +217,7 @@ to initialize the plugin with different configuration.
                 preReplacementLanguagePattern: '^\\|({1})$',
                 replacementLanguagePattern: '^([a-z]{2}[A-Z]{2}):((.|\\s)*)$',
                 currentLanguagePattern: '^[a-z]{2}[A-Z]{2}$',
-                replacementDomNodeName: '#comment',
+                replacementDomNodeName: ['#comment', 'langreplacement'],
                 replaceDomNodeNames: ['#text', 'langreplace'],
                 toolsLockDescription: '{1}Switch',
                 languageHashPrefix: 'lang-',
