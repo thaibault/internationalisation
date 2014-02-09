@@ -92,6 +92,8 @@ this.require [
                 domNodeSelectorPrefix: 'body'
                 default: 'enUS'
                 domNodeClassPrefix: ''
+                templateDelimiter:
+                    pre: '{{', post: '}}'
                 fadeEffect: true
                 textNodeParent:
                     fadeIn: duration: 'fast'
@@ -99,7 +101,7 @@ this.require [
                 preReplacementLanguagePattern: '^\\|({1})$'
                 replacementLanguagePattern: '^([a-z]{2}[A-Z]{2}):((.|\\s)*)$'
                 currentLanguagePattern: '^[a-z]{2}[A-Z]{2}$'
-                replacementDomNodeName: '#comment'
+                replacementDomNodeName: ['#comment', 'langreplacement']
                 replaceDomNodeNames: ['#text', 'langreplace']
                 toolsLockDescription: '{1}Switch'
                 languageHashPrefix: 'lang-'
@@ -212,7 +214,13 @@ this.require [
             ###
             self = this
             this.$domNodes.parent.find(':not(iframe)').contents().each ->
-                if this.nodeName is self._options.replacementDomNodeName
+                nodeName = this.nodeName.toLowerCase()
+                if $.inArray(
+                    nodeName, self._options.replacementDomNodeName
+                ) isnt -1
+                    if $.inArray(nodeName, ['#comment', '#text']) is -1
+                        # NOTE: Hide replacement dom nodes.
+                        $(this).hide()
                     regex = new RegExp(
                         self._options.preReplacementLanguagePattern)
                     match = this.textContent.match regex
@@ -251,9 +259,9 @@ this.require [
             self = this
             this.$domNodes.parent.find(':not(iframe)').contents().each ->
                 $currentDomNode = $ this
+                nodeName = this.nodeName.toLowerCase()
                 if $.inArray(
-                    this.nodeName.toLowerCase(),
-                    self._options.replaceDomNodeNames
+                    nodeName.toLowerCase(), self._options.replaceDomNodeNames
                 ) isnt -1
                     # NOTE: We skip empty and nested text nodes
                     if($.trim($currentDomNode.text()) and
@@ -266,7 +274,9 @@ this.require [
                                 ensure)
                         $currentTextNodeToTranslate = $currentDomNode
                 else if $currentTextNodeToTranslate?
-                    if this.nodeName is self._options.replacementDomNodeName
+                    if $.inArray(
+                        nodeName, self._options.replacementDomNodeName
+                    ) isnt -1
                         match = this.textContent.match new RegExp(
                             self._options.replacementLanguagePattern)
                         if match and match[1] is language
@@ -424,7 +434,7 @@ this.require [
             if $currentDomNode?
                 this._replacements.push(
                     $textNodeToTranslate: $currentTextNodeToTranslate
-                    $commentNodeToReplace: $currentDomNode
+                    $nodeToReplace: $currentDomNode
                     textToReplace: match[2]
                     $parent: $parent
                     $currentLanguageDomNode: $currentLanguageDomNode)
@@ -511,43 +521,57 @@ this.require [
                 **returns {$.Lang}**  - Returns the current instance.
             ###
             for replacement in this._replacements
-                if not replacement.$currentLanguageDomNode?
-                    # Language note wasn't present initially. So we have to
-                    # determine it now.
-                    currentDomNodeFound = false
-                    replacement.$textNodeToTranslate.parent().contents(
-                    ).each ->
-                        if currentDomNodeFound
-                            replacement.$currentLanguageDomNode = $ this
-                            return false
-                        if this is replacement.$textNodeToTranslate[0]
-                            currentDomNodeFound = true
-                        true
                 currentText = replacement.$textNodeToTranslate.html()
                 if replacement.$textNodeToTranslate[0].nodeName is '#text'
                     currentText =
                         replacement.$textNodeToTranslate[0].textContent
-                if(language is
-                   replacement.$currentLanguageDomNode[0].textContent)
-                    throw Error(
-                        "Text node \"#{replacement.textToReplace}\" is " +
-                        'marked as "' +
-                        replacement.$currentLanguageDomNode[0].textContent +
-                        '" and has same translation language as it already ' +
-                        'is.')
-                replacement.$textNodeToTranslate.after($(
-                    "<!--" +
-                    "#{replacement.$currentLanguageDomNode[0].textContent}:" +
-                    "#{currentText}-->"
-                )).after $ "<!--#{language}-->"
-                if replacement.$textNodeToTranslate[0].nodeName is '#text'
-                    replacement.$textNodeToTranslate[0].textContent =
-                        replacement.textToReplace
-                else
-                    replacement.$textNodeToTranslate.html(
-                        replacement.textToReplace)
-                replacement.$currentLanguageDomNode.remove()
-                replacement.$commentNodeToReplace.remove()
+                # TODO require source maps haben einen bug.
+                trimmedText = $.trim currentText
+                if(not this._options.templateDelimiter or trimmedText.substr(
+                    -this._options.templateDelimiter.post.length
+                ) isnt this._options.templateDelimiter.post and
+                   this._options.templateDelimiter.post)
+                    if not replacement.$currentLanguageDomNode?
+                        # Language note wasn't present initially. So we have to
+                        # determine it now.
+                        currentDomNodeFound = false
+                        replacement.$textNodeToTranslate.parent().contents(
+                        ).each ->
+                            if currentDomNodeFound
+                                replacement.$currentLanguageDomNode = $ this
+                                return false
+                            if this is replacement.$textNodeToTranslate[0]
+                                currentDomNodeFound = true
+                            true
+                    if(language is
+                       replacement.$currentLanguageDomNode[0].textContent)
+                        throw Error(
+                            "Text node \"#{replacement.textToReplace}\" is " +
+                            'marked as "' +
+                            replacement.$currentLanguageDomNode[0].textContent +
+                            '" and has same translation language as it already ' +
+                            'is.')
+                    nodeName = replacement.$nodeToReplace[0].nodeName.toLowerCase()
+                    if nodeName is '#comment'
+                        replacement.$textNodeToTranslate.after $(
+                            "<!--" +
+                            replacement.$currentLanguageDomNode[0].textContent +
+                            ":#{currentText}-->")
+                    else
+                        replacement.$textNodeToTranslate.after $(
+                            "<#{nodeName}>" +
+                            replacement.$currentLanguageDomNode[0].textContent +
+                            ":#{currentText}</#{nodeName}>"
+                        ).hide()
+                    replacement.$textNodeToTranslate.after $ "<!--#{language}-->"
+                    if replacement.$textNodeToTranslate[0].nodeName is '#text'
+                        replacement.$textNodeToTranslate[0].textContent =
+                            replacement.textToReplace
+                    else
+                        replacement.$textNodeToTranslate.html(
+                            replacement.textToReplace)
+                    replacement.$currentLanguageDomNode.remove()
+                    replacement.$nodeToReplace.remove()
             # Translate registered known text nodes.
             $.each this._textNodesWithKnownLanguage, (key, value) ->
                 $.each value, (subKey, value) -> value.textContent = key
