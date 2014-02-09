@@ -446,7 +446,6 @@ Version
             $textNodeToTranslate: $currentTextNodeToTranslate,
             $nodeToReplace: $currentDomNode,
             textToReplace: match[2],
-            $parent: $parent,
             $currentLanguageDomNode: $currentLanguageDomNode
           });
         }
