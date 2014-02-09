@@ -328,7 +328,8 @@ this.require [
                 ).length is 0 and self.knownLanguage[$.trim(
                     this.textContent)]?
                 )
-                    self._textNodesWithKnownLanguage
+                    this._$domNodeToFade = this._$domNodeToFade.add(
+                        $(this).parent())
                     if(self._textNodesWithKnownLanguage\
                         [self.knownLanguage[$.trim(this.textContent)]]?
                     )
