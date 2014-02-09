@@ -8,7 +8,7 @@
 
 # endregion
 
-# region header
+ # region header
 
 ###
 [Project page](https://thaibault.github.com/jQuery-lang)
@@ -134,7 +134,7 @@ this.require [
             if this.currentLanguage is newLanguage
                 this._switchCurrentLanguageIndicator newLanguage
             else
-                this.switch newLanguage
+                this.switch newLanguage, true
             this.on(
                 this.$domNodes.switchLanguageButtons, 'click', (event) =>
                     event.preventDefault()
@@ -144,35 +144,49 @@ this.require [
 
         # endregion
 
-        switch: (language, force=false) ->
+        switch: (language, ensure=false) ->
             ###
                 Switches the current language to given language. This method is
                 mutual synchronized.
 
-                **language {String}** - New language.
+                **language {String|Boolean}** - New language as string or
+                                                "true". If set to "true" it
+                                                indicates that the dom tree
+                                                should be checked again current
+                                                language to ensure every text
+                                                node has right content.
 
-                **force {Boolean}**   - Indicates if the whole dom should be
-                                        checked again current language to
-                                        ensure every text node has right
-                                        content.
+                **ensure {Boolean}**          - Indicates if a switch effect
+                                                should be avoided.
 
                 **returns {$.Lang}**  - Returns the current instance.
             ###
             this.acquireLock this._options.toolsLockDescription, =>
-                language = this._normalizeLanguage language
-                if force or this.currentLanguage isnt language
-                    this.debug 'Switch to "{1}".', language
+                if language is true
+                    ensure = true
+                    language = this.currentLanguage
+                else
+                    language = this._normalizeLanguage language
+                if(ensure and language isnt this._options.default or
+                   this.currentLanguage isnt language)
+                    actionDescription = 'Switch to'
+                    actionDescription = 'Ensure' if ensure
+                    this.debug '{1} "{2}".', actionDescription, language
                     this._switchCurrentLanguageIndicator language
                     this.fireEvent(
                         'switch', true, this, this.currentLanguage, language)
                     this._$domNodeToFade = null
                     this._replacements = []
                     [$lastTextNodeToTranslate, $lastLanguageDomNode] =
-                        this._collectTextNodesToReplace language
+                        this._collectTextNodesToReplace language, ensure
                     this._checkLastTextNodeHavingLanguageIndicator(
-                        $lastTextNodeToTranslate, $lastLanguageDomNode)
-                    this._handleSwitchEffect language
+                        $lastTextNodeToTranslate, $lastLanguageDomNode,
+                        ensure)
+                    this._handleSwitchEffect language, ensure
                 else
+                    this.debug(
+                        '"{1}" is already current selected language.',
+                        language)
                     this.releaseLock this._options.toolsLockDescription
             this
 
@@ -180,9 +194,9 @@ this.require [
             ###
                 Ensures current selected language.
 
-                **returns {$.Lang}**  - Returns the current instance.
+                **returns {$.Lang}** - Returns the current instance.
             ###
-            this.switch this.currentLanguage, true
+            this._movePreReplacementNodes().switch true
 
     # endregion
 
@@ -215,11 +229,16 @@ this.require [
                                 selfFound = true
                             true
             this
-        _collectTextNodesToReplace: (language) ->
+        _collectTextNodesToReplace: (language, ensure) ->
             ###
                 Normalizes a given language string.
 
                 **language {String}**   - New language.
+
+                **ensure {Boolean}**    - Indicates if the whole dom should be
+                                          checked again current language to
+                                          ensure every text node has right
+                                          content.
 
                 **returns {domNode[]}** - Return a tuple of last text and
                                           language dom node to translate.
@@ -242,8 +261,9 @@ this.require [
                         self._options.replaceDomNodeNames.join()
                     ).length is 0)
                         $lastLanguageDomNode = \
-                        self._checkLastTextNodeHavingLanguageIndicator(
-                            $lastTextNodeToTranslate, $lastLanguageDomNode)
+                            self._checkLastTextNodeHavingLanguageIndicator(
+                                $lastTextNodeToTranslate, $lastLanguageDomNode,
+                                ensure)
                         $currentTextNodeToTranslate = $currentDomNode
                 else if $currentTextNodeToTranslate?
                     if this.nodeName is self._options.replacementDomNodeName
@@ -263,15 +283,15 @@ this.require [
                             $lastLanguageDomNode = $currentLanguageDomNode
                             $currentTextNodeToTranslate = null
                             $currentLanguageDomNode = null
-                        else
-                            $currentLanguageDomNode = $currentDomNode if(
-                                this.textContent.match new RegExp(
-                                    self._options.currentLanguagePattern))
+                        else if this.textContent.match new RegExp(
+                            self._options.currentLanguagePattern
+                        )
+                            $currentLanguageDomNode = $currentDomNode
                         return true
-                    $lastTextNodeToTranslate = $currentTextNodeToTranslate
-                    $lastLanguageDomNode = $currentLanguageDomNode
+                    $lastTextNodeToTranslate = null
+                    $lastLanguageDomNode = null
                     $currentTextNodeToTranslate = null
-                    $currentDomNode = null
+                    $currentLanguageDomNode = null
                 true
             this._registerKnownTextNodes()
             [$lastTextNodeToTranslate, $lastLanguageDomNode]
@@ -348,23 +368,27 @@ this.require [
                     $.cookie this._options.cookieDescription)
                 result = this._options.default
             this._normalizeLanguage result
-        _handleSwitchEffect: (language) ->
+        _handleSwitchEffect: (language, ensure) ->
             ###
                 Depending an activated switching effect this method initialized
                 the effect of replace all text string directly.
 
                 **language {String}** - New language.
 
+                **ensure {Boolean}**  - Indicates if current language should be
+                                        ensured again every text node content.
+
                 **returns {$.Lang}**  - Returns the current instance.
             ###
-            if this._options.fadeEffect and this._$domNodeToFade?
+            if(not ensure and this._options.fadeEffect and
+               this._$domNodeToFade?)
                 this._options.textNodeParent.fadeOut.always = this.getMethod(
-                    this._handleLanguageSwitching, this, language)
+                    this._handleLanguageSwitching, this, language, ensure)
                 this._$domNodeToFade.fadeOut(
                     this._options.textNodeParent.fadeOut)
             else
                 this._handleLanguageSwitching(
-                    this._handleLanguageSwitching, this, language)
+                    this._handleLanguageSwitching, this, language, ensure)
             this
         _registerTextNodeToChange: (
             $currentTextNodeToTranslate, $currentDomNode, match,
@@ -406,7 +430,7 @@ this.require [
                     $currentLanguageDomNode: $currentLanguageDomNode)
             this
         _checkLastTextNodeHavingLanguageIndicator: (
-            $lastTextNodeToTranslate, $lastLanguageDomNode
+            $lastTextNodeToTranslate, $lastLanguageDomNode, ensure
         ) ->
             ###
                 Checks if last text has a language indication comment node.
@@ -419,6 +443,11 @@ this.require [
                                                         language indication
                                                         commend node.
 
+                **ensure {Boolean}**                  - Indicates if current
+                                                        language should be
+                                                        ensured again every
+                                                        text node content.
+
                 **returns {$}**                       - Returns the retrieved
                                                         or newly created
                                                         language indicating
@@ -427,10 +456,12 @@ this.require [
             if $lastTextNodeToTranslate? and not $lastLanguageDomNode?
                 # Last text node doesn't have a current language indicating
                 # dom node.
-                $lastLanguageDomNode = $ "<!--#{this.currentLanguage}-->"
+                currentLocalLanguage = this.currentLanguage
+                currentLocalLanguage = this._options.default if ensure
+                $lastLanguageDomNode = $ "<!--#{currentLocalLanguage}-->"
                 $lastTextNodeToTranslate.after $lastLanguageDomNode
             $lastLanguageDomNode
-        _handleLanguageSwitching: (thisFunction, self, language) ->
+        _handleLanguageSwitching: (thisFunction, self, language, ensure) ->
             ###
                 Initialized the language switch and performs an effect if
                 specified.
@@ -441,11 +472,16 @@ this.require [
 
                 **language {String}**       - The new language to switch to.
 
+                **ensure {Boolean}**        - Indicates if current language
+                                              should be ensured again every
+                                              text node content.
+
                 **returns {$.Lang}**        - Returns the current instance.
             ###
             this._numberOfFadedDomNodes += 1
             oldLanguage = this.currentLanguage
-            if this._options.fadeEffect and this._$domNodeToFade?
+            if(not ensure and this._options.fadeEffect and
+               this._$domNodeToFade?)
                 if this._numberOfFadedDomNodes is this._$domNodeToFade.length
                     this._switchLanguage language
                     this._numberOfFadedDomNodes = 0
@@ -480,23 +516,30 @@ this.require [
                     # determine it now.
                     currentDomNodeFound = false
                     replacement.$textNodeToTranslate.parent().contents(
-                    ).each(->
+                    ).each ->
                         if currentDomNodeFound
                             replacement.$currentLanguageDomNode = $ this
                             return false
                         if this is replacement.$textNodeToTranslate[0]
                             currentDomNodeFound = true
                         true
-                    )
                 currentText = replacement.$textNodeToTranslate.html()
                 if replacement.$textNodeToTranslate[0].nodeName is '#text'
                     currentText =
                         replacement.$textNodeToTranslate[0].textContent
+                if(language is
+                   replacement.$currentLanguageDomNode[0].textContent)
+                    throw Error(
+                        "Text node \"#{replacement.textToReplace}\" is " +
+                        'marked as "' +
+                        replacement.$currentLanguageDomNode[0].textContent +
+                        '" and has same translation language as it already ' +
+                        'is.')
                 replacement.$textNodeToTranslate.after($(
                     "<!--" +
                     "#{replacement.$currentLanguageDomNode[0].textContent}:" +
                     "#{currentText}-->"
-                )).after($("<!--#{language}-->"))
+                )).after $ "<!--#{language}-->"
                 if replacement.$textNodeToTranslate[0].nodeName is '#text'
                     replacement.$textNodeToTranslate[0].textContent =
                         replacement.textToReplace
@@ -507,8 +550,7 @@ this.require [
                 replacement.$commentNodeToReplace.remove()
             # Translate registered known text nodes.
             $.each this._textNodesWithKnownLanguage, (key, value) ->
-                $.each value, (subKey, value) ->
-                    value.textContent = key
+                $.each value, (subKey, value) -> value.textContent = key
             $.cookie this._options.cookieDescription, language
             this.currentLanguage = language
             this
