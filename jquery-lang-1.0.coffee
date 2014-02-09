@@ -563,10 +563,11 @@ this.require [
                         replacement.$nodeToReplace[0].nodeName.toLowerCase()
                     if nodeName is '#comment'
                         replacement.$textNodeToTranslate.after $(
-                            "<!--#{lang}:#{currentText}-->")
+                            "<!--#{currentLanguage}:#{currentText}-->")
                     else
                         replacement.$textNodeToTranslate.after $(
-                            "<#{nodeName}>#{lang}:#{currentText}</#{nodeName}>"
+                            "<#{nodeName}>#{currentLanguage}:#{currentText}<" +
+                            "/#{nodeName}>"
                         ).hide()
                     replacement.$textNodeToTranslate.after(
                         $ "<!--#{language}-->")
