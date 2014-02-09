@@ -542,7 +542,7 @@ Version
             **returns {$.Lang}**  - Returns the current instance.
         */
 
-        var currentDomNodeFound, currentText, nodeName, replacement, trimmedText, _i, _len, _ref1;
+        var currentDomNodeFound, currentLanguage, currentText, nodeName, replacement, trimmedText, _i, _len, _ref1;
         _ref1 = this._replacements;
         for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
           replacement = _ref1[_i];
@@ -565,14 +565,15 @@ Version
                 return true;
               });
             }
-            if (language === replacement.$currentLanguageDomNode[0].textContent) {
-              throw Error(("Text node \"" + replacement.textToReplace + "\" is ") + 'marked as "' + replacement.$currentLanguageDomNode[0].textContent + '" and has same translation language as it already ' + 'is.');
+            currentLanguage = replacement.$currentLanguageDomNode[0].textContent;
+            if (language === currentLanguage) {
+              throw Error(("Text node \"" + replacement.textToReplace + "\" is ") + ("marked as \"" + currentLanguage + "\" and has same ") + 'translation language as it already is.');
             }
             nodeName = replacement.$nodeToReplace[0].nodeName.toLowerCase();
             if (nodeName === '#comment') {
-              replacement.$textNodeToTranslate.after($("<!--" + replacement.$currentLanguageDomNode[0].textContent + (":" + currentText + "-->")));
+              replacement.$textNodeToTranslate.after($("<!--" + lang + ":" + currentText + "-->"));
             } else {
-              replacement.$textNodeToTranslate.after($(("<" + nodeName + ">") + replacement.$currentLanguageDomNode[0].textContent + (":" + currentText + "</" + nodeName + ">")).hide());
+              replacement.$textNodeToTranslate.after($("<" + nodeName + ">" + lang + ":" + currentText + "</" + nodeName + ">").hide());
             }
             replacement.$textNodeToTranslate.after($("<!--" + language + "-->"));
             if (replacement.$textNodeToTranslate[0].nodeName === '#text') {
