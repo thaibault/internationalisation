@@ -315,7 +315,7 @@ Version
           var $currentDomNode;
           $currentDomNode = $(this);
           if ($.inArray(this.nodeName.toLowerCase(), self._options.replaceDomNodeNames) !== -1 && $.trim($currentDomNode.text()) && $currentDomNode.parents(self._options.replaceDomNodeNames.join()).length === 0 && (self.knownLanguage[$.trim(this.textContent)] != null)) {
-            this._$domNodeToFade = this._$domNodeToFade.add($(this).parent());
+            self._addTextNodeToFade($currentDomNode);
             if ((self._textNodesWithKnownLanguage[self.knownLanguage[$.trim(this.textContent)]] != null)) {
               return self._textNodesWithKnownLanguage[self.knownLanguage[$.trim(this.textContent)]].push(this);
             } else {
@@ -396,6 +396,26 @@ Version
         return this;
       };
 
+      Lang.prototype._addTextNodeToFade = function($textNode) {
+        /*
+            Registers a text node to change its content with given
+            replacement.
+        
+            **$textNode {$}**    - Text node with content to translate.
+        
+            **returns {$.Lang}** - Returns the current instance.
+        */
+
+        var $parent;
+        $parent = $textNode.parent();
+        if (this._$domNodeToFade === null) {
+          this._$domNodeToFade = $parent;
+        } else {
+          this._$domNodeToFade = this._$domNodeToFade.add($parent);
+        }
+        return this;
+      };
+
       Lang.prototype._registerTextNodeToChange = function($currentTextNodeToTranslate, $currentDomNode, match, $currentLanguageDomNode) {
         /*
             Registers a text node to change its content with given
@@ -420,13 +440,7 @@ Version
                                                    instance.
         */
 
-        var $parent;
-        $parent = $currentTextNodeToTranslate.parent();
-        if (this._$domNodeToFade === null) {
-          this._$domNodeToFade = $parent;
-        } else {
-          this._$domNodeToFade = this._$domNodeToFade.add($parent);
-        }
+        this._addTextNodeToFade($currentTextNodeToTranslate);
         if ($currentDomNode != null) {
           this._replacements.push({
             $textNodeToTranslate: $currentTextNodeToTranslate,
