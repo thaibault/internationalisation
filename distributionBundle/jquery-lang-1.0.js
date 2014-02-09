@@ -315,7 +315,7 @@ Version
           var $currentDomNode;
           $currentDomNode = $(this);
           if ($.inArray(this.nodeName.toLowerCase(), self._options.replaceDomNodeNames) !== -1 && $.trim($currentDomNode.text()) && $currentDomNode.parents(self._options.replaceDomNodeNames.join()).length === 0 && (self.knownLanguage[$.trim(this.textContent)] != null)) {
-            self._textNodesWithKnownLanguage;
+            this._$domNodeToFade = this._$domNodeToFade.add($(this).parent());
             if ((self._textNodesWithKnownLanguage[self.knownLanguage[$.trim(this.textContent)]] != null)) {
               return self._textNodesWithKnownLanguage[self.knownLanguage[$.trim(this.textContent)]].push(this);
             } else {
