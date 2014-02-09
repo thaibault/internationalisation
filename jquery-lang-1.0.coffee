@@ -535,7 +535,6 @@ this.require [
                 if replacement.$textNodeToTranslate[0].nodeName is '#text'
                     currentText =
                         replacement.$textNodeToTranslate[0].textContent
-                # TODO require source maps haben einen bug.
                 trimmedText = $.trim currentText
                 if(not this._options.templateDelimiter or trimmedText.substr(
                     -this._options.templateDelimiter.post.length
@@ -553,27 +552,24 @@ this.require [
                             if this is replacement.$textNodeToTranslate[0]
                                 currentDomNodeFound = true
                             true
-                    if(language is
-                       replacement.$currentLanguageDomNode[0].textContent)
+                    currentLanguage =
+                        replacement.$currentLanguageDomNode[0].textContent
+                    if language is currentLanguage
                         throw Error(
                             "Text node \"#{replacement.textToReplace}\" is " +
-                            'marked as "' +
-                            replacement.$currentLanguageDomNode[0].textContent +
-                            '" and has same translation language as it already ' +
-                            'is.')
-                    nodeName = replacement.$nodeToReplace[0].nodeName.toLowerCase()
+                            "marked as \"#{currentLanguage}\" and has same " +
+                            'translation language as it already is.')
+                    nodeName =
+                        replacement.$nodeToReplace[0].nodeName.toLowerCase()
                     if nodeName is '#comment'
                         replacement.$textNodeToTranslate.after $(
-                            "<!--" +
-                            replacement.$currentLanguageDomNode[0].textContent +
-                            ":#{currentText}-->")
+                            "<!--#{lang}:#{currentText}-->")
                     else
                         replacement.$textNodeToTranslate.after $(
-                            "<#{nodeName}>" +
-                            replacement.$currentLanguageDomNode[0].textContent +
-                            ":#{currentText}</#{nodeName}>"
+                            "<#{nodeName}>#{lang}:#{currentText}</#{nodeName}>"
                         ).hide()
-                    replacement.$textNodeToTranslate.after $ "<!--#{language}-->"
+                    replacement.$textNodeToTranslate.after(
+                        $ "<!--#{language}-->")
                     if replacement.$textNodeToTranslate[0].nodeName is '#text'
                         replacement.$textNodeToTranslate[0].textContent =
                             replacement.textToReplace
