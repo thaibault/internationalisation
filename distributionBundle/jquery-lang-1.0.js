@@ -129,7 +129,7 @@ Version
         if (this.currentLanguage === newLanguage) {
           this._switchCurrentLanguageIndicator(newLanguage);
         } else {
-          this["switch"](newLanguage);
+          this["switch"](newLanguage, true);
         }
         this.on(this.$domNodes.switchLanguageButtons, 'click', function(event) {
           event.preventDefault();
@@ -138,38 +138,51 @@ Version
         return this;
       };
 
-      Lang.prototype["switch"] = function(language, force) {
+      Lang.prototype["switch"] = function(language, ensure) {
         var _this = this;
-        if (force == null) {
-          force = false;
+        if (ensure == null) {
+          ensure = false;
         }
         /*
             Switches the current language to given language. This method is
             mutual synchronized.
         
-            **language {String}** - New language.
+            **language {String|Boolean}** - New language as string or
+                                            "true". If set to "true" it
+                                            indicates that the dom tree
+                                            should be checked again current
+                                            language to ensure every text
+                                            node has right content.
         
-            **force {Boolean}**   - Indicates if the whole dom should be
-                                    checked again current language to
-                                    ensure every text node has right
-                                    content.
+            **ensure {Boolean}**          - Indicates if a switch effect
+                                            should be avoided.
         
             **returns {$.Lang}**  - Returns the current instance.
         */
 
         this.acquireLock(this._options.toolsLockDescription, function() {
-          var $lastLanguageDomNode, $lastTextNodeToTranslate, _ref1;
-          language = _this._normalizeLanguage(language);
-          if (force || _this.currentLanguage !== language) {
-            _this.debug('Switch to "{1}".', language);
+          var $lastLanguageDomNode, $lastTextNodeToTranslate, actionDescription, _ref1;
+          if (language === true) {
+            ensure = true;
+            language = _this.currentLanguage;
+          } else {
+            language = _this._normalizeLanguage(language);
+          }
+          if (ensure && language !== _this._options["default"] || _this.currentLanguage !== language) {
+            actionDescription = 'Switch to';
+            if (ensure) {
+              actionDescription = 'Ensure';
+            }
+            _this.debug('{1} "{2}".', actionDescription, language);
             _this._switchCurrentLanguageIndicator(language);
             _this.fireEvent('switch', true, _this, _this.currentLanguage, language);
             _this._$domNodeToFade = null;
             _this._replacements = [];
-            _ref1 = _this._collectTextNodesToReplace(language), $lastTextNodeToTranslate = _ref1[0], $lastLanguageDomNode = _ref1[1];
-            _this._checkLastTextNodeHavingLanguageIndicator($lastTextNodeToTranslate, $lastLanguageDomNode);
-            return _this._handleSwitchEffect(language);
+            _ref1 = _this._collectTextNodesToReplace(language, ensure), $lastTextNodeToTranslate = _ref1[0], $lastLanguageDomNode = _ref1[1];
+            _this._checkLastTextNodeHavingLanguageIndicator($lastTextNodeToTranslate, $lastLanguageDomNode, ensure);
+            return _this._handleSwitchEffect(language, ensure);
           } else {
+            _this.debug('"{1}" is already current selected language.', language);
             return _this.releaseLock(_this._options.toolsLockDescription);
           }
         });
@@ -180,10 +193,10 @@ Version
         /*
             Ensures current selected language.
         
-            **returns {$.Lang}**  - Returns the current instance.
+            **returns {$.Lang}** - Returns the current instance.
         */
 
-        return this["switch"](this.currentLanguage, true);
+        return this._movePreReplacementNodes()["switch"](true);
       };
 
       Lang.prototype._movePreReplacementNodes = function() {
@@ -222,11 +235,16 @@ Version
         return this;
       };
 
-      Lang.prototype._collectTextNodesToReplace = function(language) {
+      Lang.prototype._collectTextNodesToReplace = function(language, ensure) {
         /*
             Normalizes a given language string.
         
             **language {String}**   - New language.
+        
+            **ensure {Boolean}**    - Indicates if the whole dom should be
+                                      checked again current language to
+                                      ensure every text node has right
+                                      content.
         
             **returns {domNode[]}** - Return a tuple of last text and
                                       language dom node to translate.
@@ -244,7 +262,7 @@ Version
           $currentDomNode = $(this);
           if ($.inArray(this.nodeName.toLowerCase(), self._options.replaceDomNodeNames) !== -1) {
             if ($.trim($currentDomNode.text()) && $currentDomNode.parents(self._options.replaceDomNodeNames.join()).length === 0) {
-              $lastLanguageDomNode = self._checkLastTextNodeHavingLanguageIndicator($lastTextNodeToTranslate, $lastLanguageDomNode);
+              $lastLanguageDomNode = self._checkLastTextNodeHavingLanguageIndicator($lastTextNodeToTranslate, $lastLanguageDomNode, ensure);
               $currentTextNodeToTranslate = $currentDomNode;
             }
           } else if ($currentTextNodeToTranslate != null) {
@@ -257,17 +275,15 @@ Version
                 $lastLanguageDomNode = $currentLanguageDomNode;
                 $currentTextNodeToTranslate = null;
                 $currentLanguageDomNode = null;
-              } else {
-                if (this.textContent.match(new RegExp(self._options.currentLanguagePattern))) {
-                  $currentLanguageDomNode = $currentDomNode;
-                }
+              } else if (this.textContent.match(new RegExp(self._options.currentLanguagePattern))) {
+                $currentLanguageDomNode = $currentDomNode;
               }
               return true;
             }
-            $lastTextNodeToTranslate = $currentTextNodeToTranslate;
-            $lastLanguageDomNode = $currentLanguageDomNode;
+            $lastTextNodeToTranslate = null;
+            $lastLanguageDomNode = null;
             $currentTextNodeToTranslate = null;
-            $currentDomNode = null;
+            $currentLanguageDomNode = null;
           }
           return true;
         });
@@ -349,21 +365,24 @@ Version
         return this._normalizeLanguage(result);
       };
 
-      Lang.prototype._handleSwitchEffect = function(language) {
+      Lang.prototype._handleSwitchEffect = function(language, ensure) {
         /*
             Depending an activated switching effect this method initialized
             the effect of replace all text string directly.
         
             **language {String}** - New language.
         
+            **ensure {Boolean}**  - Indicates if current language should be
+                                    ensured again every text node content.
+        
             **returns {$.Lang}**  - Returns the current instance.
         */
 
-        if (this._options.fadeEffect && (this._$domNodeToFade != null)) {
-          this._options.textNodeParent.fadeOut.always = this.getMethod(this._handleLanguageSwitching, this, language);
+        if (!ensure && this._options.fadeEffect && (this._$domNodeToFade != null)) {
+          this._options.textNodeParent.fadeOut.always = this.getMethod(this._handleLanguageSwitching, this, language, ensure);
           this._$domNodeToFade.fadeOut(this._options.textNodeParent.fadeOut);
         } else {
-          this._handleLanguageSwitching(this._handleLanguageSwitching, this, language);
+          this._handleLanguageSwitching(this._handleLanguageSwitching, this, language, ensure);
         }
         return this;
       };
@@ -411,7 +430,7 @@ Version
         return this;
       };
 
-      Lang.prototype._checkLastTextNodeHavingLanguageIndicator = function($lastTextNodeToTranslate, $lastLanguageDomNode) {
+      Lang.prototype._checkLastTextNodeHavingLanguageIndicator = function($lastTextNodeToTranslate, $lastLanguageDomNode, ensure) {
         /*
             Checks if last text has a language indication comment node.
             This function is called after each parsed dom text node.
@@ -423,20 +442,30 @@ Version
                                                     language indication
                                                     commend node.
         
+            **ensure {Boolean}**                  - Indicates if current
+                                                    language should be
+                                                    ensured again every
+                                                    text node content.
+        
             **returns {$}**                       - Returns the retrieved
                                                     or newly created
                                                     language indicating
                                                     comment node.
         */
 
+        var currentLocalLanguage;
         if (($lastTextNodeToTranslate != null) && ($lastLanguageDomNode == null)) {
-          $lastLanguageDomNode = $("<!--" + this.currentLanguage + "-->");
+          currentLocalLanguage = this.currentLanguage;
+          if (ensure) {
+            currentLocalLanguage = this._options["default"];
+          }
+          $lastLanguageDomNode = $("<!--" + currentLocalLanguage + "-->");
           $lastTextNodeToTranslate.after($lastLanguageDomNode);
         }
         return $lastLanguageDomNode;
       };
 
-      Lang.prototype._handleLanguageSwitching = function(thisFunction, self, language) {
+      Lang.prototype._handleLanguageSwitching = function(thisFunction, self, language, ensure) {
         /*
             Initialized the language switch and performs an effect if
             specified.
@@ -447,6 +476,10 @@ Version
         
             **language {String}**       - The new language to switch to.
         
+            **ensure {Boolean}**        - Indicates if current language
+                                          should be ensured again every
+                                          text node content.
+        
             **returns {$.Lang}**        - Returns the current instance.
         */
 
@@ -454,7 +487,7 @@ Version
           _this = this;
         this._numberOfFadedDomNodes += 1;
         oldLanguage = this.currentLanguage;
-        if (this._options.fadeEffect && (this._$domNodeToFade != null)) {
+        if (!ensure && this._options.fadeEffect && (this._$domNodeToFade != null)) {
           if (this._numberOfFadedDomNodes === this._$domNodeToFade.length) {
             this._switchLanguage(language);
             this._numberOfFadedDomNodes = 0;
@@ -507,6 +540,9 @@ Version
           currentText = replacement.$textNodeToTranslate.html();
           if (replacement.$textNodeToTranslate[0].nodeName === '#text') {
             currentText = replacement.$textNodeToTranslate[0].textContent;
+          }
+          if (language === replacement.$currentLanguageDomNode[0].textContent) {
+            throw Error(("Text node \"" + replacement.textToReplace + "\" is ") + 'marked as "' + replacement.$currentLanguageDomNode[0].textContent + '" and has same translation language as it already ' + 'is.');
           }
           replacement.$textNodeToTranslate.after($("<!--" + ("" + replacement.$currentLanguageDomNode[0].textContent + ":") + ("" + currentText + "-->"))).after($("<!--" + language + "-->"));
           if (replacement.$textNodeToTranslate[0].nodeName === '#text') {
