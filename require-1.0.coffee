@@ -239,11 +239,11 @@ class Require
     ###
     this.passiv
     ###
-        **scriptTypes {Object}**
+        **includeTypes {Object}**
         Describes all supported scripts with their needed properties to
         load them. A Mapping from file endings to their script node types.
     ###
-    this.scriptTypes
+    this.includeTypes
     ###
         **asynchronModulePatternHandling {Object}**
         Defines a mapping from regular expression pattern which detects all
@@ -331,9 +331,9 @@ class Require
 
     # endregion
 
-    # region public methods
+    # region public methods 
 
-        # region special methods
+        # region special  methods
 
     constructor: (modules, onLoaded, onLoadedArguments...) ->
         ###
@@ -360,14 +360,14 @@ class Require
         ###
         # Set class property default values.
         self.context = this if not self.context?
-        self.scriptTypes = {} if not self.scriptTypes?
-        if not self.scriptTypes?.javaScript?
-            self.scriptTypes.javaScript =
+        self.includeTypes = {} if not self.includeTypes?
+        if not self.includeTypes?.javaScript?
+            self.includeTypes.javaScript =
                 extension: 'js', domNodeName: 'script'
                 sourcePropertyName: 'src'
                 domNodeProperties: type: 'text/javascript'
-        if not self.scriptTypes?.cascadingStyleSheet?
-            self.scriptTypes.cascadingStyleSheet =
+        if not self.includeTypes?.cascadingStyleSheet?
+            self.includeTypes.cascadingStyleSheet =
                 extension: 'css', domNodeName: 'link'
                 sourcePropertyName: 'href', domNodeProperties:
                     type: 'text/css', media: 'all', rel: 'stylesheet'
@@ -407,7 +407,7 @@ class Require
             **returns {Require}** - Returns the current function (class).
         ###
         self.basePath = all: []
-        for name, properties of self.scriptTypes
+        for name, properties of self.includeTypes
             for domNode in document.getElementsByTagName properties.domNodeName
                 url = domNode[properties.sourcePropertyName]
                 self.basePath.all.push url.substring 0, url.lastIndexOf(
@@ -640,13 +640,13 @@ class Require
         ###
         if checkAgainExtension
             hasExtension = false
-            for name, properties of self.scriptTypes
+            for name, properties of self.includeTypes
                 if(scriptFilePath.substr(-".#{properties.extension}".length) is
                    ".#{properties.extension}")
                     hasExtension = true
                     break
             if not hasExtension
-                scriptFilePath += ".#{self.scriptTypes.javaScript.extension}"
+                scriptFilePath += ".#{self.includeTypes.javaScript.extension}"
         if scriptFilePath.substring(0, 'http://'.length) isnt 'http://'
             extension = scriptFilePath.substring(
                 scriptFilePath.lastIndexOf('.') + 1)
@@ -666,7 +666,7 @@ class Require
             **returns {DomNode}**       - Returns script node needed to load
                                           given script resource.
         ###
-        for name, properties of self.scriptTypes
+        for name, properties of self.includeTypes
             url = self::_getScriptFileURL scriptFilePath, true
             if(url.substr(-"-#{properties.extension}".length) is
                ".#{properties.extension}")
