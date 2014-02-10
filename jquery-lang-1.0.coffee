@@ -269,9 +269,9 @@ this.require [
                         self._options.replaceDomNodeNames.join()
                     ).length is 0)
                         $lastLanguageDomNode = \
-                            self._checkLastTextNodeHavingLanguageIndicator(
-                                $lastTextNodeToTranslate, $lastLanguageDomNode,
-                                ensure)
+                        self._checkLastTextNodeHavingLanguageIndicator(
+                            $lastTextNodeToTranslate, $lastLanguageDomNode,
+                            ensure)
                         $currentTextNodeToTranslate = $currentDomNode
                 else if $currentTextNodeToTranslate?
                     if $.inArray(
