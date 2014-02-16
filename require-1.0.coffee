@@ -331,9 +331,9 @@ class Require
 
     # endregion
 
-    # region public methods 
+    # region public methods
 
-        # region special  methods
+        # region special
 
     constructor: (modules, onLoaded, onLoadedArguments...) ->
         ###
