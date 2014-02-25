@@ -42,9 +42,7 @@ Version
 ## standalone
 ## do ($=this.jQuery) ->
 this.require.scopeIndicator = 'jQuery.Lang'
-this.require [
-    'jquery-tools-1.0.coffee', ['jQuery.cookie', 'jquery-cookie-1.4.0.js']
-], ($) ->
+this.require 'jquery-tools-1.0.coffee', ($) ->
 ##
 
 # endregion
@@ -106,14 +104,16 @@ this.require [
                 toolsLockDescription: '{1}Switch'
                 languageHashPrefix: 'lang-'
                 currentLanguageIndicatorClassName: 'current'
-                cookieDescription: '{1}Last'
+                sessionDescription: '{1}'
                 languageMapping:
                     deDE: ['de', 'de-de', 'german', 'deutsch']
                     enUS: ['en', 'en-us']
                     enEN: ['en-en', 'english']
                     frFR: ['fr', 'fr-fr', 'french']
                 onSwitched: $.noop()
+                onEnsureded: $.noop()
                 onSwitch: $.noop()
+                onEnsure: $.noop()
                 domNode: knownLanguage: 'div.toc'
             super options
             this._options.preReplacementLanguagePattern = this.stringFormat(
@@ -122,8 +122,8 @@ this.require [
                     1, this._options.replacementLanguagePattern.length - 2))
             this._options.toolsLockDescription = this.stringFormat(
                 this._options.toolsLockDescription, this.__name__)
-            this._options.cookieDescription = this.stringFormat(
-                this._options.cookieDescription, this.__name__)
+            this._options.sessionDescription = this.stringFormat(
+                this._options.sessionDescription, this.__name__)
             this.$domNodes = this.grabDomNode this._options.domNode
             this.$domNodes.switchLanguageButtons = $(
                 "a[href^=\"##{this._options.languageHashPrefix}\"]")
@@ -176,7 +176,8 @@ this.require [
                     this.debug '{1} "{2}".', actionDescription, language
                     this._switchCurrentLanguageIndicator language
                     this.fireEvent(
-                        'switch', true, this, this.currentLanguage, language)
+                        (if ensure then 'ensure' else 'switch'), true, this,
+                        this.currentLanguage, language)
                     this._$domNodeToFade = null
                     this._replacements = []
                     [$lastTextNodeToTranslate, $lastLanguageDomNode] =
@@ -355,27 +356,29 @@ this.require [
             return this._options.default
         _determineUsefulLanguage: ->
             ###
-                Determines a useful initial language depending on cookie and
+                Determines a useful initial language depending on session and
                 browser settings.
 
                 **returns {String}** - Returns the determined language.
             ###
-            if $.cookie(this._options.cookieDescription)?
+            if window.localStorage[this._options.sessionDescription]?
                 this.debug(
-                    'Determine "{1}", because of cookie information.',
-                    $.cookie this._options.cookieDescription)
-                result = $.cookie this._options.cookieDescription
+                    'Determine "{1}", because of local storage information.',
+                    window.localStorage[this._options.sessionDescription])
+                result = window.localStorage[this._options.sessionDescription]
             else if navigator.language?
-                $.cookie this._options.cookieDescription, navigator.language
+                window.localStorage[this._options.sessionDescription] =
+                    navigator.language
                 this.debug(
                     'Determine "{1}", because of browser settings.',
-                    $.cookie this._options.cookieDescription)
+                    window.localStorage[this._options.sessionDescription])
                 result = navigator.language
             else
-                $.cookie this._options.cookieDescription, this._options.default
+                window.localStorage[this._options.sessionDescription] =
+                    this._options.default
                 this.debug(
                     'Determine "{1}", because of default option.',
-                    $.cookie this._options.cookieDescription)
+                    window.localStorage[this._options.sessionDescription])
                 result = this._options.default
             this._normalizeLanguage result
         _handleSwitchEffect: (language, ensure) ->
@@ -511,14 +514,17 @@ this.require [
                            this._$domNodeToFade.length)
                             this._numberOfFadedDomNodes = 0
                             this.fireEvent(
-                                'switched', true, this, oldLanguage, language)
+                                (if ensure then 'ensured' else 'switched'),
+                                true, this, oldLanguage, language)
                             this.releaseLock this._options.toolsLockDescription
                     this._$domNodeToFade.fadeIn(
                         this._options.textNodeParent.fadeIn)
             else
                 this._switchLanguage language
                 this._numberOfFadedDomNodes = 0
-                this.fireEvent 'switched', true, this, oldLanguage, language
+                this.fireEvent(
+                    (if ensure then 'ensured' else 'switched'), true, this,
+                    oldLanguage, language)
                 this.releaseLock this._options.toolsLockDescription
             this
         _switchLanguage: (language) ->
@@ -582,7 +588,7 @@ this.require [
             # Translate registered known text nodes.
             $.each this._textNodesWithKnownLanguage, (key, value) ->
                 $.each value, (subKey, value) -> value.textContent = key
-            $.cookie this._options.cookieDescription, language
+            window.localStorage[this._options.sessionDescription] = language
             this.currentLanguage = language
             this
         _switchCurrentLanguageIndicator: (language) ->
