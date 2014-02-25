@@ -609,7 +609,6 @@ Version
         
             **returns {$.Lang}**  - Returns the current instance.
          */
-        console.log(language);
         $(("a[href^=\"#" + this._options.languageHashPrefix) + ("" + this.currentLanguage + "\"].") + this._options.currentLanguageIndicatorClassName).removeClass(this._options.currentLanguageIndicatorClassName);
         $("a[href=\"#" + this._options.languageHashPrefix + language + "\"]").addClass(this._options.currentLanguageIndicatorClassName);
         return this;
