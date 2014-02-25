@@ -106,7 +106,7 @@ Version
           toolsLockDescription: '{1}Switch',
           languageHashPrefix: 'lang-',
           currentLanguageIndicatorClassName: 'current',
-          cookieDescription: '{1}Last',
+          sessionDescription: '{1}',
           languageMapping: {
             deDE: ['de', 'de-de', 'german', 'deutsch'],
             enUS: ['en', 'en-us'],
@@ -114,7 +114,9 @@ Version
             frFR: ['fr', 'fr-fr', 'french']
           },
           onSwitched: $.noop(),
+          onEnsureded: $.noop(),
           onSwitch: $.noop(),
+          onEnsure: $.noop(),
           domNode: {
             knownLanguage: 'div.toc'
           }
@@ -122,7 +124,7 @@ Version
         Lang.__super__.initialize.call(this, options);
         this._options.preReplacementLanguagePattern = this.stringFormat(this._options.preReplacementLanguagePattern, this._options.replacementLanguagePattern.substr(1, this._options.replacementLanguagePattern.length - 2));
         this._options.toolsLockDescription = this.stringFormat(this._options.toolsLockDescription, this.__name__);
-        this._options.cookieDescription = this.stringFormat(this._options.cookieDescription, this.__name__);
+        this._options.sessionDescription = this.stringFormat(this._options.sessionDescription, this.__name__);
         this.$domNodes = this.grabDomNode(this._options.domNode);
         this.$domNodes.switchLanguageButtons = $("a[href^=\"#" + this._options.languageHashPrefix + "\"]");
         this._movePreReplacementNodes();
@@ -179,7 +181,7 @@ Version
               }
               _this.debug('{1} "{2}".', actionDescription, language);
               _this._switchCurrentLanguageIndicator(language);
-              _this.fireEvent('switch', true, _this, _this.currentLanguage, language);
+              _this.fireEvent((ensure ? 'ensure' : 'switch'), true, _this, _this.currentLanguage, language);
               _this._$domNodeToFade = null;
               _this._replacements = [];
               _ref = _this._collectTextNodesToReplace(language, ensure), $lastTextNodeToTranslate = _ref[0], $lastLanguageDomNode = _ref[1];
@@ -354,22 +356,22 @@ Version
       Lang.prototype._determineUsefulLanguage = function() {
 
         /*
-            Determines a useful initial language depending on cookie and
+            Determines a useful initial language depending on session and
             browser settings.
         
             **returns {String}** - Returns the determined language.
          */
         var result;
-        if ($.cookie(this._options.cookieDescription) != null) {
-          this.debug('Determine "{1}", because of cookie information.', $.cookie(this._options.cookieDescription));
-          result = $.cookie(this._options.cookieDescription);
+        if (window.localStorage[this._options.sessionDescription] != null) {
+          this.debug('Determine "{1}", because of local storage information.', window.localStorage[this._options.sessionDescription]);
+          result = window.localStorage[this._options.sessionDescription];
         } else if (navigator.language != null) {
-          $.cookie(this._options.cookieDescription, navigator.language);
-          this.debug('Determine "{1}", because of browser settings.', $.cookie(this._options.cookieDescription));
+          window.localStorage[this._options.sessionDescription] = navigator.language;
+          this.debug('Determine "{1}", because of browser settings.', window.localStorage[this._options.sessionDescription]);
           result = navigator.language;
         } else {
-          $.cookie(this._options.cookieDescription, this._options["default"]);
-          this.debug('Determine "{1}", because of default option.', $.cookie(this._options.cookieDescription));
+          window.localStorage[this._options.sessionDescription] = this._options["default"];
+          this.debug('Determine "{1}", because of default option.', window.localStorage[this._options.sessionDescription]);
           result = this._options["default"];
         }
         return this._normalizeLanguage(result);
@@ -518,7 +520,7 @@ Version
                 _this._numberOfFadedDomNodes += 1;
                 if (_this._numberOfFadedDomNodes === _this._$domNodeToFade.length) {
                   _this._numberOfFadedDomNodes = 0;
-                  _this.fireEvent('switched', true, _this, oldLanguage, language);
+                  _this.fireEvent((ensure ? 'ensured' : 'switched'), true, _this, oldLanguage, language);
                   return _this.releaseLock(_this._options.toolsLockDescription);
                 }
               };
@@ -528,7 +530,7 @@ Version
         } else {
           this._switchLanguage(language);
           this._numberOfFadedDomNodes = 0;
-          this.fireEvent('switched', true, this, oldLanguage, language);
+          this.fireEvent((ensure ? 'ensured' : 'switched'), true, this, oldLanguage, language);
           this.releaseLock(this._options.toolsLockDescription);
         }
         return this;
@@ -592,7 +594,7 @@ Version
             return value.textContent = key;
           });
         });
-        $.cookie(this._options.cookieDescription, language);
+        window.localStorage[this._options.sessionDescription] = language;
         this.currentLanguage = language;
         return this;
       };
