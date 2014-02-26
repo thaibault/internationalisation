@@ -1,4 +1,4 @@
-#!/usr/bin/env require
+#!/usr/bin/env coffee
 # -*- coding: utf-8 -*-
 
 # region vim modline

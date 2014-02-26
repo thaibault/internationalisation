@@ -51,11 +51,11 @@ test '_normalizeLanguage', ->
     strictEqual lang._normalizeLanguage('fr'), 'frFR'
     strictEqual lang._normalizeLanguage(''), 'enUS'
 test '_determineUsefulLanguage', ->
-    $.cookie lang._options.cookieDescription, 'enUS'
+    window.localStorage[lang._options.sessionDescription] = 'enUS'
 
     strictEqual lang._determineUsefulLanguage(), 'enUS'
 
-    $.removeCookie lang._options.cookieDescription
+    delete window.localStorage[lang._options.sessionDescription]
 
     referenceLanguage = lang._options.default
     referenceLanguage = navigator.language if navigator.language?
