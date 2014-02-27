@@ -212,6 +212,12 @@ class Require
     ###
     this.basePath
     ###
+        **localStoragePathReminderPrefix {String}**
+        Save a prefix for saved paths in resolved dependencies. If prefix is
+        empty (default) no paths will be saved.
+    ###
+    this.localStoragePathReminderPrefix
+    ###
         **noConflict {Boolean}**
         If the require scope should be deleted after serving all dependencies
         are loaded this property should be set to "true".
@@ -376,6 +382,8 @@ class Require
             for path, index in paths
                 if path.substring(path.length - 1) isnt '/'
                     self.basePath[type][index] += '/'
+        if not self.localStoragePathReminderPrefix?
+            self.localStoragePathReminderPrefix = ''
         self.appendTimeStamp = false if not self.appendTimeStamp?
         self.passiv = false if not self.passiv?
         self.logging = false if not self.logging?
@@ -542,6 +550,10 @@ class Require
                             "\"#{error}\".")
                     if ajaxObject.readyState is 4
                         if ajaxObject.status in [0, 200]
+                            if self.localStoragePathReminderPrefix
+                                window.localStorage[self
+                                    .localStoragePathReminderPrefix + ': ' +
+                                    module[1]] = url
                             callback(
                                 ajaxObject.responseText, module, parameters)
                             self::_scriptLoaded module, parameters
@@ -606,7 +618,7 @@ class Require
             scopeDependencyReferences, parameters[1])
     _getScriptFileURLs: (scriptFilePath, checkAgainExtension=false) ->
         ###
-            Creates a new script loading tag.
+            Determines all urls for given script file.
 
             **scriptFilePath {String}**       - Path pointing to the file
                                                 resource.
@@ -618,6 +630,7 @@ class Require
 
             **returns {String}**        - The absolute path to needed resource.
         ###
+        initialScriptFilePath = scriptFilePath
         if checkAgainExtension
             hasExtension = false
             for name, properties of self.includeTypes
@@ -638,8 +651,16 @@ class Require
         basePaths = self.basePath.all
         if self.basePath[extension] and self.basePath[extension].length
             basePaths = self.basePath[extension]
+        key = self.localStoragePathReminderPrefix + ': ' +
+            initialScriptFilePath
+        cacheHit = (
+            self.localStoragePathReminderPrefix and window.localStorage[key]?)
         for path in basePaths
-            result.push path + scriptFilePath
+            fullScriptFilePath = path + scriptFilePath
+            if cacheHit and fullScriptFilePath is window.localStorage[key]
+                result.unshift window.localStorage[key]
+            else
+                result.push path + scriptFilePath
         result
     _injectLoadingDomNode: (module, parameters, urls=[]) ->
         ###
@@ -695,7 +716,10 @@ class Require
                             onErrorCallback()
                 else
                     domNode.onload = ->
-                        throw Error('A') if parameters[0][0] is 3
+                        if self.localStoragePathReminderPrefix
+                            window.localStorage[self
+                                .localStoragePathReminderPrefix + ': ' +
+                                module[1]] = url
                         self::_scriptLoaded module, parameters
                         # Delete event after passing it once.
                         domNode.onload = null

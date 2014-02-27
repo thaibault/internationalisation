@@ -194,7 +194,7 @@ this.require [['jQuery', 'jquery-2.1.0']], ($) ->
             if not object.__name__?
                 object = new object $domNode
                 if not object.__tools__?
-                    object = $.extend true, new Tools(), object
+                    object = $.extend true, new Tools, object
             if $domNode?
                 if $domNode.data object.__name__
                     object = $domNode.data object.__name__
@@ -845,8 +845,8 @@ this.require [['jQuery', 'jquery-2.1.0']], ($) ->
 
     # region handle $ extending
 
-    $.fn.Tools = -> new Tools().controller Tools, arguments, this
-    $.Tools = -> new Tools().controller Tools, arguments
+    $.fn.Tools = -> (new Tools).controller Tools, arguments, this
+    $.Tools = -> (new Tools).controller Tools, arguments
     $.Tools.class = Tools
 
     # endregion
