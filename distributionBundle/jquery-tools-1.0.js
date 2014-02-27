@@ -210,7 +210,7 @@ Version
         if (object.__name__ == null) {
           object = new object($domNode);
           if (object.__tools__ == null) {
-            object = $.extend(true, new Tools(), object);
+            object = $.extend(true, new Tools, object);
           }
         }
         if ($domNode != null) {
@@ -975,10 +975,10 @@ Version
 
     })();
     $.fn.Tools = function() {
-      return new Tools().controller(Tools, arguments, this);
+      return (new Tools).controller(Tools, arguments, this);
     };
     $.Tools = function() {
-      return new Tools().controller(Tools, arguments);
+      return (new Tools).controller(Tools, arguments);
     };
     return $.Tools["class"] = Tools;
   })(this.jQuery);
