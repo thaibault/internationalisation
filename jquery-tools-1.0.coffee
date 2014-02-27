@@ -726,6 +726,15 @@ this.require [['jQuery', 'jquery-2.1.0']], ($) ->
             string.replace(new RegExp('(.)([A-Z])', 'g'), ->
                 arguments[1] + delimiter + arguments[2]
             ).toLowerCase()
+        capitalize: (string) ->
+            ###
+                Converts a string to its capitalize representation.
+
+                **string {String}**    - The string to format.
+
+                **returns {String}**   - The formatted string.
+            ###
+            string.substr(0, 1).toUpperCase() + string.substr 1
         addSeparatorToPath: (path, pathSeparator='/') ->
             ###
                 Appends a path selector to the given path if there isn't one
@@ -756,12 +765,12 @@ this.require [['jQuery', 'jquery-2.1.0']], ($) ->
                                       exist "undefined" is returned.
             ###
             variables = []
-            $.each(window.location.href.slice(
+            $.each window.location.href.slice(
                 window.location.href.indexOf('?') + 1
             ).split('&'), (key, value) ->
                 variables.push value.split('=')[0]
-                variables[value.split('=')[0]] = value.split('=')[1])
-            if ($.type(key) is 'string')
+                variables[value.split('=')[0]] = value.split('=')[1]
+            if $.type(key) is 'string'
                 if key in variables
                     return variables[key]
                 else
