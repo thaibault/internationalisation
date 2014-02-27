@@ -831,6 +831,18 @@ Version
         }).toLowerCase();
       };
 
+      Tools.prototype.capitalize = function(string) {
+
+        /*
+            Converts a string to its capitalize representation.
+        
+            **string {String}**    - The string to format.
+        
+            **returns {String}**   - The formatted string.
+         */
+        return string.substr(0, 1).toUpperCase() + string.substr(1);
+      };
+
       Tools.prototype.addSeparatorToPath = function(path, pathSeparator) {
         if (pathSeparator == null) {
           pathSeparator = '/';
