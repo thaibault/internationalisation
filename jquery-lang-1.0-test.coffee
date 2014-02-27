@@ -39,6 +39,7 @@ test 'initialize', -> ok lang
         # endregion
 
 test 'switch', -> strictEqual lang.switch('en'), lang
+test 'refresh', -> strictEqual lang.refresh(), lang
 
     # endregion
 
@@ -64,6 +65,8 @@ test '_determineUsefulLanguage', ->
         lang._normalizeLanguage referenceLanguage)
 test '_handleSwitchEffect', ->
     strictEqual lang._handleSwitchEffect('deDE'), lang
+test '_addTextNodeToFade', ->
+    strictEqual lang._addTextNodeToFade($('body')), lang
 test '_registerTextNodeToChange', ->
     lang._registerTextNodeToChange $('body'), 1, [1, 2, 3], 1
 
