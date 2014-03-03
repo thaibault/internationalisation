@@ -365,20 +365,22 @@ Version
         
             **returns {String}** - Returns the determined language.
          */
-        var result;
-        if (window.localStorage[this._options.sessionDescription] != null) {
-          this.debug('Determine "{1}", because of local storage information.', window.localStorage[this._options.sessionDescription]);
+        var result, _ref;
+        if (((_ref = window.localStorage) != null ? _ref[this._options.sessionDescription] : void 0) != null) {
           result = window.localStorage[this._options.sessionDescription];
+          this.debug('Determine "{1}", because of local storage information.', result);
         } else if (navigator.language != null) {
-          window.localStorage[this._options.sessionDescription] = navigator.language;
-          this.debug('Determine "{1}", because of browser settings.', window.localStorage[this._options.sessionDescription]);
           result = navigator.language;
+          this.debug('Determine "{1}", because of browser settings.', result);
         } else {
-          window.localStorage[this._options.sessionDescription] = this._options["default"];
-          this.debug('Determine "{1}", because of default option.', window.localStorage[this._options.sessionDescription]);
           result = this._options["default"];
+          this.debug('Determine "{1}", because of default option.', result);
         }
-        return this._normalizeLanguage(result);
+        result = this._normalizeLanguage(result);
+        if (window.localStorage != null) {
+          window.localStorage[this._options.sessionDescription] = result;
+        }
+        return result;
       };
 
       Lang.prototype._handleSwitchEffect = function(language, ensure) {
@@ -598,7 +600,9 @@ Version
             return value.textContent = key;
           });
         });
-        window.localStorage[this._options.sessionDescription] = language;
+        if (window.localStorage != null) {
+          window.localStorage[this._options.sessionDescription] = language;
+        }
         this.currentLanguage = language;
         return this;
       };
