@@ -278,7 +278,10 @@ this.require 'jquery-tools-1.0.coffee', ($) ->
                     if $.inArray(
                         nodeName, self._options.replacementDomNodeName
                     ) isnt -1
-                        match = this.textContent.match new RegExp(
+                        content = this.textContent
+                        if nodeName isnt '#comment'
+                            content = $currentDomNode.html()
+                        match = content.match new RegExp(
                             self._options.replacementLanguagePattern)
                         if match and match[1] is language
                             # Save known text translations.
