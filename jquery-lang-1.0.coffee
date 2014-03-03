@@ -364,26 +364,23 @@ this.require 'jquery-tools-1.0.coffee', ($) ->
 
                 **returns {String}** - Returns the determined language.
             ###
-            if window.localStorage[this._options.sessionDescription]?
+            if window.localStorage?[this._options.sessionDescription]?
+                result = window.localStorage[this._options.sessionDescription]
                 this.debug(
                     'Determine "{1}", because of local storage information.',
-                    window.localStorage[this._options.sessionDescription])
-                result = window.localStorage[this._options.sessionDescription]
+                    result)
             else if navigator.language?
-                window.localStorage[this._options.sessionDescription] =
-                    navigator.language
-                this.debug(
-                    'Determine "{1}", because of browser settings.',
-                    window.localStorage[this._options.sessionDescription])
                 result = navigator.language
-            else
-                window.localStorage[this._options.sessionDescription] =
-                    this._options.default
                 this.debug(
-                    'Determine "{1}", because of default option.',
-                    window.localStorage[this._options.sessionDescription])
+                    'Determine "{1}", because of browser settings.', result)
+            else
                 result = this._options.default
-            this._normalizeLanguage result
+                this.debug(
+                    'Determine "{1}", because of default option.', result)
+            result = this._normalizeLanguage result
+            if window.localStorage?
+                window.localStorage[this._options.sessionDescription] = result
+            result
         _handleSwitchEffect: (language, ensure) ->
             ###
                 Depending an activated switching effect this method initialized
@@ -591,7 +588,9 @@ this.require 'jquery-tools-1.0.coffee', ($) ->
             # Translate registered known text nodes.
             $.each this._textNodesWithKnownLanguage, (key, value) ->
                 $.each value, (subKey, value) -> value.textContent = key
-            window.localStorage[this._options.sessionDescription] = language
+            if window.localStorage?
+                window.localStorage[this._options.sessionDescription] =
+                    language
             this.currentLanguage = language
             this
         _switchCurrentLanguageIndicator: (language) ->

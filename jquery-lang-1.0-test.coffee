@@ -52,11 +52,10 @@ test '_normalizeLanguage', ->
     strictEqual lang._normalizeLanguage('fr'), 'frFR'
     strictEqual lang._normalizeLanguage(''), 'enUS'
 test '_determineUsefulLanguage', ->
-    window.localStorage[lang._options.sessionDescription] = 'enUS'
-
-    strictEqual lang._determineUsefulLanguage(), 'enUS'
-
-    delete window.localStorage[lang._options.sessionDescription]
+    if window.localStorage?
+        window.localStorage[lang._options.sessionDescription] = 'enUS'
+        strictEqual lang._determineUsefulLanguage(), 'enUS'
+        delete window.localStorage[lang._options.sessionDescription]
 
     referenceLanguage = lang._options.default
     referenceLanguage = navigator.language if navigator.language?
