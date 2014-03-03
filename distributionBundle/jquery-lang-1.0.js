@@ -269,7 +269,7 @@ Version
         this.knownLanguage = {};
         self = this;
         this.$domNodes.parent.find(':not(iframe)').contents().each(function() {
-          var $currentDomNode, match, nodeName;
+          var $currentDomNode, content, match, nodeName;
           $currentDomNode = $(this);
           nodeName = this.nodeName.toLowerCase();
           if ($.inArray(nodeName.toLowerCase(), self._options.replaceDomNodeNames) !== -1) {
@@ -279,7 +279,11 @@ Version
             }
           } else if ($currentTextNodeToTranslate != null) {
             if ($.inArray(nodeName, self._options.replacementDomNodeName) !== -1) {
-              match = this.textContent.match(new RegExp(self._options.replacementLanguagePattern));
+              content = this.textContent;
+              if (nodeName !== '#comment') {
+                content = $currentDomNode.html();
+              }
+              match = content.match(new RegExp(self._options.replacementLanguagePattern));
               if (match && match[1] === language) {
                 self.knownLanguage[$.trim($currentTextNodeToTranslate.text())] = $.trim(match[2]);
                 self._registerTextNodeToChange($currentTextNodeToTranslate, $currentDomNode, match, $currentLanguageDomNode);
