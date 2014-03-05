@@ -289,9 +289,9 @@ class Require
         Handles all default asynchron module pattern handler.
     ###
     this._defaultAsynchronModulePatternHandler =
-        '^.+\.less$': (lessContent, module) ->
+        '^.+\.less$': (lessContent, url) ->
             # Specify a filename, for better error messages.
-            options = filename: module[1]
+            options = filename: url
             # Specify search paths for @import directives.
             options.paths = []
             if self.basePath.less? and self.basePath.less.length
@@ -304,19 +304,19 @@ class Require
                     styleNode.type = 'text/css'
                     styleNode.appendChild document.createTextNode tree.toCSS()
                     self.injectingNode.appendChild styleNode
-        '^.+\.coffee$': (coffeeScriptCode, module) ->
+        '^.+\.coffee$': (coffeeScriptCode, url) ->
             sourceRootPath = self.basePath.default
             if self.basePath.coffee
                 sourceRootPath = self.basePath.coffee
             coffeeScriptCompilerOptions =
                 header: false
                 sourceMap: false
-                filename: module[1]
-                generatedFile: module[1].substr(
-                    0, module[1].lastIndexOf('.') + 1
+                filename: url
+                generatedFile: url.substr(
+                    0, url.lastIndexOf('.') + 1
                 ) + 'js'
                 sourceRoot: sourceRootPath
-                sourceFiles: [module[1]]
+                sourceFiles: [url]
             if window.btoa? and window.JSON? and window.unescape? and
                window.encodeURIComponent?
                 coffeeScriptCompilerOptions.sourceMap = true
@@ -326,11 +326,12 @@ class Require
                     coffeeScriptCode, coffeeScriptCompilerOptions)
                 # NOTE: Additional commend syntax with "/*...*/" is necessary
                 # to support internet explorer.
+                console.log url
                 window.eval(
-                    "#{js}\n/*//# sourceMappingURL=data:application/json;" +
+                    "#{js}\n//# sourceMappingURL=data:application/json;" +
                     'base64,' +
                     "#{btoa unescape encodeURIComponent v3SourceMap}\n//@ " +
-                    "sourceURL=#{module[1]}*/")
+                    "sourceURL=#{url}")
             else
                 window.CoffeeScript.run(
                     coffeeScriptCode, coffeeScriptCompilerOptions)
@@ -554,8 +555,9 @@ class Require
                                 window.localStorage[self
                                     .localStoragePathReminderPrefix + ': ' +
                                     module[1]] = url
-                            callback(
-                                ajaxObject.responseText, module, parameters)
+                            callback.apply this, [
+                                ajaxObject.responseText, url, module
+                            ].concat parameters
                             self::_scriptLoaded module, parameters
                             # Delete event after passing it once.
                             ajaxObject.onreadystatechange = null
