@@ -304,19 +304,22 @@ class Require
                     styleNode.type = 'text/css'
                     styleNode.appendChild document.createTextNode tree.toCSS()
                     self.injectingNode.appendChild styleNode
-        '^.+\.coffee$': (coffeeScriptCode, url) ->
-            sourceRootPath = self.basePath.default
-            if self.basePath.coffee
-                sourceRootPath = self.basePath.coffee
+        '^.+\.coffee$': (coffeeScriptCode, url, module) ->
+            sourceRootPath = url.replace(/\\/g, '/').replace(
+                /\/[^\/]*\/?$/, '/')
+            localSourceRootPath = sourceRootPath.replace(/^https?:\/\/[^/]+\//,
+                '/')
             coffeeScriptCompilerOptions =
-                header: false
+                header: '// Generated with require.js'
                 sourceMap: false
-                filename: url
-                generatedFile: url.substr(
-                    0, url.lastIndexOf('.') + 1
+                dirname: localSourceRootPath
+                filename: module[1]
+                modulename: module[1].substr 0, module[1].lastIndexOf '.'
+                generatedFile: module[1].substr(
+                    0, module[1].lastIndexOf('.') + 1
                 ) + 'js'
                 sourceRoot: sourceRootPath
-                sourceFiles: [url]
+                sourceFiles: [module[1]]
             if window.btoa? and window.JSON? and window.unescape? and
                window.encodeURIComponent?
                 coffeeScriptCompilerOptions.sourceMap = true
@@ -326,12 +329,11 @@ class Require
                     coffeeScriptCode, coffeeScriptCompilerOptions)
                 # NOTE: Additional commend syntax with "/*...*/" is necessary
                 # to support internet explorer.
-                console.log url
                 window.eval(
                     "#{js}\n//# sourceMappingURL=data:application/json;" +
                     'base64,' +
                     "#{btoa unescape encodeURIComponent v3SourceMap}\n//@ " +
-                    "sourceURL=#{url}")
+                    "sourceURL=#{localSourceRootPath}")
             else
                 window.CoffeeScript.run(
                     coffeeScriptCode, coffeeScriptCompilerOptions)
