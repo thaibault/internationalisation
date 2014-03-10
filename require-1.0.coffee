@@ -1,13 +1,6 @@
 #!/usr/bin/env coffee
 # -*- coding: utf-8 -*-
 
-# region vim modline
-
-# vim: set tabstop=4 shiftwidth=4 expandtab:
-# vim: foldmethod=marker foldmarker=region,endregion:
-
-# endregion
-
 # region header
 
 ###
@@ -162,12 +155,10 @@ Version
 class Require
     ###
         This class can be used as function for defining dependencies for
-        modules.
-        Note that this function searches in the same resource as the first
-        javaScript include tag in your markup if given dependency resource
-        doesn't start with "http://".
-        You can manually change this behavior by adding a search base via
-        "window.require.basePath".
+        modules. Note that this function searches in the same resource as the
+        first javaScript include tag in your markup if given dependency
+        resource doesn't start with "http://". You can manually change this
+        behavior by adding search bases via "window.require.basePath".
 
         **example**
 
@@ -858,5 +849,12 @@ class Require
     # endregion
 
 this.require = Require
+
+# endregion
+
+# region vim modline
+
+# vim: set tabstop=4 shiftwidth=4 expandtab:
+# vim: foldmethod=marker foldmarker=region,endregion:
 
 # endregion

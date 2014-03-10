@@ -1,14 +1,7 @@
 #!/usr/bin/env require
 # -*- coding: utf-8 -*-
 
-# region vim modline
-
-# vim: set tabstop=4 shiftwidth=4 expandtab:
-# vim: foldmethod=marker foldmarker=region,endregion:
-
-# endregion
-
- # region header
+# region header
 
 ###
 [Project page](https://thaibault.github.com/jQuery-lang)
@@ -620,5 +613,12 @@ this.require 'jquery-tools-1.0.coffee', ($) ->
     $.Lang.class = Lang
 
     # endregion
+
+# endregion
+
+# region vim modline
+
+# vim: set tabstop=4 shiftwidth=4 expandtab:
+# vim: foldmethod=marker foldmarker=region,endregion:
 
 # endregion
