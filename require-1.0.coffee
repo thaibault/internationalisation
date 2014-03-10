@@ -324,7 +324,7 @@ class Require
                     "#{js}\n//# sourceMappingURL=data:application/json;" +
                     'base64,' +
                     "#{btoa unescape encodeURIComponent v3SourceMap}\n//@ " +
-                    "sourceURL=#{localSourceRootPath}")
+                    "sourceURL=#{localSourceRootPath + module[1]}")
             else
                 window.CoffeeScript.run(
                     coffeeScriptCode, coffeeScriptCompilerOptions)
