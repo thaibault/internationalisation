@@ -323,7 +323,7 @@ class Require
                 window.eval(
                     "#{js}\n//# sourceMappingURL=data:application/json;" +
                     'base64,' +
-                    "#{btoa unescape encodeURIComponent v3SourceMap}\n//@ " +
+                    "#{btoa unescape encodeURIComponent v3SourceMap}\n//# " +
                     "sourceURL=#{localSourceRootPath + module[1]}")
             else
                 window.CoffeeScript.run(
