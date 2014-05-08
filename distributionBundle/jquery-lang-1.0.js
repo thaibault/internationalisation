@@ -33,7 +33,9 @@ Version
   var __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
-  (function($) {
+  this.require.scopeIndicator = 'jQuery.Lang';
+
+  this.require('jquery-tools-1.0.coffee', function($) {
     var Lang;
     Lang = (function(_super) {
       __extends(Lang, _super);
@@ -84,6 +86,7 @@ Version
         this._options = {
           domNodeSelectorPrefix: 'body',
           "default": 'enUS',
+          initial: null,
           domNodeClassPrefix: '',
           templateDelimiter: {
             pre: '{{',
@@ -108,10 +111,10 @@ Version
           currentLanguageIndicatorClassName: 'current',
           sessionDescription: '{1}',
           languageMapping: {
-            deDE: ['de', 'de-de', 'german', 'deutsch'],
-            enUS: ['en', 'en-us'],
-            enEN: ['en-en', 'english'],
-            frFR: ['fr', 'fr-fr', 'french']
+            deDE: ['de', 'de_de', 'de-de', 'german', 'deutsch'],
+            enUS: ['en', 'en_us', 'en-us'],
+            enEN: ['en_en', 'en-en', 'english'],
+            frFR: ['fr', 'fr_fr', 'fr-fr', 'french']
           },
           onSwitched: $.noop(),
           onEnsureded: $.noop(),
@@ -366,7 +369,9 @@ Version
             **returns {String}** - Returns the determined language.
          */
         var result, _ref;
-        if (((_ref = window.localStorage) != null ? _ref[this._options.sessionDescription] : void 0) != null) {
+        if (this._options.initial != null) {
+          result = this._options.initial;
+        } else if (((_ref = window.localStorage) != null ? _ref[this._options.sessionDescription] : void 0) != null) {
           result = window.localStorage[this._options.sessionDescription];
           this.debug('Determine "{1}", because of local storage information.', result);
         } else if (navigator.language != null) {
@@ -629,6 +634,6 @@ Version
       return $.Tools().controller(Lang, arguments);
     };
     return $.Lang["class"] = Lang;
-  })(this.jQuery);
+  });
 
 }).call(this);

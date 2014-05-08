@@ -33,7 +33,9 @@ Version
   var __slice = [].slice,
     __indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
 
-  (function($) {
+  this.require.scopeIndicator = 'jQuery.Tools';
+
+  this.require([['jQuery', 'jquery-2.1.0']], function($) {
     var Tools;
     Tools = (function() {
 
@@ -309,10 +311,10 @@ Version
           if (this._locks[description].length) {
             this._locks[description].shift()(description);
             if ((this._locks[description] != null) && !this._locks[description].length) {
-              this._locks[description] = void 0;
+              delete this._locks[description];
             }
           } else {
-            this._locks[description] = void 0;
+            delete this._locks[description];
           }
         }
         return this;
@@ -981,6 +983,6 @@ Version
       return (new Tools).controller(Tools, arguments);
     };
     return $.Tools["class"] = Tools;
-  })(this.jQuery);
+  });
 
 }).call(this);
