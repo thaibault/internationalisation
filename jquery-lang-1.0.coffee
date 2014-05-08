@@ -82,6 +82,7 @@ this.require 'jquery-tools-1.0.coffee', ($) ->
             this._options =
                 domNodeSelectorPrefix: 'body'
                 default: 'enUS'
+                initial: null
                 domNodeClassPrefix: ''
                 templateDelimiter:
                     pre: '{{', post: '}}'
@@ -99,10 +100,10 @@ this.require 'jquery-tools-1.0.coffee', ($) ->
                 currentLanguageIndicatorClassName: 'current'
                 sessionDescription: '{1}'
                 languageMapping:
-                    deDE: ['de', 'de-de', 'german', 'deutsch']
-                    enUS: ['en', 'en-us']
-                    enEN: ['en-en', 'english']
-                    frFR: ['fr', 'fr-fr', 'french']
+                    deDE: ['de', 'de_de', 'de-de', 'german', 'deutsch']
+                    enUS: ['en', 'en_us', 'en-us']
+                    enEN: ['en_en', 'en-en', 'english']
+                    frFR: ['fr', 'fr_fr', 'fr-fr', 'french']
                 onSwitched: $.noop()
                 onEnsureded: $.noop()
                 onSwitch: $.noop()
@@ -357,7 +358,9 @@ this.require 'jquery-tools-1.0.coffee', ($) ->
 
                 **returns {String}** - Returns the determined language.
             ###
-            if window.localStorage?[this._options.sessionDescription]?
+            if this._options.initial?
+                result = this._options.initial
+            else if window.localStorage?[this._options.sessionDescription]?
                 result = window.localStorage[this._options.sessionDescription]
                 this.debug(
                     'Determine "{1}", because of local storage information.',

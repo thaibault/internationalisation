@@ -262,6 +262,12 @@ class Require
     ###
     this.onEverythingIsLoaded
     ###
+        **_currentSessionTimestamp {Date}**
+        Saves the date and time of each session, to distinguish old local
+        storage entries from new one.
+    ###
+    this._currentSessionTimestamp
+    ###
         **_callQueue {Object[]}**
         Saves function calls to require for running them in right order to
         guarantee dependencies. It consist of a list of tuples storing
@@ -378,6 +384,8 @@ class Require
                     self.basePath[type][index] += '/'
         if not self.localStoragePathReminderPrefix?
             self.localStoragePathReminderPrefix = ''
+        if not self._currentSessionTimestamp?
+            self._currentSessionTimestamp = new Date
         self.appendTimeStamp = false if not self.appendTimeStamp?
         self.passiv = false if not self.passiv?
         self.logging = false if not self.logging?
@@ -399,6 +407,25 @@ class Require
         return self
 
         # endregion
+
+    self.clearOldPathReminder = ->
+        ###
+            Removes all path reminders from local storage of other then the
+            current session.
+
+            **returns {Require}** - Returns the current function (class).
+        ###
+        if self.localStoragePathReminderPrefix
+            for key, value of window.localStorage
+                if(key.substring(
+                    0, self.localStoragePathReminderPrefix.length
+                ) is self.localStoragePathReminderPrefix and
+                key.substring(key.indexOf(':') + 1, key.lastIndexOf(':')) isnt
+                "#{self._currentSessionTimestamp.getTime()}")
+                    self::_log(
+                        "Remove old stored path reference \"#{value}\".")
+                    delete window.localStorage[key]
+        self
 
     # endregion
 
@@ -546,8 +573,10 @@ class Require
                         if ajaxObject.status in [0, 200]
                             if self.localStoragePathReminderPrefix
                                 window.localStorage[self
-                                    .localStoragePathReminderPrefix + ': ' +
-                                    module[1]] = url
+                                    .localStoragePathReminderPrefix +
+                                    ":#{self._currentSessionTimestamp
+                                    .getTime()}:#{module[1]}"
+                                ] = url
                             callback.apply this, [
                                 ajaxObject.responseText, url, module
                             ].concat parameters
@@ -646,16 +675,22 @@ class Require
         basePaths = self.basePath.all
         if self.basePath[extension] and self.basePath[extension].length
             basePaths = self.basePath[extension]
-        key = self.localStoragePathReminderPrefix + ': ' +
-            initialScriptFilePath
-        cacheHit = (
-            self.localStoragePathReminderPrefix and window.localStorage[key]?)
+        cacheHit = false
+        if self.localStoragePathReminderPrefix
+            for key of window.localStorage
+                if(key.substring(
+                    0, self.localStoragePathReminderPrefix.length
+                ) is self.localStoragePathReminderPrefix and
+                key.substring(key.lastIndexOf(':') + 1) is
+                initialScriptFilePath)
+                    cacheHit = key
         for path in basePaths
             fullScriptFilePath = path + scriptFilePath
-            if cacheHit and fullScriptFilePath is window.localStorage[key]
-                result.unshift window.localStorage[key]
+            if cacheHit and fullScriptFilePath is window.localStorage[cacheHit]
+                result.unshift window.localStorage[cacheHit]
+                delete window.localStorage[cacheHit]
             else
-                result.push path + scriptFilePath
+                result.push fullScriptFilePath
         result
     _injectLoadingDomNode: (module, parameters, urls=[]) ->
         ###
@@ -713,8 +748,10 @@ class Require
                     domNode.onload = ->
                         if self.localStoragePathReminderPrefix
                             window.localStorage[self
-                                .localStoragePathReminderPrefix + ': ' +
-                                module[1]] = url
+                                .localStoragePathReminderPrefix +
+                                ":#{self._currentSessionTimestamp
+                                .getTime()}:#{module[1]}"
+                            ] = url
                         self::_scriptLoaded module, parameters
                         # Delete event after passing it once.
                         domNode.onload = null

@@ -239,7 +239,7 @@ this.require [['jQuery', 'jquery-2.1.0']], ($) ->
                 that, "What are event loops?" might be a good question.
             ###
             wrappedCallbackFunction = (description) =>
-                callbackFunction(description)
+                callbackFunction description
                 this.releaseLock(description) if autoRelease
             if this._locks[description]?
                 this._locks[description].push wrappedCallbackFunction
@@ -267,12 +267,12 @@ this.require [['jQuery', 'jquery-2.1.0']], ($) ->
             ###
             if this._locks[description]?
                 if this._locks[description].length
-                    this._locks[description].shift()(description)
+                    this._locks[description].shift() description
                     if(this._locks[description]? and
                        not this._locks[description].length)
-                        this._locks[description] = undefined
+                        delete this._locks[description]
                 else
-                    this._locks[description] = undefined
+                    delete this._locks[description]
             this
 
         # endregion
