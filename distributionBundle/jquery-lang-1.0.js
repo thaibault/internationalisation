@@ -33,9 +33,7 @@ Version
   var __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
-  this.require.scopeIndicator = 'jQuery.Lang';
-
-  this.require('jquery-tools-1.0.coffee', function($) {
+  (function($) {
     var Lang;
     Lang = (function(_super) {
       __extends(Lang, _super);
@@ -634,6 +632,6 @@ Version
       return $.Tools().controller(Lang, arguments);
     };
     return $.Lang["class"] = Lang;
-  });
+  })(this.jQuery);
 
 }).call(this);

@@ -33,9 +33,7 @@ Version
   var __slice = [].slice,
     __indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
 
-  this.require.scopeIndicator = 'jQuery.Tools';
-
-  this.require([['jQuery', 'jquery-2.1.0']], function($) {
+  (function($) {
     var Tools;
     Tools = (function() {
 
@@ -983,6 +981,6 @@ Version
       return (new Tools).controller(Tools, arguments);
     };
     return $.Tools["class"] = Tools;
-  });
+  })(this.jQuery);
 
 }).call(this);
