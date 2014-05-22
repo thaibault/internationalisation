@@ -418,8 +418,8 @@ class Require
         if self.localStoragePathReminderPrefix
             for key, value of window.localStorage
                 if(key.substring(
-                    0, self.localStoragePathReminderPrefix.length
-                ) is self.localStoragePathReminderPrefix and
+                    0, self.localStoragePathReminderPrefix.length + 1
+                ) is "#{self.localStoragePathReminderPrefix}:" and
                 key.substring(key.indexOf(':') + 1, key.lastIndexOf(':')) isnt
                 "#{self._currentSessionTimestamp.getTime()}")
                     self::_log(
@@ -679,8 +679,8 @@ class Require
         if self.localStoragePathReminderPrefix
             for key of window.localStorage
                 if(key.substring(
-                    0, self.localStoragePathReminderPrefix.length
-                ) is self.localStoragePathReminderPrefix and
+                    0, self.localStoragePathReminderPrefix.length + 1
+                ) is "#{self.localStoragePathReminderPrefix}:" and
                 key.substring(key.lastIndexOf(':') + 1) is
                 initialScriptFilePath)
                     cacheHit = key
