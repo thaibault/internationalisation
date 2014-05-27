@@ -306,17 +306,18 @@ class Require
                 /\/[^\/]*\/?$/, '/')
             localSourceRootPath = sourceRootPath.replace(/^https?:\/\/[^/]+\//,
                 '/')
+            fileName = module[1].substr module[1].lastIndexOf('/') + 1
             coffeeScriptCompilerOptions =
                 header: '// Generated with require.js'
                 sourceMap: false
                 dirname: localSourceRootPath
-                filename: module[1]
-                modulename: module[1].substr 0, module[1].lastIndexOf '.'
-                generatedFile: module[1].substr(
-                    0, module[1].lastIndexOf('.') + 1
+                filename: fileName
+                modulename: fileName.substr 0, fileName.lastIndexOf '.'
+                generatedFile: fileName.substr(
+                    0, fileName.lastIndexOf('.') + 1
                 ) + 'js'
                 sourceRoot: sourceRootPath
-                sourceFiles: [module[1]]
+                sourceFiles: [fileName]
             if window.btoa? and window.JSON? and window.unescape? and
                window.encodeURIComponent?
                 coffeeScriptCompilerOptions.sourceMap = true
@@ -330,7 +331,7 @@ class Require
                     "#{js}\n//# sourceMappingURL=data:application/json;" +
                     'base64,' +
                     "#{btoa unescape encodeURIComponent v3SourceMap}\n//# " +
-                    "sourceURL=#{localSourceRootPath + module[1]}")
+                    "sourceURL=#{localSourceRootPath + fileName}")
             else
                 window.CoffeeScript.run(
                     coffeeScriptCode, coffeeScriptCompilerOptions)
