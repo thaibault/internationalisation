@@ -580,7 +580,7 @@ Version
             }
             currentLanguage = replacement.$currentLanguageDomNode[0].textContent;
             if (language === currentLanguage) {
-              throw Error(("Text node \"" + replacement.textToReplace + "\" is ") + ("marked as \"" + currentLanguage + "\" and has same ") + 'translation language as it already is.');
+              this.warn(("Text node \"" + replacement.textToReplace + "\" is ") + ("marked as \"" + currentLanguage + "\" and has same ") + 'translation language as it already is.');
             }
             nodeName = replacement.$nodeToReplace[0].nodeName.toLowerCase();
             if (nodeName === '#comment') {
