@@ -557,7 +557,7 @@ this.require 'jquery-tools-1.0.coffee', ($) ->
                     currentLanguage =
                         replacement.$currentLanguageDomNode[0].textContent
                     if language is currentLanguage
-                        throw Error(
+                        this.warn(
                             "Text node \"#{replacement.textToReplace}\" is " +
                             "marked as \"#{currentLanguage}\" and has same " +
                             'translation language as it already is.')
