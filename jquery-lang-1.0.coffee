@@ -131,11 +131,10 @@ this.require 'jquery-tools-1.0.coffee', ($) ->
                 this._switchCurrentLanguageIndicator newLanguage
             else
                 this.switch newLanguage, true
-            this.on(
-                this.$domNodes.switchLanguageButtons, 'click', (event) =>
-                    event.preventDefault()
-                    this.switch $(event.target).attr('href').substr(
-                        this._options.languageHashPrefix.length + 1))
+            this.on this.$domNodes.switchLanguageButtons, 'click', (event) =>
+                event.preventDefault()
+                this.switch $(event.target).attr('href').substr(
+                    this._options.languageHashPrefix.length + 1)
             this
 
         # endregion

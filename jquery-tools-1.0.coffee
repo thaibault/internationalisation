@@ -617,8 +617,7 @@ this.require [['jQuery', 'jquery-2.1.0']], ($) ->
                                                       and "false" otherwise.
             ###
             scope = this if not scope
-            eventHandlerName =
-                'on' + eventName.substr(0, 1).toUpperCase() +
+            eventHandlerName = 'on' + eventName.substr(0, 1).toUpperCase() +
                 eventName.substr 1
             if not callOnlyOptionsMethod
                 if scope[eventHandlerName]
@@ -639,7 +638,7 @@ this.require [['jQuery', 'jquery-2.1.0']], ($) ->
 
                 **returns {$}** - Returns $'s grabbed dom node.
             ###
-            this._bindHelper arguments, false,
+            this._bindHelper arguments, false
         off: ->
             ###
                 A wrapper method fo "$.off()". It sets current plugin name as
