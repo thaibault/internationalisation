@@ -31,7 +31,8 @@ Version
 
 (function() {
   var __hasProp = {}.hasOwnProperty,
-    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+    __indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
 
   (function($) {
     var Lang;
@@ -84,6 +85,7 @@ Version
         this._options = {
           domNodeSelectorPrefix: 'body',
           "default": 'enUS',
+          allowedLanguages: [],
           initial: null,
           domNodeClassPrefix: '',
           templateDelimiter: {
@@ -146,6 +148,7 @@ Version
       };
 
       Lang.prototype["switch"] = function(language, ensure) {
+        var _ref;
         if (ensure == null) {
           ensure = false;
         }
@@ -166,9 +169,13 @@ Version
         
             **returns {$.Lang}**  - Returns the current instance.
          */
+        if (language !== true && this._options.allowedLanguages.length && (_ref = !language, __indexOf.call(this._options.allowedLanguages, _ref) >= 0)) {
+          this.debug('"{1}" isn\'t one of the allowed languages.', language);
+          return this;
+        }
         this.acquireLock(this._options.toolsLockDescription, (function(_this) {
           return function() {
-            var $lastLanguageDomNode, $lastTextNodeToTranslate, actionDescription, _ref;
+            var $lastLanguageDomNode, $lastTextNodeToTranslate, actionDescription, _ref1;
             if (language === true) {
               ensure = true;
               language = _this.currentLanguage;
@@ -185,7 +192,7 @@ Version
               _this.fireEvent((ensure ? 'ensure' : 'switch'), true, _this, _this.currentLanguage, language);
               _this._$domNodeToFade = null;
               _this._replacements = [];
-              _ref = _this._collectTextNodesToReplace(language, ensure), $lastTextNodeToTranslate = _ref[0], $lastLanguageDomNode = _ref[1];
+              _ref1 = _this._collectTextNodesToReplace(language, ensure), $lastTextNodeToTranslate = _ref1[0], $lastLanguageDomNode = _ref1[1];
               _this._checkLastTextNodeHavingLanguageIndicator($lastTextNodeToTranslate, $lastLanguageDomNode, ensure);
               return _this._handleSwitchEffect(language, ensure);
             } else {
@@ -250,7 +257,7 @@ Version
       Lang.prototype._collectTextNodesToReplace = function(language, ensure) {
 
         /*
-            Normalizes a given language string.
+            Collects all text nodes which should be replaced later.
         
             **language {String}**   - New language.
         
