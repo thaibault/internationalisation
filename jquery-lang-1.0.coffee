@@ -82,6 +82,7 @@ this.require 'jquery-tools-1.0.coffee', ($) ->
             this._options =
                 domNodeSelectorPrefix: 'body'
                 default: 'enUS'
+                allowedLanguages: []
                 initial: null
                 domNodeClassPrefix: ''
                 templateDelimiter:
@@ -156,6 +157,11 @@ this.require 'jquery-tools-1.0.coffee', ($) ->
 
                 **returns {$.Lang}**  - Returns the current instance.
             ###
+            if(language isnt true and this._options.allowedLanguages.length and
+               not language in this._options.allowedLanguages)
+                this.debug(
+                    '"{1}" isn\'t one of the allowed languages.', language)
+                return this
             this.acquireLock this._options.toolsLockDescription, =>
                 if language is true
                     ensure = true
@@ -233,7 +239,7 @@ this.require 'jquery-tools-1.0.coffee', ($) ->
             this
         _collectTextNodesToReplace: (language, ensure) ->
             ###
-                Normalizes a given language string.
+                Collects all text nodes which should be replaced later.
 
                 **language {String}**   - New language.
 
