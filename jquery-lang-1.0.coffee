@@ -379,6 +379,13 @@ this.require 'jquery-tools-1.0.coffee', ($) ->
                 this.debug(
                     'Determine "{1}", because of default option.', result)
             result = this._normalizeLanguage result
+            if this._options.allowedLanguages.length and $.inArray(
+                result, this._options.allowedLanguages
+            ) is -1
+                this.debug(
+                    '"{1}" isn\'t one of the allowed languages. Set language' +
+                    ' to "{2}".', result, this._options.allowedLanguages[0])
+                result = this._options.allowedLanguages[0]
             if window.localStorage?
                 window.localStorage[this._options.sessionDescription] = result
             result
