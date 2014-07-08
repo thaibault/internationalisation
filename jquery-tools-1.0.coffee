@@ -710,14 +710,26 @@ this.require [['jQuery', 'jquery-2.1.0']], ($) ->
 
                 **string {String}**    - The string to format.
 
-                **delimiter {String}** - The string tu put between each camel
+                **delimiter {String}** - The string to put between each camel
                                          case separation.
 
                 **returns {String}**   - The formatted string.
             ###
-            string.replace(new RegExp('(.)([A-Z])', 'g'), ->
+            string.replace(new window.RegExp('(.)([A-Z])', 'g'), ->
                 arguments[1] + delimiter + arguments[2]
             ).toLowerCase()
+        delimitedToCamelCase: (string, delimiter='-') ->
+            ###
+                Converts a delimited string to a string with any none
+                alphanumeric value to its camel cased version.
+
+                **string {String}**    - The string to format.
+
+                **returns {String}**   - The formatted string.
+            ###
+            console.log string
+            string.replace new window.RegExp('(\-[a-z])', 'g'), ->
+                arguments[1].toUpperCase().replace '-', ''
         capitalize: (string) ->
             ###
                 Converts a string to its capitalize representation.
