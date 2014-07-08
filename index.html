@@ -10783,10 +10783,10 @@ Version
         
             **returns {String}**   - The formatted string.
          */
-        console.log(string);
-        return string.replace(new window.RegExp('(\-[a-z])', 'g'), function() {
-          return arguments[1].toUpperCase().replace('-', '');
-        });
+        string = string.replace(new window.RegExp('[^a-zA-Z0-9]([a-z])', 'g'), function(fullMatch, firstLetter) {
+          return firstLetter.toUpperCase();
+        }).replace(window.RegExp('[^a-zA-Z0-9]', 'g'), '');
+        return string.substring(0, 1).toLowerCase() + string.substring(1);
       };
 
       Tools.prototype.capitalize = function(string) {
