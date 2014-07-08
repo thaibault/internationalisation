@@ -727,9 +727,12 @@ this.require [['jQuery', 'jquery-2.1.0']], ($) ->
 
                 **returns {String}**   - The formatted string.
             ###
-            console.log string
-            string.replace new window.RegExp('(\-[a-z])', 'g'), ->
-                arguments[1].toUpperCase().replace '-', ''
+            string = string.replace(
+                new window.RegExp('[^a-zA-Z0-9]([a-z])', 'g'), (
+                    fullMatch, firstLetter
+                ) -> firstLetter.toUpperCase()
+            ).replace window.RegExp('[^a-zA-Z0-9]', 'g'), ''
+            string.substring(0, 1).toLowerCase() + string.substring 1
         capitalize: (string) ->
             ###
                 Converts a string to its capitalize representation.
