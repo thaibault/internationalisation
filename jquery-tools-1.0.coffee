@@ -103,9 +103,11 @@ this.require [['jQuery', 'jquery-2.1.0']], ($) ->
         constructor: (
             @$domNode=null, @_options={}, @_defaultOptions={
                 logging: false, domNodeSelectorPrefix: 'body',
-                domNodes:
-                    hideJavaScriptEnabled: '.hidden-on-javascript-enabled'
-                    showJavaScriptEnabled: '.visible-on-javascript-enabled'
+                domNode:
+                    hideJavaScriptEnabled:
+                        '.tools-hidden-on-javascript-enabled'
+                    showJavaScriptEnabled:
+                        '.tools-visible-on-javascript-enabled'
             }, @_locks={}
         ) ->
             ###
@@ -123,13 +125,13 @@ this.require [['jQuery', 'jquery-2.1.0']], ($) ->
                 this.self::_javaScriptDependentContentHandled = true
                 $(
                     this._defaultOptions.domNodeSelectorPrefix + ' ' +
-                    this._defaultOptions.domNodes.hideJavaScriptEnabled
+                    this._defaultOptions.domNode.hideJavaScriptEnabled
                 ).filter(->
                     not $(this).data 'javaScriptDependentContentHide'
                 ).data('javaScriptDependentContentHide', true).hide()
                 $(
                     this._defaultOptions.domNodeSelectorPrefix + ' ' +
-                    this._defaultOptions.domNodes.showJavaScriptEnabled
+                    this._defaultOptions.domNode.showJavaScriptEnabled
                 ).filter(->
                     not $(this).data 'javaScriptDependentContentShow'
                 ).data('javaScriptDependentContentShow', true).show()
@@ -456,7 +458,7 @@ this.require [['jQuery', 'jquery-2.1.0']], ($) ->
                 return $.trim(domNodeSelector.substring(
                     this._options.domNodeSelectorPrefix.length))
             domNodeSelector
-        getDomNodeName: (domNode) ->
+        getDomNodeName: (domNodeSelector) ->
             ###
                 Determines the dom node name of a given dom node string.
 
@@ -476,7 +478,7 @@ this.require [['jQuery', 'jquery-2.1.0']], ($) ->
                 >>> $.Tools.getDomNodeName('&lt;br/&gt;');
                 'br'
             ###
-            domNode.match(new RegExp('^<?([a-zA-Z]+).*>?.*'))[1]
+            domNodeSelector.match(new RegExp('^<?([a-zA-Z]+).*>?.*'))[1]
         grabDomNode: (domNodeSelectors) ->
             ###
                 Converts an object of dom selectors to an array of $ wrapped
