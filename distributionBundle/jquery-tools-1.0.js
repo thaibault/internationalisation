@@ -122,9 +122,9 @@ Version
         this._defaultOptions = _defaultOptions != null ? _defaultOptions : {
           logging: false,
           domNodeSelectorPrefix: 'body',
-          domNodes: {
-            hideJavaScriptEnabled: '.hidden-on-javascript-enabled',
-            showJavaScriptEnabled: '.visible-on-javascript-enabled'
+          domNode: {
+            hideJavaScriptEnabled: '.tools-hidden-on-javascript-enabled',
+            showJavaScriptEnabled: '.tools-visible-on-javascript-enabled'
           }
         };
         this._locks = _locks != null ? _locks : {};
@@ -147,10 +147,10 @@ Version
         }
         if (!this.self.prototype._javaScriptDependentContentHandled) {
           this.self.prototype._javaScriptDependentContentHandled = true;
-          $(this._defaultOptions.domNodeSelectorPrefix + ' ' + this._defaultOptions.domNodes.hideJavaScriptEnabled).filter(function() {
+          $(this._defaultOptions.domNodeSelectorPrefix + ' ' + this._defaultOptions.domNode.hideJavaScriptEnabled).filter(function() {
             return !$(this).data('javaScriptDependentContentHide');
           }).data('javaScriptDependentContentHide', true).hide();
-          $(this._defaultOptions.domNodeSelectorPrefix + ' ' + this._defaultOptions.domNodes.showJavaScriptEnabled).filter(function() {
+          $(this._defaultOptions.domNodeSelectorPrefix + ' ' + this._defaultOptions.domNode.showJavaScriptEnabled).filter(function() {
             return !$(this).data('javaScriptDependentContentShow');
           }).data('javaScriptDependentContentShow', true).show();
         }
@@ -527,7 +527,7 @@ Version
         return domNodeSelector;
       };
 
-      Tools.prototype.getDomNodeName = function(domNode) {
+      Tools.prototype.getDomNodeName = function(domNodeSelector) {
 
         /*
             Determines the dom node name of a given dom node string.
@@ -548,7 +548,7 @@ Version
             >>> $.Tools.getDomNodeName('&lt;br/&gt;');
             'br'
          */
-        return domNode.match(new RegExp('^<?([a-zA-Z]+).*>?.*'))[1];
+        return domNodeSelector.match(new RegExp('^<?([a-zA-Z]+).*>?.*'))[1];
       };
 
       Tools.prototype.grabDomNode = function(domNodeSelectors) {
