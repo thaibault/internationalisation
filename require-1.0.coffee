@@ -157,8 +157,9 @@ class Require
         This class can be used as function for defining dependencies for
         modules. Note that this function searches in the same resource as the
         first javaScript include tag in your markup if given dependency
-        resource doesn't start with "http://". You can manually change this
-        behavior by adding search bases via "window.require.basePath".
+        resource doesn't start with "http://" or "https://". You can manually
+        change this behavior by adding search bases via
+        "window.require.basePath".
 
         **example**
 
@@ -241,6 +242,11 @@ class Require
         load them. A Mapping from file endings to their script node types.
     ###
     this.includeTypes
+    ###
+        **defaultType {String}**
+        Describes a default type if no type could be determined.
+    ###
+    this.defaultType
     ###
         **asynchronModulePatternHandling {Object}**
         Defines a mapping from regular expression pattern which detects all
@@ -378,6 +384,7 @@ class Require
                 extension: 'css', domNodeName: 'link'
                 sourcePropertyName: 'href', domNodeProperties:
                     type: 'text/css', media: 'all', rel: 'stylesheet'
+        self.defaultType = 'javaScript' if not self.defaultType?
         self::_determineBasePath() if not self.basePath?.all?
         for type, paths of self.basePath
             for path, index in paths
@@ -603,7 +610,7 @@ class Require
                 type = 'asynchron request'
                 break
         if not type?
-            self::_injectLoadingDomNode module, parameters
+            self::_injectLoading module, parameters
             type = 'header dom node'
         self::_log "Initialized loading of \"#{module[1]}\" via #{type}."
         self
@@ -656,7 +663,10 @@ class Require
             **returns {String}**        - The absolute path to needed resource.
         ###
         initialScriptFilePath = scriptFilePath
-        if checkAgainExtension
+        result = []
+        if new window.RegExp('^https?://.+').test scriptFilePath
+            result.push scriptFilePath
+        else if checkAgainExtension
             hasExtension = false
             for name, properties of self.includeTypes
                 if(scriptFilePath.substr(-".#{properties.extension}".length) is
@@ -665,9 +675,6 @@ class Require
                     break
             if not hasExtension
                 scriptFilePath += ".#{self.includeTypes.javaScript.extension}"
-        result = []
-        if scriptFilePath.substring(0, 'http://'.length) is 'http://'
-            result.push scriptFilePath
         if self.appendTimeStamp
             scriptFilePath += "?timestamp=#{(new window.Date).getTime()}"
         extension = scriptFilePath.substring scriptFilePath.lastIndexOf(
@@ -693,9 +700,10 @@ class Require
             else
                 result.push fullScriptFilePath
         result
-    _injectLoadingDomNode: (module, parameters, urls=[]) ->
+    _injectLoading: (module, parameters, urls=[]) ->
         ###
-            Creates a new script loading tag.
+            Injects new script loading dom nodes or initializes asynchron
+            loading processes.
 
             **module {String[]}**     - A tuple of module name to indicate if a
                                         module is presence and its file path
@@ -709,58 +717,80 @@ class Require
 
             **returns {Require}**     - Returns the current function (class).
         ###
+        urls = self::_getScriptFileURLs(module[1], true) if not urls.length
+        url = urls.shift()
         for name, properties of self.includeTypes
-            urls = self::_getScriptFileURLs(module[1], true) if not urls.length
-            url = urls.shift()
             if(url.substr(-"-#{properties.extension}".length) is
                ".#{properties.extension}")
-                domNode = document.createElement properties.domNodeName
-                domNode[properties.sourcePropertyName] = url
-                for name, value in properties.domNodeProperties
-                    domNode[name] = value
-                ###
-                    Internet explorer workaround for capturing event when
-                    script is loaded.
-                ###
-                onErrorCallback = ->
-                    self::_log(
-                        "Loading resource \"#{module[1]}\" via header dom " +
-                        "node with url \"#{url}\" failed.")
-                    if urls.length
-                        self::_log "Retrying with url \"#{urls[0]}\"."
-                        self::_injectLoadingDomNode module, parameters, urls
-                    else
-                        self::_log(
-                            'Loading resource failed with all known base ' +
-                            'paths.')
+                return self::_injectLoadingHelper(
+                    module, parameters, urls, url, properties)
+        self::_log(
+            "No known loading node type for \"#{module[1]}\" available. Using "
+            "default type \"#{self.defaultType}\".")
+        self::_injectLoadingHelper(
+            module, parameters, urls, url, self.includeTypes[self.defaultType])
+    _injectLoadingHelper: (module, parameters, urls, url, properties) ->
+        ###
+            Injects a new script loading dom node or initializes an asynchron
+            loading process.
+
+            **module {String[]}**     - A tuple of module name to indicate if a
+                                        module is presence and its file path
+                                        resource.
+
+            **parameters {Object[]}** - Saves arguments indented to be given
+                                        to the on load function.
+
+            **urls {String[]}**       - A list of URLs to check for needed
+                                        resource.
+
+            **returns {Require}**     - Returns the current function (class).
+        ###
+        domNode = document.createElement properties.domNodeName
+        domNode[properties.sourcePropertyName] = url
+        for name, value in properties.domNodeProperties
+            domNode[name] = value
+        ###
+            Internet explorer workaround for capturing event when
+            script is loaded.
+        ###
+        onErrorCallback = ->
+            self::_log(
+                "Loading resource \"#{module[1]}\" via header dom " +
+                "node with url \"#{url}\" failed.")
+            if urls.length
+                self::_log "Retrying with url \"#{urls[0]}\"."
+                self::_injectLoading module, parameters, urls
+            else
+                self::_log(
+                    'Loading resource failed with all known base ' +
+                    'paths.')
+            # Delete event after passing it once.
+            domNode.onerror = null
+            domNode.parentElement.removeChild domNode
+        if domNode.readyState
+            domNode.onreadystatechange = ->
+                if(domNode.readyState is 'loaded' or
+                   domNode.readyState is 'complete')
+                    self::_scriptLoaded module, parameters
                     # Delete event after passing it once.
-                    domNode.onerror = null
-                    domNode.parentElement.removeChild domNode
-                if domNode.readyState
-                    domNode.onreadystatechange = ->
-                        if(domNode.readyState is 'loaded' or
-                           domNode.readyState is 'complete')
-                            self::_scriptLoaded module, parameters
-                            # Delete event after passing it once.
-                            domNode.onreadystatechange = null
-                        else
-                            onErrorCallback()
+                    domNode.onreadystatechange = null
                 else
-                    domNode.onload = ->
-                        if self.localStoragePathReminderPrefix
-                            window.localStorage[self
-                                .localStoragePathReminderPrefix +
-                                ":#{self._currentSessionTimestamp
-                                .getTime()}:#{module[1]}"
-                            ] = url
-                        self::_scriptLoaded module, parameters
-                        # Delete event after passing it once.
-                        domNode.onload = null
-                    domNode.onerror = onErrorCallback
-                self.injectingNode.appendChild domNode
-                return self
-        throw window.Error(
-            "No known loading node for \"#{module[1]}\" available.")
+                    onErrorCallback()
+        else
+            domNode.onload = ->
+                if self.localStoragePathReminderPrefix
+                    window.localStorage[self
+                        .localStoragePathReminderPrefix +
+                        ":#{self._currentSessionTimestamp
+                        .getTime()}:#{module[1]}"
+                    ] = url
+                self::_scriptLoaded module, parameters
+                # Delete event after passing it once.
+                domNode.onload = null
+            domNode.onerror = onErrorCallback
+        self.injectingNode.appendChild domNode
+        self
     _scriptLoaded: (module, parameters) ->
         ###
             If script was loaded it will be deleted from the
