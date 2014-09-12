@@ -216,12 +216,12 @@ class Require
     ###
     this.noConflict
     ###
-        **injectingNode {DomNode}**
+        **injectingDomNode {DomNode}**
         Caches a reference to the dom node for injecting needed script tags.
         You can alter this property to specify where to inject required
         scripts. Default is the head node.
     ###
-    this.injectingNode
+    this.injectingDomNode
     ###
         **initializedLoadings {String[]}**
         Saves all loaded script resources to prevent double script
@@ -255,6 +255,66 @@ class Require
     ###
     this.asynchronModulePatternHandling
     ###
+        **defaultAsynchronModulePatternHandler {Object}**
+        Defines all default asynchron module pattern handler.
+    ###
+    this.defaultAsynchronModulePatternHandler =
+        '^.+\.less$': (lessContent, url) ->
+            # Specify a filename, for better error messages.
+            options = filename: url
+            # Specify search paths for @import directives.
+            options.paths = []
+            if self.basePath.less? and self.basePath.less.length
+                options.paths = self.basePath.less
+            compiledCSSCode = null
+            new window.less.Parser(options).parse lessContent, (error, tree) ->
+                if error
+                    self._log error
+                else
+                    styleDomNode = document.createElement 'style'
+                    styleDomNode.type = 'text/css'
+                    compiledCSSCode = tree.toCSS()
+                    styleDomNode.appendChild window.document.createTextNode(
+                        compiledCSSCode)
+                    self.injectingDomNode.appendChild styleDomNode
+            return [compiledCSSCode, lessContent, null]
+        '^.+\.coffee$': (coffeeScriptCode, url, module) ->
+            sourceRootPath = url.replace(/\\/g, '/').replace(
+                /\/[^\/]*\/?$/, '/')
+            localSourceRootPath = sourceRootPath.replace(/^https?:\/\/[^/]+\//,
+                '/')
+            fileName = module[1].substr module[1].lastIndexOf('/') + 1
+            coffeeScriptCompilerOptions =
+                header: '// Generated with require.js'
+                sourceMap: false
+                dirname: localSourceRootPath
+                filename: fileName
+                modulename: fileName.substr 0, fileName.lastIndexOf '.'
+                generatedFile: fileName.substr(
+                    0, fileName.lastIndexOf('.') + 1
+                ) + 'js'
+                sourceRoot: sourceRootPath
+                sourceFiles: [fileName]
+            if window.btoa? and window.JSON? and window.unescape? and
+               window.encodeURIComponent?
+                coffeeScriptCompilerOptions.sourceMap = true
+                # NOTE: Workaround to enable source maps for asynchron loaded
+                # coffee scripts.
+                {js, v3SourceMap} = window.CoffeeScript.compile(
+                    coffeeScriptCode, coffeeScriptCompilerOptions)
+                # NOTE: Additional commend syntax with "/*...*/" is necessary
+                # to support internet explorer.
+                window.eval(
+                    "#{js}\n//# sourceMappingURL=data:application/json;" +
+                    'base64,' + window.btoa(
+                        window.unescape window.encodeURIComponent v3SourceMap
+                    ) + "\n//# sourceURL=#{localSourceRootPath + fileName}")
+                return [js, coffeeScriptCode, v3SourceMap]
+            else
+                window.CoffeeScript.run(
+                    coffeeScriptCode, coffeeScriptCompilerOptions)
+                return [null, coffeeScriptCode, null]
+    ###
         **context {Object}**
         Defines scope where the required dependencies have to be present. In
         other words "require.context" will reference "this" in given callback
@@ -287,60 +347,6 @@ class Require
         "window.require" to reset that reference in "noConflict" mode.
     ###
     this._referenceBackup = window.require
-    ###
-        **_defaultAsynchronModulePatternHandler {Object}**
-        Handles all default asynchron module pattern handler.
-    ###
-    this._defaultAsynchronModulePatternHandler =
-        '^.+\.less$': (lessContent, url) ->
-            # Specify a filename, for better error messages.
-            options = filename: url
-            # Specify search paths for @import directives.
-            options.paths = []
-            if self.basePath.less? and self.basePath.less.length
-                options.paths = self.basePath.less
-            new window.less.Parser(options).parse lessContent, (error, tree) ->
-                if error
-                    self._log error
-                else
-                    styleNode = document.createElement 'style'
-                    styleNode.type = 'text/css'
-                    styleNode.appendChild document.createTextNode tree.toCSS()
-                    self.injectingNode.appendChild styleNode
-        '^.+\.coffee$': (coffeeScriptCode, url, module) ->
-            sourceRootPath = url.replace(/\\/g, '/').replace(
-                /\/[^\/]*\/?$/, '/')
-            localSourceRootPath = sourceRootPath.replace(/^https?:\/\/[^/]+\//,
-                '/')
-            fileName = module[1].substr module[1].lastIndexOf('/') + 1
-            coffeeScriptCompilerOptions =
-                header: '// Generated with require.js'
-                sourceMap: false
-                dirname: localSourceRootPath
-                filename: fileName
-                modulename: fileName.substr 0, fileName.lastIndexOf '.'
-                generatedFile: fileName.substr(
-                    0, fileName.lastIndexOf('.') + 1
-                ) + 'js'
-                sourceRoot: sourceRootPath
-                sourceFiles: [fileName]
-            if window.btoa? and window.JSON? and window.unescape? and
-               window.encodeURIComponent?
-                coffeeScriptCompilerOptions.sourceMap = true
-                # NOTE: Workaround to enable source maps for asynchron loaded
-                # coffee scripts.
-                {js, v3SourceMap} = window.CoffeeScript.compile(
-                    coffeeScriptCode, coffeeScriptCompilerOptions)
-                # NOTE: Additional commend syntax with "/*...*/" is necessary
-                # to support internet explorer.
-                window.eval(
-                    "#{js}\n//# sourceMappingURL=data:application/json;" +
-                    'base64,' +
-                    "#{btoa unescape encodeURIComponent v3SourceMap}\n//# " +
-                    "sourceURL=#{localSourceRootPath + fileName}")
-            else
-                window.CoffeeScript.run(
-                    coffeeScriptCode, coffeeScriptCompilerOptions)
 
     # endregion
 
@@ -399,13 +405,13 @@ class Require
         self.logging = false if not self.logging?
         self.noConflict = false if not self.noConflict?
         self.initializedLoadings = [] if not self.initializedLoadings?
-        if not self.injectingNode?
-            self.injectingNode = document.getElementsByTagName('head')[0]
+        if not self.injectingDomNode?
+            self.injectingDomNode = document.getElementsByTagName('head')[0]
         if not self.asynchronModulePatternHandling?
             self.asynchronModulePatternHandling = {}
         if not self.onEverythingIsLoaded?
             self.onEverythingIsLoaded = ->
-        for pattern, handler of self._defaultAsynchronModulePatternHandler
+        for pattern, handler of self.defaultAsynchronModulePatternHandler
             if not self.asynchronModulePatternHandling[pattern]?
                 self.asynchronModulePatternHandling[pattern] = handler
         self._callQueue = [] if not self._callQueue?
@@ -789,7 +795,7 @@ class Require
                 # Delete event after passing it once.
                 domNode.onload = null
             domNode.onerror = onErrorCallback
-        self.injectingNode.appendChild domNode
+        self.injectingDomNode.appendChild domNode
         self
     _scriptLoaded: (module, parameters) ->
         ###

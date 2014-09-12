@@ -1,4 +1,4 @@
-#!/usr/bin/env require
+#!/usr/bin/env coffee
 # -*- coding: utf-8 -*-
 
 # region header
@@ -32,11 +32,7 @@ Version
 1.0 stable
 ###
 
-# # standalone
-# # do ($=this.jQuery) ->
-this.require.scopeIndicator = 'jQuery.Tools'
-this.require [['jQuery', 'jquery-2.1.0']], ($) ->
-# #
+main = ($) ->
 
 # endregion
 
@@ -164,7 +160,7 @@ this.require [['jQuery', 'jquery-2.1.0']], ($) ->
             # because the selector would be overwritten otherwise.
             this._options.domNodeSelectorPrefix = this.stringFormat(
                 this._options.domNodeSelectorPrefix,
-                this.camelCaseStringToDelimited this.__name__)
+                this.stringCamelCaseToDelimited this.__name__)
             this
 
         # endregion
@@ -451,10 +447,9 @@ this.require [['jQuery', 'jquery-2.1.0']], ($) ->
 
                 **return {String}**          - Returns the sliced selector.
             ###
-            if(this._options?.domNodeSelectorPrefix? and
-               domNodeSelector.substring(
-                0, this._options.domNodeSelectorPrefix.length) is
-               this._options.domNodeSelectorPrefix)
+            if this._options?.domNodeSelectorPrefix? and this.stringStartsWith(
+                domNodeSelector, this._options.domNodeSelectorPrefix
+            )
                 return $.trim(domNodeSelector.substring(
                     this._options.domNodeSelectorPrefix.length))
             domNodeSelector
@@ -619,8 +614,7 @@ this.require [['jQuery', 'jquery-2.1.0']], ($) ->
                                                       and "false" otherwise.
             ###
             scope = this if not scope
-            eventHandlerName = 'on' + eventName.substr(0, 1).toUpperCase() +
-                eventName.substr 1
+            eventHandlerName = "on#{this.stringCapitalize eventName}"
             if not callOnlyOptionsMethod
                 if scope[eventHandlerName]
                     scope[eventHandlerName].apply scope, additionalArguments
@@ -688,6 +682,34 @@ this.require [['jQuery', 'jquery-2.1.0']], ($) ->
 
         # region string manipulating
 
+        stringStartsWith: (string, searchString) ->
+            ###
+                Checks weather given string starts with given search string.
+
+                **string {String}**        - String to search in.
+
+                **searchString {String}**  - String to search for.
+
+                **returns {String}**       - Returns "true" if given string
+                                             starts with given search string
+                                             and "false" otherwise.
+            ###
+            string.indexOf(searchString) is 0
+        stringEndsWith: (string, searchString) ->
+            ###
+                Checks weather given string ends with given search string.
+
+                **string {String}**        - String to search in.
+
+                **searchString {String}**  - String to search for.
+
+                **returns {String}**       - Returns "true" if given string
+                                             ends with given search string
+                                             and "false" otherwise.
+            ###
+            string.length >= searchString.length and string.lastIndexOf(
+                searchString
+            ) is string.length - searchString.length
         stringFormat: (string, additionalArguments...) ->
             ###
                 Performs a string formation. Replaces every placeholder "{i}"
@@ -705,7 +727,7 @@ this.require [['jQuery', 'jquery-2.1.0']], ($) ->
                 string = string.replace(
                     new RegExp("\\{#{key}\\}", 'gm'), value))
             string
-        camelCaseStringToDelimited: (string, delimiter='-') ->
+        stringCamelCaseToDelimited: (string, delimiter='-') ->
             ###
                 Converts a camel case string to a string with given delimiter
                 between each camel case separation.
@@ -720,7 +742,7 @@ this.require [['jQuery', 'jquery-2.1.0']], ($) ->
             string.replace(new window.RegExp('(.)([A-Z])', 'g'), ->
                 arguments[1] + delimiter + arguments[2]
             ).toLowerCase()
-        delimitedToCamelCase: (string, delimiter='-') ->
+        stringDelimitedToCamelCase: (string, delimiter='-') ->
             ###
                 Converts a delimited string to a string with any none
                 alphanumeric value to its camel cased version.
@@ -734,17 +756,26 @@ this.require [['jQuery', 'jquery-2.1.0']], ($) ->
                     fullMatch, firstLetter
                 ) -> firstLetter.toUpperCase()
             ).replace window.RegExp('[^a-zA-Z0-9]', 'g'), ''
-            string.substring(0, 1).toLowerCase() + string.substring 1
-        capitalize: (string) ->
+            this.stringLowerCase string
+        stringLowerCase: (string) ->
+            ###
+                Converts a string to its lower case representation.
+
+                **string {String}**  - The string to format.
+
+                **returns {String}** - The formatted string.
+            ###
+            string.charAt(0).toLowerCase() + string.substring 1
+        stringCapitalize: (string) ->
             ###
                 Converts a string to its capitalize representation.
 
-                **string {String}**    - The string to format.
+                **string {String}**  - The string to format.
 
-                **returns {String}**   - The formatted string.
+                **returns {String}** - The formatted string.
             ###
-            string.substr(0, 1).toUpperCase() + string.substr 1
-        addSeparatorToPath: (path, pathSeparator='/') ->
+            string.charAt(0).toUpperCase() + string.substring 1
+        stringAddSeparatorToPath: (path, pathSeparator='/') ->
             ###
                 Appends a path selector to the given path if there isn't one
                 yet.
@@ -760,7 +791,7 @@ this.require [['jQuery', 'jquery-2.1.0']], ($) ->
             if path.substr(-1) isnt pathSeparator and path.length
                 return path + pathSeparator
             path
-        getUrlVariables: (key) ->
+        stringGetURLVariables: (key) ->
             ###
                 Read a page's GET URL variables and return them as an
                 associative array.
@@ -843,9 +874,9 @@ this.require [['jQuery', 'jquery-2.1.0']], ($) ->
             if this._options.domNodeSelectorPrefix
                 domNodeSelectorPrefix = this._options.domNodeSelectorPrefix +
                     ' '
-            if(selector.substr(0, domNodeSelectorPrefix.length) isnt
-                   domNodeSelectorPrefix and
-               $.trim(selector).substr(0, 1) isnt '<')
+            if not (this.stringStartsWith(
+                selector, domNodeSelectorPrefix
+            ) or this.stringStartsWith $.trim(selector), '<')
                 domNodeSelectors[key] = domNodeSelectorPrefix + selector
                 return $.trim domNodeSelectors[key]
             $.trim selector
@@ -858,7 +889,37 @@ this.require [['jQuery', 'jquery-2.1.0']], ($) ->
     $.Tools = -> (new Tools).controller Tools, arguments
     $.Tools.class = Tools
 
+        # region prop fix for comments and text nodes
+
+    nativePropFunction = $.fn.prop
+    $.fn.prop = (key, value) ->
+        ###
+            JQuery's native prop implementation ignores properties for text
+            nodes, comments and attribute nodes.
+        ###
+        if arguments.length < 3 and this[0].nodeName in [
+            '#text', '#comment'
+        ] and this[0][key]?
+            if arguments.length is 1
+                return this[0][key]
+            if arguments.length is 2
+                this[0][key] = value
+                return this
+        nativePropFunction.apply this, arguments
+
+        # endregion
+
     # endregion
+
+# endregion
+
+# region dependencies
+
+if this.require?
+    this.require.scopeIndicator = 'jQuery.Tools'
+    this.require [['jQuery', 'jquery-2.1.1']], main
+else
+    main this.jQuery
 
 # endregion
 
