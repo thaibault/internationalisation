@@ -30,11 +30,12 @@ Version
  */
 
 (function() {
-  var __slice = [].slice,
+  var main,
+    __slice = [].slice,
     __indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
 
-  (function($) {
-    var Tools;
+  main = function($) {
+    var Tools, nativePropFunction;
     Tools = (function() {
 
       /*
@@ -184,7 +185,7 @@ Version
             **returns {$.Tools}** - Returns the current instance.
          */
         this._options = $.extend(true, {}, this._defaultOptions, this._options, options);
-        this._options.domNodeSelectorPrefix = this.stringFormat(this._options.domNodeSelectorPrefix, this.camelCaseStringToDelimited(this.__name__));
+        this._options.domNodeSelectorPrefix = this.stringFormat(this._options.domNodeSelectorPrefix, this.stringCamelCaseToDelimited(this.__name__));
         return this;
       };
 
@@ -521,7 +522,7 @@ Version
             **return {String}**          - Returns the sliced selector.
          */
         var _ref;
-        if ((((_ref = this._options) != null ? _ref.domNodeSelectorPrefix : void 0) != null) && domNodeSelector.substring(0, this._options.domNodeSelectorPrefix.length) === this._options.domNodeSelectorPrefix) {
+        if ((((_ref = this._options) != null ? _ref.domNodeSelectorPrefix : void 0) != null) && this.stringStartsWith(domNodeSelector, this._options.domNodeSelectorPrefix)) {
           return $.trim(domNodeSelector.substring(this._options.domNodeSelectorPrefix.length));
         }
         return domNodeSelector;
@@ -717,7 +718,7 @@ Version
         if (!scope) {
           scope = this;
         }
-        eventHandlerName = 'on' + eventName.substr(0, 1).toUpperCase() + eventName.substr(1);
+        eventHandlerName = "on" + (this.stringCapitalize(eventName));
         if (!callOnlyOptionsMethod) {
           if (scope[eventHandlerName]) {
             scope[eventHandlerName].apply(scope, additionalArguments);
@@ -788,6 +789,38 @@ Version
         return Math.round(number * Math.pow(10, digits)) / Math.pow(10, digits);
       };
 
+      Tools.prototype.stringStartsWith = function(string, searchString) {
+
+        /*
+            Checks weather given string starts with given search string.
+        
+            **string {String}**        - String to search in.
+        
+            **searchString {String}**  - String to search for.
+        
+            **returns {String}**       - Returns "true" if given string
+                                         starts with given search string
+                                         and "false" otherwise.
+         */
+        return string.indexOf(searchString) === 0;
+      };
+
+      Tools.prototype.stringEndsWith = function(string, searchString) {
+
+        /*
+            Checks weather given string ends with given search string.
+        
+            **string {String}**        - String to search in.
+        
+            **searchString {String}**  - String to search for.
+        
+            **returns {String}**       - Returns "true" if given string
+                                         ends with given search string
+                                         and "false" otherwise.
+         */
+        return string.length >= searchString.length && string.lastIndexOf(searchString) === string.length - searchString.length;
+      };
+
       Tools.prototype.stringFormat = function() {
         var additionalArguments, string;
         string = arguments[0], additionalArguments = 2 <= arguments.length ? __slice.call(arguments, 1) : [];
@@ -810,7 +843,7 @@ Version
         return string;
       };
 
-      Tools.prototype.camelCaseStringToDelimited = function(string, delimiter) {
+      Tools.prototype.stringCamelCaseToDelimited = function(string, delimiter) {
         if (delimiter == null) {
           delimiter = '-';
         }
@@ -831,7 +864,7 @@ Version
         }).toLowerCase();
       };
 
-      Tools.prototype.delimitedToCamelCase = function(string, delimiter) {
+      Tools.prototype.stringDelimitedToCamelCase = function(string, delimiter) {
         if (delimiter == null) {
           delimiter = '-';
         }
@@ -847,22 +880,34 @@ Version
         string = string.replace(new window.RegExp('[^a-zA-Z0-9]([a-z])', 'g'), function(fullMatch, firstLetter) {
           return firstLetter.toUpperCase();
         }).replace(window.RegExp('[^a-zA-Z0-9]', 'g'), '');
-        return string.substring(0, 1).toLowerCase() + string.substring(1);
+        return this.stringLowerCase(string);
       };
 
-      Tools.prototype.capitalize = function(string) {
+      Tools.prototype.stringLowerCase = function(string) {
+
+        /*
+            Converts a string to its lower case representation.
+        
+            **string {String}**  - The string to format.
+        
+            **returns {String}** - The formatted string.
+         */
+        return string.charAt(0).toLowerCase() + string.substring(1);
+      };
+
+      Tools.prototype.stringCapitalize = function(string) {
 
         /*
             Converts a string to its capitalize representation.
         
-            **string {String}**    - The string to format.
+            **string {String}**  - The string to format.
         
-            **returns {String}**   - The formatted string.
+            **returns {String}** - The formatted string.
          */
-        return string.substr(0, 1).toUpperCase() + string.substr(1);
+        return string.charAt(0).toUpperCase() + string.substring(1);
       };
 
-      Tools.prototype.addSeparatorToPath = function(path, pathSeparator) {
+      Tools.prototype.stringAddSeparatorToPath = function(path, pathSeparator) {
         if (pathSeparator == null) {
           pathSeparator = '/';
         }
@@ -885,7 +930,7 @@ Version
         return path;
       };
 
-      Tools.prototype.getUrlVariables = function(key) {
+      Tools.prototype.stringGetURLVariables = function(key) {
 
         /*
             Read a page's GET URL variables and return them as an
@@ -983,7 +1028,7 @@ Version
         if (this._options.domNodeSelectorPrefix) {
           domNodeSelectorPrefix = this._options.domNodeSelectorPrefix + ' ';
         }
-        if (selector.substr(0, domNodeSelectorPrefix.length) !== domNodeSelectorPrefix && $.trim(selector).substr(0, 1) !== '<') {
+        if (!(this.stringStartsWith(selector, domNodeSelectorPrefix) || this.stringStartsWith($.trim(selector), '<'))) {
           domNodeSelectors[key] = domNodeSelectorPrefix + selector;
           return $.trim(domNodeSelectors[key]);
         }
@@ -999,7 +1044,33 @@ Version
     $.Tools = function() {
       return (new Tools).controller(Tools, arguments);
     };
-    return $.Tools["class"] = Tools;
-  })(this.jQuery);
+    $.Tools["class"] = Tools;
+    nativePropFunction = $.fn.prop;
+    return $.fn.prop = function(key, value) {
+
+      /*
+          JQuery's native prop implementation ignores properties for text
+          nodes, comments and attribute nodes.
+       */
+      var _ref;
+      if (arguments.length < 3 && ((_ref = this[0].nodeName) === '#text' || _ref === '#comment') && (this[0][key] != null)) {
+        if (arguments.length === 1) {
+          return this[0][key];
+        }
+        if (arguments.length === 2) {
+          this[0][key] = value;
+          return this;
+        }
+      }
+      return nativePropFunction.apply(this, arguments);
+    };
+  };
+
+  if (this.require != null) {
+    this.require.scopeIndicator = 'jQuery.Tools';
+    this.require([['jQuery', 'jquery-2.1.1']], main);
+  } else {
+    main(this.jQuery);
+  }
 
 }).call(this);

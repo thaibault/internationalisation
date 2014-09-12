@@ -30,10 +30,11 @@ Version
  */
 
 (function() {
-  var __hasProp = {}.hasOwnProperty,
+  var main,
+    __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
-  (function($) {
+  main = function($) {
     var Lang;
     Lang = (function(_super) {
       __extends(Lang, _super);
@@ -225,16 +226,16 @@ Version
         self = this;
         this.$domNodes.parent.find(':not(iframe)').contents().each(function() {
           var $this, match, nodeName, regex, selfFound;
-          nodeName = this.nodeName.toLowerCase();
+          $this = $(this);
+          nodeName = $this.prop('nodeName').toLowerCase();
           if ($.inArray(nodeName, self._options.replacementDomNodeName) !== -1) {
             if ($.inArray(nodeName, ['#comment', '#text']) === -1) {
-              $(this).hide();
+              $this.hide();
             }
             regex = new RegExp(self._options.preReplacementLanguagePattern);
-            match = this.textContent.match(regex);
+            match = $this.prop('textContent').match(regex);
             if (match && match[0]) {
-              this.textContent = this.textContent.replace(regex, match[1]);
-              $this = $(this);
+              $this.prop('textContent', $this.prop('textContent').replace(regex, match[1]));
               selfFound = false;
               return $this.parent().contents().each(function() {
                 if (selfFound && $.trim($(this).text())) {
@@ -277,7 +278,7 @@ Version
         this.$domNodes.parent.find(':not(iframe)').contents().each(function() {
           var $currentDomNode, content, match, nodeName;
           $currentDomNode = $(this);
-          nodeName = this.nodeName.toLowerCase();
+          nodeName = $currentDomNode.prop('nodeName').toLowerCase();
           if ($.inArray(nodeName.toLowerCase(), self._options.replaceDomNodeNames) !== -1) {
             if ($.trim($currentDomNode.text()) && $currentDomNode.parents(self._options.replaceDomNodeNames.join()).length === 0) {
               $lastLanguageDomNode = self._checkLastTextNodeHavingLanguageIndicator($lastTextNodeToTranslate, $lastLanguageDomNode, ensure);
@@ -285,7 +286,7 @@ Version
             }
           } else if ($currentTextNodeToTranslate != null) {
             if ($.inArray(nodeName, self._options.replacementDomNodeName) !== -1) {
-              content = this.textContent;
+              content = $currentDomNode.prop('textContent');
               if (nodeName !== '#comment') {
                 content = $currentDomNode.html();
               }
@@ -297,7 +298,7 @@ Version
                 $lastLanguageDomNode = $currentLanguageDomNode;
                 $currentTextNodeToTranslate = null;
                 $currentLanguageDomNode = null;
-              } else if (this.textContent.match(new RegExp(self._options.currentLanguagePattern))) {
+              } else if ($currentDomNode.prop('textContent').match(new RegExp(self._options.currentLanguagePattern))) {
                 $currentLanguageDomNode = $currentDomNode;
               }
               return true;
@@ -327,12 +328,12 @@ Version
         this.$domNodes.knownLanguage.find(':not(iframe)').contents().each(function() {
           var $currentDomNode;
           $currentDomNode = $(this);
-          if ($.inArray(this.nodeName.toLowerCase(), self._options.replaceDomNodeNames) !== -1 && $.trim($currentDomNode.text()) && $currentDomNode.parents(self._options.replaceDomNodeNames.join()).length === 0 && (self.knownLanguage[$.trim(this.textContent)] != null)) {
+          if ($.inArray($currentDomNode.prop('nodeName').toLowerCase(), self._options.replaceDomNodeNames) !== -1 && $.trim($currentDomNode.text()) && $currentDomNode.parents(self._options.replaceDomNodeNames.join()).length === 0 && (self.knownLanguage[$.trim($currentDomNode.prop('textContent'))] != null)) {
             self._addTextNodeToFade($currentDomNode);
-            if ((self._textNodesWithKnownLanguage[self.knownLanguage[$.trim(this.textContent)]] != null)) {
-              return self._textNodesWithKnownLanguage[self.knownLanguage[$.trim(this.textContent)]].push(this);
+            if ((self._textNodesWithKnownLanguage[self.knownLanguage[$.trim($currentDomNode.prop('textContent'))]] != null)) {
+              return self._textNodesWithKnownLanguage[self.knownLanguage[$.trim($currentDomNode.prop('textContent'))]].push($currentDomNode);
             } else {
-              return self._textNodesWithKnownLanguage[self.knownLanguage[$.trim(this.textContent)]] = [this];
+              return self._textNodesWithKnownLanguage[self.knownLanguage[$.trim($currentDomNode.prop('textContent'))]] = [$currentDomNode];
             }
           }
         });
@@ -357,7 +358,7 @@ Version
             value.push(key.toLowerCase());
           }
           if ($.inArray(language.toLowerCase(), value) !== -1) {
-            return key.substring(0, 2) + key.substring(2);
+            return key;
           }
         }
         return this._options["default"];
@@ -569,11 +570,11 @@ Version
         for (_i = 0, _len = _ref.length; _i < _len; _i++) {
           replacement = _ref[_i];
           currentText = replacement.$textNodeToTranslate.html();
-          if (replacement.$textNodeToTranslate[0].nodeName === '#text') {
-            currentText = replacement.$textNodeToTranslate[0].textContent;
+          if (replacement.$textNodeToTranslate.prop('nodeName') === '#text') {
+            currentText = replacement.$textNodeToTranslate.prop('textContent');
           }
           trimmedText = $.trim(currentText);
-          if (!this._options.templateDelimiter || trimmedText.substr(-this._options.templateDelimiter.post.length) !== this._options.templateDelimiter.post && this._options.templateDelimiter.post) {
+          if (!this._options.templateDelimiter || !this.stringEndsWith(trimmedText, this._options.templateDelimiter.post) && this._options.templateDelimiter.post) {
             if (replacement.$currentLanguageDomNode == null) {
               currentDomNodeFound = false;
               replacement.$textNodeToTranslate.parent().contents().each(function() {
@@ -587,19 +588,19 @@ Version
                 return true;
               });
             }
-            currentLanguage = replacement.$currentLanguageDomNode[0].textContent;
+            currentLanguage = replacement.$currentLanguageDomNode.prop('textContent');
             if (language === currentLanguage) {
               this.warn(("Text node \"" + replacement.textToReplace + "\" is ") + ("marked as \"" + currentLanguage + "\" and has same ") + 'translation language as it already is.');
             }
-            nodeName = replacement.$nodeToReplace[0].nodeName.toLowerCase();
+            nodeName = replacement.$nodeToReplace.prop('nodeName').toLowerCase();
             if (nodeName === '#comment') {
               replacement.$textNodeToTranslate.after($("<!--" + currentLanguage + ":" + currentText + "-->"));
             } else {
               replacement.$textNodeToTranslate.after($(("<" + nodeName + ">" + currentLanguage + ":" + currentText + "<") + ("/" + nodeName + ">")).hide());
             }
             replacement.$textNodeToTranslate.after($("<!--" + language + "-->"));
-            if (replacement.$textNodeToTranslate[0].nodeName === '#text') {
-              replacement.$textNodeToTranslate[0].textContent = replacement.textToReplace;
+            if (replacement.$textNodeToTranslate.prop('nodeName') === '#text') {
+              replacement.$textNodeToTranslate.prop('textContent', replacement.textToReplace);
             } else {
               replacement.$textNodeToTranslate.html(replacement.textToReplace);
             }
@@ -609,7 +610,7 @@ Version
         }
         $.each(this._textNodesWithKnownLanguage, function(key, value) {
           return $.each(value, function(subKey, value) {
-            return value.textContent = key;
+            return value.prop('textContent', key);
           });
         });
         if (window.localStorage != null) {
@@ -641,6 +642,13 @@ Version
       return $.Tools().controller(Lang, arguments);
     };
     return $.Lang["class"] = Lang;
-  })(this.jQuery);
+  };
+
+  if (this.require != null) {
+    this.require.scopeIndicator = 'jQuery.Lang';
+    this.require('jquery-tools-1.0.coffee', main);
+  } else {
+    main(this.jQuery);
+  }
 
 }).call(this);
