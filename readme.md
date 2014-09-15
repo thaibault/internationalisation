@@ -192,7 +192,7 @@ to initialize the plugin with different configuration.
 
     #!HTML
 
-    <script type="text/javascript" src="distributionBundle/jquery-2.1.0.js"></script>
+    <script type="text/javascript" src="distributionBundle/jquery-2.1.1.js"></script>
     <script type="text/javascript" src="distributionBundle/jquery-tools-1.0.js"></script>
     <script type="text/javascript" src="distributionBundle/jquery-lang-1.0.js"></script>
     <script type="text/javascript">
