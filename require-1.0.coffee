@@ -296,7 +296,7 @@ class Require
                 sourceRoot: sourceRootPath
                 sourceFiles: [fileName]
             if window.btoa? and window.JSON? and window.unescape? and
-               window.encodeURIComponent?
+               window.encodeURIComponent? and self.generateSourceMaps
                 coffeeScriptCompilerOptions.sourceMap = true
                 # NOTE: Workaround to enable source maps for asynchron loaded
                 # coffee scripts.
@@ -314,6 +314,11 @@ class Require
                 window.CoffeeScript.run(
                     coffeeScriptCode, coffeeScriptCompilerOptions)
                 return [null, coffeeScriptCode, null]
+    ###
+        **generateSourceMaps {Boolean}**
+        Indicates weather source maps should be created.
+    ###
+    this.generateSourceMaps
     ###
         **context {Object}**
         Defines scope where the required dependencies have to be present. In
@@ -398,6 +403,7 @@ class Require
                     self.basePath[type][index] += '/'
         if not self.localStoragePathReminderPrefix?
             self.localStoragePathReminderPrefix = ''
+        self.generateSourceMaps = true if not self.generateSourceMaps?
         if not self._currentSessionTimestamp?
             self._currentSessionTimestamp = new Date
         self.appendTimeStamp = false if not self.appendTimeStamp?
