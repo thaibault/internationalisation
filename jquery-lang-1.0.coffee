@@ -59,9 +59,9 @@ main = ($) ->
         # region special
 
         initialize: (
-            options={}, @currentLanguage='', @knownLanguage={},
-            @_$domNodeToFade=null, @_numberOfFadedDomNodes=0,
-            @_replacements=[], @_textNodesWithKnownLanguage={}
+            options={}, @currentLanguage='', @knownLanguage={}
+            @_$domNodeToFade=null, @_replacements=[]
+            @_textNodesWithKnownLanguage={}
         ) ->
             ###
                 Initializes the plugin. Current language is set and later
@@ -402,10 +402,10 @@ main = ($) ->
             ###
             if(not ensure and this._options.fadeEffect and
                this._$domNodeToFade?)
-                this._options.textNodeParent.fadeOut.always = this.getMethod(
+                $.when(this._$domNodeToFade.fadeOut(
+                    this._options.textNodeParent.fadeOut
+                ).promise()).always this.getMethod(
                     this._handleLanguageSwitching, this, language, ensure)
-                this._$domNodeToFade.fadeOut(
-                    this._options.textNodeParent.fadeOut)
             else
                 this._handleLanguageSwitching(
                     this._handleLanguageSwitching, this, language, ensure)
@@ -508,27 +508,19 @@ main = ($) ->
 
                 **returns {$.Lang}**        - Returns the current instance.
             ###
-            this._numberOfFadedDomNodes += 1
             oldLanguage = this.currentLanguage
             if(not ensure and this._options.fadeEffect and
                this._$domNodeToFade?)
-                if this._numberOfFadedDomNodes is this._$domNodeToFade.length
-                    this._switchLanguage language
-                    this._numberOfFadedDomNodes = 0
-                    this._options.textNodeParent.fadeIn.always = =>
-                        this._numberOfFadedDomNodes += 1
-                        if(this._numberOfFadedDomNodes is
-                           this._$domNodeToFade.length)
-                            this._numberOfFadedDomNodes = 0
-                            this.fireEvent(
-                                (if ensure then 'ensured' else 'switched'),
-                                true, this, oldLanguage, language)
-                            this.releaseLock this._options.toolsLockDescription
-                    this._$domNodeToFade.fadeIn(
-                        this._options.textNodeParent.fadeIn)
+                this._switchLanguage language
+                $.when(this._$domNodeToFade.fadeIn(
+                    this._options.textNodeParent.fadeIn
+                ).promise()).always =>
+                    this.fireEvent(
+                        (if ensure then 'ensured' else 'switched')
+                        true, this, oldLanguage, language)
+                    this.releaseLock this._options.toolsLockDescription
             else
                 this._switchLanguage language
-                this._numberOfFadedDomNodes = 0
                 this.fireEvent(
                     (if ensure then 'ensured' else 'switched'), true, this,
                     oldLanguage, language)
