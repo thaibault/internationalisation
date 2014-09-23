@@ -256,13 +256,6 @@ main = ($) ->
 
                 **returns {$.Tools}**    - Returns the current instance.
             ###
-            ###
-                NOTE: The "window.setTimeout()" wrapper guarantees that the
-                following function will be executed without any context
-                switches in all browsers.
-                If you want to understand more about that,
-                "What are event loops?" might be a good question.
-            ###
             if this._locks[description]?
                 if this._locks[description].length
                     this._locks[description].shift() description
