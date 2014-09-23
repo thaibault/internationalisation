@@ -57,7 +57,7 @@ Version
 
       Lang.prototype.__name__ = 'Lang';
 
-      Lang.prototype.initialize = function(options, currentLanguage, knownLanguage, _$domNodeToFade, _numberOfFadedDomNodes, _replacements, _textNodesWithKnownLanguage) {
+      Lang.prototype.initialize = function(options, currentLanguage, knownLanguage, _$domNodeToFade, _replacements, _textNodesWithKnownLanguage) {
         var newLanguage;
         if (options == null) {
           options = {};
@@ -65,7 +65,6 @@ Version
         this.currentLanguage = currentLanguage != null ? currentLanguage : '';
         this.knownLanguage = knownLanguage != null ? knownLanguage : {};
         this._$domNodeToFade = _$domNodeToFade != null ? _$domNodeToFade : null;
-        this._numberOfFadedDomNodes = _numberOfFadedDomNodes != null ? _numberOfFadedDomNodes : 0;
         this._replacements = _replacements != null ? _replacements : [];
         this._textNodesWithKnownLanguage = _textNodesWithKnownLanguage != null ? _textNodesWithKnownLanguage : {};
 
@@ -410,8 +409,7 @@ Version
             **returns {$.Lang}**  - Returns the current instance.
          */
         if (!ensure && this._options.fadeEffect && (this._$domNodeToFade != null)) {
-          this._options.textNodeParent.fadeOut.always = this.getMethod(this._handleLanguageSwitching, this, language, ensure);
-          this._$domNodeToFade.fadeOut(this._options.textNodeParent.fadeOut);
+          $.when(this._$domNodeToFade.fadeOut(this._options.textNodeParent.fadeOut).promise()).always(this.getMethod(this._handleLanguageSwitching, this, language, ensure));
         } else {
           this._handleLanguageSwitching(this._handleLanguageSwitching, this, language, ensure);
         }
@@ -528,27 +526,17 @@ Version
             **returns {$.Lang}**        - Returns the current instance.
          */
         var oldLanguage;
-        this._numberOfFadedDomNodes += 1;
         oldLanguage = this.currentLanguage;
         if (!ensure && this._options.fadeEffect && (this._$domNodeToFade != null)) {
-          if (this._numberOfFadedDomNodes === this._$domNodeToFade.length) {
-            this._switchLanguage(language);
-            this._numberOfFadedDomNodes = 0;
-            this._options.textNodeParent.fadeIn.always = (function(_this) {
-              return function() {
-                _this._numberOfFadedDomNodes += 1;
-                if (_this._numberOfFadedDomNodes === _this._$domNodeToFade.length) {
-                  _this._numberOfFadedDomNodes = 0;
-                  _this.fireEvent((ensure ? 'ensured' : 'switched'), true, _this, oldLanguage, language);
-                  return _this.releaseLock(_this._options.toolsLockDescription);
-                }
-              };
-            })(this);
-            this._$domNodeToFade.fadeIn(this._options.textNodeParent.fadeIn);
-          }
+          this._switchLanguage(language);
+          $.when(this._$domNodeToFade.fadeIn(this._options.textNodeParent.fadeIn).promise()).always((function(_this) {
+            return function() {
+              _this.fireEvent((ensure ? 'ensured' : 'switched'), true, _this, oldLanguage, language);
+              return _this.releaseLock(_this._options.toolsLockDescription);
+            };
+          })(this));
         } else {
           this._switchLanguage(language);
-          this._numberOfFadedDomNodes = 0;
           this.fireEvent((ensure ? 'ensured' : 'switched'), true, this, oldLanguage, language);
           this.releaseLock(this._options.toolsLockDescription);
         }

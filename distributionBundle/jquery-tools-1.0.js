@@ -262,13 +262,6 @@ Version
         
             **returns {$.Tools}**           - Returns the current instance.
          */
-
-        /*
-            NOTE: The "window.setTimeout()" wrapper guarantees that the
-            following function will be executed without any context
-            switches in all browsers. If you want to understand more about
-            that, "What are event loops?" might be a good question.
-         */
         wrappedCallbackFunction = (function(_this) {
           return function(description) {
             callbackFunction(description);
@@ -301,9 +294,6 @@ Version
         if (this._locks[description] != null) {
           if (this._locks[description].length) {
             this._locks[description].shift()(description);
-            if ((this._locks[description] != null) && !this._locks[description].length) {
-              delete this._locks[description];
-            }
           } else {
             delete this._locks[description];
           }
