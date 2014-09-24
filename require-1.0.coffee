@@ -269,7 +269,7 @@ class Require
             compiledCSSCode = null
             new window.less.Parser(options).parse lessContent, (error, tree) ->
                 if error
-                    self._log error
+                    self._log error, true
                 else
                     styleDomNode = document.createElement 'style'
                     styleDomNode.type = 'text/css'
@@ -300,8 +300,14 @@ class Require
                 coffeeScriptCompilerOptions.sourceMap = true
                 # NOTE: Workaround to enable source maps for asynchron loaded
                 # coffee scripts.
-                {js, v3SourceMap} = window.CoffeeScript.compile(
-                    coffeeScriptCode, coffeeScriptCompilerOptions)
+                try
+                    {js, v3SourceMap} = window.CoffeeScript.compile(
+                        coffeeScriptCode, coffeeScriptCompilerOptions)
+                catch error
+                    self::_log(
+                        'Syntax error in source file ' +
+                        "\"#{localSourceRootPath}#{fileName}\".", true)
+                    throw error
                 # NOTE: Additional commend syntax with "/*...*/" is necessary
                 # to support internet explorer.
                 window.eval(
@@ -907,20 +913,20 @@ class Require
             moduleDescription = module[0]
         self::_log "\"#{moduleDescription}\" is loaded complete."
         true
-    _log: (message) ->
+    _log: (message, force=false) ->
         ###
             If logging is enabled. Method shows the given message in the
             browsers console if possible or in a standalone alert-window as
             fallback.
 
-            **message {String}** - A logging message.
+            **message {String}**          - A logging message
 
             **returns {undefined|false}** - Returns the return value of
                                             "window.console.log()" or
                                             "window.alert()" or "false" if
                                             logging is disabled.
         ###
-        if self.logging
+        if self.logging or force
             if window.console and window.console.log
                 return window.console.log "require: #{message}"
             return window.alert "require: #{message}"

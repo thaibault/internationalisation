@@ -421,6 +421,26 @@ main = ($) ->
 
         # region dom node handling
 
+        generateDirectiveSelector: (directiveName) ->
+            ###
+                Generates a directive name corresponding selector string.
+
+                **directiveName {String}** - The directive name
+
+                **return {String}**        - Returns generated selector
+            ###
+            delimitedName = this.stringCamelCaseToDelimited directiveName
+            "#{delimitedName}, [#{delimitedName}], .#{delimitedName}"
+        removeDirective: (directiveName) ->
+            ###
+                Removes a directive name corresponding class or attribute.
+
+                **directiveName {String}** - The directive name
+
+                **return {DomNode}**       - Returns current dom node
+            ###
+            delimitedName = this.stringCamelCaseToDelimited directiveName
+            this.$domNode.removeClass(delimitedName).removeAttr delimitedName
         sliceDomNodeSelectorPrefix: (domNodeSelector) ->
             ###
                 Removes a selector prefix from a given selector. This methods
