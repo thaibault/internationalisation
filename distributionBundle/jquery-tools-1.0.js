@@ -492,6 +492,34 @@ Version
         return "" + ($.trim(output)) + "\n(Type: \"" + ($.type(object)) + "\")";
       };
 
+      Tools.prototype.generateDirectiveSelector = function(directiveName) {
+
+        /*
+            Generates a directive name corresponding selector string.
+        
+            **directiveName {String}** - The directive name
+        
+            **return {String}**        - Returns generated selector
+         */
+        var delimitedName;
+        delimitedName = this.stringCamelCaseToDelimited(directiveName);
+        return "" + delimitedName + ", [" + delimitedName + "], ." + delimitedName;
+      };
+
+      Tools.prototype.removeDirective = function(directiveName) {
+
+        /*
+            Removes a directive name corresponding class or attribute.
+        
+            **directiveName {String}** - The directive name
+        
+            **return {DomNode}**       - Returns current dom node
+         */
+        var delimitedName;
+        delimitedName = this.stringCamelCaseToDelimited(directiveName);
+        return this.$domNode.removeClass(delimitedName).removeAttr(delimitedName);
+      };
+
       Tools.prototype.sliceDomNodeSelectorPrefix = function(domNodeSelector) {
 
         /*
