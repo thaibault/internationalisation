@@ -513,6 +513,24 @@ main = ($) ->
 
         # endregion
 
+        # region scope
+
+        determineUniqueScopeName: (prefix='callback', scope=window) ->
+            ###
+                Generates a unique function name needed for jsonp requests.
+
+                **scope {Object}**   - A scope where the name should be unique.
+
+                **returns {String}** - The function name.
+            ###
+            while true
+                uniqueName = prefix + window.parseInt window.Math.random(
+                ) * 10 ** 10
+                break if not scope[uniqueName]?
+            uniqueName
+
+        # endregion
+
         # region function handling
 
         getMethod: (method, scope=this, additionalArguments...) ->

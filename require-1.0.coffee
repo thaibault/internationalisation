@@ -743,8 +743,8 @@ class Require
                 return self::_injectLoadingHelper(
                     module, parameters, urls, url, properties)
         self::_log(
-            "No known loading node type for \"#{module[1]}\" available. Using "
-            "default type \"#{self.defaultType}\".")
+            "No known loading node type for \"#{module[1]}\" available. " +
+            "Using default type \"#{self.defaultType}\".")
         self::_injectLoadingHelper(
             module, parameters, urls, url, self.includeTypes[self.defaultType])
     _injectLoadingHelper: (module, parameters, urls, url, properties) ->
