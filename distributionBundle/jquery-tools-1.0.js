@@ -621,7 +621,7 @@ Version
             **returns {String}** - The function name.
          */
         while (true) {
-          uniqueName = prefix + window.parseInt(window.Math.random() * Math.pow(10, 10));
+          uniqueName = prefix + window.parseInt(window.Math.random() * window.Math.pow(10, 10));
           if (scope[uniqueName] == null) {
             break;
           }
