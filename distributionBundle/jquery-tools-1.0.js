@@ -604,6 +604,31 @@ Version
         return domNodes;
       };
 
+      Tools.prototype.determineUniqueScopeName = function(prefix, scope) {
+        var uniqueName;
+        if (prefix == null) {
+          prefix = 'callback';
+        }
+        if (scope == null) {
+          scope = window;
+        }
+
+        /*
+            Generates a unique function name needed for jsonp requests.
+        
+            **scope {Object}**   - A scope where the name should be unique.
+        
+            **returns {String}** - The function name.
+         */
+        while (true) {
+          uniqueName = prefix + window.parseInt(window.Math.random() * Math.pow(10, 10));
+          if (scope[uniqueName] == null) {
+            break;
+          }
+        }
+        return uniqueName;
+      };
+
       Tools.prototype.getMethod = function() {
         var additionalArguments, method, parameter, scope;
         method = arguments[0], scope = arguments[1], additionalArguments = 3 <= arguments.length ? __slice.call(arguments, 2) : [];
