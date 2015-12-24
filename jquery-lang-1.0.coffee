@@ -4,7 +4,7 @@
 # region header
 
 ###
-[Project page](https://thaibault.github.com/jQuery-lang)
+[Project page](http://torben.website/jQuery-lang)
 
 This plugin provided client side internationalisation support for websites.
 
@@ -364,8 +364,11 @@ main = ($) ->
             ###
             if this._options.initial?
                 result = this._options.initial
-            else if window.localStorage?[this._options.sessionDescription]?
-                result = window.localStorage[this._options.sessionDescription]
+            else if window.localStorage?.getItem(
+                this._options.sessionDescription
+            )?
+                result = window.localStorage.getItem(
+                    this._options.sessionDescription)
                 this.debug(
                     'Determine "{1}", because of local storage information.',
                     result)
@@ -386,7 +389,8 @@ main = ($) ->
                     ' to "{2}".', result, this._options.allowedLanguages[0])
                 result = this._options.allowedLanguages[0]
             if window.localStorage?
-                window.localStorage[this._options.sessionDescription] = result
+                window.localStorage.setItem(
+                    this._options.sessionDescription, result)
             result
         _handleSwitchEffect: (language, ensure) ->
             ###
@@ -591,8 +595,8 @@ main = ($) ->
             $.each this._textNodesWithKnownLanguage, (key, value) ->
                 $.each value, (subKey, value) -> value.prop 'textContent', key
             if window.localStorage?
-                window.localStorage[this._options.sessionDescription] =
-                    language
+                window.localStorage.setItem(
+                    this._options.sessionDescription, language)
             this.currentLanguage = language
             this
         _switchCurrentLanguageIndicator: (language) ->

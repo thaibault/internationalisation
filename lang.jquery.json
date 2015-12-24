@@ -5,7 +5,7 @@
     "author": {
         "name": "Torben Sickert",
         "email": "t.sickert@gmail.com",
-        "url": "http://thaibault.github.com"
+        "url": "http://torben.website"
     },
     "licenses": [{
         "type": "creativecommons",
@@ -20,14 +20,14 @@
         "audience", "internationalisation", "lang", "language",
         "multilanguage", "tools"
     ],
-    "homepage": "http://thaibault.github.com/jQuery-lang",
-    "docs": "http://thaibault.github.com/jQuery-lang/api",
-    "demo": "http://thaibault.github.com/jQuery-lang",
-    "download": "http://thaibault.github.com/jQuery-lang/distributionBundle.zip",
+    "homepage": "http://torben.website/jQuery-lang",
+    "docs": "http://torben.website/jQuery-lang/api",
+    "demo": "http://torben.website/jQuery-lang",
+    "download": "http://torben.website/jQuery-lang/distributionBundle.zip",
     "bugs": "https://github.com/thaibault/jQuery-lang/issues",
     "maintainers": [{
         "name": "Torben Sickert",
         "email": "t.sickert@gmail.com",
-        "url": "http://thaibault.github.com"
+        "url": "http://torben.website"
     }]
 }
