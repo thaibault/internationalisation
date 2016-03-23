@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 
 # region header
-
 ###
 [Project page](http://torben.website/jQuery-lang)
 
