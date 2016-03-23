@@ -1,0 +1,31 @@
+{
+    "name": "jQuery-lang",
+    "version": "1.0.0",
+    "description": "Expand your audience",
+    "keywords": ["jquery", "lang", "language", "internationalisation"],
+    "files": ["index.js"],
+    "repository": {
+        "type": "git", "url": "https://github.com/thaibault/jQuery-lang"
+    },
+    "homepage": "http://torben.website/jQuery-lang",
+    "main": "index.compiled.js",
+    "webOptimizer": {"moduleAliases": {"jquery": "jquery/src/jquery"}},
+    "scripts": {
+        "build": "webOptimizer build",
+        "clear": "webOptimizer clear",
+        "lint": "webOptimizer lint",
+        "test": "webOptimizer test",
+        "preinstall": "webOptimizer preinstall",
+        "postinstall": "webOptimizer build"
+    },
+    "license": "ISC",
+    "dependencies": {
+        "jQuery-tools": "git+ssh://git@github.com/thaibault/jQuery-tools.git"
+    },
+    "devDependencies": {
+        "jquery": "2.2.2",
+        "qunitjs": "*",
+        "sizzle": "*",
+        "webOptimizer": "git+ssh://git@github.com/thaibault/webOptimizer.git"
+    }
+}
