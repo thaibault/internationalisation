@@ -626,15 +626,18 @@ main = ($) ->
 
     # endregion
 
+    $.Lang
+
 # endregion
 
 # region dependencies
 
-if this.require?
+if this.require? and not module.exports?
     this.require.scopeIndicator = 'jQuery.Lang'
     this.require [['jQuery.Tools', 'jquery-tools-1.0.coffee']], main
 else
-    main this.jQuery
+    jQuery = jQuery or $ or window.jQuery or window.$
+    if module? then module.exports = main(jQuery) else main jQuery
 
 # endregion
 

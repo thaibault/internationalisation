@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 
 # region header
-
 # Copyright Torben Sickert (t.sickert["~at~"]gmail.com) 16.12.2012
 
 # License
@@ -11,33 +10,25 @@
 # This library written by Torben Sickert stand under a creative commons naming
 # 3.0 unported license. see http://creativecommons.org/licenses/by/3.0/deed.de
 
-module 'jQuery/lang'
-
+qunit = require 'qunit.js'
+$ = require 'jquery'
+require 'imports?$=jquery!jQuery-tools'
+require 'imports?$=jquery!index'
+qunit.start()
 # endregion
 
 # region tests
-
-    # region mock-up
-
+## region mock-up
 lang = $.Lang()
-
-    # endregion
-
-    # region public methods
-
-        # region special
-
+## endregion
+# region public methods
+## region special
 test 'initialize', -> ok lang
-
-        # endregion
-
+## endregion
 test 'switch', -> strictEqual lang.switch('en'), lang
 test 'refresh', -> strictEqual lang.refresh(), lang
-
-    # endregion
-
-    # region protected methods
-
+# endregion
+## region protected methods
 test '_normalizeLanguage', ->
     strictEqual lang._normalizeLanguage('de'), 'deDE'
     strictEqual lang._normalizeLanguage('de-de'), 'deDE'
@@ -75,14 +66,9 @@ test '_switchLanguage', ->
     strictEqual lang.currentLanguage, 'deDE'
 test '_switchCurrentLanguageIndicator', ->
     strictEqual lang._switchCurrentLanguageIndicator('deDE'), lang
-
-    # endregion
-
+## endregion
 # endregion
-
 # region vim modline
-
 # vim: set tabstop=4 shiftwidth=4 expandtab:
 # vim: foldmethod=marker foldmarker=region,endregion:
-
 # endregion

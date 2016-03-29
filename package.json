@@ -9,7 +9,9 @@
     },
     "homepage": "http://torben.website/jQuery-lang",
     "main": "index.compiled.js",
-    "webOptimizer": {"moduleAliases": {"jquery": "jquery/src/jquery"}},
+    "webOptimizer": {"moduleAliases": {
+        "jQuery-tools": "jQuery-tools/index.compiled"
+    }},
     "scripts": {
         "build": "webOptimizer build",
         "clear": "webOptimizer clear",
