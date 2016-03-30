@@ -3,7 +3,7 @@
     "version": "1.0.0",
     "description": "Expand your audience",
     "keywords": ["jquery", "lang", "language", "internationalisation"],
-    "files": ["index.js"],
+    "files": ["index.coffee"],
     "repository": {
         "type": "git", "url": "https://github.com/thaibault/jQuery-lang"
     },
