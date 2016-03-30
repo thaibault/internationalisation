@@ -11,8 +11,8 @@
 # endregion
 qunit = require 'qunit.js'
 $ = require 'jquery'
-require 'imports?$=jquery!jQuery-tools'
-require 'imports?$=jquery!index'
+require 'jQuery-tools'
+require 'index'
 qunit.start()
 # region tests
 ## region mock-up
