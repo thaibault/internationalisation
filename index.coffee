@@ -32,6 +32,7 @@ Version
 ###
 # endregion
 $ = require 'jquery'
+require 'jQuery-tools'
 # region plugins/classes
 class Lang extends $.Tools.class
     ###
