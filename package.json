@@ -12,8 +12,10 @@
     "scripts": {
         "build": "webOptimizer build",
         "clear": "webOptimizer clear",
+        "document": "webOptimizer document",
         "lint": "webOptimizer lint",
         "test": "webOptimizer test",
+        "testInBrowser": "webOptimizer testInBrowser",
         "preinstall": "webOptimizer preinstall",
         "postinstall": "webOptimizer build"
     },
@@ -22,5 +24,8 @@
         "webOptimizer": "git+ssh://git@github.com/thaibault/webOptimizer.git",
         "jQuery-tools": "git+ssh://git@github.com/thaibault/jQuery-tools.git"
     },
-    "devDependencies": {"qunitjs": "*"}
+    "devDependencies": {
+        "qunitjs": "*",
+        "qunit-cli": "*"
+    }
 }
