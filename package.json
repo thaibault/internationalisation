@@ -13,7 +13,7 @@
         "build": "webOptimizer build",
         "clear": "webOptimizer clear",
         "document": "webOptimizer document",
-        "lint": "webOptimizer lint",
+        "lint": "webOptimizer typeCheck && webOptimizer lint",
         "test": "webOptimizer test",
         "testInBrowser": "webOptimizer testInBrowser",
         "preinstall": "webOptimizer preinstall",

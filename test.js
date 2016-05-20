@@ -36,7 +36,7 @@ browserAPI((window:Window, location:Location) => {
         global.window = window
     const $:JQueryFunction = require('jquery')
     $.context = window.document
-    require('index')
+    require('./index')
     if (TARGET === 'node')
         qunit.load()
     else
