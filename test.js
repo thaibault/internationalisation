@@ -32,8 +32,12 @@ const qunit:Object = (TARGET === 'node') ? require('qunit-cli') : require(
 browserAPI((window:Window, location:Location) => {
     // NOTE: We have to define window globally before jQuery is loaded to
     // ensure that all jquery instances share the same window object.
-    if (typeof global !== 'undefined')
+    if (typeof global !== 'undefined') {
         global.window = window
+        for (const key in window)
+            if (window.hasOwnProperty(key) && !global.hasOwnProperty(key))
+                global[key] = window[key]
+    }
     const $:JQueryFunction = require('jquery')
     $.context = window.document
     require('./index')
