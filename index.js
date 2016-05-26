@@ -35,70 +35,110 @@ const context:Object = (():Object => {
 if (!context.hasOwnProperty('document') && $.hasOwnProperty('context'))
     context.document = $.context
 // region plugins/classes
-// TODO Stand
+// TODO finalize and check Array-Type annotation!
+/**
+ * This plugin holds all needed methods to extend a website for
+ * internationalisation.
+ * @extends jQuery-tools:Tools
+ * @property static:_name - Defines this class name to allow retrieving them
+ * after name mangling.
+ * @property _options - Fallback options if not overwritten by the
+ * options given to the initializer method.
+ * @property _options.domNodeSelectorPrefix {string} - Selector prefix for all
+ * nodes to take into account.
+ * @property _options.default {string} - Initial language to use.
+ * @property _options.allowedLanguages {Array<string>} - List of all supported
+ * languages.
+ * @property _options.initial {string} - Initial set language (if omitted it
+ * will be guest.
+ * @property _options.templateDelimiter {Object} - Template delimiter to
+ * recognize dynamic content.
+ * @property _options.templateDelimiter.pre {string} - Delimiter which
+ * introduces a dynamic expression.
+ * @property _options.templateDelimiter.post {string} - Delimiter which
+ * finishes a dynamic expression.
+ * @property _options.fadeEffect - Indicates weather a fade effect should be
+ * performed.
+ * @property _options.textNodeParent {Object} -
+ * @property _options.textNodeParent.fadeIn {Object} -
+ * @property _options.textNodeParent.fadeOut {Object} -
+ * @property _options.preReplacementLanguagePattern {string} -
+ * @property _options.replacementLanguagePattern {string} -
+ * @property _options.currentLanguagePattern {string} -
+ * @property _options.replacementDomNodeName {Array<string>} -
+ * @property _options.replaceDomNodeNames {Array<string>} -
+ * @property _options.toolsLockDescription {string} -
+ * @property _options.languageHashPrefix {string} -
+ * @property _options.currentLanguageIndicatorClassName {string} -
+ * @property _options.sessionDescription {string} -
+ * @property _options.languageMapping {Object} -
+ * @property _options.onSwitched {Function} -
+ * @property _options.onEnsured {Function} -
+ * @property _options.onSwitch {Function} -
+ * @property _options.onEnsure {Function} -
+ * @property _options.domNode {Object} -
+ * @property currentLanguage -
+ * @property knownLanguage -
+ * @property _$domNodeToFade -
+ * @property _replacements -
+ * @property _textNodesWithKnownLanguage -
+ */
 class Lang extends $.Tools.class {
-    ###
-        This plugin holds all needed methods to extend a website for
-        internationalisation.
-    ###
-    # region properties
-    ###
-        **__name__ {String}**
-        Holds the class name to provide inspection features.
-    ###
-    __name__: 'Lang'
-    # endregion
-    # region public methods
-    ## region special
-    initialize: (
-        options={}, @currentLanguage='', @knownLanguage={}
-        @_$domNodeToFade=null, @_replacements=[]
-        @_textNodesWithKnownLanguage={}
-    ) ->
-        ###
-            Initializes the plugin. Current language is set and later
-            needed dom nodes are grabbed.
-
-            **options {Object}** - An options object.
-
-            **returns {$.Lang}** - Returns the current instance.
-        ###
-        ###
-            **_options {Object}**
-            Saves default options for manipulating the Gui's behaviour.
-        ###
-        this._options =
-            domNodeSelectorPrefix: 'body'
-            default: 'enUS'
-            allowedLanguages: []
-            initial: null
-            domNodeClassPrefix: ''
-            templateDelimiter:
-                pre: '{{', post: '}}'
-            fadeEffect: true
-            textNodeParent:
-                fadeIn: duration: 'fast'
-                fadeOut: duration: 'fast'
-            preReplacementLanguagePattern: '^\\|({1})$'
-            replacementLanguagePattern: '^([a-z]{2}[A-Z]{2}):((.|\\s)*)$'
-            currentLanguagePattern: '^[a-z]{2}[A-Z]{2}$'
-            replacementDomNodeName: ['#comment', 'langreplacement']
-            replaceDomNodeNames: ['#text', 'langreplace']
-            toolsLockDescription: '{1}Switch'
-            languageHashPrefix: 'lang-'
-            currentLanguageIndicatorClassName: 'current'
-            sessionDescription: '{1}'
-            languageMapping:
-                deDE: ['de', 'de_de', 'de-de', 'german', 'deutsch']
-                enUS: ['en', 'en_us', 'en-us']
-                enEN: ['en_en', 'en-en', 'english']
+    // region properties
+    static _name:string = 'Lang';
+    // endregion
+    // region public methods
+    // /  region special
+    /**
+     * Initializes the plugin. Current language is set and later needed dom
+     * nodes are grabbed.
+     * @param options - An options object.
+     * @returns Returns the current instance.
+     */
+    initialize(
+        options:Object = {}, currentLanguage = '', knownLanguage = {},
+        $domNodeToFade = null, replacements = [],
+        textNodesWithKnownLanguage = {}
+    ) {
+        this.currentLanguage = currentLanguage
+        this.knownLanguage = knownLanguage
+        this._$domNodeToFade = $domNodeToFade
+        this._replacements = replacements
+        this._textNodesWithKnownLanguage = textNodesWithKnownLanguage
+        this._options = {
+            domNodeSelectorPrefix: 'body',
+            default: 'enUS',
+            allowedLanguages: [],
+            initial: null,
+            templateDelimiter: {pre: '{{', post: '}}'},
+            fadeEffect: true,
+            textNodeParent: {
+                fadeIn: {duration: 'fast'},
+                fadeOut: {duration: 'fast'}
+            },
+            preReplacementLanguagePattern: '^\\|({1})$',
+            replacementLanguagePattern: '^([a-z]{2}[A-Z]{2}):((.|\\s)*)$',
+            currentLanguagePattern: '^[a-z]{2}[A-Z]{2}$',
+            replacementDomNodeName: ['#comment', 'langreplacement'],
+            replaceDomNodeNames: ['#text', 'langreplace'],
+            toolsLockDescription: '{1}Switch',
+            languageHashPrefix: 'lang-',
+            currentLanguageIndicatorClassName: 'current',
+            sessionDescription: '{1}',
+            languageMapping: {
+                deDE: ['de', 'de_de', 'de-de', 'german', 'deutsch'],
+                enUS: ['en', 'en_us', 'en-us'],
+                enEN: ['en_en', 'en-en', 'english'],
                 frFR: ['fr', 'fr_fr', 'fr-fr', 'french']
-            onSwitched: $.noop()
-            onEnsureded: $.noop()
-            onSwitch: $.noop()
-            onEnsure: $.noop()
-            domNode: knownLanguage: 'div.toc'
-        super options
+            },
+            onSwitched: $.noop(),
+            onEnsured: $.noop(),
+            onSwitch: $.noop(),
+            onEnsure: $.noop(),
+            domNode: {knownLanguage: 'div.toc'}
+        }
+        super.initialize(options)
+        // TODO stand
         this._options.preReplacementLanguagePattern = this.stringFormat(
             this._options.preReplacementLanguagePattern,
             this._options.replacementLanguagePattern.substr(
