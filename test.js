@@ -16,7 +16,11 @@
 */
 // region imports
 import browserAPI from 'webOptimizer/browserAPI'
-import type {Location, Window} from 'webOptimizer/type'
+import type {Window} from 'webOptimizer/type'
+import type {$DomNode} from 'jQuery-tools'
+/* eslint-disable no-duplicate-imports */
+import type Lang from './index'
+/* eslint-enable no-duplicate-imports */
 // endregion
 // region declaration
 declare var TARGET:string
@@ -29,7 +33,7 @@ type JQueryFunction = (object:any) => Object
 // endregion
 const qunit:Object = (TARGET === 'node') ? require('qunit-cli') : require(
     'qunitjs')
-browserAPI((window:Window, location:Location) => {
+browserAPI((window:Window):void => {
     // NOTE: We have to define window globally before jQuery is loaded to
     // ensure that all jquery instances share the same window object.
     if (typeof global !== 'undefined') {
@@ -45,60 +49,64 @@ browserAPI((window:Window, location:Location) => {
         qunit.load()
     else
         qunit.start()
-    // region tests
     // / region mock-up
-    const lang = $.Lang()
+    const $bodyDomNode:$DomNode = $('body')
+    const lang:Lang = $.Lang()
     // / endregion
+    // region tests
     // / region public methods
     // // region special
-    qunit.test('initialize', () => qunit.ok(lang))
+    qunit.test('initialize', ():void => qunit.ok(lang))
     // // endregion
-    qunit.test('switch', () => qunit.strictEqual(lang.switch('en'), lang))
-    qunit.test('refresh', () => qunit.strictEqual(lang.refresh(), lang))
+    qunit.test('switch', ():void => qunit.strictEqual(lang.switch('en'), lang))
+    qunit.test('refresh', ():void => qunit.strictEqual(lang.refresh(), lang))
     // / endregion
     // / region protected methods
-    qunit.test('_normalizeLanguage', () => {
+    qunit.test('_normalizeLanguage', ():void => {
         qunit.strictEqual(lang._normalizeLanguage('de'), 'deDE')
         qunit.strictEqual(lang._normalizeLanguage('de-de'), 'deDE')
         qunit.strictEqual(lang._normalizeLanguage('en-us'), 'enUS')
         qunit.strictEqual(lang._normalizeLanguage('fr'), 'frFR')
         qunit.strictEqual(lang._normalizeLanguage(''), 'enUS')
     })
-    qunit.test('_determineUsefulLanguage', () => {
+    qunit.test('_determineUsefulLanguage', ():void => {
         if (typeof window.localStorage !== 'undefined') {
             window.localStorage[lang._options.sessionDescription] = 'enUS'
             qunit.strictEqual(lang._determineUsefulLanguage(), 'enUS')
             delete window.localStorage[lang._options.sessionDescription]
         }
-        const referenceLanguage = lang._options.default
+        let referenceLanguage:string = lang._options.default
         if (typeof navigator.language !== 'undefined')
             referenceLanguage = navigator.language
         qunit.strictEqual(
             lang._normalizeLanguage(lang._determineUsefulLanguage()),
             lang._normalizeLanguage(referenceLanguage))
     })
-    // TODO stand
-    test '_handleSwitchEffect', ->
-        strictEqual lang._handleSwitchEffect('deDE'), lang
-    test '_addTextNodeToFade', ->
-        strictEqual lang._addTextNodeToFade($('body')), lang
-    test '_registerTextNodeToChange', ->
-        lang._registerTextNodeToChange $('body'), 1, [1, 2, 3], 1
+    qunit.test('_handleSwitchEffect', ():void => qunit.strictEqual(
+        lang._handleSwitchEffect('deDE'), lang))
+    qunit.test('_addTextNodeToFade', ():void => qunit.strictEqual(
+        lang._addTextNodeToFade($bodyDomNode), lang))
+    qunit.test('_registerTextNodeToChange', ():void => {
+        lang._registerTextNodeToChange($bodyDomNode, 1, [1, 2, 3], 1)
 
-        strictEqual lang._replacements.length, 1
+        qunit.strictEqual(lang._replacements.length, 1)
         lang._replacements.pop()
-    test '_checkLastTextNodeHavingLanguageIndicator', ->
-        strictEqual lang._checkLastTextNodeHavingLanguageIndicator(null, 1), 1
-    test '_handleLanguageSwitching', ->
+    })
+    qunit.test('_checkLastTextNodeHavingLanguageIndicator', () =>
+        qunit.strictEqual(
+            lang._checkLastTextNodeHavingLanguageIndicator(null, 1), 1))
+    qunit.test('_handleLanguageSwitching', ():void => {
         lang = $.Lang()
-        strictEqual lang._handleLanguageSwitching(), lang
-    test '_switchLanguage', ->
+        qunit.strictEqual lang._handleLanguageSwitching(), lang
+    })
+    qunit.test('_switchLanguage', ():void => {
         lang = $.Lang()
-        strictEqual lang._switchLanguage('deDE'), lang
-        strictEqual lang.currentLanguage, 'deDE'
-    test '_switchCurrentLanguageIndicator', ->
-        strictEqual lang._switchCurrentLanguageIndicator('deDE'), lang
-    ## endregion
+        qunit.strictEqual(lang._switchLanguage('deDE'), lang)
+        qunit.strictEqual(lang.currentLanguage, 'deDE')
+    })
+    qunit.test('_switchCurrentLanguageIndicator', ():void => qunit.strictEqual(
+        lang._switchCurrentLanguageIndicator('deDE'), lang))
+    // / endregion
     // endregion
 })
 // region vim modline
