@@ -189,13 +189,14 @@ class Lang extends $.Tools.class {
             domNode: {knownLanguage: 'div.toc'}
         }
         super.initialize(options)
-        this._options.preReplacementLanguagePattern = this.stringFormat(
-            this._options.preReplacementLanguagePattern,
-            this._options.replacementLanguagePattern.substr(
-                1, this._options.replacementLanguagePattern.length - 2))
-        this._options.toolsLockDescription = this.stringFormat(
+        this._options.preReplacementLanguagePattern =
+            this.constructor.stringFormat(
+                this._options.preReplacementLanguagePattern,
+                this._options.replacementLanguagePattern.substr(
+                    1, this._options.replacementLanguagePattern.length - 2))
+        this._options.toolsLockDescription = this.constructor.stringFormat(
             this._options.toolsLockDescription, this.constructor._name)
-        this._options.sessionDescription = this.stringFormat(
+        this._options.sessionDescription = this.constructor.stringFormat(
             this._options.sessionDescription, this.constructor._name)
         this.$domNodes = this.grabDomNode(this._options.domNode)
         this.$domNodes.switchLanguageButtons = $(
@@ -442,7 +443,7 @@ class Lang extends $.Tools.class {
                 if (this._options.languageMapping[otherLanguage].includes(
                     language.toLowerCase()
                 ))
-                    return language
+                    return otherLanguage
             }
         return this._options.default
     }

@@ -86,8 +86,8 @@ browserAPI((window:Window):void => {
     qunit.test('_addTextNodeToFade', ():void => qunit.strictEqual(
         lang._addTextNodeToFade($bodyDomNode), lang))
     qunit.test('_registerTextNodeToChange', ():void => {
-        lang._registerTextNodeToChange($bodyDomNode, $bodyDomNode.childen(),
-        ['1', '2', '3'], $bodyDomNode.childen())
+        lang._registerTextNodeToChange($bodyDomNode, $bodyDomNode.children(),
+        ['1', '2', '3'], $bodyDomNode.children())
 
         qunit.strictEqual(lang._replacements.length, 1)
         lang._replacements.pop()
