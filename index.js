@@ -129,10 +129,19 @@ class Lang extends $.Tools.class {
     // endregion
     // region public methods
     // /  region special
+    /* eslint-disable jsdoc/require-description-complete-sentence */
     /**
      * Initializes the plugin. Current language is set and later needed dom
      * nodes are grabbed.
      * @param options - An options object.
+     * @param currentLanguage - Initial language to use.
+     * @param knownLanguage - Initial mapping of known language strings and
+     * their corresponding translations, to boost language replacements or
+     * saves redundant replacements in dom tree.
+     * @param $domNodeToFade - Initial dom node to fade.
+     * @param replacements - Initial nodes to replace.
+     * @param textNodesWithKnownLanguage - Saves a mapping of known text
+     * snippets to their corresponding $-extended dom nodes.
      * @returns Returns the current instance.
      */
     initialize(
@@ -141,6 +150,7 @@ class Lang extends $.Tools.class {
         $domNodeToFade:?$DomNode = null, replacements:Array<Replacement> = [],
         textNodesWithKnownLanguage:{[key:string]:$DomNode} = {}
     ):Lang {
+    /* eslint-enable jsdoc/require-description-complete-sentence */
         this.currentLanguage = currentLanguage
         this.knownLanguage = knownLanguage
         this._$domNodeToFade = $domNodeToFade
@@ -197,7 +207,7 @@ class Lang extends $.Tools.class {
             initial language switch which will perform the indicator switch.
         */
         const newLanguage:string = this._determineUsefulLanguage()
-        if(this.currentLanguage === newLanguage)
+        if (this.currentLanguage === newLanguage)
             this._switchCurrentLanguageIndicator(newLanguage)
         else
             this.switch(newLanguage, true)
@@ -221,7 +231,7 @@ class Lang extends $.Tools.class {
      * @returns Returns the current instance.
      */
     switch(language:string|true, ensure:boolean = false):Lang {
-        if(
+        if (
             language !== true && this._options.allowedLanguages.length &&
             !this._options.allowedLanguages.includes(language)
         ) {
@@ -326,7 +336,8 @@ class Lang extends $.Tools.class {
         let $lastLanguageDomNode:?$DomNode = null
         this.knownLanguage = {}
         const self:Lang = this
-        this.$domNodes.parent.find(':not(iframe)').contents().each(function() {
+        this.$domNodes.parent.find(':not(iframe)').contents().each(function(
+        ):?true {
             const $currentDomNode:$DomNode = $(this)
             const nodeName:string = $currentDomNode.prop(
                 'nodeName'
@@ -386,7 +397,7 @@ class Lang extends $.Tools.class {
      */
     _registerKnownTextNodes():Lang {
         this._textNodesWithKnownLanguage = {}
-        self:Lang = this
+        const self:Lang = this
         this.$domNodes.knownLanguage.find(':not(iframe)').contents(
         ).each(function():void {
             const $currentDomNode:$DomNode = $(this)
@@ -421,16 +432,16 @@ class Lang extends $.Tools.class {
      * @returns Returns the normalized version of given language.
      */
     _normalizeLanguage(language:string):string {
-        for (const language:string in this._options.languageMapping)
-            if (this._options.languageMapping.hasOwnProperty(language)) {
-                if (!this._options.languageMapping[language].includes(
+        for (const otherLanguage:string in this._options.languageMapping)
+            if (this._options.languageMapping.hasOwnProperty(otherLanguage)) {
+                if (!this._options.languageMapping[otherLanguage].includes(
+                    otherLanguage.toLowerCase()
+                ))
+                    this._options.languageMapping[otherLanguage].push(
+                        otherLanguage.toLowerCase())
+                if (this._options.languageMapping[otherLanguage].includes(
                     language.toLowerCase()
                 ))
-                    this._options.languageMapping[language].push(
-                        language.toLowerCase())
-                if (this._options.languageMapping[language].includes(
-                    language.toLowerCase()
-                ) !== -1)
                     return language
             }
         return this._options.default
@@ -568,14 +579,15 @@ class Lang extends $.Tools.class {
         const oldLanguage:string = this.currentLanguage
         if (!ensure && this._options.fadeEffect && this._$domNodeToFade) {
             this._switchLanguage(language)
-            $.when(this._$domNodeToFade.fadeIn(
-                this._options.textNodeParent.fadeIn
-            ).promise()).always(():void => {
-                this.fireEvent(
-                    (ensure ? 'ensured' : 'switched'), true, this, oldLanguage,
-                    language)
-                this.releaseLock(this._options.toolsLockDescription)
-            })
+            if (this._$domNodeToFade)
+                $.when(this._$domNodeToFade.fadeIn(
+                    this._options.textNodeParent.fadeIn
+                ).promise()).always(():void => {
+                    this.fireEvent(
+                        (ensure ? 'ensured' : 'switched'), true, this,
+                        oldLanguage, language)
+                    this.releaseLock(this._options.toolsLockDescription)
+                })
         } else {
             this._switchLanguage(language)
             this.fireEvent(
@@ -608,7 +620,7 @@ class Lang extends $.Tools.class {
                     */
                     let currentDomNodeFound:boolean = false
                     replacement.$textNodeToTranslate.parent().contents(
-                    ).each(function() {
+                    ).each(function():?false {
                         if (currentDomNodeFound) {
                             replacement.$currentLanguageDomNode = $(this)
                             return false

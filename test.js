@@ -82,21 +82,23 @@ browserAPI((window:Window):void => {
             lang._normalizeLanguage(referenceLanguage))
     })
     qunit.test('_handleSwitchEffect', ():void => qunit.strictEqual(
-        lang._handleSwitchEffect('deDE'), lang))
+        lang._handleSwitchEffect('deDE', false), lang))
     qunit.test('_addTextNodeToFade', ():void => qunit.strictEqual(
         lang._addTextNodeToFade($bodyDomNode), lang))
     qunit.test('_registerTextNodeToChange', ():void => {
-        lang._registerTextNodeToChange($bodyDomNode, 1, [1, 2, 3], 1)
+        lang._registerTextNodeToChange($bodyDomNode, $bodyDomNode.childen(),
+        ['1', '2', '3'], $bodyDomNode.childen())
 
         qunit.strictEqual(lang._replacements.length, 1)
         lang._replacements.pop()
     })
-    qunit.test('_checkLastTextNodeHavingLanguageIndicator', () =>
+    qunit.test('_checkLastTextNodeHavingLanguageIndicator', ():void =>
         qunit.strictEqual(
-            lang._checkLastTextNodeHavingLanguageIndicator(null, 1), 1))
+            lang._checkLastTextNodeHavingLanguageIndicator(null, null, false),
+            null))
     qunit.test('_handleLanguageSwitching', ():void => {
         const lang:Lang = $.Lang()
-        qunit.strictEqual(lang._handleLanguageSwitching(), lang)
+        qunit.strictEqual(lang._handleLanguageSwitching('enUS', true), lang)
     })
     qunit.test('_switchLanguage', ():void => {
         const lang:Lang = $.Lang()
