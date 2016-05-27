@@ -124,7 +124,7 @@ class Lang extends $.Tools.class {
     currentLanguage:string
     knownLanguage:{[key:string]:string}
     _$domNodeToFade:?$DomNode
-    _replacements:Array<Replacements>
+    _replacements:Array<Replacement>
     _textNodesWithKnownLanguage:{[key:string]:$DomNode};
     // endregion
     // region public methods
@@ -138,7 +138,7 @@ class Lang extends $.Tools.class {
     initialize(
         options:Object = {}, currentLanguage:string = '',
         knownLanguage:{[key:string]:string} = {},
-        $domNodeToFade:?$DomNode = null, replacements:Array<> = [],
+        $domNodeToFade:?$DomNode = null, replacements:Array<Replacement> = [],
         textNodesWithKnownLanguage:{[key:string]:$DomNode} = {}
     ):Lang {
         this.currentLanguage = currentLanguage
@@ -205,10 +205,11 @@ class Lang extends $.Tools.class {
             event:Object
         ):Lang => {
             event.preventDefault()
-            return this.switch $(event.target).attr('href').substr(
-                this._options.languageHashPrefix.length + 1)
+            return this.switch($(event.target).attr('href').substr(
+                this._options.languageHashPrefix.length + 1))
         })
         return this
+    }
     // / endregion
     /**
      * Switches the current language to given language. This method is mutual
@@ -223,10 +224,11 @@ class Lang extends $.Tools.class {
         if(
             language !== true && this._options.allowedLanguages.length &&
             !this._options.allowedLanguages.includes(language)
-        )
+        ) {
             this.debug(
                 '"{1}" isn\'t one of the allowed languages.', language)
             return this
+        }
         this.acquireLock(this._options.toolsLockDescription, ():void => {
             if (language === true) {
                 ensure = true
@@ -295,7 +297,7 @@ class Lang extends $.Tools.class {
                         'textContent'
                     ).replace(regularExpression, match[1]))
                     let selfFound:boolean = false
-                    $this.parent().contents().each(function():void {
+                    $this.parent().contents().each(function():?false {
                         if (selfFound && $.trim($(this).text())) {
                             $this.appendTo(this)
                             return false
@@ -317,7 +319,7 @@ class Lang extends $.Tools.class {
      */
     _collectTextNodesToReplace(
         language:string, ensure:boolean
-    ):Array<$DomNode> {
+    ):Array<?$DomNode> {
         let $currentTextNodeToTranslate:?$DomNode = null
         let $currentLanguageDomNode:?$DomNode = null
         let $lastTextNodeToTranslate:?$DomNode = null
@@ -337,33 +339,35 @@ class Lang extends $.Tools.class {
                 if ($.trim($currentDomNode.text()) && $currentDomNode.parents(
                     self._options.replaceDomNodeNames.join()
                 ).length === 0) {
-                    $lastLanguageDomNode = \
-                    self._checkLastTextNodeHavingLanguageIndicator(
-                        $lastTextNodeToTranslate, $lastLanguageDomNode, ensure)
+                    $lastLanguageDomNode =
+                        self._checkLastTextNodeHavingLanguageIndicator(
+                            $lastTextNodeToTranslate, $lastLanguageDomNode,
+                            ensure)
                     $currentTextNodeToTranslate = $currentDomNode
                 }
-            } else if ($currentTextNodeToTranslate?) {
+            } else if ($currentTextNodeToTranslate) {
                 if (self._options.replacementDomNodeName.includes(nodeName)) {
                     let content:string = $currentDomNode.prop('textContent')
                     if (nodeName !== '#comment')
                         content = $currentDomNode.html()
-                    const match:Array<string> = content.match(new RegExp(
+                    const match:?Array<string> = content.match(new RegExp(
                         self._options.replacementLanguagePattern))
-                    if (match && match[1] === language) {
+                    if (Array.isArray(match) && match[1] === language) {
                         // Save known text translations.
                         self.knownLanguage[$.trim(
                             $currentTextNodeToTranslate.text()
                         )] = $.trim(match[2])
                         self._registerTextNodeToChange(
                             $currentTextNodeToTranslate, $currentDomNode,
+                            // IgnoreTypeCheck
                             match, $currentLanguageDomNode)
                         $lastTextNodeToTranslate = $currentTextNodeToTranslate
                         $lastLanguageDomNode = $currentLanguageDomNode
                         $currentTextNodeToTranslate = null
                         $currentLanguageDomNode = null
-                    } else if $currentDomNode.prop('textContent').match(
+                    } else if ($currentDomNode.prop('textContent').match(
                         new RegExp(self._options.currentLanguagePattern)
-                    )
+                    ))
                         $currentLanguageDomNode = $currentDomNode
                     return true
                 }
@@ -385,7 +389,7 @@ class Lang extends $.Tools.class {
         self:Lang = this
         this.$domNodes.knownLanguage.find(':not(iframe)').contents(
         ).each(function():void {
-            $currentDomNode = $ this
+            const $currentDomNode:$DomNode = $(this)
             // NOTE: We skip empty and nested text nodes.
             if (!self._options.replaceDomNodeNames.includes(
                 $currentDomNode.prop('nodeName').toLowerCase()
@@ -417,16 +421,17 @@ class Lang extends $.Tools.class {
      * @returns Returns the normalized version of given language.
      */
     _normalizeLanguage(language:string):string {
-        for (key in this._options.languageMapping)
-            if (this._options.languageMapping.hasOwnProperty(key)) {
-                if (!this._options.languageMapping[key].includes(
-                    key.toLowerCase()
+        for (const language:string in this._options.languageMapping)
+            if (this._options.languageMapping.hasOwnProperty(language)) {
+                if (!this._options.languageMapping[language].includes(
+                    language.toLowerCase()
                 ))
-                    this._options.languageMapping[key].push(key.toLowerCase())
-                if (this._options.languageMapping[key].includes(
+                    this._options.languageMapping[language].push(
+                        language.toLowerCase())
+                if (this._options.languageMapping[language].includes(
                     language.toLowerCase()
                 ) !== -1)
-                    return key
+                    return language
             }
         return this._options.default
     }
@@ -441,8 +446,8 @@ class Lang extends $.Tools.class {
             result = this._options.initial
         else if (context.hasOwnProperty(
             'localStorage'
-        ) && localStorage.getItem(this._options.sessionDescription)) {
-            result = window.localStorage.getItem(
+        ) && context.localStorage.getItem(this._options.sessionDescription)) {
+            result = context.localStorage.getItem(
                 this._options.sessionDescription)
             this.debug(
                 'Determine "{1}", because of local storage information.',
@@ -465,8 +470,9 @@ class Lang extends $.Tools.class {
                 ' to "{2}".', result, this._options.allowedLanguages[0])
             result = this._options.allowedLanguages[0]
         }
-        if (context.hasOwnProperty('localStorage')
-            localStorage.setItem(this._options.sessionDescription, result)
+        if (context.hasOwnProperty('localStorage'))
+            context.localStorage.setItem(
+                this._options.sessionDescription, result)
         return result
     }
     /**
@@ -484,8 +490,7 @@ class Lang extends $.Tools.class {
             ).promise()).always(this.getMethod(
                 this._handleLanguageSwitching, this, language, ensure))
         else
-            this._handleLanguageSwitching(
-                this._handleLanguageSwitching, this, language, ensure)
+            this._handleLanguageSwitching(language, ensure)
         return this
     }
     /**
@@ -495,10 +500,10 @@ class Lang extends $.Tools.class {
      */
     _addTextNodeToFade($textNode:$DomNode):Lang {
         const $parent:$DomNode = $textNode.parent()
-        if (this._$domNodeToFade === null)
-            this._$domNodeToFade = $parent
-        else
+        if (this._$domNodeToFade)
             this._$domNodeToFade = this._$domNodeToFade.add($parent)
+        else
+            this._$domNodeToFade = $parent
         return this
     }
     /**
@@ -511,7 +516,7 @@ class Lang extends $.Tools.class {
      * the language of given text node.
      * @returns Returns the current instance.
      */
-    _registerTextNodeToChange: (
+    _registerTextNodeToChange(
         $currentTextNodeToTranslate:$DomNode, $currentDomNode:?$DomNode,
         match:Array<string>, $currentLanguageDomNode:$DomNode
     ):Lang {
@@ -648,7 +653,8 @@ class Lang extends $.Tools.class {
             content:string, $domNode:$DomNode
         ):$DomNode => $domNode.prop('textContent', context))
         if (context.hasOwnProperty('localStorage'))
-            localStorage.setItem(this._options.sessionDescription, language)
+            context.localStorage.setItem(
+                this._options.sessionDescription, language)
         this.currentLanguage = language
         return this
     }

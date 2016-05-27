@@ -24,9 +24,6 @@ import type Lang from './index'
 // endregion
 // region declaration
 declare var TARGET:string
-/* eslint-disable no-unused-vars */
-declare var window:Window
-/* eslint-enable no-unused-vars */
 // endregion
 // region types
 type JQueryFunction = (object:any) => Object
@@ -98,11 +95,11 @@ browserAPI((window:Window):void => {
         qunit.strictEqual(
             lang._checkLastTextNodeHavingLanguageIndicator(null, 1), 1))
     qunit.test('_handleLanguageSwitching', ():void => {
-        lang = $.Lang()
-        qunit.strictEqual lang._handleLanguageSwitching(), lang
+        const lang:Lang = $.Lang()
+        qunit.strictEqual(lang._handleLanguageSwitching(), lang)
     })
     qunit.test('_switchLanguage', ():void => {
-        lang = $.Lang()
+        const lang:Lang = $.Lang()
         qunit.strictEqual(lang._switchLanguage('deDE'), lang)
         qunit.strictEqual(lang.currentLanguage, 'deDE')
     })
