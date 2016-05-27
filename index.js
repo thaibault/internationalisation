@@ -343,10 +343,9 @@ class Lang extends $.Tools.class {
             const nodeName:string = $currentDomNode.prop(
                 'nodeName'
             ).toLowerCase()
-            if (
-                self._options.replaceDomNodeNames.includes(
-                    nodeName.toLowerCase())
-            ) {
+            if (self._options.replaceDomNodeNames.includes(
+                nodeName.toLowerCase()
+            )) {
                 // NOTE: We skip empty and nested text nodes
                 if ($.trim($currentDomNode.text()) && $currentDomNode.parents(
                     self._options.replaceDomNodeNames.join()
