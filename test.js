@@ -34,8 +34,10 @@ type JQueryFunction = (object:any) => Object
 const qunit:Object = (TARGET === 'node') ? require('qunit-cli') : require(
     'qunitjs')
 browserAPI((window:Window):void => {
-    // NOTE: We have to define window globally before jQuery is loaded to
-    // ensure that all jquery instances share the same window object.
+    /*
+        NOTE: We have to define window globally before jQuery is loaded to
+        ensure that all jquery instances share the same window object.
+    */
     if (typeof global !== 'undefined') {
         global.window = window
         for (const key in window)
