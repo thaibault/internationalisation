@@ -35,7 +35,6 @@ const context:Object = (():Object => {
 if (!context.hasOwnProperty('document') && $.hasOwnProperty('context'))
     context.document = $.context
 // region plugins/classes
-// TODO finalize and check Array-Type annotation!
 /**
  * This plugin holds all needed methods to extend a website for
  * internationalisation.
@@ -47,41 +46,67 @@ if (!context.hasOwnProperty('document') && $.hasOwnProperty('context'))
  * @property _options.domNodeSelectorPrefix {string} - Selector prefix for all
  * nodes to take into account.
  * @property _options.default {string} - Initial language to use.
- * @property _options.allowedLanguages {Array<string>} - List of all supported
+ * @property _options.allowedLanguages {Array.<string>} - List of all supported
  * languages.
  * @property _options.initial {string} - Initial set language (if omitted it
  * will be guest.
- * @property _options.templateDelimiter {Object} - Template delimiter to
- * recognize dynamic content.
+ * @property _options.templateDelimiter {Object.<string, string>} - Template
+ * delimiter to recognize dynamic content.
  * @property _options.templateDelimiter.pre {string} - Delimiter which
  * introduces a dynamic expression.
  * @property _options.templateDelimiter.post {string} - Delimiter which
  * finishes a dynamic expression.
- * @property _options.fadeEffect - Indicates weather a fade effect should be
- * performed.
- * @property _options.textNodeParent {Object} -
- * @property _options.textNodeParent.fadeIn {Object} -
- * @property _options.textNodeParent.fadeOut {Object} -
- * @property _options.preReplacementLanguagePattern {string} -
- * @property _options.replacementLanguagePattern {string} -
- * @property _options.currentLanguagePattern {string} -
- * @property _options.replacementDomNodeName {Array<string>} -
- * @property _options.replaceDomNodeNames {Array<string>} -
- * @property _options.toolsLockDescription {string} -
- * @property _options.languageHashPrefix {string} -
- * @property _options.currentLanguageIndicatorClassName {string} -
- * @property _options.sessionDescription {string} -
- * @property _options.languageMapping {Object} -
- * @property _options.onSwitched {Function} -
- * @property _options.onEnsured {Function} -
- * @property _options.onSwitch {Function} -
- * @property _options.onEnsure {Function} -
- * @property _options.domNode {Object} -
- * @property currentLanguage -
- * @property knownLanguage -
- * @property _$domNodeToFade -
- * @property _replacements -
- * @property _textNodesWithKnownLanguage -
+ * @property _options.fadeEffect {boolean} - Indicates weather a fade effect
+ * should be performed.
+ * @property _options.textNodeParent {Object.<string, Object>} - Saves
+ * informations how parent dom nodes should be animated when containing text
+ * will be switched.
+ * @property _options.textNodeParent.fadeIn {Object} - Fade in options when a
+ * new text should appear.
+ * @property _options.textNodeParent.fadeOut {Object} - Fade out effect options
+ * when a text node should be removed before switching them.
+ * @property _options.preReplacementLanguagePattern {string} - Pattern to
+ * introduce a pre replacement language node.
+ * @property _options.replacementLanguagePattern {string} - Text pattern to
+ * introduce a post replacement node.
+ * @property _options.currentLanguagePattern {string} - Saves a pattern to
+ * recognize current language marker.
+ * @property _options.replacementDomNodeName {Array.<string>} - Dom node tag
+ * name which should be interpreted as a hidden alternate language node
+ * (contains text in another language).
+ * @property _options.replaceDomNodeNames {Array.<string>} - Tag names which
+ * indicates dom nodes which should be replaced.
+ * @property _options.toolsLockDescription {string} - Lock description for the
+ * locking mechanism provided by the extended tools class.
+ * @property _options.languageHashPrefix {string} - Hash prefix to determine
+ * current active language by url.
+ * @property _options.currentLanguageIndicatorClassName {string} - Class name
+ * which marks current language switcher button or link.
+ * @property _options.sessionDescription {string} - Name to use for saving
+ * preferred language in local storage for current session.
+ * @property _options.languageMapping {Object.<string, Array.<string>>} - A
+ * mapping of alternate language descriptions.
+ * @property _options.onSwitched {Function} - Callback which will be triggered
+ * after a language switch has been finished.
+ * @property _options.onEnsured {Function} - Callback which will be triggered
+ * after a language check has been performed. Needed if some nodes have another
+ * language active then others. Useful if only some parts of the dom tree was
+ * updated and a full language update isn't required.
+ * @property _options.onSwitch {Function} - Callback which should be called
+ * before a language switch should be performed.
+ * @property _options.onEnsure {Function} - Callback which should be called
+ * before a language switch should be ensured.
+ * @property _options.domNode {Object.<string, string>} - A mapping of needed
+ * internal dom node descriptions to their corresponding selectors.
+ * @property currentLanguage - Saves the current language.
+ * @property knownLanguage - Saves a mapping of known language strings and
+ * their corresponding translations, to boost language replacements or saves
+ * redundant replacements in dom tree.
+ * @property _$domNodeToFade - Saves all $-extended dom nodes which should be
+ * animated.
+ * @property _replacements - Saves all text nodes which should be replaced.
+ * @property _textNodesWithKnownLanguage - Saves a mapping of known text nodes
+ * to their corresponding $-extended dom nodes.
  */
 class Lang extends $.Tools.class {
     // region properties
