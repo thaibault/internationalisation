@@ -49,8 +49,8 @@ if (!context.hasOwnProperty('document') && $.hasOwnProperty('context'))
  * @extends jQuery-tools:Tools
  * @property static:_name - Defines this class name to allow retrieving them
  * after name mangling.
- * @property _options - Fallback options if not overwritten by the
- * options given to the initializer method.
+ * @property _options - Options extended by the options given to the
+ * initializer method.
  * @property _options.domNodeSelectorPrefix {string} - Selector prefix for all
  * nodes to take into account.
  * @property _options.default {string} - Initial language to use.
@@ -128,7 +128,7 @@ class Lang extends $.Tools.class {
     _textNodesWithKnownLanguage:{[key:string]:$DomNode};
     // endregion
     // region public methods
-    // /  region special
+    // / region special
     /* eslint-disable jsdoc/require-description-complete-sentence */
     /**
      * Initializes the plugin. Current language is set and later needed dom
