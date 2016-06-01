@@ -610,9 +610,12 @@ class Lang extends $.Tools.class {
                 currentText = replacement.$textNodeToTranslate.prop(
                     'textContent')
             const trimmedText:string = $.trim(currentText)
-            if (!this._options.templateDelimiter || !this.stringEndsWith(
-                trimmedText, this._options.templateDelimiter.post
-            ) && this._options.templateDelimiter.post) {
+            if (
+                !this._options.templateDelimiter ||
+                !this.constructor.stringEndsWith(
+                    trimmedText, this._options.templateDelimiter.post
+                ) && this._options.templateDelimiter.post
+            ) {
                 if (!replacement.$currentLanguageDomNode) {
                     /*
                         Language note wasn't present initially. So we have to
