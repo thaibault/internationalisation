@@ -40,7 +40,7 @@ const context:Object = (():Object => {
     }
     return window
 })()
-if (!context.hasOwnProperty('document') && $.hasOwnProperty('context'))
+if (!('document' in context) && 'context' in $)
     context.document = $.context
 // region plugins/classes
 /**
@@ -236,8 +236,7 @@ class Lang extends $.Tools.class {
             language !== true && this._options.allowedLanguages.length &&
             !this._options.allowedLanguages.includes(language)
         ) {
-            this.debug(
-                '"{1}" isn\'t one of the allowed languages.', language)
+            this.debug('"{1}" isn\'t one of the allowed languages.', language)
             return this
         }
         this.acquireLock(this._options.toolsLockDescription, ():void => {
@@ -455,15 +454,15 @@ class Lang extends $.Tools.class {
         let result:string
         if (this._options.initial)
             result = this._options.initial
-        else if (context.hasOwnProperty(
-            'localStorage'
-        ) && context.localStorage.getItem(this._options.sessionDescription)) {
+        else if ('localStorage' in context && context.localStorage.getItem(
+            this._options.sessionDescription
+        )) {
             result = context.localStorage.getItem(
                 this._options.sessionDescription)
             this.debug(
                 'Determine "{1}", because of local storage information.',
                 result)
-        } else if (context.hasOwnProperty('navigator') && navigator.language) {
+        } else if ('navigator' in context && navigator.language) {
             result = navigator.language
             this.debug(
                 'Determine "{1}", because of browser settings.', result)
@@ -481,7 +480,7 @@ class Lang extends $.Tools.class {
                 ' to "{2}".', result, this._options.allowedLanguages[0])
             result = this._options.allowedLanguages[0]
         }
-        if (context.hasOwnProperty('localStorage'))
+        if ('localStorage' in context)
             context.localStorage.setItem(
                 this._options.sessionDescription, result)
         return result
@@ -666,7 +665,7 @@ class Lang extends $.Tools.class {
         $.each(this._textNodesWithKnownLanguage, (
             content:string, $domNode:$DomNode
         ):$DomNode => $domNode.prop('textContent', context))
-        if (context.hasOwnProperty('localStorage'))
+        if ('localStorage' in context)
             context.localStorage.setItem(
                 this._options.sessionDescription, language)
         this.currentLanguage = language
