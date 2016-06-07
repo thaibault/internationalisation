@@ -33,7 +33,7 @@ browserAPI((window:Window):void => {
         NOTE: We have to define window globally before jQuery is loaded to
         ensure that all jquery instances share the same window object.
     */
-    if (typeof global !== 'undefined') {
+    if (typeof global !== 'undefined' && global !== window) {
         global.window = window
         for (const key in window)
             if (window.hasOwnProperty(key) && !global.hasOwnProperty(key))
