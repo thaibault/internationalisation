@@ -26,8 +26,9 @@
         "jQuery-tools": "git+ssh://git@github.com/thaibault/jQuery-tools.git"
     },
     "devDependencies": {
-        "qunitjs": "*",
-        "qunit-cli": "*"
+        "jsdom": ">=9.4.0",
+        "qunitjs": ">=2.0.0",
+        "qunit-cli": ">=0.2.0*"
     },
     "webOptimizer": {"module": {"aliases": {
         "browserAPI": "browserAPI.compiled.js"
