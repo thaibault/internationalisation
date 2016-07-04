@@ -26,7 +26,7 @@ declare var TARGET:string
 // region types
 type JQueryFunction = (object:any) => Object
 // endregion
-const qunit:Object = (TARGET === 'node') ? require('qunit-cli') : require(
+const QUnit:Object = (TARGET === 'node') ? require('qunit-cli') : require(
     'qunitjs')
 browserAPI((window:Window):void => {
     /*
@@ -43,9 +43,9 @@ browserAPI((window:Window):void => {
     $.context = window.document
     require('./index')
     if (TARGET === 'node')
-        qunit.load()
+        QUnit.load()
     else
-        qunit.start()
+        QUnit.start()
     // / region mock-up
     const $bodyDomNode:$DomNode = $('body')
     const lang:Lang = $.Lang()
@@ -53,58 +53,61 @@ browserAPI((window:Window):void => {
     // region tests
     // / region public methods
     // // region special
-    qunit.test('initialize', ():void => qunit.ok(lang))
+    QUnit.test('initialize', (assert:Object):void => assert.ok(lang))
     // // endregion
-    qunit.test('switch', ():void => qunit.strictEqual(lang.switch('en'), lang))
-    qunit.test('refresh', ():void => qunit.strictEqual(lang.refresh(), lang))
+    QUnit.test('switch', (assert:Object):void => assert.strictEqual(
+        lang.switch('en'), lang))
+    QUnit.test('refresh', (assert:Object):void => assert.strictEqual(
+        lang.refresh(), lang))
     // / endregion
     // / region protected methods
-    qunit.test('_normalizeLanguage', ():void => {
-        qunit.strictEqual(lang._normalizeLanguage('de'), 'deDE')
-        qunit.strictEqual(lang._normalizeLanguage('de-de'), 'deDE')
-        qunit.strictEqual(lang._normalizeLanguage('en-us'), 'enUS')
-        qunit.strictEqual(lang._normalizeLanguage('fr'), 'frFR')
-        qunit.strictEqual(lang._normalizeLanguage(''), 'enUS')
+    QUnit.test('_normalizeLanguage', (assert:Object):void => {
+        assert.strictEqual(lang._normalizeLanguage('de'), 'deDE')
+        assert.strictEqual(lang._normalizeLanguage('de-de'), 'deDE')
+        assert.strictEqual(lang._normalizeLanguage('en-us'), 'enUS')
+        assert.strictEqual(lang._normalizeLanguage('fr'), 'frFR')
+        assert.strictEqual(lang._normalizeLanguage(''), 'enUS')
     })
-    qunit.test('_determineUsefulLanguage', ():void => {
+    QUnit.test('_determineUsefulLanguage', (assert:Object):void => {
         if (typeof window.localStorage !== 'undefined') {
             window.localStorage[lang._options.sessionDescription] = 'enUS'
-            qunit.strictEqual(lang._determineUsefulLanguage(), 'enUS')
+            assert.strictEqual(lang._determineUsefulLanguage(), 'enUS')
             delete window.localStorage[lang._options.sessionDescription]
         }
         let referenceLanguage:string = lang._options.default
         if (typeof navigator.language !== 'undefined')
             referenceLanguage = navigator.language
-        qunit.strictEqual(
+        assert.strictEqual(
             lang._normalizeLanguage(lang._determineUsefulLanguage()),
             lang._normalizeLanguage(referenceLanguage))
     })
-    qunit.test('_handleSwitchEffect', ():void => qunit.strictEqual(
-        lang._handleSwitchEffect('deDE', false), lang))
-    qunit.test('_addTextNodeToFade', ():void => qunit.strictEqual(
-        lang._addTextNodeToFade($bodyDomNode), lang))
-    qunit.test('_registerTextNodeToChange', ():void => {
+    QUnit.test('_handleSwitchEffect', (assert:Object):void =>
+        assert.strictEqual(lang._handleSwitchEffect('deDE', false), lang))
+    QUnit.test('_addTextNodeToFade', (assert:Object):void =>
+        assert.strictEqual(lang._addTextNodeToFade($bodyDomNode), lang))
+    QUnit.test('_registerTextNodeToChange', (assert:Object):void => {
         lang._registerTextNodeToChange($bodyDomNode, $bodyDomNode.children(),
         ['1', '2', '3'], $bodyDomNode.children())
 
-        qunit.strictEqual(lang._replacements.length, 1)
+        assert.strictEqual(lang._replacements.length, 1)
         lang._replacements.pop()
     })
-    qunit.test('_checkLastTextNodeHavingLanguageIndicator', ():void =>
-        qunit.strictEqual(
-            lang._checkLastTextNodeHavingLanguageIndicator(null, null, false),
-            null))
-    qunit.test('_handleLanguageSwitching', ():void => {
+    QUnit.test('_checkLastTextNodeHavingLanguageIndicator', (
+        assert:Object
+    ):void => assert.strictEqual(
+        lang._checkLastTextNodeHavingLanguageIndicator(null, null, false),
+        null))
+    QUnit.test('_handleLanguageSwitching', (assert:Object):void => {
         const lang:Lang = $.Lang()
-        qunit.strictEqual(lang._handleLanguageSwitching('enUS', true), lang)
+        assert.strictEqual(lang._handleLanguageSwitching('enUS', true), lang)
     })
-    qunit.test('_switchLanguage', ():void => {
+    QUnit.test('_switchLanguage', (assert:Object):void => {
         const lang:Lang = $.Lang()
-        qunit.strictEqual(lang._switchLanguage('deDE'), lang)
-        qunit.strictEqual(lang.currentLanguage, 'deDE')
+        assert.strictEqual(lang._switchLanguage('deDE'), lang)
+        assert.strictEqual(lang.currentLanguage, 'deDE')
     })
-    qunit.test('_switchCurrentLanguageIndicator', ():void => qunit.strictEqual(
-        lang._switchCurrentLanguageIndicator('deDE'), lang))
+    QUnit.test('_switchCurrentLanguageIndicator', (assert:Object):void =>
+        assert.strictEqual(lang._switchCurrentLanguageIndicator('deDE'), lang))
     // / endregion
     // endregion
 })
