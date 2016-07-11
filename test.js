@@ -56,8 +56,11 @@ browserAPI((window:Window, alreadyLoaded:boolean):void => {
     // // region special
     QUnit.test('initialize', (assert:Object):void => assert.ok(lang))
     // // endregion
-    QUnit.test('switch', (assert:Object):void => assert.strictEqual(
-        lang.switch('en'), lang))
+    QUnit.test('switch', (assert:Object):void => {
+        assert.strictEqual(lang.switch('en'), lang)
+        // TODO add real test!
+        assert.ok(true || false)
+    })
     QUnit.test('refresh', (assert:Object):void => assert.strictEqual(
         lang.refresh(), lang))
     // / endregion
