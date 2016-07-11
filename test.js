@@ -28,7 +28,7 @@ type JQueryFunction = (object:any) => Object
 // endregion
 const QUnit:Object = (TARGET === 'node') ? require('qunit-cli') : require(
     'qunitjs')
-browserAPI((window:Window):void => {
+browserAPI((window:Window, alreadyLoaded:boolean):void => {
     /*
         NOTE: We have to define window globally before jQuery is loaded to
         ensure that all jquery instances share the same window object.
@@ -44,7 +44,7 @@ browserAPI((window:Window):void => {
     require('./index')
     if (TARGET === 'node')
         QUnit.load()
-    else
+    else if (!alreadyLoaded)
         QUnit.start()
     // / region mock-up
     const $bodyDomNode:$DomNode = $('body')
@@ -109,6 +109,25 @@ browserAPI((window:Window):void => {
     QUnit.test('_switchCurrentLanguageIndicator', (assert:Object):void =>
         assert.strictEqual(lang._switchCurrentLanguageIndicator('deDE'), lang))
     // / endregion
+    // endregion
+    // region hot module replacement handler
+    if (typeof module === 'object' && 'hot' in module && module.hot) {
+        module.hot.accept()
+        module.hot.dispose(() => {
+            /*
+                NOTE: We have to delay status indicator reset because qunits
+                status updates are delayed as well.
+            */
+            setTimeout(() => {
+                if (!$('.fail').length) {
+                    window.document.title = '✔ test'
+                    $('#qunit-banner').removeClass('qunit-fail').addClass(
+                        'qunit-pass')
+                }
+            }, 0)
+            $('#qunit-tests').html('')
+        })
+    }
     // endregion
 })
 // region vim modline
