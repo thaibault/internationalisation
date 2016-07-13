@@ -367,15 +367,6 @@ class Lang extends $.Tools.class {
                         self.knownLanguage[$.trim(
                             $currentTextNodeToTranslate.text()
                         )] = $.trim(match[2])
-                        if (language === 'deDE')
-                            console.log(
-                                'AB',
-                                self._options.currentLanguagePattern,
-                                self._options.replacementLanguagePattern,
-                                $currentTextNodeToTranslate,
-                                $currentDomNode,
-                                match, $currentLanguageDomNode
-                            )
                         self._registerTextNodeToChange(
                             $currentTextNodeToTranslate, $currentDomNode,
                             match, $currentLanguageDomNode)
@@ -389,6 +380,11 @@ class Lang extends $.Tools.class {
                         $currentLanguageDomNode = $currentDomNode
                     return true
                 }
+                if (language === 'deDE')
+                    console.log(
+                        'A',
+                        $currentTextNodeToTranslate
+                    )
                 $lastTextNodeToTranslate = null
                 $lastLanguageDomNode = null
                 $currentTextNodeToTranslate = null
@@ -538,14 +534,6 @@ class Lang extends $.Tools.class {
         $currentTextNodeToTranslate:$DomNode, $currentDomNode:?$DomNode,
         match:Array<string>, $currentLanguageDomNode:?$DomNode
     ):Lang {
-        console.log(
-            'AB',
-            self._options.currentLanguagePattern,
-            self._options.replacementLanguagePattern,
-            $currentTextNodeToTranslate,
-            $currentDomNode,
-            match, $currentLanguageDomNode
-        )
         this._addTextNodeToFade($currentTextNodeToTranslate)
         if ($currentDomNode)
             this._replacements.push({
