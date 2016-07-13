@@ -264,7 +264,7 @@ class Lang extends $.Tools.class {
                 ] = this._collectTextNodesToReplace(language, ensure)
                 this._ensureLastTextNodeHavingLanguageIndicator(
                     $lastTextNodeToTranslate, $lastLanguageDomNode, ensure)
-                this._handleSwitchEffect(language, ensure).always((
+                this._handleSwitchEffect(language, ensure).then((
                 ):$Deferred<Lang> => deferred.resolve(this))
             } else {
                 this.debug(
@@ -497,7 +497,7 @@ class Lang extends $.Tools.class {
         if (!ensure && this._options.fadeEffect && this._$domNodeToFade)
             return this._$domNodeToFade.fadeOut(
                 this._options.textNodeParent.fadeOut
-            ).promise().always(this.getMethod(
+            ).promise().then(this.getMethod(
                 this._handleLanguageSwitching, this, language, ensure))
         return this._handleLanguageSwitching(language, ensure)
     }
@@ -579,11 +579,12 @@ class Lang extends $.Tools.class {
             if (this._$domNodeToFade)
                 return this._$domNodeToFade.fadeIn(
                     this._options.textNodeParent.fadeIn
-                ).promise().always(():void => {
+                ).promise().then(():Lang => {
                     this.fireEvent(
                         (ensure ? 'ensured' : 'switched'), true, this,
                         oldLanguage, language)
                     this.releaseLock(this._options.toolsLockDescription)
+                    return this
                 })
         } else {
             this._switchLanguage(language)
