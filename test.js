@@ -48,7 +48,10 @@ browserAPI((window:Window, alreadyLoaded:boolean):void => {
         QUnit.start()
     // / region mock-up
     const $bodyDomNode:$DomNode = $('body')
-    const lang:Lang = $.Lang()
+    const lang:Lang = $.Lang({
+        allowedLanguages: ['enUS', 'deDE', 'frFR'],
+        domNodeSelectorPrefix: 'body #qunit-fixture'
+    })
     // / endregion
     // region tests
     // / region public methods
@@ -57,9 +60,16 @@ browserAPI((window:Window, alreadyLoaded:boolean):void => {
     // // endregion
     QUnit.test('switch', (assert:Object):void => {
         assert.strictEqual(lang.switch('en'), lang)
-        // TODO add real test!
-        assert.ok(true || false)
+        $('#qunit-fixture').html(`
+            <div>
+                english
+                <!--deDE:german-->
+            </div>
+        `)
+        lang.switch('deDE')
+        console.log('TODO AFTER: ', $('#qunit-fixture').html())
     })
+    /* TODO
     QUnit.test('refresh', (assert:Object):void => assert.strictEqual(
         lang.refresh(), lang))
     // / endregion
@@ -113,6 +123,7 @@ browserAPI((window:Window, alreadyLoaded:boolean):void => {
         assert.strictEqual(lang._switchCurrentLanguageIndicator('deDE'), lang))
     // / endregion
     // endregion
+    */
     // region hot module replacement handler
     if (typeof module === 'object' && 'hot' in module && module.hot) {
         module.hot.accept()

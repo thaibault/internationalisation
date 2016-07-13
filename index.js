@@ -29,7 +29,7 @@ export type Replacement = {
     $textNodeToTranslate:$DomNode;
     $nodeToReplace:$DomNode;
     textToReplace:string;
-    $currentLanguageDomNode:$DomNode;
+    $currentLanguageDomNode:?$DomNode;
 }
 // endregion
 const context:Object = (():Object => {
@@ -367,9 +367,17 @@ class Lang extends $.Tools.class {
                         self.knownLanguage[$.trim(
                             $currentTextNodeToTranslate.text()
                         )] = $.trim(match[2])
+                        if (language === 'deDE')
+                            console.log(
+                                'AB',
+                                self._options.currentLanguagePattern,
+                                self._options.replacementLanguagePattern,
+                                $currentTextNodeToTranslate,
+                                $currentDomNode,
+                                match, $currentLanguageDomNode
+                            )
                         self._registerTextNodeToChange(
                             $currentTextNodeToTranslate, $currentDomNode,
-                            // IgnoreTypeCheck
                             match, $currentLanguageDomNode)
                         $lastTextNodeToTranslate = $currentTextNodeToTranslate
                         $lastLanguageDomNode = $currentLanguageDomNode
@@ -528,8 +536,16 @@ class Lang extends $.Tools.class {
      */
     _registerTextNodeToChange(
         $currentTextNodeToTranslate:$DomNode, $currentDomNode:?$DomNode,
-        match:Array<string>, $currentLanguageDomNode:$DomNode
+        match:Array<string>, $currentLanguageDomNode:?$DomNode
     ):Lang {
+        console.log(
+            'AB',
+            self._options.currentLanguagePattern,
+            self._options.replacementLanguagePattern,
+            $currentTextNodeToTranslate,
+            $currentDomNode,
+            match, $currentLanguageDomNode
+        )
         this._addTextNodeToFade($currentTextNodeToTranslate)
         if ($currentDomNode)
             this._replacements.push({
@@ -614,24 +630,29 @@ class Lang extends $.Tools.class {
                 !trimmedText.endsWith(this._options.templateDelimiter.post) &&
                 this._options.templateDelimiter.post
             ) {
+                // IgnoreTypeCheck
+                let $currentLanguageDomNode:$DomNode =
+                    replacement.$currentLanguageDomNode
                 if (!replacement.$currentLanguageDomNode) {
                     /*
                         Language note wasn't present initially. So we have to
                         determine it now.
                     */
+                    $currentLanguageDomNode = $('body')
                     let currentDomNodeFound:boolean = false
                     replacement.$textNodeToTranslate.parent().contents(
                     ).each(function():?false {
                         if (currentDomNodeFound) {
-                            replacement.$currentLanguageDomNode = $(this)
+                            replacement.$currentLanguageDomNode =
+                                $currentLanguageDomNode= $(this)
                             return false
                         }
                         if (this === replacement.$textNodeToTranslate[0])
                             currentDomNodeFound = true
                     })
                 }
-                const currentLanguage:string =
-                    replacement.$currentLanguageDomNode.prop('textContent')
+                const currentLanguage:string = $currentLanguageDomNode.prop(
+                    'textContent')
                 if (language === currentLanguage)
                     this.warn(
                         `Text node "${replacement.textToReplace}" is marked ` +
@@ -657,7 +678,7 @@ class Lang extends $.Tools.class {
                 else
                     replacement.$textNodeToTranslate.html(
                         replacement.textToReplace)
-                replacement.$currentLanguageDomNode.remove()
+                $currentLanguageDomNode.remove()
                 replacement.$nodeToReplace.remove()
             }
         }
