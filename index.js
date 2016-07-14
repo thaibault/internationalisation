@@ -416,11 +416,13 @@ class Lang extends $.Tools.class {
                 ))
                     self._textNodesWithKnownLanguage[self.knownLanguage[$.trim(
                         $currentDomNode.prop('textContent')
-                    )]].push($currentDomNode)
+                    )]] = self._textNodesWithKnownLanguage[self.knownLanguage[$.trim(
+                        $currentDomNode.prop('textContent')
+                    )]].add($currentDomNode)
                 else
                     self._textNodesWithKnownLanguage[self.knownLanguage[$.trim(
                         $currentDomNode.prop('textContent')
-                    )]] = [$currentDomNode]
+                    )]] = $currentDomNode
             }
         })
         return this
@@ -668,7 +670,7 @@ class Lang extends $.Tools.class {
         // Translate registered known text nodes.
         $.each(this._textNodesWithKnownLanguage, (
             content:string, $domNode:$DomNode
-        ):$DomNode => $domNode.prop('textContent', context))
+        ):$DomNode => $domNode.prop('textContent', content))
         if ('localStorage' in context)
             context.localStorage.setItem(
                 this._options.sessionDescription, language)
