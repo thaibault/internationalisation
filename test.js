@@ -86,11 +86,14 @@ browserAPI((window:Window, alreadyLoaded:boolean):void => {
         // / endregion
         // / region protected methods
         QUnit.test('_normalizeLanguage', (assert:Object):void => {
-            assert.strictEqual(lang._normalizeLanguage('de'), 'deDE')
-            assert.strictEqual(lang._normalizeLanguage('de-de'), 'deDE')
-            assert.strictEqual(lang._normalizeLanguage('en-us'), 'enUS')
-            assert.strictEqual(lang._normalizeLanguage('fr'), 'frFR')
-            assert.strictEqual(lang._normalizeLanguage(''), 'enUS')
+            for (const test:Array<string> of [
+                ['de', 'deDE'],
+                ['de-de', 'deDE'],
+                ['en-us', 'enUS'],
+                ['fr', 'frFR'],
+                ['', 'enUS']
+            ])
+                assert.strictEqual(lang._normalizeLanguage(test[0]), test[1])
         })
         QUnit.test('_determineUsefulLanguage', (assert:Object):void => {
             if (typeof window.localStorage !== 'undefined') {
