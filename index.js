@@ -107,13 +107,13 @@ if (!('document' in context) && 'context' in $)
  * @property _options.domNode {Object.<string, string>} - A mapping of needed
  * internal dom node descriptions to their corresponding selectors.
  * @property currentLanguage - Saves the current language.
- * @property knownLanguage - Saves a mapping of known language strings and
+ * @property knowntranslations - Saves a mapping of known language strings and
  * their corresponding translations, to boost language replacements or saves
  * redundant replacements in dom tree.
  * @property _$domNodeToFade - Saves all $-extended dom nodes which should be
  * animated.
  * @property _replacements - Saves all text nodes which should be replaced.
- * @property _textNodesWithKnownLanguage - Saves a mapping of known text
+ * @property _textNodesWithKnownTranslation - Saves a mapping of known text
  * snippets to their corresponding $-extended dom nodes.
  */
 class Lang extends $.Tools.class {
@@ -122,10 +122,10 @@ class Lang extends $.Tools.class {
     // endregion
     // region dynamic properties
     currentLanguage:string
-    knownLanguage:{[key:string]:string}
+    knownTranslations:{[key:string]:string}
     _$domNodeToFade:?$DomNode
     _replacements:Array<Replacement>
-    _textNodesWithKnownLanguage:{[key:string]:$DomNode};
+    _textNodesWithKnownTranslation:{[key:string]:$DomNode};
     // endregion
     // region public methods
     // / region special
@@ -135,27 +135,27 @@ class Lang extends $.Tools.class {
      * nodes are grabbed.
      * @param options - An options object.
      * @param currentLanguage - Initial language to use.
-     * @param knownLanguage - Initial mapping of known language strings and
+     * @param knownTranslation - Initial mapping of known language strings and
      * their corresponding translations, to boost language replacements or
      * saves redundant replacements in dom tree.
      * @param $domNodeToFade - Initial dom node to fade.
      * @param replacements - Initial nodes to replace.
-     * @param textNodesWithKnownLanguage - Saves a mapping of known text
+     * @param textNodesWithKnownTranslation - Saves a mapping of known text
      * snippets to their corresponding $-extended dom nodes.
      * @returns Returns the current instance wrapped in a promise.
      */
     initialize(
         options:Object = {}, currentLanguage:string = '',
-        knownLanguage:{[key:string]:string} = {},
+        knownTranslation:{[key:string]:string} = {},
         $domNodeToFade:?$DomNode = null, replacements:Array<Replacement> = [],
-        textNodesWithKnownLanguage:{[key:string]:$DomNode} = {}
+        textNodesWithKnownTranslation:{[key:string]:$DomNode} = {}
     ):$Deferred<Lang> {
     /* eslint-enable jsdoc/require-description-complete-sentence */
         this.currentLanguage = currentLanguage
-        this.knownLanguage = knownLanguage
+        this.knownTranslation = knownTranslation
         this._$domNodeToFade = $domNodeToFade
         this._replacements = replacements
-        this._textNodesWithKnownLanguage = textNodesWithKnownLanguage
+        this._textNodesWithKnownTranslation = textNodesWithKnownTranslation
         this._options = {
             domNodeSelectorPrefix: 'body',
             default: 'enUS',
@@ -186,7 +186,7 @@ class Lang extends $.Tools.class {
             onEnsured: $.noop(),
             onSwitch: $.noop(),
             onEnsure: $.noop(),
-            domNode: {knownLanguage: 'div.toc'}
+            domNode: {knownTranslation: 'div.toc'}
         }
         super.initialize(options)
         this._options.preReplacementLanguagePattern =
@@ -335,7 +335,7 @@ class Lang extends $.Tools.class {
         let $currentLanguageDomNode:?$DomNode = null
         let $lastTextNodeToTranslate:?$DomNode = null
         let $lastLanguageDomNode:?$DomNode = null
-        this.knownLanguage = {}
+        this.knownTranslation = {}
         const self:Lang = this
         this.$domNodes.parent.find(':not(iframe)').contents().each(function(
         ):?true {
@@ -365,7 +365,7 @@ class Lang extends $.Tools.class {
                         self._options.replacementLanguagePattern))
                     if (Array.isArray(match) && match[1] === language) {
                         // Save known text translations.
-                        self.knownLanguage[$.trim(
+                        self.knownTranslation[$.trim(
                             $currentTextNodeToTranslate.text()
                         )] = $.trim(match[2])
                         self._registerTextNodeToChange(
@@ -395,34 +395,37 @@ class Lang extends $.Tools.class {
      * @returns Returns the current instance.
      */
     _registerKnownTextNodes():Lang {
-        this._textNodesWithKnownLanguage = {}
+        this._textNodesWithKnownTranslation = {}
         const self:Lang = this
-        this.$domNodes.knownLanguage.find(':not(iframe)').contents(
+        this.$domNodes.knownTranslation.find(':not(iframe)').contents(
         ).each(function():void {
             const $currentDomNode:$DomNode = $(this)
+            // TODO
+            console.log('B', this)
             // NOTE: We skip empty and nested text nodes.
             if (!self._options.replaceDomNodeNames.includes(
                 $currentDomNode.prop('nodeName').toLowerCase()
             ) && $.trim($currentDomNode.text()) && $currentDomNode.parents(
                 self._options.replaceDomNodeNames.join()
-            ).length === 0 && self.knownLanguage.hasOwnProperty($.trim(
+            ).length === 0 && self.knownTranslation.hasOwnProperty($.trim(
                 $currentDomNode.prop('textContent')
             ))) {
                 self._addTextNodeToFade($currentDomNode)
-                if (self._textNodesWithKnownLanguage.hasOwnProperty(
-                    self.knownLanguage[$.trim($currentDomNode.prop(
+                if (self._textNodesWithKnownTranslation.hasOwnProperty(
+                    self.knownTranslation[$.trim($currentDomNode.prop(
                         'textContent'
                     ))]
                 ))
-                    self._textNodesWithKnownLanguage[self.knownLanguage[$.trim(
-                        $currentDomNode.prop('textContent')
-                    )]] = self._textNodesWithKnownLanguage[self.knownLanguage[
+                    self._textNodesWithKnownTranslation[self.knownTranslation[
                         $.trim($currentDomNode.prop('textContent'))
-                    ]].add($currentDomNode)
+                    ]] = self._textNodesWithKnownTranslation[
+                        self.knownTranslation[$.trim($currentDomNode.prop(
+                            'textContent'))]
+                    ].add($currentDomNode)
                 else
-                    self._textNodesWithKnownLanguage[self.knownLanguage[$.trim(
-                        $currentDomNode.prop('textContent')
-                    )]] = $currentDomNode
+                    self._textNodesWithKnownTranslation[self.knownTranslation[
+                        $.trim($currentDomNode.prop('textContent'))
+                    ]] = $currentDomNode
             }
         })
         return this
@@ -668,7 +671,7 @@ class Lang extends $.Tools.class {
             }
         }
         // Translate registered known text nodes.
-        $.each(this._textNodesWithKnownLanguage, (
+        $.each(this._textNodesWithKnownTranslation, (
             content:string, $domNode:$DomNode
         ):$DomNode => $domNode.prop('textContent', content))
         if ('localStorage' in context)
