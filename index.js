@@ -416,9 +416,9 @@ class Lang extends $.Tools.class {
                 ))
                     self._textNodesWithKnownLanguage[self.knownLanguage[$.trim(
                         $currentDomNode.prop('textContent')
-                    )]] = self._textNodesWithKnownLanguage[self.knownLanguage[$.trim(
-                        $currentDomNode.prop('textContent')
-                    )]].add($currentDomNode)
+                    )]] = self._textNodesWithKnownLanguage[self.knownLanguage[
+                        $.trim($currentDomNode.prop('textContent'))
+                    ]].add($currentDomNode)
                 else
                     self._textNodesWithKnownLanguage[self.knownLanguage[$.trim(
                         $currentDomNode.prop('textContent')
