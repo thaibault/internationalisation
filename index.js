@@ -309,7 +309,7 @@ class Lang extends $.Tools.class {
                     ).replace(regularExpression, match[1]))
                     let selfFound:boolean = false
                     $this.parent().contents().each(function():?false {
-                        if (selfFound && $.trim($(this).Tools('getText'))) {
+                        if (selfFound && $(this).Tools('getText').trim()) {
                             $this.appendTo(this)
                             return false
                         }
@@ -347,9 +347,9 @@ class Lang extends $.Tools.class {
                 nodeName.toLowerCase()
             )) {
                 // NOTE: We skip empty and nested text nodes
-                if ($.trim($currentDomNode.Tools(
+                if ($currentDomNode.Tools(
                     'getText'
-                )) && $currentDomNode.parents(
+                ).trim() && $currentDomNode.parents(
                     self._options.replaceDomNodeNames.join()
                 ).length === 0) {
                     $lastLanguageDomNode =
@@ -367,9 +367,9 @@ class Lang extends $.Tools.class {
                         self._options.replacementLanguagePattern))
                     if (Array.isArray(match) && match[1] === language) {
                         // Save known text translations.
-                        self.knownTranslation[$.trim(
-                            $currentTextNodeToTranslate.Tools('getText')
-                        )] = $.trim(match[2])
+                        self.knownTranslation[
+                            $currentTextNodeToTranslate.Tools('getText').trim()
+                        ] = match[2].trim()
                         self._registerTextNodeToChange(
                             $currentTextNodeToTranslate, $currentDomNode,
                             match, $currentLanguageDomNode)
@@ -405,27 +405,28 @@ class Lang extends $.Tools.class {
             // NOTE: We skip empty and nested text nodes.
             if (!self._options.replaceDomNodeNames.includes(
                 $currentDomNode.prop('nodeName').toLowerCase()
-            ) && $.trim($currentDomNode.Tools('getText')) &&
+            ) && $currentDomNode.Tools('getText').trim() &&
             $currentDomNode.parents(
                 self._options.replaceDomNodeNames.join()
-            ).length === 0 && self.knownTranslation.hasOwnProperty($.trim(
-                $currentDomNode.Tools('getText')
-            ))) {
+            ).length === 0 && self.knownTranslation.hasOwnProperty(
+                $currentDomNode.Tools('getText').trim()
+            )) {
                 self._addTextNodeToFade($currentDomNode)
                 if (self._textNodesWithKnownTranslation.hasOwnProperty(
-                    self.knownTranslation[$.trim($currentDomNode.prop(
+                    self.knownTranslation[$currentDomNode.prop(
                         'textContent'
-                    ))]
+                    ).trim()]
                 ))
                     self._textNodesWithKnownTranslation[self.knownTranslation[
-                        $.trim($currentDomNode.prop('textContent'))
+                        $currentDomNode.prop('textContent').trim()
                     ]] = self._textNodesWithKnownTranslation[
-                        self.knownTranslation[$.trim($currentDomNode.prop(
-                            'textContent'))]
+                        self.knownTranslation[$currentDomNode.prop(
+                            'textContent'
+                        ).trim()]
                     ].add($currentDomNode)
                 else
                     self._textNodesWithKnownTranslation[self.knownTranslation[
-                        $.trim($currentDomNode.prop('textContent'))
+                        $currentDomNode.prop('textContent').trim()
                     ]] = $currentDomNode
             }
         })
@@ -603,7 +604,7 @@ class Lang extends $.Tools.class {
             if (replacement.$textNodeToTranslate.prop('nodeName') === '#text')
                 currentText = replacement.$textNodeToTranslate.prop(
                     'textContent')
-            const trimmedText:string = $.trim(currentText)
+            const trimmedText:string = currentText.trim()
             if (
                 !this._options.templateDelimiter ||
                 !trimmedText.endsWith(this._options.templateDelimiter.post) &&
