@@ -69,9 +69,9 @@ if (!('document' in context) && 'context' in $)
  * @property _options.textNodeParent {Object.<string, Object>} - Saves
  * informations how parent dom nodes should be animated when containing text
  * will be switched.
- * @property _options.textNodeParent.fadeIn {Object} - Fade in options when a
- * new text should appear.
- * @property _options.textNodeParent.fadeOut {Object} - Fade out effect options
+ * @property _options.textNodeParent.show {Object} - Fade in options when a new
+ * text should appear.
+ * @property _options.textNodeParent.hide {Object} - Fade out effect options
  * when a text node should be removed before switching them.
  * @property _options.preReplacementLanguagePattern {string} - Pattern to
  * introduce a pre replacement language node.
@@ -164,8 +164,8 @@ class Lang extends $.Tools.class {
             templateDelimiter: {pre: '{{', post: '}}'},
             fadeEffect: true,
             textNodeParent: {
-                fadeIn: {duration: 'fast'},
-                fadeOut: {duration: 'fast'}
+                show: {opacity: 100, duration: 'fast'},
+                hide: {opacity: 0, duration: 'fast'}
             },
             preReplacementLanguagePattern: '^\\|({1})$',
             replacementLanguagePattern: '^([a-z]{2}[A-Z]{2}):((.|\\s)*)$',
@@ -501,14 +501,14 @@ class Lang extends $.Tools.class {
      */
     _handleSwitchEffect(language:string, ensure:boolean):$Deferred<Lang> {
         const oldLanguage:string = this.currentLanguage
-        if (!ensure && this._options.fadeEffect && this._$domNodeToFade)
-            return this._$domNodeToFade.fadeOut(
-                this._options.textNodeParent.fadeOut
+        if (!ensure && this._options.fadeEffect && this._$domNodeToFade) {
+            return this._$domNodeToFade.animate(
+                this._options.textNodeParent.hideAnimation
             ).promise().then(():$Deferred<Lang> => {
                 this._switchLanguage(language)
                 if (this._$domNodeToFade)
-                    return this._$domNodeToFade.fadeIn(
-                        this._options.textNodeParent.fadeIn
+                    return this._$domNodeToFade.animate(
+                        this._options.textNodeParent.show
                     ).promise().then(():$Deferred<Lang> => {
                         this.fireEvent(
                             (ensure ? 'ensured' : 'switched'), true, this,
@@ -518,6 +518,7 @@ class Lang extends $.Tools.class {
                     })
                 return $.when(this)
             })
+        }
         this._switchLanguage(language)
         this.fireEvent(
             (ensure ? 'ensured' : 'switched'), true, this, oldLanguage,
