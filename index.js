@@ -501,7 +501,7 @@ class Lang extends $.Tools.class {
      */
     _handleSwitchEffect(language:string, ensure:boolean):$Deferred<Lang> {
         const oldLanguage:string = this.currentLanguage
-        if (!ensure && this._options.fadeEffect && this._$domNodeToFade) {
+        if (!ensure && this._options.fadeEffect && this._$domNodeToFade)
             return this._$domNodeToFade.animate.apply(
                 this._$domNodeToFade,
                 this._options.textNodeParent.hideAnimation
@@ -520,7 +520,6 @@ class Lang extends $.Tools.class {
                     })
                 return $.when(this)
             })
-        }
         this._switchLanguage(language)
         this.fireEvent(
             (ensure ? 'ensured' : 'switched'), true, this, oldLanguage,
