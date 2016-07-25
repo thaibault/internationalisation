@@ -164,7 +164,7 @@ class Lang extends $.Tools.class {
             templateDelimiter: {pre: '{{', post: '}}'},
             fadeEffect: true,
             textNodeParent: {
-                showAnimation: [{opacity: 100}, {duration: 'fast'}],
+                showAnimation: [{opacity: 1}, {duration: 'fast'}],
                 hideAnimation: [{opacity: 0}, {duration: 'fast'}]
             },
             preReplacementLanguagePattern: '^\\|({1})$',
