@@ -347,7 +347,9 @@ class Lang extends $.Tools.class {
                 nodeName.toLowerCase()
             )) {
                 // NOTE: We skip empty and nested text nodes
-                if ($.trim($currentDomNode.Tools('getText')) && $currentDomNode.parents(
+                if ($.trim($currentDomNode.Tools(
+                    'getText'
+                )) && $currentDomNode.parents(
                     self._options.replaceDomNodeNames.join()
                 ).length === 0) {
                     $lastLanguageDomNode =
@@ -498,12 +500,30 @@ class Lang extends $.Tools.class {
      * @returns Returns the current instance wrapped in a promise.
      */
     _handleSwitchEffect(language:string, ensure:boolean):$Deferred<Lang> {
+        const oldLanguage:string = this.currentLanguage
         if (!ensure && this._options.fadeEffect && this._$domNodeToFade)
             return this._$domNodeToFade.fadeOut(
                 this._options.textNodeParent.fadeOut
-            ).promise().then(this.getMethod(
-                this._handleLanguageSwitching, this, language, ensure))
-        return this._handleLanguageSwitching(language, ensure)
+            ).promise().then(():$Deferred<Lang> => {
+                this._switchLanguage(language)
+                if (this._$domNodeToFade)
+                    return this._$domNodeToFade.fadeIn(
+                        this._options.textNodeParent.fadeIn
+                    ).promise().then(():$Deferred<Lang> => {
+                        this.fireEvent(
+                            (ensure ? 'ensured' : 'switched'), true, this,
+                            oldLanguage, language)
+                        this.releaseLock(this._options.toolsLockDescription)
+                        return $.when(this)
+                    })
+                return $.when(this)
+            })
+        this._switchLanguage(language)
+        this.fireEvent(
+            (ensure ? 'ensured' : 'switched'), true, this, oldLanguage,
+            language)
+        this.releaseLock(this._options.toolsLockDescription)
+        return $.when(this)
     }
     /**
      * Registers a text node to change its content with given replacement.
@@ -568,36 +588,6 @@ class Lang extends $.Tools.class {
             $lastTextNodeToTranslate.after($lastLanguageDomNode)
         }
         return $lastLanguageDomNode
-    }
-    /**
-     * Initialized the language switch and performs an effect if specified.
-     * @param language - The new language to switch to.
-     * @param ensure - Indicates if current language should be ensured again
-     * every text node content.
-     * @returns Returns the current instance wrapped in a promise.
-     */
-    _handleLanguageSwitching(language:string, ensure:boolean):$Deferred<Lang> {
-        const oldLanguage:string = this.currentLanguage
-        if (!ensure && this._options.fadeEffect && this._$domNodeToFade) {
-            this._switchLanguage(language)
-            if (this._$domNodeToFade)
-                return this._$domNodeToFade.fadeIn(
-                    this._options.textNodeParent.fadeIn
-                ).promise().then(():Lang => {
-                    this.fireEvent(
-                        (ensure ? 'ensured' : 'switched'), true, this,
-                        oldLanguage, language)
-                    this.releaseLock(this._options.toolsLockDescription)
-                    return this
-                })
-        } else {
-            this._switchLanguage(language)
-            this.fireEvent(
-                (ensure ? 'ensured' : 'switched'), true, this, oldLanguage,
-                language)
-            this.releaseLock(this._options.toolsLockDescription)
-        }
-        return $.when(this)
     }
     /**
      * Performs the low level text replacements for switching to given

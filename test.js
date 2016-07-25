@@ -160,13 +160,6 @@ browserAPI((window:Window, alreadyLoaded:boolean):void => {
         ):void => assert.strictEqual(
             lang._ensureLastTextNodeHavingLanguageIndicator(null, null, false),
             null))
-        QUnit.test('_handleLanguageSwitching', (
-            assert:Object
-        ):$Deferred<Lang> => $.Lang().always((lang:Lang):$Deferred<Lang> =>
-            lang._handleLanguageSwitching('enUS', true).always((
-                subLang:Lang
-            ):void => assert.strictEqual(subLang, lang)))
-        )
         QUnit.test('_switchLanguage', (assert:Object):$Deferred<Lang> =>
             $.Lang().always((lang:Lang):void => {
                 assert.strictEqual(lang._switchLanguage('deDE'), lang)
