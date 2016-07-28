@@ -50,17 +50,17 @@ browserAPI((window:Window, alreadyLoaded:boolean):void => {
     const $bodyDomNode:$DomNode = $('body')
     if ('localStorage' in window)
         window.localStorage.removeItem('Lang')
-    const lang:$Deferred<Lang> = $.Lang({
+    const langDeferred:$Deferred<Lang> = $.Lang({
         allowedLanguages: ['enUS', 'deDE', 'frFR'],
         domNodeSelectorPrefix: 'body #qunit-fixture',
         initial: 'enUS'
     })
     // / endregion
-    lang.always((lang:Lang):void => {
+    langDeferred.always((lang:Lang):void => {
         // region tests
         // / region public methods
         // // region special
-        QUnit.test('initialize', (assert:Object):$Deferred<Lang> => {
+        QUnit.test('initialize', (assert:Object):void => {
             const done:Function = assert.async()
             lang.initialize().then((subLang:Lang):void => assert.strictEqual(
                 subLang, lang
