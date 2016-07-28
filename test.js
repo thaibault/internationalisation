@@ -46,7 +46,7 @@ browserAPI((window:Window, alreadyLoaded:boolean):void => {
         QUnit.load()
     else if (!alreadyLoaded)
         QUnit.start()
-    // / region mock-up
+    // region mock-up
     const $bodyDomNode:$DomNode = $('body')
     if ('localStorage' in window)
         window.localStorage.removeItem('Lang')
@@ -55,7 +55,7 @@ browserAPI((window:Window, alreadyLoaded:boolean):void => {
         domNodeSelectorPrefix: 'body #qunit-fixture',
         initial: 'enUS'
     })
-    // / endregion
+    // endregion
     langDeferred.always((lang:Lang):void => {
         // region tests
         // / region public methods
