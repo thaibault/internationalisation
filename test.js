@@ -60,31 +60,36 @@ browserAPI((window:Window, alreadyLoaded:boolean):void => {
         // region tests
         // / region public methods
         // // region special
-        QUnit.test('initialize', (assert:Object):$Deferred<Lang> =>
-            lang.initialize().always((subLang:Lang):void => assert.strictEqual(
-                subLang, lang)))
+        QUnit.test('initialize', (assert:Object):$Deferred<Lang> => {
+            const done:Function = assert.async()
+            lang.initialize().then((subLang:Lang):void => assert.strictEqual(
+                subLang, lang
+            )).then(done)
+        })
         // // endregion
         QUnit.test('switch', (assert:Object):void => {
-            lang.switch('en').always((subLang:Lang):void => assert.strictEqual(
-                subLang, lang))
-            $('#qunit-fixture').html('<div>english<!--deDE:german--></div>')
             const done:Function = assert.async()
-            lang.switch('deDE').always(():void => assert.ok(
-                $.Tools.class.isEquivalentDom($('#qunit-fixture').html(
-                ).replace(/(?: |\n)+/g, ' '), (
-                '<div style="opacity: 100">' +
-                    'german<!--deDE--><!--enUS:english-->' +
-                '</div>')
-            ))).then(():$Deferred<Lang> => lang.switch('deDE').always(
+            lang.switch('en').then((subLang:Lang):void => assert.strictEqual(
+                subLang, lang
+            )).then(():$Deferred<Lang> => {
+                $('#qunit-fixture').html(
+                    '<div>english<!--deDE:german--></div>')
+                return lang.switch('deDE').always(():void => assert.ok(
+                    $.Tools.class.isEquivalentDom($('#qunit-fixture').html(
+                    ).replace(/(?: |\n)+/g, ' '), (
+                        '<div style="opacity: 1">' +
+                            'german<!--deDE--><!--enUS:english-->' +
+                        '</div>'))))
+            }).then(():$Deferred<Lang> => lang.switch('deDE').always(
                 ():void => assert.ok($.Tools.class.isEquivalentDom(
                     $('#qunit-fixture').html().replace(/(?: |\n)+/g, ' '),
-                    '<div style="opacity: 100">' +
+                    '<div style="opacity: 1">' +
                         'german<!--deDE--><!--enUS:english-->' +
                     '</div>'))
             )).then(():$Deferred<Lang> => lang.switch('en').always(():void =>
                 assert.ok($.Tools.class.isEquivalentDom(
                     $('#qunit-fixture').html().replace(/(?: |\n)+/g, ' '),
-                    '<div style="opacity: 100">' +
+                    '<div style="opacity: 1">' +
                         'english<!--enUS--><!--deDE:german-->' +
                     '</div>'))
             )).then(():$Deferred<Lang> => {
@@ -102,14 +107,14 @@ browserAPI((window:Window, alreadyLoaded:boolean):void => {
                         ).replace(/(?: |\n)+/g, ' '),
                         ' <div class="toc"> ' +
                             '<ul>' +
-                                '<li style="opacity: 100">' +
+                                '<li style="opacity: 1">' +
                                     '<a href="#">' +
                                         'german' +
                                     '</a>' +
                                 '</li>' +
                             '</ul>' +
                         ' </div>' +
-                        ' <div style="opacity: 100">' +
+                        ' <div style="opacity: 1">' +
                             'german<!--deDE--><!--enUS:english-->' +
                         '</div> '))
                 ))
