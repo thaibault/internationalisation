@@ -16,7 +16,7 @@
 */
 // region imports
 import browserAPI from 'webOptimizer/browserAPI'
-import type {Window} from 'webOptimizer/type'
+import type {Browser} from 'webOptimizer/type'
 import type {$DomNode, $Deferred} from 'jQuery-tools'
 import type Lang from './index'
 // endregion
@@ -28,19 +28,21 @@ type JQueryFunction = (object:any) => Object
 // endregion
 const QUnit:Object = (TARGET === 'node') ? require('qunit-cli') : require(
     'qunitjs')
-browserAPI((window:Window, alreadyLoaded:boolean):void => {
+browserAPI((browser:Browser, alreadyLoaded:boolean):void => {
     /*
         NOTE: We have to define window globally before jQuery is loaded to
         ensure that all jquery instances share the same window object.
     */
-    if (typeof global !== 'undefined' && global !== window) {
-        global.window = window
-        for (const key in window)
-            if (window.hasOwnProperty(key) && !global.hasOwnProperty(key))
-                global[key] = window[key]
+    if (typeof global !== 'undefined' && global !== browser.window) {
+        global.window = browser.window
+        for (const key in browser.window)
+            if (browser.window.hasOwnProperty(key) && !global.hasOwnProperty(
+                key
+            ))
+                global[key] = browser.window[key]
     }
     const $:JQueryFunction = require('jquery')
-    $.context = window.document
+    $.context = browser.window.document
     require('./index')
     if (TARGET === 'node')
         QUnit.load()
@@ -48,8 +50,8 @@ browserAPI((window:Window, alreadyLoaded:boolean):void => {
         QUnit.start()
     // region mock-up
     const $bodyDomNode:$DomNode = $('body')
-    if ('localStorage' in window)
-        window.localStorage.removeItem('Lang')
+    if ('localStorage' in browser.window)
+        browser.window.localStorage.removeItem('Lang')
     const langDeferred:$Deferred<Lang> = $.Lang({
         allowedLanguages: ['enUS', 'deDE', 'frFR'],
         domNodeSelectorPrefix: 'body #qunit-fixture',
@@ -135,10 +137,13 @@ browserAPI((window:Window, alreadyLoaded:boolean):void => {
                 assert.strictEqual(lang._normalizeLanguage(test[0]), test[1])
         })
         QUnit.test('_determineUsefulLanguage', (assert:Object):void => {
-            if (typeof window.localStorage !== 'undefined') {
-                window.localStorage[lang._options.sessionDescription] = 'enUS'
+            if (typeof browser.window.localStorage !== 'undefined') {
+                browser.window.localStorage[
+                    lang._options.sessionDescription
+                ] = 'enUS'
                 assert.strictEqual(lang._determineUsefulLanguage(), 'enUS')
-                delete window.localStorage[lang._options.sessionDescription]
+                delete browser.window.localStorage[
+                    lang._options.sessionDescription]
             }
             let referenceLanguage:string = lang._options.default
             if (typeof navigator.language !== 'undefined')
@@ -189,7 +194,7 @@ browserAPI((window:Window, alreadyLoaded:boolean):void => {
             */
             setTimeout(():void => {
                 if (!$('.fail').length) {
-                    window.document.title = '✔ test'
+                    browser.window.document.title = '✔ test'
                     $('#qunit-banner').removeClass('qunit-fail').addClass(
                         'qunit-pass')
                 }
