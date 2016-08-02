@@ -49,10 +49,6 @@ browserAPI((
     const $:JQueryFunction = require('jquery')
     $.context = browser.window.document
     require('./index')
-    if (TARGET === 'node')
-        QUnit.load()
-    else if (!alreadyLoaded)
-        QUnit.start()
     // region mock-up
     const $bodyDomNode:$DomNode = $('body')
     if ('localStorage' in browser.window)
@@ -64,6 +60,10 @@ browserAPI((
     })
     // endregion
     langDeferred.always((lang:Lang):void => {
+        if (TARGET === 'node')
+            QUnit.load()
+        else if (!alreadyLoaded)
+            QUnit.start()
         // region tests
         // / region public methods
         // // region special
