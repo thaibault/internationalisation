@@ -696,7 +696,7 @@ $.Lang = function():any {
     return $.Tools().controller(Lang, arguments)
 }
 $.Lang.class = Lang
-/** The jQuery-incrementer plugin class. */
+/** The jQuery-lang plugin class. */
 module.exports = Lang
 // region vim modline
 // vim: set tabstop=4 shiftwidth=4 expandtab:
