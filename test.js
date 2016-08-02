@@ -192,7 +192,7 @@ browserAPI((browser:Browser, alreadyLoaded:boolean):void => {
                 NOTE: We have to delay status indicator reset because qunits
                 status updates are delayed as well.
             */
-            langDeferred.always(():number => {
+            langDeferred.always(():void => {
                 setTimeout(():void => {
                     if (!$('.fail').length) {
                         browser.window.document.title = '✔ test'
