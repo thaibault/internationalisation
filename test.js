@@ -28,7 +28,7 @@ type JQueryFunction = (object:any) => Object
 // endregion
 const QUnit:Object = (TARGET === 'node') ? require('qunit-cli') : require(
     'qunitjs')
-browserAPI((browserAPI:BrowserAPI, alreadyLoaded:boolean):void => {
+browserAPI((browserAPI:BrowserAPI):void => {
     const $:JQueryFunction = require('jquery')
     $.context = browserAPI.window.document
     require('./index')
@@ -178,13 +178,13 @@ browserAPI((browserAPI:BrowserAPI, alreadyLoaded:boolean):void => {
                 lang._switchCurrentLanguageIndicator('deDE'), lang))
         // / endregion
         // endregion
+        if (TARGET === 'node')
+            QUnit.load()
     })
-    if (TARGET === 'node')
-        QUnit.load()
     // region hot module replacement
     /*
-        NOTE: hot module replacement doesn't work yet since qunit is not
-        resetable yet:
+        NOTE: hot module replacement doesn't work with async tests yet since
+        qunit is not resetable yet:
 
         if (typeof module === 'object' && 'hot' in module && module.hot) {
             module.hot.accept()
