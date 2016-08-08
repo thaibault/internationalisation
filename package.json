@@ -10,6 +10,7 @@
     "homepage": "http://torben.website/jQuery-lang",
     "main": "index.compiled.js",
     "webOptimizer": {"injection": {"externalAliases": {
+        "jquery": "jQuery",
         "jQuery-tools": "$.Tools"
     }}},
     "scripts": {
@@ -17,7 +18,7 @@
         "buildDLL": "webOptimizer buildDLL",
         "clear": "webOptimizer clear",
         "document": "webOptimizer document",
-        "export": "webOptimizer build '{exportFormat:\"var\"}'",
+        "export": "webOptimizer build '{exportFormat:{external:\"var\",self:\"var\"}}'",
         "lint": "webOptimizer typeCheck && webOptimizer lint",
         "postinstall": "webOptimizer build",
         "preinstall": "webOptimizer preinstall",

@@ -696,8 +696,8 @@ $.Lang = function():any {
     return $.Tools().controller(Lang, arguments)
 }
 $.Lang.class = Lang
-/** The jQuery-lang plugin class. */
-module.exports = Lang
+/** jQuery extended with jQuery-lang plugin. */
+export default $
 // region vim modline
 // vim: set tabstop=4 shiftwidth=4 expandtab:
 // vim: foldmethod=marker foldmarker=region,endregion:
