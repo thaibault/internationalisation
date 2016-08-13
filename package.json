@@ -9,10 +9,15 @@
     },
     "homepage": "http://torben.website/jQuery-lang",
     "main": "index.compiled.js",
-    "webOptimizer": {"injection": {"externalAliases": {
-        "jquery": "jQuery",
-        "jQuery-tools": "$.Tools"
-    }}},
+    "webOptimizer": {"injection": {
+        "externalAliases": {
+            "jquery": "jQuery",
+            "jQuery-tools": "$.Tools"
+        },
+        "internal": {"vendor": {
+            "__evaluate__": "self.debug && 2 < self.givenCommandLineArguments.length && ['buildDLL', 'serve', 'testInBrowser', 'watchDLL'].includes(self.givenCommandLineArguments[2]) ? ['jquery', 'jQuery-tools'].concat(self.givenCommandLineArguments[2] === 'serve' ? [] : ['qunitjs', 'webOptimizer/browserAPI']) : []"
+        }}
+    }},
     "scripts": {
         "build": "webOptimizer build",
         "buildDLL": "webOptimizer buildDLL",
