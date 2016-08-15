@@ -27,6 +27,7 @@
         "postinstall": "webOptimizer build",
         "preinstall": "webOptimizer preinstall",
         "serve": "webOptimizer serve",
+        "start": "npm run serve",
         "test": "webOptimizer test",
         "testInBrowser": "webOptimizer testInBrowser",
         "watch": "webOptimizer build --watch",
