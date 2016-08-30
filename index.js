@@ -1,11 +1,11 @@
 // @flow
 // #!/usr/bin/env node
 // -*- coding: utf-8 -*-
-/** @module jQuery-lang */
+/** @module language */
 'use strict'
 /* !
     region header
-    [Project page](http://torben.website/jQuery-lang)
+    [Project page](http://torben.website/language)
 
     Copyright Torben Sickert (info["~at~"]torben.website) 16.12.2012
 
@@ -18,10 +18,9 @@
     endregion
 */
 // region imports
-import $ from 'jquery'
-import 'jQuery-tools'
+import $ from 'tools'
 /* eslint-disable no-duplicate-imports */
-import type {$DomNode, $Deferred} from 'jQuery-tools'
+import type {$DomNode, $Deferred} from 'tools'
 /* eslint-enable no-duplicate-imports */
 // endregion
 // region types
@@ -32,21 +31,11 @@ export type Replacement = {
     $currentLanguageDomNode:?$DomNode;
 }
 // endregion
-const context:Object = (():Object => {
-    if (typeof window === 'undefined') {
-        if (typeof global === 'undefined')
-            return (typeof module === 'undefined') ? {} : module
-        return global
-    }
-    return window
-})()
-if (!('document' in context) && 'context' in $)
-    context.document = $.context
 // region plugins/classes
 /**
  * This plugin holds all needed methods to extend a website for
  * internationalisation.
- * @extends jQuery-tools:Tools
+ * @extends tools:Tools
  * @property static:_name - Defines this class name to allow retrieving them
  * after name mangling.
  * @property _options - Options extended by the options given to the
@@ -461,15 +450,15 @@ class Lang extends $.Tools.class {
         let result:string
         if (this._options.initial)
             result = this._options.initial
-        else if ('localStorage' in context && context.localStorage.getItem(
+        else if ('localStorage' in $.global && $.global.localStorage.getItem(
             this._options.sessionDescription
         )) {
-            result = context.localStorage.getItem(
+            result = $.global.localStorage.getItem(
                 this._options.sessionDescription)
             this.debug(
                 'Determine "{1}", because of local storage information.',
                 result)
-        } else if ('navigator' in context && navigator.language) {
+        } else if ('navigator' in $.global && navigator.language) {
             result = navigator.language
             this.debug(
                 'Determine "{1}", because of browser settings.', result)
@@ -487,8 +476,8 @@ class Lang extends $.Tools.class {
                 ' to "{2}".', result, this._options.allowedLanguages[0])
             result = this._options.allowedLanguages[0]
         }
-        if ('localStorage' in context)
-            context.localStorage.setItem(
+        if ('localStorage' in $.global)
+            $.global.localStorage.setItem(
                 this._options.sessionDescription, result)
         return result
     }
@@ -666,8 +655,8 @@ class Lang extends $.Tools.class {
         $.each(this._textNodesWithKnownTranslation, (
             content:string, $domNode:$DomNode
         ):$DomNode => $domNode.prop('textContent', content))
-        if ('localStorage' in context)
-            context.localStorage.setItem(
+        if ('localStorage' in $.global)
+            $.global.localStorage.setItem(
                 this._options.sessionDescription, language)
         this.currentLanguage = language
         return this
@@ -696,7 +685,7 @@ $.Lang = function():any {
     return $.Tools().controller(Lang, arguments)
 }
 $.Lang.class = Lang
-/** jQuery extended with jQuery-lang plugin. */
+/** $ extended with language plugin. */
 export default $
 // region vim modline
 // vim: set tabstop=4 shiftwidth=4 expandtab:

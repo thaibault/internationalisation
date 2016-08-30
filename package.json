@@ -1,23 +1,28 @@
 {
-    "name": "jQuery-lang",
+    "name": "language",
     "version": "1.0.0",
     "description": "Expand your audience",
-    "keywords": ["jquery", "lang", "language", "internationalisation"],
+    "keywords": ["lang", "language", "internationalisation"],
     "files": ["index.js"],
     "repository": {
-        "type": "git", "url": "https://github.com/thaibault/jQuery-lang"
+        "type": "git", "url": "https://github.com/thaibault/language"
     },
-    "homepage": "http://torben.website/jQuery-lang",
+    "homepage": "http://torben.website/language",
     "main": "index.compiled.js",
-    "webOptimizer": {"injection": {
-        "externalAliases": {
-            "jquery": "jQuery",
-            "jQuery-tools": "$.Tools"
+    "webOptimizer": {
+        "injection": {
+            "externalAliases": {"tools": "$.Tools"},
+            "internal": {"vendor": {
+                "__evaluate__": "self.debug && 2 < self.givenCommandLineArguments.length && ['buildDLL', 'serve', 'testInBrowser', 'watchDLL'].includes(self.givenCommandLineArguments[2]) ? ['tools'].concat(self.givenCommandLineArguments[2] === 'serve' ? [] : ['qunitjs', 'webOptimizer/browserAPI']) : []"
+            }}
         },
-        "internal": {"vendor": {
-            "__evaluate__": "self.debug && 2 < self.givenCommandLineArguments.length && ['buildDLL', 'serve', 'testInBrowser', 'watchDLL'].includes(self.givenCommandLineArguments[2]) ? ['jQuery-tools'].concat(self.givenCommandLineArguments[2] === 'serve' ? [] : ['qunitjs', 'webOptimizer/browserAPI']) : []"
-        }}
-    }, "module": {"optimizer": {"uglifyJS": null}}},
+        "module": {
+            "optimizer": {"uglifyJS": null},
+            "skipParseRegularExpression": {
+                "__evaluate__": "/\\/(?:(?:jquery)|(?:module)|([^/]+\\.min))\\.js(?:\\?.+|$)/"
+            }
+        }
+    },
     "scripts": {
         "build": "webOptimizer build",
         "buildDLL": "webOptimizer buildDLL",
@@ -36,12 +41,13 @@
     "license": "CC-BY-3.0",
     "dependencies": {
         "webOptimizer": "git+ssh://git@github.com/thaibault/webOptimizer.git",
-        "jQuery-tools": "git+ssh://git@github.com/thaibault/jQuery-tools.git"
+        "tools": "git+ssh://git@github.com/thaibault/tools.git"
     },
     "devDependencies": {
         "jsdom": ">=9.4.1",
         "qunitjs": ">=2.0.0",
         "qunit-cli": ">=0.2.0*",
         "source-map-support": ">=0.4.2"
-    }
+    },
+    "peerDependencies": {"jquery": ">=3.1.0"}
 }
