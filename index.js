@@ -53,7 +53,7 @@ export type Replacement = {
  * introduces a dynamic expression.
  * @property _options.templateDelimiter.post {string} - Delimiter which
  * finishes a dynamic expression.
- * @property _options.fadeEffect {boolean} - Indicates weather a fade effect
+ * @property _options.fadeEffect {boolean} - Indicates whether a fade effect
  * should be performed.
  * @property _options.textNodeParent {Object.<string, Object>} - Saves
  * informations how parent dom nodes should be animated when containing text
