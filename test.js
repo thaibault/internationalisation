@@ -15,10 +15,9 @@
     endregion
 */
 // region imports
-import browserAPI from 'webOptimizer/browserAPI'
-import type {BrowserAPI} from 'webOptimizer/type'
-import type {$DomNode, $Deferred} from 'jQuery-tools'
-import type Lang from './index'
+import type {$Deferred, $DomNode} from 'clientNode'
+import registerTest from 'clientNode/test'
+import type Language from './index'
 // endregion
 // region declaration
 declare var DEBUG:boolean
@@ -27,84 +26,61 @@ declare var TARGET_TECHNOLOGY:string
 // region types
 type JQueryFunction = (object:any) => Object
 // endregion
-let QUnit:Object
-if (typeof TARGET_TECHNOLOGY === 'undefined' || TARGET_TECHNOLOGY === 'node')
-    QUnit = require('qunit-cli')
-else
-    QUnit = DEBUG ? require('qunitjs') : (
-        require('script!qunitjs') && window.QUnit)
-browserAPI((browserAPI:BrowserAPI):void => {
-    const $:JQueryFunction = require('jquery')
-    $.context = browserAPI.window.document
+registerTest(function(
+    roundType:string, targetTechnology:?string, $:any
+):$Deferred<Language> {
     require('./index')
-    // region configuration
-    QUnit.config = $.extend(QUnit.config || {}, {
-        /*
-        notrycatch: true,
-        noglobals: true,
-        */
-        altertitle: true,
-        autostart: true,
-        fixture: '',
-        hidepassed: false,
-        maxDepth: 3,
-        reorder: false,
-        requireExpects: false,
-        testTimeout: 30 * 1000,
-        scrolltop: false
-    })
     const $bodyDomNode:$DomNode = $('body')
     if ('localStorage' in browserAPI.window)
-        browserAPI.window.localStorage.removeItem('Lang')
-    const langDeferred:$Deferred<Lang> = $.Lang({
+        browserAPI.window.localStorage.removeItem('Language')
+    const languageDeferred:$Deferred<Language> = $.Language({
         allowedLanguages: ['enUS', 'deDE', 'frFR'],
         domNodeSelectorPrefix: 'body #qunit-fixture',
         initial: 'enUS'
     })
-    // endregion
-    langDeferred.always((lang:Lang):void => {
+    return languageDeferred.always((language:Language):void => {
         // region tests
         // / region public methods
         // // region special
-        QUnit.test('initialize', (assert:Object):$Deferred<Lang> =>
-            lang.initialize().then((subLang:Lang):void => assert.strictEqual(
-                subLang, lang
+        this.test('initialize', (assert:Object):$Deferred<Language> =>
+            language.initialize().then((subLanguage:Language):void => assert.strictEqual(
+                subLanguage, language
             )).then(assert.async()))
         // // endregion
-        QUnit.test('switch', (assert:Object):$Deferred<Lang> => lang.switch(
+        this.test('switch', (assert:Object):$Deferred<Language> => language.switch(
             'en'
-        ).then((subLang:Lang):void => assert.strictEqual(subLang, lang)).then((
-        ):$Deferred<Lang> => {
+        ).then((subLanguage:Language):void => assert.strictEqual(subLanguage, language)).then((
+        ):$Deferred<Language> => {
             $('#qunit-fixture').html(
                 '<div>english<!--deDE:german--></div>')
-            return lang.switch('deDE').always(():void => assert.ok(
+            return language.switch('deDE').always(():void => assert.ok(
                 $.Tools.class.isEquivalentDom($('#qunit-fixture').html(
                 ).replace(/(?: |\n)+/g, ' '), (
                     '<div style="opacity: 1">' +
                         'german<!--deDE--><!--enUS:english-->' +
                     '</div>'))))
-        }).then(():$Deferred<Lang> => lang.switch('deDE').always(
+        }).then(():$Deferred<Language> => language.switch('deDE').always(
             ():void => assert.ok($.Tools.class.isEquivalentDom(
                 $('#qunit-fixture').html().replace(/(?: |\n)+/g, ' '),
                 '<div style="opacity: 1">' +
                     'german<!--deDE--><!--enUS:english-->' +
                 '</div>'))
-        )).then(():$Deferred<Lang> => lang.switch('en').always(():void =>
+        )).then(():$Deferred<Language> => language.switch('en').always(():void =>
             assert.ok($.Tools.class.isEquivalentDom(
                 $('#qunit-fixture').html().replace(/(?: |\n)+/g, ' '),
                 '<div style="opacity: 1">' +
                     'english<!--enUS--><!--deDE:german-->' +
                 '</div>'))
-        )).then(():$Deferred<Lang> => {
+        )).then(():$Deferred<Language> => {
             $('#qunit-fixture').html(`
                 <div class="toc">
                     <ul><li><a href="#">english</a></li></ul>
                 </div>
                 <div>english<!--deDE:german--></div>
             `)
-            return lang.initialize().then((
-                subLang:Lang
-            ):$Deferred<Lang> => subLang.switch('de').always(():void =>
+            return language.initialize().then((
+                subLanguage:Language
+            ):$Deferred<Language> => subLanguage.switch('de').always(():void =>
                 assert.ok(
                     $.Tools.class.isEquivalentDom($('#qunit-fixture').html(
                     ).replace(/(?: |\n)+/g, ' '),
@@ -122,13 +98,13 @@ browserAPI((browserAPI:BrowserAPI):void => {
                     '</div> '))
             ))
         }).then(assert.async()))
-        QUnit.test('refresh', (assert:Object):$Deferred<Lang> =>
-            lang.refresh().then((subLang:Lang):void =>
-                assert.strictEqual(subLang, lang)
+        this.test('refresh', (assert:Object):$Deferred<Language> =>
+            language.refresh().then((subLanguage:Language):void =>
+                assert.strictEqual(subLanguage, language)
             ).then(assert.async()))
         // / endregion
         // / region protected methods
-        QUnit.test('_normalizeLanguage', (assert:Object):void => {
+        this.test('_normalizeLanguage', (assert:Object):void => {
             for (const test:Array<string> of [
                 ['de', 'deDE'],
                 ['de-de', 'deDE'],
@@ -136,75 +112,55 @@ browserAPI((browserAPI:BrowserAPI):void => {
                 ['fr', 'frFR'],
                 ['', 'enUS']
             ])
-                assert.strictEqual(lang._normalizeLanguage(test[0]), test[1])
+                assert.strictEqual(language._normalizeLanguage(test[0]), test[1])
         })
-        QUnit.test('_determineUsefulLanguage', (assert:Object):void => {
+        this.test('_determineUsefulLanguage', (assert:Object):void => {
             if (typeof browserAPI.window.localStorage !== 'undefined') {
                 browserAPI.window.localStorage[
-                    lang._options.sessionDescription
+                    language._options.sessionDescription
                 ] = 'enUS'
-                assert.strictEqual(lang._determineUsefulLanguage(), 'enUS')
+                assert.strictEqual(language._determineUsefulLanguage(), 'enUS')
                 delete browserAPI.window.localStorage[
-                    lang._options.sessionDescription]
+                    language._options.sessionDescription]
             }
-            let referenceLanguage:string = lang._options.default
+            let referenceLanguage:string = language._options.default
             if (typeof navigator.language !== 'undefined')
                 referenceLanguage = navigator.language
             assert.strictEqual(
-                lang._normalizeLanguage(lang._determineUsefulLanguage()),
-                lang._normalizeLanguage(referenceLanguage))
+                language._normalizeLanguage(language._determineUsefulLanguage()),
+                language._normalizeLanguage(referenceLanguage))
         })
-        QUnit.test('_handleSwitchEffect', (assert:Object):$Deferred<Lang> =>
-            lang._handleSwitchEffect('deDE', false).then((
-                subLang:Lang
-            ):void => assert.strictEqual(subLang, lang)).then(assert.async()))
-        QUnit.test('_addTextNodeToFade', (assert:Object):void =>
-            assert.strictEqual(lang._addTextNodeToFade($bodyDomNode), lang))
-        QUnit.test('_registerTextNodeToChange', (assert:Object):void => {
-            lang._registerTextNodeToChange(
+        this.test('_handleSwitchEffect', (assert:Object):$Deferred<Language> =>
+            language._handleSwitchEffect('deDE', false).then((
+                subLanguage:Language
+            ):void => assert.strictEqual(subLanguage, language)).then(assert.async()))
+        this.test('_addTextNodeToFade', (assert:Object):void =>
+            assert.strictEqual(language._addTextNodeToFade($bodyDomNode), language))
+        this.test('_registerTextNodeToChange', (assert:Object):void => {
+            language._registerTextNodeToChange(
                 $bodyDomNode, $bodyDomNode.children(), ['1', '2', '3'],
                 $bodyDomNode.children())
 
-            assert.strictEqual(lang._replacements.length, 1)
-            lang._replacements = []
+            assert.strictEqual(language._replacements.length, 1)
+            language._replacements = []
         })
-        QUnit.test('_ensureLastTextNodeHavingLanguageIndicator', (
+        this.test('_ensureLastTextNodeHavingLanguageIndicator', (
             assert:Object
         ):void => assert.strictEqual(
-            lang._ensureLastTextNodeHavingLanguageIndicator(null, null, false),
+            language._ensureLastTextNodeHavingLanguageIndicator(null, null, false),
             null))
-        QUnit.test('_switchLanguage', (assert:Object):$Deferred<Lang> =>
-            $.Lang().then((lang:Lang):void => {
-                assert.strictEqual(lang._switchLanguage('deDE'), lang)
-                assert.strictEqual(lang.currentLanguage, 'deDE')
+        this.test('_switchLanguage', (assert:Object):$Deferred<Language> =>
+            $.Language().then((language:Language):void => {
+                assert.strictEqual(language._switchLanguage('deDE'), language)
+                assert.strictEqual(language.currentLanguage, 'deDE')
             }).then(assert.async()))
-        QUnit.test('_switchCurrentLanguageIndicator', (assert:Object):void =>
+        this.test('_switchCurrentLanguageIndicator', (assert:Object):void =>
             assert.strictEqual(
-                lang._switchCurrentLanguageIndicator('deDE'), lang))
+                language._switchCurrentLanguageIndicator('deDE'), language))
         // / endregion
         // endregion
-        if (
-            typeof TARGET_TECHNOLOGY === 'undefined' ||
-            TARGET_TECHNOLOGY === 'node'
-        )
-            QUnit.load()
     })
-    // region hot module replacement
-    /*
-        NOTE: hot module replacement doesn't work with async tests yet since
-        qunit is not resetable yet:
-
-        if (typeof module === 'object' && 'hot' in module && module.hot) {
-            module.hot.accept()
-            // IgnoreTypeCheck
-            module.hot.dispose(():void => {
-                QUnit.reset()
-                console.clear()
-            }
-        }
-    */
-    // endregion
-})
+}, ['withJQuery'])
 // region vim modline
 // vim: set tabstop=4 shiftwidth=4 expandtab:
 // vim: foldmethod=marker foldmarker=region,endregion:
