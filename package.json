@@ -19,7 +19,7 @@
         "module": {
             "optimizer": {"uglifyJS": null},
             "skipParseRegularExpression": {
-                "__evaluate__": "/\\/(?:(?:clientNode(?:\.compiled)?)|(?:jquery)|(?:module)|([^/]+\\.min))\\.js(?:\\?.+|$)/"
+                "__evaluate__": "/\\/(?:(?:clientNode(?:\\.compiled)?)|(?:jquery)|(?:module)|([^/]+\\.min))\\.js(?:\\?.+|$)/"
             }
         }
     },
