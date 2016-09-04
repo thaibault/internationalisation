@@ -11,7 +11,7 @@
     "main": "index.compiled.js",
     "webOptimizer": {
         "injection": {
-            "externalAliases": {"tools": "$.Tools"},
+            "externalAliases": {"clientNode": "$.Tools"},
             "internal": {"vendor": {
                 "__evaluate__": "self.debug && 2 < self.givenCommandLineArguments.length && ['buildDLL', 'serve', 'testInBrowser', 'watchDLL'].includes(self.givenCommandLineArguments[2]) ? ['tools'].concat(self.givenCommandLineArguments[2] === 'serve' ? [] : ['qunitjs', 'webOptimizer/browserAPI']) : []"
             }}
@@ -19,7 +19,7 @@
         "module": {
             "optimizer": {"uglifyJS": null},
             "skipParseRegularExpression": {
-                "__evaluate__": "/\\/(?:(?:jquery)|(?:module)|([^/]+\\.min))\\.js(?:\\?.+|$)/"
+                "__evaluate__": "/\\/(?:(?:clientNode(?:\.compiled)?)|(?:jquery)|(?:module)|([^/]+\\.min))\\.js(?:\\?.+|$)/"
             }
         }
     },
@@ -40,14 +40,14 @@
     },
     "license": "CC-BY-3.0",
     "dependencies": {
-        "webOptimizer": "git+ssh://git@github.com/thaibault/webOptimizer.git",
-        "tools": "git+ssh://git@github.com/thaibault/tools.git"
+        "clientNode": "latest",
+        "jquery": "latest"
     },
     "devDependencies": {
-        "jsdom": ">=9.4.1",
-        "qunitjs": ">=2.0.0",
-        "qunit-cli": ">=0.2.0*",
-        "source-map-support": ">=0.4.2"
-    },
-    "peerDependencies": {"jquery": ">=3.1.0"}
+        "jsdom": "latest",
+        "qunitjs": "latest",
+        "qunit-cli": "latest",
+        "source-map-support": "latest",
+        "webOptimizer": "latest"
+    }
 }
