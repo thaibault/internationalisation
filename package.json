@@ -1,5 +1,5 @@
 {
-    "name": "language",
+    "name": "internationalisation",
     "version": "1.0.0",
     "description": "Expand your audience",
     "keywords": ["lang", "language", "internationalisation"],
@@ -31,6 +31,14 @@
             "aliases": {
               "clientNode/test$": "clientNode/test.compiled"
             },
+      "preprocessor": {
+        "babel": {
+          "presets": [
+            "latest",
+            "stage-0"
+          ]
+        }
+      },
             "skipParseRegularExpression": {
                 "__evaluate__": "/\\/(?:(?:clientNode(?:\\.compiled)?)|(?:jquery)|(?:module)|([^/]+\\.min))\\.js(?:\\?.+|$)/"
             }
