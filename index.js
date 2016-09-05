@@ -667,7 +667,7 @@ export default class Language extends $.Tools.class {
      * @param language - The new language to switch to.
      * @returns Returns the current instance.
      */
-    _switchCurrentLanguageIndicator(language:string):Lang {
+    _switchCurrentLanguageIndicator(language:string):Language {
         $(
             `a[href="#${this._options.languageHashPrefix}` +
             `${this.currentLanguage}"].` +

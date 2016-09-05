@@ -19,20 +19,13 @@ import type {$Deferred, $DomNode} from 'clientNode'
 import registerTest from 'clientNode/test'
 import type Language from './index'
 // endregion
-// region declaration
-declare var DEBUG:boolean
-declare var TARGET_TECHNOLOGY:string
-// endregion
-// region types
-type JQueryFunction = (object:any) => Object
-// endregion
 registerTest(function(
     roundType:string, targetTechnology:?string, $:any
 ):$Deferred<Language> {
     require('./index')
     const $bodyDomNode:$DomNode = $('body')
-    if ('localStorage' in browserAPI.window)
-        browserAPI.window.localStorage.removeItem('Language')
+    if ('localStorage' in $.global.window)
+        $.global.window.localStorage.removeItem('Language')
     const languageDeferred:$Deferred<Language> = $.Language({
         allowedLanguages: ['enUS', 'deDE', 'frFR'],
         domNodeSelectorPrefix: 'body #qunit-fixture',
@@ -43,13 +36,15 @@ registerTest(function(
         // / region public methods
         // // region special
         this.test('initialize', (assert:Object):$Deferred<Language> =>
-            language.initialize().then((subLanguage:Language):void => assert.strictEqual(
-                subLanguage, language
-            )).then(assert.async()))
+            language.initialize().then((subLanguage:Language):void =>
+                assert.strictEqual(subLanguage, language)).then(assert.async(
+                )))
         // // endregion
-        this.test('switch', (assert:Object):$Deferred<Language> => language.switch(
-            'en'
-        ).then((subLanguage:Language):void => assert.strictEqual(subLanguage, language)).then((
+        this.test('switch', (
+            assert:Object
+        ):$Deferred<Language> => language.switch('en').then((
+            subLanguage:Language
+        ):void => assert.strictEqual(subLanguage, language)).then((
         ):$Deferred<Language> => {
             $('#qunit-fixture').html(
                 '<div>english<!--deDE:german--></div>')
@@ -65,7 +60,8 @@ registerTest(function(
                 '<div style="opacity: 1">' +
                     'german<!--deDE--><!--enUS:english-->' +
                 '</div>'))
-        )).then(():$Deferred<Language> => language.switch('en').always(():void =>
+        )).then(():$Deferred<Language> => language.switch('en').always((
+        ):void =>
             assert.ok($.Tools.class.isEquivalentDom(
                 $('#qunit-fixture').html().replace(/(?: |\n)+/g, ' '),
                 '<div style="opacity: 1">' +
@@ -112,30 +108,34 @@ registerTest(function(
                 ['fr', 'frFR'],
                 ['', 'enUS']
             ])
-                assert.strictEqual(language._normalizeLanguage(test[0]), test[1])
+                assert.strictEqual(
+                    language._normalizeLanguage(test[0]), test[1])
         })
         this.test('_determineUsefulLanguage', (assert:Object):void => {
-            if (typeof browserAPI.window.localStorage !== 'undefined') {
-                browserAPI.window.localStorage[
+            if (typeof $.global.window.localStorage !== 'undefined') {
+                $.global.window.localStorage[
                     language._options.sessionDescription
                 ] = 'enUS'
                 assert.strictEqual(language._determineUsefulLanguage(), 'enUS')
-                delete browserAPI.window.localStorage[
+                delete $.global.window.localStorage[
                     language._options.sessionDescription]
             }
             let referenceLanguage:string = language._options.default
             if (typeof navigator.language !== 'undefined')
                 referenceLanguage = navigator.language
             assert.strictEqual(
-                language._normalizeLanguage(language._determineUsefulLanguage()),
+                language._normalizeLanguage(
+                    language._determineUsefulLanguage()),
                 language._normalizeLanguage(referenceLanguage))
         })
         this.test('_handleSwitchEffect', (assert:Object):$Deferred<Language> =>
             language._handleSwitchEffect('deDE', false).then((
                 subLanguage:Language
-            ):void => assert.strictEqual(subLanguage, language)).then(assert.async()))
+            ):void => assert.strictEqual(subLanguage, language)).then(
+                assert.async()))
         this.test('_addTextNodeToFade', (assert:Object):void =>
-            assert.strictEqual(language._addTextNodeToFade($bodyDomNode), language))
+            assert.strictEqual(
+                language._addTextNodeToFade($bodyDomNode), language))
         this.test('_registerTextNodeToChange', (assert:Object):void => {
             language._registerTextNodeToChange(
                 $bodyDomNode, $bodyDomNode.children(), ['1', '2', '3'],
@@ -147,8 +147,9 @@ registerTest(function(
         this.test('_ensureLastTextNodeHavingLanguageIndicator', (
             assert:Object
         ):void => assert.strictEqual(
-            language._ensureLastTextNodeHavingLanguageIndicator(null, null, false),
-            null))
+            language._ensureLastTextNodeHavingLanguageIndicator(
+                null, null, false
+            ), null))
         this.test('_switchLanguage', (assert:Object):$Deferred<Language> =>
             $.Language().then((language:Language):void => {
                 assert.strictEqual(language._switchLanguage('deDE'), language)
