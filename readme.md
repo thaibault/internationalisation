@@ -55,7 +55,7 @@ after needed dependencies:
     <!--Inject downloaded file:-->
     <script src="/index.compiled.js"></script>
     <!--Or integrate via cdn:
-    <script src="http://torben.website/language/data/distributionBundle/index.compiled.js"></script>
+    <script src="http://torben.website/internationalisation/data/distributionBundle/index.compiled.js"></script>
     -->
 
 The compiled bundle supports AMD, commonjs, commonjs2 and variable injection
@@ -82,7 +82,7 @@ If you are using npm as package manager you can simply add this tool to your
     ...
     "dependencies": {
         ...
-        "language": "latest",
+        "internationalisation": "latest",
         ...
     },
     ...
@@ -99,9 +99,9 @@ into given context.
     #!JavaScript
 
     ...
-    $ = require('language')
+    $ = require('internationalisation')
     ...
-    $.Lang().isEquivalentDom('<div>', '<script>') // false
+    $.Language().isEquivalentDom('<div>', '<script>') // false
     ...
 
 <!--|deDE:Verwendung-->
@@ -249,9 +249,9 @@ interactively. Try it by yourself:
 
     #!HTML
 
-    <a href="#lang-deDE">de</a>
-    <a href="#lang-enUS">en</a>
-    <a href="#lang-frFR">fr</a>
+    <a href="#language-deDE">de</a>
+    <a href="#language-enUS">en</a>
+    <a href="#language-frFR">fr</a>
 
 Here you can see a complete initialisation example with all available options
 to initialize the plugin with different configuration.
@@ -269,9 +269,9 @@ to initialize the plugin with different configuration.
 
     <script src="https://code.jquery.com/jquery-3.1.0.js" integrity="sha256-slogkvB1K3VOkzAI8QITxV3VzpOnkeNVsKvtkYLMjfk=" crossorigin="anonymous"></script>
     <script src="http://torben.website/clientNode/data/distributionBundle/index.compiled.js"></script>
-    <script src="http://torben.website/language/data/distributionBundle/index.compiled.js"></script>
+    <script src="http://torben.website/internationalisation/data/distributionBundle/index.compiled.js"></script>
     <script>
-        $(($) => $.Lang({
+        $(($) => $.Language({
             domNodeSelectorPrefix: 'body',
             default: 'enUS',
             allowedLanguages: [],
@@ -288,7 +288,7 @@ to initialize the plugin with different configuration.
             replacementDomNodeName: ['#comment', 'langreplacement'],
             replaceDomNodeNames: ['#text', 'langreplace'],
             toolsLockDescription: '{1}Switch',
-            languageHashPrefix: 'lang-',
+            languageHashPrefix: 'language-',
             currentLanguageIndicatorClassName: 'current',
             sessionDescription: '{1}',
             languageMapping: {
