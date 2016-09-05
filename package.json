@@ -1,36 +1,47 @@
 {
-    "name": "internationalisation",
-    "version": "1.0.0",
-    "description": "Expand your audience",
-    "keywords": ["lang", "language", "internationalisation"],
-    "files": ["index.js"],
-    "repository": {
-        "type": "git", "url": "https://github.com/thaibault/language"
-    },
-    "homepage": "http://torben.website/language",
-    "main": "index.compiled.js",
-    "webOptimizer": {
-        "injection": {
-            "externalAliases": {"clientNode": "$.Tools"},
-          "implicitExternalExcludePattern": [
-            {
-              "__evaluate__": "/^webOptimizer\\/browserAPI(?:\\.compiled)?(?:\\.js)?$/"
-            },
-            {
-              "__evaluate__": "/^clientNode\\/test(?:\\.compiled)?(?:\\.js)?$/"
-            },
-            {
-              "__evaluate__": "/\\/webpack\\/buildin\\/module\\.js$/"
-            }
-          ],
-            "internal": {"vendor": {
-                "__evaluate__": "self.debug && 2 < self.givenCommandLineArguments.length && ['buildDLL', 'serve', 'testInBrowser', 'watchDLL'].includes(self.givenCommandLineArguments[2]) ? ['tools'].concat(self.givenCommandLineArguments[2] === 'serve' ? [] : ['qunitjs', 'webOptimizer/browserAPI']) : []"
-            }}
+  "name": "internationalisation",
+  "version": "1.0.1",
+  "description": "Expand your audience",
+  "keywords": [
+    "lang",
+    "language",
+    "internationalisation"
+  ],
+  "files": [
+    "index.js"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/thaibault/language"
+  },
+  "homepage": "http://torben.website/language",
+  "main": "index.compiled.js",
+  "webOptimizer": {
+    "injection": {
+      "externalAliases": {
+        "clientNode": "$.Tools"
+      },
+      "implicitExternalExcludePattern": [
+        {
+          "__evaluate__": "/^webOptimizer\\/browserAPI(?:\\.compiled)?(?:\\.js)?$/"
         },
-        "module": {
-            "aliases": {
-              "clientNode/test$": "clientNode/test.compiled"
-            },
+        {
+          "__evaluate__": "/^clientNode\\/test(?:\\.compiled)?(?:\\.js)?$/"
+        },
+        {
+          "__evaluate__": "/\\/webpack\\/buildin\\/module\\.js$/"
+        }
+      ],
+      "internal": {
+        "vendor": {
+          "__evaluate__": "self.debug && 2 < self.givenCommandLineArguments.length && ['buildDLL', 'serve', 'testInBrowser', 'watchDLL'].includes(self.givenCommandLineArguments[2]) ? ['tools'].concat(self.givenCommandLineArguments[2] === 'serve' ? [] : ['qunitjs', 'webOptimizer/browserAPI']) : []"
+        }
+      }
+    },
+    "module": {
+      "aliases": {
+        "clientNode/test$": "clientNode/test.compiled"
+      },
       "preprocessor": {
         "babel": {
           "presets": [
@@ -39,36 +50,36 @@
           ]
         }
       },
-            "skipParseRegularExpression": {
-                "__evaluate__": "/\\/(?:(?:clientNode(?:\\.compiled)?)|(?:jquery)|(?:module)|([^/]+\\.min))\\.js(?:\\?.+|$)/"
-            }
-        }
-    },
-    "scripts": {
-        "build": "webOptimizer build",
-        "buildDLL": "webOptimizer buildDLL",
-        "clear": "webOptimizer clear",
-        "document": "webOptimizer document",
-        "lint": "webOptimizer typeCheck && webOptimizer lint",
-        "prepublish": "npm run build",
-        "serve": "webOptimizer serve",
-        "start": "npm run serve",
-        "test": "webOptimizer test",
-        "testInBrowser": "webOptimizer testInBrowser",
-        "update": "npm version patch && npm publish",
-        "watch": "webOptimizer build --watch",
-        "watchDLL": "webOptimizer buildDLL --watch"
-    },
-    "license": "CC-BY-3.0",
-    "dependencies": {
-        "clientNode": "latest",
-        "jquery": "latest"
-    },
-    "devDependencies": {
-        "jsdom": "latest",
-        "qunitjs": "latest",
-        "qunit-cli": "latest",
-        "source-map-support": "latest",
-        "webOptimizer": "latest"
+      "skipParseRegularExpression": {
+        "__evaluate__": "/\\/(?:(?:clientNode(?:\\.compiled)?)|(?:jquery)|(?:module)|([^/]+\\.min))\\.js(?:\\?.+|$)/"
+      }
     }
+  },
+  "scripts": {
+    "build": "webOptimizer build",
+    "buildDLL": "webOptimizer buildDLL",
+    "clear": "webOptimizer clear",
+    "document": "webOptimizer document",
+    "lint": "webOptimizer typeCheck && webOptimizer lint",
+    "prepublish": "npm run build",
+    "serve": "webOptimizer serve",
+    "start": "npm run serve",
+    "test": "webOptimizer test",
+    "testInBrowser": "webOptimizer testInBrowser",
+    "update": "npm version patch && npm publish",
+    "watch": "webOptimizer build --watch",
+    "watchDLL": "webOptimizer buildDLL --watch"
+  },
+  "license": "CC-BY-3.0",
+  "dependencies": {
+    "clientNode": "latest",
+    "jquery": "latest"
+  },
+  "devDependencies": {
+    "jsdom": "latest",
+    "qunitjs": "latest",
+    "qunit-cli": "latest",
+    "source-map-support": "latest",
+    "webOptimizer": "latest"
+  }
 }
