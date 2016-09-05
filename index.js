@@ -171,10 +171,10 @@ export default class Language extends $.Tools.class {
                 enEN: ['en_en', 'en-en', 'english'],
                 frFR: ['fr', 'fr_fr', 'fr-fr', 'french']
             },
-            onSwitched: $.noop(),
-            onEnsured: $.noop(),
-            onSwitch: $.noop(),
-            onEnsure: $.noop(),
+            onSwitched: this.constructor.noop,
+            onEnsured: this.constructor.noop,
+            onSwitch: this.constructor.noop,
+            onEnsure: this.constructor.noop,
             domNode: {knownTranslation: 'div.toc'}
         }
         super.initialize(options)
@@ -458,7 +458,7 @@ export default class Language extends $.Tools.class {
             this.debug(
                 'Determine "{1}", because of local storage information.',
                 result)
-        } else if ('navigator' in $.global && navigator.language) {
+        } else if ('navigator' in $.global && $.global.navigator.language) {
             result = navigator.language
             this.debug(
                 'Determine "{1}", because of browser settings.', result)
@@ -652,9 +652,10 @@ export default class Language extends $.Tools.class {
             }
         }
         // Translate registered known text nodes.
-        $.each(this._textNodesWithKnownTranslation, (
-            content:string, $domNode:$DomNode
-        ):$DomNode => $domNode.prop('textContent', content))
+        for (const content:string in this._textNodesWithKnownTranslation)
+            if (this._textNodesWithKnownTranslation.hasOwnProperty(content))
+                this._textNodesWithKnownTranslation[content].prop(
+                    'textContent', content)
         if ('localStorage' in $.global)
             $.global.localStorage.setItem(
                 this._options.sessionDescription, language)
