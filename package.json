@@ -19,14 +19,14 @@
   "webOptimizer": {
     "injection": {
       "externalAliases": {
-        "clientNode": "$.Tools"
+        "clientnode": "$.Tools"
       },
       "implicitExternalExcludePattern": [
         {
-          "__evaluate__": "/^webOptimizer\\/browserAPI(?:\\.compiled)?(?:\\.js)?$/"
+          "__evaluate__": "/^weboptimizer\\/browserAPI(?:\\.compiled)?(?:\\.js)?$/"
         },
         {
-          "__evaluate__": "/^clientNode\\/test(?:\\.compiled)?(?:\\.js)?$/"
+          "__evaluate__": "/^clientnode\\/test(?:\\.compiled)?(?:\\.js)?$/"
         },
         {
           "__evaluate__": "/\\/webpack\\/buildin\\/module\\.js$/"
@@ -34,13 +34,13 @@
       ],
       "internal": {
         "vendor": {
-          "__evaluate__": "self.debug && 2 < self.givenCommandLineArguments.length && ['buildDLL', 'serve', 'testInBrowser', 'watchDLL'].includes(self.givenCommandLineArguments[2]) ? ['clientNode'].concat(self.givenCommandLineArguments[2] === 'serve' ? ['script!jquery'] : ['jquery', 'script!qunitjs', 'webOptimizer/browserAPI']) : []"
+          "__evaluate__": "self.debug && 2 < self.givenCommandLineArguments.length && ['buildDLL', 'serve', 'testInBrowser', 'watchDLL'].includes(self.givenCommandLineArguments[2]) ? ['clientnode'].concat(self.givenCommandLineArguments[2] === 'serve' ? [] : ['script!qunitjs', 'weboptimizer/browserAPI']) : []"
         }
       }
     },
     "module": {
       "aliases": {
-        "clientNode/test$": "clientNode/test.compiled"
+        "clientnode/test$": "clientnode/test.compiled"
       },
       "preprocessor": {
         "babel": {
@@ -50,8 +50,9 @@
           ]
         }
       },
+      "provide": {"$": "jquery"},
       "skipParseRegularExpression": {
-        "__evaluate__": "/\\/(?:(?:clientNode(?:\\.compiled)?)|(?:jquery)|(?:module)|([^/]+\\.min))\\.js(?:\\?.+|$)/"
+        "__evaluate__": "/\\/(?:(?:clientnode(?:\\.compiled)?)|(?:jquery)|(?:module)|([^/]+\\.min))\\.js(?:\\?.+|$)/"
       }
     }
   },
@@ -72,7 +73,7 @@
   },
   "license": "CC-BY-3.0",
   "dependencies": {
-    "clientNode": "latest",
+    "clientnode": "latest",
     "jquery": "latest"
   },
   "devDependencies": {
@@ -80,6 +81,6 @@
     "qunitjs": "latest",
     "qunit-cli": "latest",
     "source-map-support": "latest",
-    "webOptimizer": "latest"
+    "weboptimizer": "latest"
   }
 }

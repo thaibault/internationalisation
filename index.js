@@ -18,9 +18,9 @@
     endregion
 */
 // region imports
-import {$} from 'clientNode'
+import {$} from 'clientnode'
 /* eslint-disable no-duplicate-imports */
-import type {$Deferred, $DomNode} from 'clientNode'
+import type {$Deferred, $DomNode} from 'clientnode'
 /* eslint-enable no-duplicate-imports */
 // endregion
 // region types
