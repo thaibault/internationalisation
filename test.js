@@ -121,8 +121,8 @@ registerTest(function(
                     language._options.sessionDescription]
             }
             let referenceLanguage:string = language._options.default
-            if (typeof navigator.language !== 'undefined')
-                referenceLanguage = navigator.language
+            if (typeof $.global.navigator.language !== 'undefined')
+                referenceLanguage = $.global.navigator.language
             assert.strictEqual(
                 language._normalizeLanguage(
                     language._determineUsefulLanguage()),

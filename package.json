@@ -50,7 +50,6 @@
           ]
         }
       },
-      "provide": {"$": "jquery"},
       "skipParseRegularExpression": {
         "__evaluate__": "/\\/(?:(?:clientnode(?:\\.compiled)?)|(?:jquery)|(?:module)|([^/]+\\.min))\\.js(?:\\?.+|$)/"
       }

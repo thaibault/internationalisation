@@ -18,10 +18,11 @@
     endregion
 */
 // region imports
-import {$} from 'clientnode'
+import {$ as binding} from 'clientnode'
 /* eslint-disable no-duplicate-imports */
 import type {$Deferred, $DomNode} from 'clientnode'
 /* eslint-enable no-duplicate-imports */
+export const $:any = binding
 // endregion
 // region types
 export type Replacement = {
@@ -459,7 +460,7 @@ export default class Language extends $.Tools.class {
                 'Determine "{1}", because of local storage information.',
                 result)
         } else if ('navigator' in $.global && $.global.navigator.language) {
-            result = navigator.language
+            result = $.global.navigator.language
             this.debug(
                 'Determine "{1}", because of browser settings.', result)
         } else {
