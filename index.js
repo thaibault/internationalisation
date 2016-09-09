@@ -163,7 +163,7 @@ export default class Language extends $.Tools.class {
             replacementDomNodeName: ['#comment', 'langreplacement'],
             replaceDomNodeNames: ['#text', 'langreplace'],
             toolsLockDescription: '{1}Switch',
-            languageHashPrefix: 'lang-',
+            languageHashPrefix: 'language-',
             currentLanguageIndicatorClassName: 'current',
             sessionDescription: '{1}',
             languageMapping: {
