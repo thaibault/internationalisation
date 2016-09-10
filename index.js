@@ -44,7 +44,7 @@ export type Replacement = {
  * @property _options.domNodeSelectorPrefix {string} - Selector prefix for all
  * nodes to take into account.
  * @property _options.default {string} - Initial language to use.
- * @property _options.allowedLanguages {Array.<string>} - List of all supported
+ * @property _options.selection {Array.<string>} - List of all supported
  * languages.
  * @property _options.initial {string} - Initial set language (if omitted it
  * will be guest.
@@ -149,7 +149,7 @@ export default class Language extends $.Tools.class {
         this._options = {
             domNodeSelectorPrefix: 'body',
             default: 'enUS',
-            allowedLanguages: [],
+            selection: [],
             initial: null,
             templateDelimiter: {pre: '{{', post: '}}'},
             fadeEffect: true,
@@ -221,8 +221,8 @@ export default class Language extends $.Tools.class {
      */
     switch(language:string|true, ensure:boolean = false):$Deferred<Language> {
         if (
-            language !== true && this._options.allowedLanguages.length &&
-            !this._options.allowedLanguages.includes(language)
+            language !== true && this._options.selection.length &&
+            !this._options.selection.includes(language)
         ) {
             this.debug('"{1}" isn\'t one of the allowed languages.', language)
             return $.when(this)
@@ -469,13 +469,13 @@ export default class Language extends $.Tools.class {
         }
         result = this._normalizeLanguage(result)
         if (
-            this._options.allowedLanguages.length &&
-            !this._options.allowedLanguages.includes(result)
+            this._options.selection.length &&
+            !this._options.selection.includes(result)
         ) {
             this.debug(
                 '"{1}" isn\'t one of the allowed languages. Set language' +
-                ' to "{2}".', result, this._options.allowedLanguages[0])
-            result = this._options.allowedLanguages[0]
+                ' to "{2}".', result, this._options.selection[0])
+            result = this._options.selection[0]
         }
         if ('localStorage' in $.global)
             $.global.localStorage.setItem(

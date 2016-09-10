@@ -274,7 +274,7 @@ to initialize the plugin with different configuration.
         $(($) => $.Language({
             domNodeSelectorPrefix: 'body',
             default: 'enUS',
-            allowedLanguages: [],
+            selection: [],
             initial: null,
             templateDelimiter: {pre: '{{', post: '}}'},
             fadeEffect: true,
