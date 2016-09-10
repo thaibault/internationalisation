@@ -53,7 +53,7 @@ after needed dependencies:
     <script src="https://code.jquery.com/jquery-3.1.0.js" integrity="sha256-slogkvB1K3VOkzAI8QITxV3VzpOnkeNVsKvtkYLMjfk=" crossorigin="anonymous"></script>
     <script src="http://torben.website/clientNode/data/distributionBundle/index.compiled.js"></script>
     <!--Inject downloaded file:-->
-    <script src="/index.compiled.js"></script>
+    <script src="index.compiled.js"></script>
     <!--Or integrate via cdn:
     <script src="http://torben.website/internationalisation/data/distributionBundle/index.compiled.js"></script>
     -->
