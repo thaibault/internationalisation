@@ -72,6 +72,7 @@
     "test": "webOptimizer test",
     "testInBrowser": "webOptimizer testInBrowser",
     "update": "npm version patch && npm publish",
+    "updateDocumentation": "documentationWebsite",
     "watch": "webOptimizer build --watch",
     "watchDLL": "webOptimizer buildDLL --watch"
   },
@@ -81,6 +82,7 @@
     "jquery": "latest"
   },
   "devDependencies": {
+    "documentation-website": "latest",
     "jsdom": "latest",
     "qunitjs": "latest",
     "qunit-cli": "latest",
