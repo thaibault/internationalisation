@@ -2,6 +2,11 @@
   "name": "internationalisation",
   "version": "1.0.4",
   "description": "Expand your audience",
+  "documentationWebsite": {
+    "tagline": "Expand your audience<!--deDE:Erweitern Sie Ihr Publikum--><!--frFR:Élargir votre audience-->",
+    "trackingCode": "UA-40192634-6",
+    "language": {"selection": ["deDE", "enUS", "frFR"]}
+    },
   "keywords": [
     "lang",
     "language",
