@@ -23,9 +23,6 @@
   "main": "index.compiled.js",
   "webOptimizer": {
     "injection": {
-      "externalAliases": {
-        "clientnode": "$.Tools"
-      },
       "implicitExternalExcludePattern": {"__append__": {
           "__evaluate__": "/^clientnode\\/test(?:\\.compiled)?(?:\\.js)?$/"
       }},
