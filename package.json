@@ -1,12 +1,16 @@
 {
   "name": "internationalisation",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Expand your audience",
   "documentationWebsite": {
     "tagline": "Expand your audience<!--deDE:Erweitern Sie Ihr Publikum--><!--frFR:Élargir votre audience-->",
     "trackingCode": "UA-40192634-6",
-    "languags": ["deDE", "enUS", "frFR"]
-    },
+    "languags": [
+      "deDE",
+      "enUS",
+      "frFR"
+    ]
+  },
   "keywords": [
     "lang",
     "language",
@@ -23,9 +27,11 @@
   "main": "index.compiled.js",
   "webOptimizer": {
     "injection": {
-      "implicitExternalExcludePattern": {"__append__": {
+      "implicitExternalExcludePattern": {
+        "__append__": {
           "__evaluate__": "/^clientnode\\/test(?:\\.compiled)?(?:\\.js)?$/"
-      }},
+        }
+      },
       "internal": {
         "vendor": {
           "__evaluate__": "self.debug && 2 < self.givenCommandLineArguments.length && ['buildDLL', 'serve', 'testInBrowser', 'watchDLL'].includes(self.givenCommandLineArguments[2]) ? ['clientnode'].concat(self.givenCommandLineArguments[2] === 'serve' ? [] : ['script!qunitjs', 'weboptimizer/browserAPI']) : []"
@@ -38,7 +44,9 @@
       },
       "preprocessor": {
         "babel": {
-          "presets": {"__remove__": "babili"}
+          "presets": {
+            "__remove__": "babili"
+          }
         }
       },
       "skipParseRegularExpression": {
