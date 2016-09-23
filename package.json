@@ -27,11 +27,11 @@
   "main": "index.compiled.js",
   "webOptimizer": {
     "injection": {
-      "implicitExternalExcludePattern": {
+      "external":{"implicit":{"pattern":{"exclude": {
         "__append__": {
           "__evaluate__": "/^clientnode\\/test(?:\\.compiled)?(?:\\.js)?$/"
         }
-      },
+      }}}},
       "internal": {
         "vendor": {
           "__evaluate__": "self.debug && 2 < self.givenCommandLineArguments.length && ['buildDLL', 'serve', 'testInBrowser', 'watchDLL'].includes(self.givenCommandLineArguments[2]) ? ['clientnode'].concat(self.givenCommandLineArguments[2] === 'serve' ? [] : ['script!qunitjs', 'weboptimizer/browserAPI']) : []"
@@ -49,7 +49,7 @@
           }
         }
       },
-      "skipParseRegularExpression": {
+      "skipParseRegularExpressions": {
         "__evaluate__": "/\\/(?:(?:clientnode(?:\\.compiled)?)|(?:jquery)|(?:module)|([^/]+\\.min))\\.js(?:\\?.+|$)/"
       }
     }
