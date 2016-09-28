@@ -1,6 +1,6 @@
 {
   "name": "internationalisation",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "Expand your audience",
   "documentationWebsite": {
     "tagline": "Expand your audience<!--deDE:Erweitern Sie Ihr Publikum--><!--frFR:Élargir votre audience-->",
@@ -27,11 +27,17 @@
   "main": "index.compiled.js",
   "webOptimizer": {
     "injection": {
-      "external":{"implicit":{"pattern":{"exclude": {
-        "__append__": {
-          "__evaluate__": "/^clientnode\\/test(?:\\.compiled)?(?:\\.js)?$/"
+      "external": {
+        "implicit": {
+          "pattern": {
+            "exclude": {
+              "__append__": {
+                "__evaluate__": "/^clientnode\\/test(?:\\.compiled)?(?:\\.js)?$/"
+              }
+            }
+          }
         }
-      }}}},
+      },
       "internal": {
         "vendor": {
           "__evaluate__": "self.debug && 2 < self.givenCommandLineArguments.length && ['buildDLL', 'serve', 'testInBrowser', 'watchDLL'].includes(self.givenCommandLineArguments[2]) ? ['clientnode'].concat(self.givenCommandLineArguments[2] === 'serve' ? [] : ['script!qunitjs', 'weboptimizer/browserAPI']) : []"
