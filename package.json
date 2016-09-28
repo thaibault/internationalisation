@@ -21,9 +21,9 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/thaibault/language"
+    "url": "https://github.com/thaibault/internationalisation"
   },
-  "homepage": "http://torben.website/language",
+  "homepage": "http://torben.website/internationalisation",
   "main": "index.compiled.js",
   "webOptimizer": {
     "injection": {
@@ -40,6 +40,7 @@
     },
     "module": {
       "aliases": {
+        "clientnode/index$": "clientnode/index.compiled",
         "clientnode/test$": "clientnode/test.compiled"
       },
       "preprocessor": {
@@ -50,7 +51,7 @@
         }
       },
       "skipParseRegularExpressions": {
-        "__evaluate__": "/\\/(?:(?:clientnode(?:\\.compiled)?)|(?:jquery)|(?:module)|([^/]+\\.min))\\.js(?:\\?.+|$)/"
+        "__evaluate__": "/\\/(?:(?:jquery)|(?:module)|([^/]+\\.min))\\.js(?:\\?.+|$)/"
       }
     }
   },
