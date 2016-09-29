@@ -46,7 +46,6 @@
     },
     "module": {
       "aliases": {
-        "clientnode/index$": "clientnode",
         "clientnode/test$": "clientnode/test.compiled"
       },
       "preprocessor": {
