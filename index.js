@@ -681,9 +681,8 @@ export default class Language extends $.Tools.class {
     // endregion
 }
 // endregion
-$.Language = (...parameter:Array<any>):any => {
-    return $.Tools().controller(Language, parameter)
-}
+$.Language = (...parameter:Array<any>):any => $.Tools().controller(
+    Language, parameter)
 $.Language.class = Language
 // region vim modline
 // vim: set tabstop=4 shiftwidth=4 expandtab:
