@@ -286,15 +286,13 @@ export default class Language extends $.Tools.class {
     ):Promise<Language> {
         const oldLanguage:string = this.currentLanguage
         if (!ensure && this._options.fadeEffect && this._$domNodeToFade) {
-            await this._$domNodeToFade.animate.apply(
-                this._$domNodeToFade,
-                this._options.textNodeParent.hideAnimation
+            await this._$domNodeToFade.animate(
+                ...this._options.textNodeParent.hideAnimation
             ).promise()
             this._switchLanguage(language)
             if (this._$domNodeToFade) {
-                await this._$domNodeToFade.animate.apply(
-                    this._$domNodeToFade,
-                    this._options.textNodeParent.showAnimation
+                await this._$domNodeToFade.animate(
+                    ...this._options.textNodeParent.showAnimation
                 ).promise()
                 await this.fireEvent(
                     (ensure ? 'ensured' : 'switched'), true, this,
@@ -683,8 +681,8 @@ export default class Language extends $.Tools.class {
     // endregion
 }
 // endregion
-$.Language = function():any {
-    return $.Tools().controller(Language, arguments)
+$.Language = (...parameter:Array<any>):any => {
+    return $.Tools().controller(Language, parameter)
 }
 $.Language.class = Language
 // region vim modline
