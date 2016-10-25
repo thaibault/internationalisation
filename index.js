@@ -230,7 +230,7 @@ export default class Language extends $.Tools.class {
             return this
         }
         return await this.acquireLock(
-            this._options.toolsLockDescription, async ():void => {
+            this._options.toolsLockDescription, async ():Promise<Language> => {
                 if (language === true) {
                     ensure = true
                     language = this.currentLanguage
