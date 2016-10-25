@@ -21,7 +21,7 @@ import type Language from './index'
 // endregion
 registerTest(async function(
     roundType:string, targetTechnology:?string, $:any
-):Promise<Language> {
+):Promise<void> {
     require('./index')
     const $bodyDomNode:$DomNode = $('body')
     if ('localStorage' in $.global.window)
@@ -38,7 +38,7 @@ registerTest(async function(
         language.initialize().then((subLanguage:Language):void =>
             assert.strictEqual(subLanguage, language)).then(assert.async()))
     // // endregion
-    this.test('switch', async (assert:Object):Promise<Language> => {
+    this.test('switch', async (assert:Object):Promise<void> => {
         const done:Function = assert.async()
         let subLanguage:Language = await language.switch('en')
         assert.strictEqual(subLanguage, language)

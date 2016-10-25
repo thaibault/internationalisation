@@ -8,6 +8,7 @@
 
 # temporary excludes
 .*/documentation-website/.*
+.*/website-utilities/.*
 .+/systemjs-builder/test/fixtures/sourcemaps-expectations/.+\.json
 
 [options]
