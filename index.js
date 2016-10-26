@@ -19,9 +19,7 @@
 */
 // region imports
 import {$ as binding} from 'clientnode'
-/* eslint-disable no-duplicate-imports */
 import type {$DomNode} from 'clientnode'
-/* eslint-enable no-duplicate-imports */
 export const $:any = binding
 // endregion
 // region types
