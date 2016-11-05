@@ -49,9 +49,11 @@
         "clientnode/test$": "clientnode/test.compiled"
       },
       "preprocessor": {
-        "babel": {
-          "presets": {
-            "__remove__": "babili"
+        "javaScript": {
+          "configuration": {
+            "presets": {
+              "__remove__": "babili"
+            }
           }
         }
       },
