@@ -132,7 +132,7 @@ export default class Language extends $.Tools.class {
      * snippets to their corresponding $-extended dom nodes.
      * @returns Returns the current instance wrapped in a promise.
      */
-    async initialize(
+    initialize(
         options:Object = {}, currentLanguage:string = '',
         knownTranslation:{[key:string]:string} = {},
         $domNodeToFade:?$DomNode = null, replacements:Array<Replacement> = [],
@@ -205,7 +205,7 @@ export default class Language extends $.Tools.class {
         })
         if (this.currentLanguage === newLanguage)
             return $.when(this._switchCurrentLanguageIndicator(newLanguage))
-        return await this.switch(newLanguage, true)
+        return this.switch(newLanguage, true)
     }
     // / endregion
     /**
@@ -217,18 +217,16 @@ export default class Language extends $.Tools.class {
      * @param ensure - Indicates if a switch effect should be avoided.
      * @returns Returns the current instance wrapped in a promise.
      */
-    async switch(
-        language:string|true, ensure:boolean = false
-    ):Promise<Language> {
+    switch(language:string|true, ensure:boolean = false):Promise<Language> {
         if (
             language !== true && this._options.selection.length &&
             !this._options.selection.includes(language)
         ) {
             this.debug('"{1}" isn\'t one of the allowed languages.', language)
-            return this
+            return $.when(this)
         }
-        return await this.acquireLock(
-            this._options.toolsLockDescription, async ():Promise<Language> => {
+        return this.acquireLock(
+            this._options.toolsLockDescription, ():Promise<Language> => {
                 if (language === true) {
                     ensure = true
                     language = this.currentLanguage
@@ -254,20 +252,20 @@ export default class Language extends $.Tools.class {
                     ] = this._collectTextNodesToReplace(language, ensure)
                     this._ensureLastTextNodeHavingLanguageIndicator(
                         $lastTextNodeToTranslate, $lastLanguageDomNode, ensure)
-                    return await this._handleSwitchEffect(language, ensure)
+                    return this._handleSwitchEffect(language, ensure)
                 }
                 this.debug(
                     '"{1}" is already current selected language.', language)
                 this.releaseLock(this._options.toolsLockDescription)
-                return this
+                return $.when(this)
             })
     }
     /**
      * Ensures current selected language.
      * @returns Returns the current instance wrapped in a promise.
      */
-    async refresh():Promise<Language> {
-        return await this._movePreReplacementNodes().switch(true)
+    refresh():Promise<Language> {
+        return this._movePreReplacementNodes().switch(true)
     }
     // / endregion
     // region protected methods

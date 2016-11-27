@@ -48,17 +48,8 @@
       "aliases": {
         "clientnode/test$": "clientnode/test.compiled"
       },
-      "preprocessor": {
-        "javaScript": {
-          "configuration": {
-            "presets": {
-              "__remove__": "babili"
-            }
-          }
-        }
-      },
       "skipParseRegularExpressions": {
-        "__evaluate__": "/\\/(?:(?:jquery)|(?:module)|([^/]+\\.min))\\.js(?:\\?.+|$)/"
+        "__evaluate__": "/\\/(?:(?:jquery\\/dist\\/jquery)|(?:module)|([^/]+\\.min))\\.js(?:\\?.+|$)/"
       }
     }
   },
