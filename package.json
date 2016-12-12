@@ -1,7 +1,9 @@
 {
   "name": "internationalisation",
   "version": "1.0.16",
+  "license": "CC-BY-3.0",
   "description": "Expand your audience",
+  "homepage": "http://torben.website/internationalisation",
   "documentationWebsite": {
     "tagline": "Expand your audience<!--deDE:Erweitern Sie Ihr Publikum--><!--frFR:Élargir votre audience-->",
     "trackingCode": "UA-40192634-6",
@@ -19,12 +21,40 @@
   "files": [
     "index.js"
   ],
+  "main": "index.compiled.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/thaibault/internationalisation"
   },
-  "homepage": "http://torben.website/internationalisation",
-  "main": "index.compiled.js",
+  "scripts": {
+    "build": "webOptimizer build",
+    "buildDLL": "webOptimizer buildDLL",
+    "clear": "webOptimizer clear",
+    "document": "webOptimizer document",
+    "export": "webOptimizer build '{development:{tool:false},module:{preprocessor:{javaScript:{configuration:{plugins:{__remove__:\"transform-runtime\"}}}}}}'",
+    "lint": "webOptimizer typeCheck && webOptimizer lint",
+    "prepublish": "npm run build",
+    "serve": "webOptimizer serve",
+    "start": "npm run serve",
+    "test": "webOptimizer test",
+    "testInBrowser": "webOptimizer testInBrowser",
+    "update": "npm version patch && npm publish",
+    "updateDocumentation": "documentationWebsite --log-level info",
+    "watch": "webOptimizer build --watch",
+    "watchDLL": "webOptimizer buildDLL --watch"
+  },
+  "dependencies": {
+    "clientnode": "latest",
+    "jquery": "latest"
+  },
+  "devDependencies": {
+    "documentation-website": "latest",
+    "jsdom": "latest",
+    "qunitjs": "latest",
+    "qunit-cli": "latest",
+    "source-map-support": "latest",
+    "weboptimizer": "latest"
+  },
   "webOptimizer": {
     "injection": {
       "external": {
@@ -52,35 +82,5 @@
         "__evaluate__": "/\\/(?:(?:jquery\\/dist\\/jquery)|(?:module)|([^/]+\\.min))\\.js(?:\\?.+|$)/"
       }
     }
-  },
-  "scripts": {
-    "build": "webOptimizer build",
-    "buildDLL": "webOptimizer buildDLL",
-    "clear": "webOptimizer clear",
-    "document": "webOptimizer document",
-    "export": "webOptimizer build '{development:{tool:false},module:{preprocessor:{javaScript:{configuration:{plugins:{__remove__:\"transform-runtime\"}}}}}}'",
-    "lint": "webOptimizer typeCheck && webOptimizer lint",
-    "prepublish": "npm run build",
-    "serve": "webOptimizer serve",
-    "start": "npm run serve",
-    "test": "webOptimizer test",
-    "testInBrowser": "webOptimizer testInBrowser",
-    "update": "npm version patch && npm publish",
-    "updateDocumentation": "documentationWebsite --log-level info",
-    "watch": "webOptimizer build --watch",
-    "watchDLL": "webOptimizer buildDLL --watch"
-  },
-  "license": "CC-BY-3.0",
-  "dependencies": {
-    "clientnode": "latest",
-    "jquery": "latest"
-  },
-  "devDependencies": {
-    "documentation-website": "latest",
-    "jsdom": "latest",
-    "qunitjs": "latest",
-    "qunit-cli": "latest",
-    "source-map-support": "latest",
-    "weboptimizer": "latest"
   }
 }
