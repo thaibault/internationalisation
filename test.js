@@ -152,7 +152,7 @@ registerTest(async function(
             language._switchCurrentLanguageIndicator('deDE'), language))
     // / endregion
     // endregion
-}, ['withJQuery'])
+}, ['full'])
 // region vim modline
 // vim: set tabstop=4 shiftwidth=4 expandtab:
 // vim: foldmethod=marker foldmarker=region,endregion:
