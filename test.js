@@ -17,6 +17,11 @@
 // region imports
 import type {$DomNode} from 'clientnode'
 import registerTest from 'clientnode/test'
+// NOTE: Only needed for debugging this file.
+try {
+    module.require('source-map-support/register')
+} catch (error) {}
+
 import type Language from './index'
 // endregion
 registerTest(async function(
