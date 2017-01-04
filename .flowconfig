@@ -13,8 +13,6 @@
 .*/website-utilities/.*
 
 [options]
-esproposal.class_static_fields=enable
-
 module.name_mapper='^script!qunitjs$' -> 'qunitjs'
 module.name_mapper='^weboptimizer/browserAPI.compiled$' -> 'weboptimizer/browserAPI'
 
