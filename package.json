@@ -1,11 +1,15 @@
 {
   "name": "internationalisation",
-  "version": "1.0.17",
+  "version": "1.0.18",
   "license": "CC-BY-3.0",
   "description": "Expand your audience",
   "homepage": "http://torben.website/internationalisation",
   "documentationWebsite": {
-    "languages": ["deDE", "enUS", "frFR"],
+    "languages": [
+      "deDE",
+      "enUS",
+      "frFR"
+    ],
     "tagline": "Expand your audience<!--deDE:Erweitern Sie Ihr Publikum--><!--frFR:Élargir votre audience-->",
     "trackingCode": "UA-40192634-6"
   },
