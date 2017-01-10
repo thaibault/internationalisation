@@ -13,6 +13,8 @@
 .*/website-utilities/.*
 
 [options]
+unsafe.enable_getters_and_setters=true
+
 module.name_mapper='^script!qunitjs$' -> 'qunitjs'
 module.name_mapper='^weboptimizer/browserAPI.compiled$' -> 'weboptimizer/browserAPI'
 
