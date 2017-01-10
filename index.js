@@ -333,7 +333,7 @@ export default class Language extends $.Tools.class {
                     ).replace(regularExpression, match[1]))
                     let selfFound:boolean = false
                     $this.parent().contents().each(function():?false {
-                        if (selfFound && $(this).Tools('getText').trim()) {
+                        if (selfFound && $(this).Tools('text').trim()) {
                             $this.appendTo(this)
                             return false
                         }
@@ -371,11 +371,10 @@ export default class Language extends $.Tools.class {
                 nodeName.toLowerCase()
             )) {
                 // NOTE: We skip empty and nested text nodes
-                if ($currentDomNode.Tools(
-                    'getText'
-                ).trim() && $currentDomNode.parents(
-                    self._options.replaceDomNodeNames.join()
-                ).length === 0) {
+            if ($currentDomNode.Tools('text').trim(
+            ) && $currentDomNode.parents(
+                self._options.replaceDomNodeNames.join()
+            ).length === 0) {
                     $lastLanguageDomNode =
                         self._ensureLastTextNodeHavingLanguageIndicator(
                             $lastTextNodeToTranslate, $lastLanguageDomNode,
@@ -392,7 +391,7 @@ export default class Language extends $.Tools.class {
                     if (Array.isArray(match) && match[1] === language) {
                         // Save known text translations.
                         self.knownTranslation[
-                            $currentTextNodeToTranslate.Tools('getText').trim()
+                            $currentTextNodeToTranslate.Tools('text').trim()
                         ] = match[2].trim()
                         self._registerTextNodeToChange(
                             $currentTextNodeToTranslate, $currentDomNode,
@@ -429,11 +428,11 @@ export default class Language extends $.Tools.class {
             // NOTE: We skip empty and nested text nodes.
             if (!self._options.replaceDomNodeNames.includes(
                 $currentDomNode.prop('nodeName').toLowerCase()
-            ) && $currentDomNode.Tools('getText').trim() &&
+            ) && $currentDomNode.Tools('text').trim() &&
             $currentDomNode.parents(
                 self._options.replaceDomNodeNames.join()
             ).length === 0 && self.knownTranslation.hasOwnProperty(
-                $currentDomNode.Tools('getText').trim()
+                $currentDomNode.Tools('text').trim()
             )) {
                 self._addTextNodeToFade($currentDomNode)
                 if (self._textNodesWithKnownTranslation.hasOwnProperty(
