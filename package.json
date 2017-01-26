@@ -76,7 +76,7 @@
         "clientnode/test$": "clientnode/test.compiled"
       },
       "skipParseRegularExpressions": {
-        "__evaluate__": "/\\/(?:(?:global)|(?:jquery\\/dist\\/jquery)|(?:module)|([^/]+\\.min))\\.js(?:\\?.+|$)/"
+        "__evaluate__": "/\\/(?:(?:global)|(?:jquery\\/dist\\/jquery)|(?:module))(?:\\.min)?\\.js(?:\\?.+|$)/"
       }
     }
   }
