@@ -32,7 +32,7 @@
     "clear": "webOptimizer clear",
     "document": "webOptimizer document",
     "export": "webOptimizer build '{development:{tool:false},module:{preprocessor:{javaScript:{options:{plugins:{__remove__:\"transform-runtime\"}}}}}}'",
-    "lint": "webOptimizer typeCheck && webOptimizer lint",
+    "lint": "webOptimizer typeCheck; webOptimizer lint",
     "prepublish": "npm run build",
     "serve": "webOptimizer serve",
     "start": "npm run serve",
