@@ -49,11 +49,13 @@ registerTest(async function(
         assert.strictEqual(subLanguage, language)
         $('#qunit-fixture').html('<div>english<!--deDE:german--></div>')
         await language.switch('deDE')
-        assert.ok($.Tools.class.isEquivalentDom($('#qunit-fixture').html(
-        ).replace(/(?: |\n)+/g, ' '), (
-            '<div style="opacity: 1">' +
-                'german<!--deDE--><!--enUS:english-->' +
-            '</div>')))
+        assert.ok($.Tools.class.isEquivalentDom(
+            $('#qunit-fixture').html().replace(/(?: |\n)+/g, ' '),
+            (
+                '<div style="opacity: 1">' +
+                    'german<!--deDE--><!--enUS:english-->' +
+                '</div>'
+            )))
         await language.switch('deDE')
         assert.ok($.Tools.class.isEquivalentDom(
             $('#qunit-fixture').html().replace(/(?: |\n)+/g, ' '),

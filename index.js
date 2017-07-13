@@ -371,10 +371,12 @@ export default class Language extends $.Tools.class {
                 nodeName.toLowerCase()
             )) {
                 // NOTE: We skip empty and nested text nodes
-            if ($currentDomNode.Tools('text').trim(
-            ) && $currentDomNode.parents(
-                self._options.replaceDomNodeNames.join()
-            ).length === 0) {
+                if (
+                    $currentDomNode.Tools('text').trim() &&
+                    $currentDomNode.parents(
+                        self._options.replaceDomNodeNames.join()
+                    ).length === 0
+                ) {
                     $lastLanguageDomNode =
                         self._ensureLastTextNodeHavingLanguageIndicator(
                             $lastTextNodeToTranslate, $lastLanguageDomNode,
@@ -426,14 +428,18 @@ export default class Language extends $.Tools.class {
         ).each(function():void {
             const $currentDomNode:$DomNode = $(this)
             // NOTE: We skip empty and nested text nodes.
-            if (!self._options.replaceDomNodeNames.includes(
-                $currentDomNode.prop('nodeName').toLowerCase()
-            ) && $currentDomNode.Tools('text').trim() &&
-            $currentDomNode.parents(
-                self._options.replaceDomNodeNames.join()
-            ).length === 0 && self.knownTranslation.hasOwnProperty(
-                $currentDomNode.Tools('text').trim()
-            )) {
+            if (
+                !self._options.replaceDomNodeNames.includes(
+                    $currentDomNode.prop('nodeName').toLowerCase()
+                ) &&
+                $currentDomNode.Tools('text').trim() &&
+                $currentDomNode.parents(
+                    self._options.replaceDomNodeNames.join()
+                ).length === 0 &&
+                self.knownTranslation.hasOwnProperty($currentDomNode.Tools(
+                    'text'
+                ).trim())
+            ) {
                 self._addTextNodeToFade($currentDomNode)
                 if (self._textNodesWithKnownTranslation.hasOwnProperty(
                     self.knownTranslation[$currentDomNode.prop(
