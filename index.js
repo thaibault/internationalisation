@@ -38,9 +38,9 @@ export type Replacement = {
 /**
  * This plugin holds all needed methods to extend a website for
  * internationalisation.
- * @extends tools:Tools
  * @property static:_name - Defines this class name to allow retrieving them
  * after name mangling.
+ *
  * @property _options - Options extended by the options given to the
  * initializer method.
  * @property _options.domNodeSelectorPrefix {string} - Selector prefix for all
@@ -109,9 +109,9 @@ export type Replacement = {
  * snippets to their corresponding $-extended dom nodes.
  */
 export default class Language extends $.Tools.class {
-    // region static properties
     static _name:string = 'Language'
-    // endregion
+
+
     // region dynamic properties
     currentLanguage:string
     knownTranslations:{[key:string]:string}
