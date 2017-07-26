@@ -19,7 +19,7 @@
 */
 // region imports
 import {$ as binding} from 'clientnode'
-import type {$DomNode} from 'clientnode'
+import type {$DomNode, PlainObject} from 'clientnode'
 // NOTE: Only needed for debugging this file.
 try {
     module.require('source-map-support/register')
@@ -41,6 +41,13 @@ export type Replacement = {
  * @property static:_name - Defines this class name to allow retrieving them
  * after name mangling.
  *
+ * @property currentLanguage - Saves the current language.
+ * @property knowntranslations - Saves a mapping of known language strings and
+ * their corresponding translations, to boost language replacements or saves
+ * redundant replacements in dom tree.
+ *
+ * @property _$domNodeToFade - Saves all $-extended dom nodes which should be
+ * animated.
  * @property _options - Options extended by the options given to the
  * initializer method.
  * @property _options.domNodeSelectorPrefix {string} - Selector prefix for all
@@ -98,12 +105,6 @@ export type Replacement = {
  * before a language switch should be ensured.
  * @property _options.domNode {Object.<string, string>} - A mapping of needed
  * internal dom node descriptions to their corresponding selectors.
- * @property currentLanguage - Saves the current language.
- * @property knowntranslations - Saves a mapping of known language strings and
- * their corresponding translations, to boost language replacements or saves
- * redundant replacements in dom tree.
- * @property _$domNodeToFade - Saves all $-extended dom nodes which should be
- * animated.
  * @property _replacements - Saves all text nodes which should be replaced.
  * @property _textNodesWithKnownTranslation - Saves a mapping of known text
  * snippets to their corresponding $-extended dom nodes.
@@ -111,14 +112,13 @@ export type Replacement = {
 export default class Language extends $.Tools.class {
     static _name:string = 'Language'
 
-
-    // region dynamic properties
     currentLanguage:string
     knownTranslations:{[key:string]:string}
+
     _$domNodeToFade:?$DomNode
+    _options:PlainObject
     _replacements:Array<Replacement>
     _textNodesWithKnownTranslation:{[key:string]:$DomNode};
-    // endregion
     // region public methods
     // / region special
     /* eslint-disable jsdoc/require-description-complete-sentence */
