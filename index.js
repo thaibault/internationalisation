@@ -116,7 +116,6 @@ export default class Language extends $.Tools.class {
     knownTranslations:{[key:string]:string}
 
     _$domNodeToFade:?$DomNode
-    _options:PlainObject
     _replacements:Array<Replacement>
     _textNodesWithKnownTranslation:{[key:string]:$DomNode};
     // region public methods
