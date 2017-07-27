@@ -117,7 +117,7 @@ export default class Language extends $.Tools.class {
 
     _$domNodeToFade:?$DomNode
     _replacements:Array<Replacement>
-    _textNodesWithKnownTranslation:{[key:string]:$DomNode};
+    _textNodesWithKnownTranslation:{[key:string]:$DomNode}
     // region public methods
     // / region special
     /* eslint-disable jsdoc/require-description-complete-sentence */
