@@ -186,9 +186,9 @@ export default class Language extends $.Tools.class {
                 this._options.replacementLanguagePattern.substr(
                     1, this._options.replacementLanguagePattern.length - 2))
         this._options.toolsLockDescription = this.constructor.stringFormat(
-            this._options.toolsLockDescription, this.constructor._name)
+            this._options.toolsLockDescription, this.constructor.name)
         this._options.sessionDescription = this.constructor.stringFormat(
-            this._options.sessionDescription, this.constructor._name)
+            this._options.sessionDescription, this.constructor.name)
         this.$domNodes = this.grabDomNode(this._options.domNode)
         this.$domNodes.switchLanguageButtons = $(
             `a[href^="#${this._options.languageHashPrefix}"]`)
