@@ -49,7 +49,7 @@ registerTest(async function(
         assert.strictEqual(subLanguage, language)
         $('#qunit-fixture').html('<div>english<!--deDE:german--></div>')
         await language.switch('deDE')
-        assert.ok($.Tools.class.isEquivalentDom(
+        assert.ok($.Tools.class.isEquivalentDOM(
             $('#qunit-fixture').html().replace(/(?: |\n)+/g, ' '),
             (
                 '<div style="opacity: 1">' +
@@ -57,13 +57,13 @@ registerTest(async function(
                 '</div>'
             )))
         await language.switch('deDE')
-        assert.ok($.Tools.class.isEquivalentDom(
+        assert.ok($.Tools.class.isEquivalentDOM(
             $('#qunit-fixture').html().replace(/(?: |\n)+/g, ' '),
             '<div style="opacity: 1">' +
                 'german<!--deDE--><!--enUS:english-->' +
             '</div>'))
         await language.switch('en')
-        assert.ok($.Tools.class.isEquivalentDom(
+        assert.ok($.Tools.class.isEquivalentDOM(
             $('#qunit-fixture').html().replace(/(?: |\n)+/g, ' '),
             '<div style="opacity: 1">' +
                 'english<!--enUS--><!--deDE:german-->' +
@@ -77,7 +77,7 @@ registerTest(async function(
         subLanguage = await language.initialize()
         await subLanguage.switch('de')
         assert.ok(
-            $.Tools.class.isEquivalentDom($('#qunit-fixture').html(
+            $.Tools.class.isEquivalentDOM($('#qunit-fixture').html(
             ).replace(/(?: |\n)+/g, ' '),
             ' <div class="toc"> ' +
                 '<ul>' +

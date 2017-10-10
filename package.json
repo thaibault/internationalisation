@@ -89,6 +89,9 @@
       "aliases": {
         "clientnode/test$": "clientnode/test.compiled"
       },
+      "optimizer": {
+        "babelMinify": null
+      },
       "skipParseRegularExpressions": {
         "__evaluate__": "/(?:^|\\/)(?:(?:babel-polyfill\\/dist\\/polyfill)|(?:jquery\\/dist\\/jquery)|(?:webpack\\/buildin\\/global)|(?:webpack\\/buildin\\/module))(?:\\.min)?\\.js(?:\\?.+|$)/"
       }
