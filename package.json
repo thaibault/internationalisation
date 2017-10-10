@@ -54,7 +54,7 @@
     "babel-preset-env": "^1.6.0",
     "clientnode": "^1.0.242",
     "documentation-website": "^1.0.64",
-    "eslint": "^4.2.0",
+    "eslint": "^4.8.0",
     "eslint-config-google": "^0.9.1",
     "eslint-plugin-flowtype": "^2.36.0",
     "eslint-plugin-jsdoc": "^3.1.1",
@@ -64,7 +64,7 @@
     "source-map-support": "^0.4.15",
     "weboptimizer": "^1.0.369",
     "webpack": "^3.2.0",
-    "webpack-dev-server": "^2.5.1"
+    "webpack-dev-server": "^2.9.1"
   },
   "webOptimizer": {
     "injection": {
