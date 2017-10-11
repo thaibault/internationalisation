@@ -44,26 +44,26 @@
     "watch:dll": "webOptimizer build:dll --watch"
   },
   "peerDependencies": {
-    "clientnode": "^1.0.240",
+    "clientnode": "^1.0.244",
     "jquery": "*"
   },
   "devDependencies": {
-    "babel-eslint": "^7.2.3",
+    "babel-eslint": "^8.0.1",
     "babel-plugin-transform-proto-to-assign": "^6.23.0",
     "babel-polyfill": "^6.23.0",
     "babel-preset-env": "^1.6.0",
-    "clientnode": "^1.0.242",
+    "clientnode": "^1.0.246",
     "documentation-website": "^1.0.64",
     "eslint": "^4.8.0",
     "eslint-config-google": "^0.9.1",
     "eslint-plugin-flowtype": "^2.36.0",
     "eslint-plugin-jsdoc": "^3.1.1",
-    "flow-bin": "^0.50.0",
+    "flow-bin": "^0.56.0",
     "jquery": "^3.2.1",
-    "jsdoc": "^3.5.2",
-    "source-map-support": "^0.4.15",
-    "weboptimizer": "^1.0.369",
-    "webpack": "^3.2.0",
+    "jsdoc": "^3.5.3",
+    "source-map-support": "^0.5.0",
+    "weboptimizer": "^1.0.376",
+    "webpack": "^3.3.0",
     "webpack-dev-server": "^2.9.1"
   },
   "webOptimizer": {
