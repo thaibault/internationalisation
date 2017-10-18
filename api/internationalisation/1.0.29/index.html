@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Home</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Home</h1>
+
+    
+
+
+
+    
+
+
+    <h3>internationalisation 1.0.29</h3>
+
+
+
+
+
+
+
+
+
+
+    
+
+
+
+
+    <section>
+        <article><!-- !/usr/bin/env markdown
+-*- coding: utf-8 -*- -->
+<!-- region header
+Copyright Torben Sickert 16.12.2012
+
+License
+-------
+
+This library written by Torben Sickert stand under a creative commons naming
+3.0 unported license. see http://creativecommons.org/licenses/by/3.0/deed.de
+endregion -->
+<p><a href="https://travis-ci.org/thaibault/internationalisation"><img src="https://travis-ci.org/thaibault/internationalisation.svg?branch=master" alt="Build Status"></a></p>
+<!--|deDE:Einsatz-->
+<!--|frFR:Utilisier-->
+<h2>Use case</h2><p>A jQuery plugin to replace alternate version of text for client side
+internationalization.
+<!--deDE:
+    Ein jQuery-Plugin zum klientseitigem Ersetzten von verschiedenen
+    Textversionen. Perfekt für die Internationalisierung Ihres Webprojekts.
+-->
+<!--frFR:
+    Un plugin jQuery pour remplacer version alternative de texte pour le côté
+    client l'internationalisation.
+--></p>
+<!--|deDE:Inhalt-->
+<h2>Content</h2><!--Place for automatic generated table of contents.-->
+<p>[TOC]</p>
+<!--|deDE:Installation-->
+<h2>Installation</h2><!--|deDE:Klassische Dom-Integration-->
+<h3>Classical dom injection</h3><p>You can simply download the compiled version as zip file here and inject it
+after needed dependencies:
+<!--deDE:
+    Du kannst einfach das Plugin als Zip-Archiv herunterladen und per
+    Script-Tag in deine Webseite integrieren:
+--></p>
+<pre class="prettyprint source"><code>#!HTML
+
+&lt;script src=&quot;https://code.jquery.com/jquery-3.1.1.min.js&quot;>&lt;/script>
+&lt;script src=&quot;https://goo.gl/HEL97d&quot;>&lt;/script>
+&lt;!--Inject downloaded file:-->
+&lt;script src=&quot;index.compiled.js&quot;>&lt;/script>
+&lt;!--Or integrate via cdn:
+&lt;script src=&quot;https://goo.gl/3Axp2L&quot;>&lt;/script>
+--></code></pre><p>The compiled bundle supports AMD, commonjs, commonjs2 and variable injection
+into given context (UMD) as export format: You can use a module bundler if you
+want.
+<!--deDE:
+    Das kompilierte Bundle unterstützt AMD, commonjs, commonjs2 und
+    Variable-Injection in den gegebenen Context (UMD) als Export-Format:
+    Dadurch können verschiedene Module-Bundler genutzt werden.
+--></p>
+<!--|deDE:Paket-Management und Modul-Komposition-->
+<h3>Package managed and module bundled</h3><p>If you are using npm as package manager you can simply add this tool to your
+<strong>package.json</strong> as dependency:
+<!--deDE:
+    Nutzt du npm als Paket-Manager, dann solltest du einfach deine
+    <strong>package.json</strong> erweitern:
+--></p>
+<pre class="prettyprint source"><code>#!JSON
+
+...
+&quot;dependencies&quot;: {
+    ...
+    &quot;internationalisation&quot;: &quot;latest&quot;,
+    ...
+},
+...</code></pre><p>After updating your packages you can simply depend on this script and let
+a module bundler do the hard stuff or access it via an exported variable name
+in given context.
+<!--deDE:
+    Nach einem Update deiner Pakete kannst du dieses Plugin einfach in deine
+    JavaScript-Module importieren oder die exportierte Variable im gegebenen
+    Context referenzieren.
+--></p>
+<pre class="prettyprint source"><code>#!JavaScript
+
+...
+import Language from 'internationalisation'
+class SpecialLanguage extends Language...
+Language({options..})
+// or
+import {$} from 'internationalisation'
+$.Language()
+class SpecialLanguage extends $.Language.class ...
+// or
+Language = require('internationalisation').default
+value instanceof Language
+// or
+$ = require('internationalisation').$
+$.Language()
+...</code></pre><!--|deDE:Verwendung-->
+<!--|frFR:Demande-->
+<h2>Usage</h2><p>To add two versions of a text string you can simply add your translation
+directly in markup. See how easy it is:
+<!--deDE:
+    Um zwei Sprachversionen eines Text Knotens im Markup anzubieten müssen
+    einfach nur per Kommentar alternative Versionen hinter dem zu übersetzenden
+    String gesetzt werden.
+-->
+<!--frFR:
+    Doit offrir deux versions linguistiques d'un nœud de texte dans la balise
+    facile à traduire que par Commentez versions alternatives derrière le
+    Chaîne à être réglé.
+--></p>
+<!--showExample-->
+<pre class="prettyprint source"><code>#!HTML
+
+&lt;p>
+    Your englisch version.
+    &lt;!--deDE:Ihre deutsche Variante.-->
+    &lt;!--frFR:
+        Sa version française.
+    -->
+&lt;/p></code></pre><p>Sometime you need to explicit mark a text node as text to replace with next
+translation node. In this case you can simple wrap a self defined dom node.
+<!--deDE:
+    Manchmal muss man Textknoten explizit als übersetzbar markieren, da sie
+    beispielsweise selbst aus mehr als nur einem Knoten bestehen. In solchen
+    Fällen kann einfach ein selbst definierter DOM-Knoten ummantelt werden.
+-->
+<!--frFR:
+    Parfois, vous devez sélectionner explicitement les nœuds de texte comme
+    traduisible, car ils Ainsi, même consister en plus d'un noeud. dans ce Cas
+    peuvent être facilement enveloppé d'un noeud DOM auto-défini.
+--></p>
+<!--showExample-->
+<pre class="prettyprint source"><code>#!HTML
+
+&lt;langreplace>
+    Your englisch version with &lt;strong>dom nodes&lt;/strong> inside.
+&lt;/langreplace>
+&lt;!--deDE:
+    Ihre deutsche Variante mit eingebetteten &lt;strong>dom Knoten&lt;/strong>.
+-->
+&lt;!--frFR:
+    Votre version français &lt;strong>dom nodes&lt;/strong> à l'intérieur.
+--></code></pre><p>It is also possible to use an alternative replacement node.
+<!--deDE:Man kann auch einen alternative Ersetzungsknoten einsetzten.-->
+<!--frFR:
+    Donc, il est possible d'utiliser alternative à nœud de remplacement.
+--></p>
+<!--showExample-->
+<pre class="prettyprint source"><code>#!HTML
+
+&lt;langreplace>
+    Your englisch version with &lt;strong>dom nodes&lt;/strong> inside.
+&lt;/langreplace>
+&lt;langreplacement>deDE:
+    Ihre deutsche Variante mit eingebetteten &lt;strong>dom Knoten&lt;/strong>.
+&lt;/langreplacement>
+&lt;langreplacement>frFR:
+    Votre version français &lt;strong>dom nodes&lt;/strong> à l'intérieur.
+&lt;/langreplacement></code></pre><p>Usually the language dom node precedes the text node to translate. It is
+possible to write a special syntax to use a replacement for the next dom node
+containing text.
+<!--deDE:
+    Normalerweise folgt der Sprach-DOM-Knoten auf den Textknoten der übersetzt
+    werden soll. Es ist mit einer speziellen Syntax möglich einen
+    Sprach-DOM-Knoten für den darauf folgenden DOM-Knoten anzuwenden.
+-->
+<!--frFR:
+    Normalement, le nœud DOM voix suit le nœud de texte de la traduction
+    devrait être. Il est doté d'une syntaxe spéciale possible une Nœud voix Dom
+    pour le nœud DOM prochaine à utiliser.
+--></p>
+<!--showExample-->
+<pre class="prettyprint source"><code>#!HTML
+
+&lt;!--|deDE:Ihre deutsche Variante.-->&lt;!--|frFR:Votre version français.-->
+&lt;p>Your englisch version.&lt;/p></code></pre><p>Its possible to save one translation once if you specify the area with known
+translations.
+<!--deDE:
+    Es ist möglich eine Übersetzung an nur einem Ort zu speichern, sofern der
+    Bereich mit bekannten Übersetzungen markiert wird.
+-->
+<!--frFR:
+    Il est possible d'enregistrer une traduction en un seul endroit, à moins
+    que le Région est marquée avec des traductions connues.
+--></p>
+<!--showExample-->
+<pre class="prettyprint source"><code>#!HTML
+
+&lt;!--The &quot;div.toc&quot; selector defines the default known language area.-->
+&lt;div class=&quot;toc&quot;>
+  &lt;ul>
+    &lt;li>&lt;a href=&quot;title-1&quot;>title 1&lt;/a>&lt;/li>
+      &lt;ul>
+        &lt;li>&lt;a href=&quot;title-2&quot;>title 2&lt;/a>&lt;/li>
+      &lt;/ul>
+  &lt;/ul>
+&lt;/div>
+&lt;h1 id=&quot;title-1&quot;>title 1&lt;!--deDE:Titel 1-->&lt;!--frFR:titre 1-->&lt;/h1>
+&lt;h2 id=&quot;title-2&quot;>title 2&lt;!--deDE:Titel 2-->&lt;!--frFR:titre 2-->&lt;/h2></code></pre><p>With the below initialisation you can simple add this links everywhere in your
+page to switch language. On click you will switch the current language
+interactively. Try it by yourself:
+<!--deDE:
+    Mit der unten aufgezeigten Konfiguration können Sie einfach folgenden Links
+    an beliebiger Stelle im Markup plazieren. Beim Klicken auf die
+    Sprach-Wechsel-Links wird die Sprache Ihrer Webseite entsprechend
+    angepasst. Versuchen Sie selbst:
+-->
+<!--frFR:
+    Avec la configuration au-dessous, vous pouvez simplement identifié les
+    liens suivants placer n'importe où dans le balisage. Lorsque vous cliquez
+    sur l' Langue échange de liens est la langue de votre site en conséquence
+    ajustée. Essayez par vous-même:
+--></p>
+<!--showExample-->
+<pre class="prettyprint source"><code>#!HTML
+
+&lt;a href=&quot;#language-deDE&quot;>de&lt;/a>
+&lt;a href=&quot;#language-enUS&quot;>en&lt;/a>
+&lt;a href=&quot;#language-frFR&quot;>fr&lt;/a></code></pre><p>Here you can see a complete initialisation example with all available options
+to initialize the plugin with different configuration.
+<!--deDE:
+    Hier können Sie ein Komplettbeispiel der Initialisierung sehen und alle
+    verfügbaren Optionen betrachten, um das Plugin in verschiedenen
+    Konfigurationen zu verwenden.
+-->
+<!--frFR:
+    Ici vous pouvez voir toutes les options disponibles pour le plug-in
+    différentes configurations pour initialiser.
+--></p>
+<pre class="prettyprint source"><code>#!HTML
+
+&lt;script src=&quot;https://code.jquery.com/jquery-3.1.1.min.js&quot;>&lt;/script>
+&lt;script src=&quot;https://goo.gl/HEL97d&quot;>&lt;/script>
+&lt;script src=&quot;https://goo.gl/3Axp2L&quot;>&lt;/script>
+&lt;script>
+    $(($) => $.Language({
+        domNodeSelectorPrefix: 'body',
+        default: 'enUS',
+        selection: [],
+        initial: null,
+        templateDelimiter: {pre: '{{', post: '}}'},
+        fadeEffect: true,
+        textNodeParent: {
+            showAnimation: [{opacity: 1}, {duration: 'fast'}],
+            hideAnimation: [{opacity: 0}, {duration: 'fast'}]
+        },
+        preReplacementLanguagePattern: '^\\|({1})$',
+        replacementLanguagePattern: '^([a-z]{2}[A-Z]{2}):((.|\\s)*)$',
+        currentLanguagePattern: '^[a-z]{2}[A-Z]{2}$',
+        replacementDomNodeName: ['#comment', 'langreplacement'],
+        replaceDomNodeNames: ['#text', 'langreplace'],
+        toolsLockDescription: '{1}Switch',
+        languageHashPrefix: 'language-',
+        currentLanguageIndicatorClassName: 'current',
+        sessionDescription: '{1}',
+        languageMapping: {
+            deDE: ['de', 'de_de', 'de-de', 'german', 'deutsch'],
+            enUS: ['en', 'en_us', 'en-us'],
+            enEN: ['en_en', 'en-en', 'english'],
+            frFR: ['fr', 'fr_fr', 'fr-fr', 'french']
+        },
+        onSwitched: $.noop(),
+        onEnsured: $.noop(),
+        onSwitch: $.noop(),
+        onEnsure: $.noop(),
+        domNode: {knownTranslation: 'div.toc'}
+    }))
+&lt;/script></code></pre><!-- region modline
+vim: set tabstop=4 shiftwidth=4 expandtab:
+vim: foldmethod=marker foldmarker=region,endregion:
+endregion --></article>
+    </section>
+
+
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-internationalisation.html">internationalisation</a></li></ul><h3>Classes</h3><ul><li><a href="module-internationalisation-Language.html">Language</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Wed Oct 18 2017 12:20:00 GMT+0200 (CEST)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
