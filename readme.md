@@ -53,11 +53,11 @@ after needed dependencies:
     #!HTML
 
     <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
-    <script src="http://torben.website/clientNode/data/distributionBundle/index.compiled.js"></script>
+    <script src="https://goo.gl/HEL97d"></script>
     <!--Inject downloaded file:-->
     <script src="index.compiled.js"></script>
     <!--Or integrate via cdn:
-    <script src="http://torben.website/internationalisation/data/distributionBundle/index.compiled.js"></script>
+    <script src="https://goo.gl/3Axp2L"></script>
     -->
 
 The compiled bundle supports AMD, commonjs, commonjs2 and variable injection
@@ -280,8 +280,8 @@ to initialize the plugin with different configuration.
     #!HTML
 
     <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
-    <script src="http://torben.website/clientNode/data/distributionBundle/index.compiled.js"></script>
-    <script src="http://torben.website/internationalisation/data/distributionBundle/index.compiled.js"></script>
+    <script src="https://goo.gl/HEL97d"></script>
+    <script src="https://goo.gl/3Axp2L"></script>
     <script>
         $(($) => $.Language({
             domNodeSelectorPrefix: 'body',
