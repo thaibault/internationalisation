@@ -44,7 +44,7 @@
     "watch:dll": "webOptimizer build:dll --watch"
   },
   "peerDependencies": {
-    "clientnode": "^1.0.244",
+    "clientnode": "*",
     "jquery": "*"
   },
   "devDependencies": {
