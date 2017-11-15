@@ -109,7 +109,7 @@ export type Replacement = {
  * @property _textNodesWithKnownTranslation - Saves a mapping of known text
  * snippets to their corresponding $-extended dom nodes.
  */
-export default class Language extends $.Tools.class {
+export class Language extends $.Tools.class {
     static _name:string = 'Language'
 
     currentLanguage:string
@@ -684,6 +684,7 @@ export default class Language extends $.Tools.class {
     }
     // endregion
 }
+export default Language
 // endregion
 $.Language = (...parameter:Array<any>):Promise<Language> =>
     $.Tools().controller(Language, parameter)
