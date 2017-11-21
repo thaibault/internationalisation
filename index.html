@@ -8692,33 +8692,254 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 128);
+/******/ 	return __webpack_require__(__webpack_require__.s = 174);
 /******/ })
 /************************************************************************/
 /******/ ({
 
-/***/ 128:
+/***/ 174:
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(129);
+module.exports = __webpack_require__(175);
 
 
 /***/ }),
 
-/***/ 129:
+/***/ 175:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-(function(a,b){ true?module.exports=b(function(){try{return __webpack_require__(130)}catch(a){}}()):'function'==typeof define&&define.amd?define('errorreporter',['ua-parser-js'],b):'object'==typeof exports?exports.errorreporter=b(function(){try{return require('ua-parser-js')}catch(a){}}()):a.errorreporter=b(a['ua-parser-js'])})(this,function(a){return function(a){function b(d){if(c[d])return c[d].exports;var e=c[d]={i:d,l:!1,exports:{}};return a[d].call(e.exports,e,e.exports,b),e.l=!0,e.exports}var c={};return b.m=a,b.c=c,b.d=function(a,c,d){b.o(a,c)||Object.defineProperty(a,c,{configurable:!1,enumerable:!0,get:d})},b.n=function(a){var c=a&&a.__esModule?function(){return a['default']}:function(){return a};return b.d(c,'a',c),c},b.o=function(a,b){return Object.prototype.hasOwnProperty.call(a,b)},b.p='',b(b.s=0)}([function(a,b,c){a.exports=c(1)},function(a,b,c){'use strict';(function(a,d){Object.defineProperty(b,'__esModule',{value:!0});var e='function'==typeof Symbol&&'symbol'==typeof Symbol.iterator?function(a){return typeof a}:function(a){return a&&'function'==typeof Symbol&&a.constructor===Symbol&&a!==Symbol.prototype?'symbol':typeof a};try{a.require('source-map-support/register')}catch(a){}var f={},g=b.globalContext=function(){return'undefined'==typeof window?'undefined'==typeof d?a:'window'in d?d.window:d:window}(),h=g.onerror;b.default=g.onerror=function(a,b,c,d,h){for(var i=arguments.length,j=Array(5<i?i-5:0),k=5;k<i;k++)j[k-5]=arguments[k];var l,m;if(!g.location.protocol.startsWith('http'))return(l=g.onerror).callbackBackup.apply(l,[a,b,c,d,h].concat(j));g.onerror.reportPath||(g.onerror.reportPath='/__error_report__'),g.onerror.failedHandler||(g.onerror.failedHandler=function(a){'alert'in g&&g.alert(a)}),g.onerror.casesToIgnore||(g.onerror.casesToIgnore=[{browser:{name:'IE',major:/[56789]/}},{browser:{name:'Firefox',major:/[123456789]|10/}},{errorMessage:/Access is denied/},{errorMessage:/Das System kann auf die Datei nicht zugreifen/},{errorMessage:/Der RPC-Server ist nicht verfügbar/},{errorMessage:'Error loading script'},{errorMessage:/Für diesen Vorgang ist nicht genügend Speicher verfügbar/},{errorMessage:/^In den Microsoft-Interneterweiterungen ist ein interner Fehler aufgetreten\./},{errorMessage:/^IndexSizeError: Index or size is negative or greater than the allowed amount/},{errorMessage:/Nicht genügend Arbeitsspeicher/},{errorMessage:/^NS_ERROR[A-Z_]*:.*/},{errorMessage:/null is not an object \(evaluating 'window\.localStorage/},{errorMessage:/Permission denied to access property/},{errorMessage:/^QuotaExceededError:/},{errorMessage:/^ReferenceError: "gapi" is not defined\..*/},{errorMessage:'Script error.'},{errorMessage:/^SecurityError/},{errorMessage:/TypeError: Expected argument of type object, but instead had type object/},{errorMessage:'TypeError: window.localStorage is null'},{errorMessage:'Uncaught ReferenceError: androidInterface is not defined'},{errorMessage:/Uncaught SecurityError: Failed to read the 'localStorage' property from 'Window': Access is denied/},{errorMessage:/Uncaught ReferenceError: ztePageScrollModule is not defined/},{errorMessage:'Unbekannter Fehler'},{errorMessage:'UnknownError'},{errorMessage:/^uncaught exception: /},{errorMessage:/Zugriff verweigert/},{browser:{name:'IE',version:'11'},errorMessage:/Das System kann den angegebenen Pfad nicht finden/}]),g.onerror.caseToIgnoreHandler||(g.onerror.caseToIgnoreHandler=function(a,b){b.errorMessage||g.alert('Your technology "'+a.technologyDescription+'" to display this website isn\'t supported any more. Please upgrade your browser engine.')}),g.onerror.reportedHandler||(g.onerror.reportedHandler=function(){});try{f.technologyDescription='Unclear',f.hasOwnProperty('browser')&&(f.technologyDescription=f.browser.name+' '+f.browser.major+' ('+(f.browser.version+' | '+f.engine.name+' ')+(f.engine.version+') | '+f.os.name+' ')+f.os.version,f.device&&f.device.model&&f.device.type&&f.device.vendor&&(f.technologyDescription+=' | '+f.device.model+' '+f.device.type+(' '+f.device.vendor))),f.errorMessage=a;var n,o=function a(b,c){if('[object Object]'===Object.prototype.toString.call(c)&&'[object Object]'===Object.prototype.toString.call(b)){for(var d in c)if(c.hasOwnProperty(d)&&!(d in b&&a(b[d],c[d])))return!1;return!0}return'[object RegExp]'===Object.prototype.toString.call(c)?c.test(''+b):c===b},p=!0,q=!1;try{for(var r,s,t=g.onerror.casesToIgnore[Symbol.iterator]();!(p=(r=t.next()).done);p=!0)if(s=r.value,o(f,s)){var u;return g.onerror.caseToIgnoreHandler(f,s),(u=g.onerror).callbackBackup.apply(u,[a,b,c,d,h].concat(j))}}catch(a){q=!0,n=a}finally{try{!p&&t.return&&t.return()}finally{if(q)throw n}}var v=function(a){return['boolean','number'].includes('undefined'==typeof a?'undefined':e(a))||null===a?''+a:'"'+(''+a).replace(/\\/g,'\\\\').replace(/(?:\r\n|\r)/g,'\\n').replace(/"/g,'\\"')+'"'},w=function a(b){if('object'===('undefined'==typeof b?'undefined':e(b))&&null!==b&&!(b instanceof RegExp)){if(Array.isArray(b)){var c,d='[',f=!0,g=!1;try{for(var h,i,j=b[Symbol.iterator]();!(f=(h=j.next()).done);f=!0)i=h.value,'['!=d&&(d+=','),d+=a(i)}catch(a){g=!0,c=a}finally{try{!f&&j.return&&j.return()}finally{if(g)throw c}}return d+']'}var k='{';for(var l in b)b.hasOwnProperty(l)&&('{'!=k&&(k+=','),k+='"'+l+'":'+a(b[l]));return k+'}'}return''+v(b)},x=a+'#'+g.location.href+'#'+c+'#'+d;if(!g.onerror.reported[x]){g.onerror.reported[x]=!0;var y=g.location.port?':'+g.location.port:'';g.fetch(g.location.protocol+'//'+(''+g.location.hostname+y)+g.onerror.reportPath,{headers:new g.Headers({"Content-type":'application/json'}),body:w({absoluteURL:g.window.location.href,casesToIgnore:g.onerror.casesToIgnore,columnNumber:d,errorMessage:a,lineNumber:c,stack:h&&h.stack,technologyDescription:f.technologyDescription,url:b,userAgent:g.window.navigator.userAgent}),method:'PUT'}).then(g.onerror.reportedHandler).catch(g.onerror.failedHandler)}}catch(a){g.onerror.failedHandler(a)}return(m=g.onerror).callbackBackup.apply(m,[a,b,c,d,h].concat(j))},g.onerror.callbackBackup=h?h.bind(g):function(){return!1},g.onerror.reported={};try{f=c(4)()}catch(a){}}).call(b,c(2)(a),c(3))},function(a){a.exports=function(a){return a.webpackPolyfill||(a.deprecate=function(){},a.paths=[],!a.children&&(a.children=[]),Object.defineProperty(a,'loaded',{enumerable:!0,get:function(){return a.l}}),Object.defineProperty(a,'id',{enumerable:!0,get:function(){return a.i}}),a.webpackPolyfill=1),a}},function(a){var b=function(){return this}();try{b=b||Function('return this')()||(1,eval)('this')}catch(a){'object'==typeof window&&(b=window)}a.exports=b},function(b){if('undefined'==typeof a){var c=new Error('Cannot find module "ua-parser-js"');throw c.code='MODULE_NOT_FOUND',c}b.exports=a}])});
+(function webpackUniversalModuleDefinition(root, factory) {
+	if(true)
+		module.exports = factory((function webpackLoadOptionalExternalModule() { try { return __webpack_require__(176); } catch(e) {} }()));
+	else if(typeof define === 'function' && define.amd)
+		define("errorreporter", ["ua-parser-js"], factory);
+	else if(typeof exports === 'object')
+		exports["errorreporter"] = factory((function webpackLoadOptionalExternalModule() { try { return require("ua-parser-js"); } catch(e) {} }()));
+	else
+		root['errorreporter'] = factory(root["ua-parser-js"]);
+})(this, function(__WEBPACK_EXTERNAL_MODULE_4__) {
+return /******/ (function(modules) { // webpackBootstrap
+/******/ 	// The module cache
+/******/ 	var installedModules = {};
+/******/
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/
+/******/ 		// Check if module is in cache
+/******/ 		if(installedModules[moduleId]) {
+/******/ 			return installedModules[moduleId].exports;
+/******/ 		}
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = installedModules[moduleId] = {
+/******/ 			i: moduleId,
+/******/ 			l: false,
+/******/ 			exports: {}
+/******/ 		};
+/******/
+/******/ 		// Execute the module function
+/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+/******/
+/******/ 		// Flag the module as loaded
+/******/ 		module.l = true;
+/******/
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+/******/
+/******/
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = modules;
+/******/
+/******/ 	// expose the module cache
+/******/ 	__webpack_require__.c = installedModules;
+/******/
+/******/ 	// define getter function for harmony exports
+/******/ 	__webpack_require__.d = function(exports, name, getter) {
+/******/ 		if(!__webpack_require__.o(exports, name)) {
+/******/ 			Object.defineProperty(exports, name, {
+/******/ 				configurable: false,
+/******/ 				enumerable: true,
+/******/ 				get: getter
+/******/ 			});
+/******/ 		}
+/******/ 	};
+/******/
+/******/ 	// getDefaultExport function for compatibility with non-harmony modules
+/******/ 	__webpack_require__.n = function(module) {
+/******/ 		var getter = module && module.__esModule ?
+/******/ 			function getDefault() { return module['default']; } :
+/******/ 			function getModuleExports() { return module; };
+/******/ 		__webpack_require__.d(getter, 'a', getter);
+/******/ 		return getter;
+/******/ 	};
+/******/
+/******/ 	// Object.prototype.hasOwnProperty.call
+/******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
+/******/
+/******/ 	// __webpack_public_path__
+/******/ 	__webpack_require__.p = "";
+/******/
+/******/ 	// Load entry module and return exports
+/******/ 	return __webpack_require__(__webpack_require__.s = 0);
+/******/ })
+/************************************************************************/
+/******/ ([
+/* 0 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__(1);
+
+
+/***/ }),
+/* 1 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(module, global) {// #!/usr/bin/env node
+// -*- coding: utf-8 -*-
+/** @module errorReporter *//* !
+    region header
+    [Project page](http://torben.website/errorReporter)
+
+    Copyright Torben Sickert (info["~at~"]torben.website) 16.12.2012
+
+    License
+    -------
+
+    This library written by Torben Sickert stand under a creative commons
+    naming 3.0 unported license.
+    See http://creativecommons.org/licenses/by/3.0/deed.de
+    endregion
+*/// region imports
+Object.defineProperty(exports,'__esModule',{value:true});var _typeof=typeof Symbol==='function'&&typeof Symbol.iterator==='symbol'?function(obj){return typeof obj}:function(obj){return obj&&typeof Symbol==='function'&&obj.constructor===Symbol&&obj!==Symbol.prototype?'symbol':typeof obj};// NOTE: Only needed for debugging this file.
+try{module.require('source-map-support/register')}catch(error){}// endregion
+var clientData={};var globalContext=exports.globalContext=function(){if(typeof window==='undefined'){if(typeof global==='undefined')return  false?{}:module;if('window'in global)return global.window;return global}return window}();var onErrorCallbackBackup=globalContext.onerror;exports.default=globalContext.onerror=function(errorMessage,url,lineNumber,columnNumber,errorObject){for(var _len=arguments.length,additionalParameter=Array(_len>5?_len-5:0),_key=5;_key<_len;_key++){additionalParameter[_key-5]=arguments[_key]}var _globalContext$onerro,_globalContext$onerro3;if(!globalContext.location.protocol.startsWith('http'))return(_globalContext$onerro=globalContext.onerror).callbackBackup.apply(_globalContext$onerro,[errorMessage,url,lineNumber,columnNumber,errorObject].concat(additionalParameter));/*
+        Sends an error report to current requested domain via ajax in json
+        format. Supported by Chrome 13+, Firefox 6.0+, Internet Explorer 5.5+,
+        Opera 11.60+, Safari 5.1+
+    */// URL to send error messages to.
+if(!globalContext.onerror.reportPath)globalContext.onerror.reportPath='/__error_report__';// Handler to call if error reporting fails.
+if(!globalContext.onerror.failedHandler)globalContext.onerror.failedHandler=function(error){if('alert'in globalContext)globalContext.alert(error)};/*
+        All cases which completely match will be ignored.
+
+        Possible structure (unneeded keys can be omitted):
+
+        {
+            ua: //,
+            description: //,
+            errorMessage: //,
+            browser: {
+                name: //,
+                version: //,
+                major: //
+            },
+            engine: {
+                name: //,
+                version: //
+            },
+            os: {
+                name: //,
+                version: //
+            },
+            device: {
+                model: //,
+                type: //,
+                vendor: //
+            },
+            cpu: {
+                architecture: //
+            }
+        }
+    */if(!globalContext.onerror.casesToIgnore)globalContext.onerror.casesToIgnore=[/* eslint-disable max-len */{browser:{name:'IE',major:/[56789]/}},{browser:{name:'Firefox',major:/[123456789]|10/}},{errorMessage:/Access is denied/},{errorMessage:/Das System kann auf die Datei nicht zugreifen/},{errorMessage:/Der RPC-Server ist nicht verfügbar/},{errorMessage:'Error loading script'},{errorMessage:/Für diesen Vorgang ist nicht genügend Speicher verfügbar/},{errorMessage:/^In den Microsoft-Interneterweiterungen ist ein interner Fehler aufgetreten\./},{errorMessage:/^IndexSizeError: Index or size is negative or greater than the allowed amount/},{errorMessage:/Nicht genügend Arbeitsspeicher/},{errorMessage:/^NS_ERROR[A-Z_]*:.*/},{errorMessage:/null is not an object \(evaluating 'window\.localStorage/},{errorMessage:/Permission denied to access property/},{errorMessage:/^QuotaExceededError:/},{errorMessage:/^ReferenceError: "gapi" is not defined\..*/},{errorMessage:'Script error.'},{errorMessage:/^SecurityError/},{errorMessage:/TypeError: Expected argument of type object, but instead had type object/},{errorMessage:'TypeError: window.localStorage is null'},{errorMessage:'Uncaught ReferenceError: androidInterface is not defined'},{errorMessage:/Uncaught SecurityError: Failed to read the 'localStorage' property from 'Window': Access is denied/},{errorMessage:/Uncaught ReferenceError: ztePageScrollModule is not defined/},{errorMessage:'Unbekannter Fehler'},{errorMessage:'UnknownError'},{errorMessage:/^uncaught exception: /},{errorMessage:/Zugriff verweigert/},{browser:{name:'IE',version:'11'},errorMessage:/Das System kann den angegebenen Pfad nicht finden//* eslint-enable max-len */}];// Handler to call for browser which should be ignored.
+if(!globalContext.onerror.caseToIgnoreHandler)globalContext.onerror.caseToIgnoreHandler=function(instance,caseToIgnore){/*
+                We should avoid error message if a specific error message
+                should be ignored.
+            */if(!caseToIgnore.errorMessage)globalContext.alert('Your technology "'+instance.technologyDescription+'" to '+'display this website isn\'t supported any more. Please '+'upgrade your browser engine.')};// Handler to call when error reporting was successful.
+if(!globalContext.onerror.reportedHandler)globalContext.onerror.reportedHandler=function(){};try{clientData.technologyDescription='Unclear';if(clientData.hasOwnProperty('browser')){clientData.technologyDescription=clientData.browser.name+' '+clientData.browser.major+' ('+(clientData.browser.version+' | '+clientData.engine.name+' ')+(clientData.engine.version+') | '+clientData.os.name+' ')+clientData.os.version;if(clientData.device&&clientData.device.model&&clientData.device.type&&clientData.device.vendor)clientData.technologyDescription+=' | '+clientData.device.model+' '+clientData.device.type+(' '+clientData.device.vendor)}clientData.errorMessage=errorMessage;// Checks if given object completely matches given match object.
+var checkIfCaseMatches=function checkIfCaseMatches(object,matchObject){if(Object.prototype.toString.call(matchObject)==='[object Object]'&&Object.prototype.toString.call(object)==='[object Object]'){for(var key in matchObject){if(matchObject.hasOwnProperty(key)&&!(key in object&&checkIfCaseMatches(object[key],matchObject[key])))return false}return true}if(Object.prototype.toString.call(matchObject)==='[object RegExp]')return matchObject.test(''+object);return matchObject===object};var _iteratorNormalCompletion=true;var _didIteratorError=false;var _iteratorError=undefined;try{for(var _iterator=globalContext.onerror.casesToIgnore[Symbol.iterator](),_step;!(_iteratorNormalCompletion=(_step=_iterator.next()).done);_iteratorNormalCompletion=true){var caseToIgnore=_step.value;if(checkIfCaseMatches(clientData,caseToIgnore)){var _globalContext$onerro2;globalContext.onerror.caseToIgnoreHandler(clientData,caseToIgnore);return(_globalContext$onerro2=globalContext.onerror).callbackBackup.apply(_globalContext$onerro2,[errorMessage,url,lineNumber,columnNumber,errorObject].concat(additionalParameter))}}}catch(err){_didIteratorError=true;_iteratorError=err}finally{try{if(!_iteratorNormalCompletion&&_iterator.return){_iterator.return()}}finally{if(_didIteratorError){throw _iteratorError}}}var _toString=function _toString(value){if(['boolean','number'].includes(typeof value==='undefined'?'undefined':_typeof(value))||value===null)return''+value;return'"'+(''+value).replace(/\\/g,'\\\\').replace(/(?:\r\n|\r)/g,'\\n').replace(/"/g,'\\"')+'"'};var serialize=function serialize(value){if((typeof value==='undefined'?'undefined':_typeof(value))==='object'&&value!==null&&!(value instanceof RegExp)){if(Array.isArray(value)){var _result='[';var _iteratorNormalCompletion2=true;var _didIteratorError2=false;var _iteratorError2=undefined;try{for(var _iterator2=value[Symbol.iterator](),_step2;!(_iteratorNormalCompletion2=(_step2=_iterator2.next()).done);_iteratorNormalCompletion2=true){var item=_step2.value;if(_result!=='[')_result+=',';_result+=serialize(item)}}catch(err){_didIteratorError2=true;_iteratorError2=err}finally{try{if(!_iteratorNormalCompletion2&&_iterator2.return){_iterator2.return()}}finally{if(_didIteratorError2){throw _iteratorError2}}}return _result+']'}var result='{';for(var key in value){if(value.hasOwnProperty(key)){if(result!=='{')result+=',';result+='"'+key+'":'+serialize(value[key])}}return result+'}'}return''+_toString(value)};var errorKey=errorMessage+'#'+globalContext.location.href+'#'+lineNumber+'#'+columnNumber;if(!globalContext.onerror.reported[errorKey]){globalContext.onerror.reported[errorKey]=true;var portPrefix=globalContext.location.port?':'+globalContext.location.port:'';globalContext.fetch(globalContext.location.protocol+'//'+(''+globalContext.location.hostname+portPrefix)+globalContext.onerror.reportPath,{headers:new globalContext.Headers({'Content-type':'application/json'}),body:serialize({absoluteURL:globalContext.window.location.href,casesToIgnore:globalContext.onerror.casesToIgnore,columnNumber:columnNumber,errorMessage:errorMessage,lineNumber:lineNumber,stack:errorObject&&errorObject.stack,technologyDescription:clientData.technologyDescription,url:url,userAgent:globalContext.window.navigator.userAgent}),method:'PUT'}).then(globalContext.onerror.reportedHandler).catch(globalContext.onerror.failedHandler)}}catch(error){globalContext.onerror.failedHandler(error)}return(_globalContext$onerro3=globalContext.onerror).callbackBackup.apply(_globalContext$onerro3,[errorMessage,url,lineNumber,columnNumber,errorObject].concat(additionalParameter))};globalContext.onerror.callbackBackup=onErrorCallbackBackup?onErrorCallbackBackup.bind(globalContext):function(){return false};/*
+    Bound reported errors to globale error handler to avoid global variable
+    pollution.
+*/globalContext.onerror.reported={};try{clientData=__webpack_require__(4)()}catch(error){}// region vim modline
+// vim: set tabstop=4 shiftwidth=4 expandtab:
+// vim: foldmethod=marker foldmarker=region,endregion:
+// endregion
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)(module), __webpack_require__(3)))
+
+/***/ }),
+/* 2 */
+/***/ (function(module, exports) {
+
+module.exports = function(module) {
+	if(!module.webpackPolyfill) {
+		module.deprecate = function() {};
+		module.paths = [];
+		// module.parent = undefined by default
+		if(!module.children) module.children = [];
+		Object.defineProperty(module, "loaded", {
+			enumerable: true,
+			get: function() {
+				return module.l;
+			}
+		});
+		Object.defineProperty(module, "id", {
+			enumerable: true,
+			get: function() {
+				return module.i;
+			}
+		});
+		module.webpackPolyfill = 1;
+	}
+	return module;
+};
+
+
+/***/ }),
+/* 3 */
+/***/ (function(module, exports) {
+
+var g;
+
+// This works in non-strict mode
+g = (function() {
+	return this;
+})();
+
+try {
+	// This works if eval is allowed (see CSP)
+	g = g || Function("return this")() || (1,eval)("this");
+} catch(e) {
+	// This works if the window reference is available
+	if(typeof window === "object")
+		g = window;
+}
+
+// g can still be undefined, but nothing to do about it...
+// We return undefined, instead of nothing here, so it's
+// easier to handle this case. if(!global) { ...}
+
+module.exports = g;
+
+
+/***/ }),
+/* 4 */
+/***/ (function(module, exports) {
+
+if(typeof __WEBPACK_EXTERNAL_MODULE_4__ === 'undefined') {var e = new Error("Cannot find module \"ua-parser-js\""); e.code = 'MODULE_NOT_FOUND'; throw e;}
+module.exports = __WEBPACK_EXTERNAL_MODULE_4__;
+
+/***/ })
+/******/ ]);
+});
 
 /***/ }),
 
-/***/ 130:
+/***/ 176:
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_RESULT__;/**
- * UAParser.js v0.7.14
+ * UAParser.js v0.7.17
  * Lightweight JavaScript-based User-Agent string parser
  * https://github.com/faisalman/ua-parser-js
  *
@@ -8735,7 +8956,7 @@ var __WEBPACK_AMD_DEFINE_RESULT__;/**
     /////////////
 
 
-    var LIBVERSION  = '0.7.14',
+    var LIBVERSION  = '0.7.17',
         EMPTY       = '',
         UNKNOWN     = '?',
         FUNC_TYPE   = 'function',
@@ -8857,7 +9078,7 @@ var __WEBPACK_AMD_DEFINE_RESULT__;/**
                 }
                 i += 2;
             }
-            //console.log(this);
+            // console.log(this);
             //return this;
         },
 
@@ -9011,7 +9232,7 @@ var __WEBPACK_AMD_DEFINE_RESULT__;/**
             /;fbav\/([\w\.]+);/i                                                // Facebook App for iOS & Android
             ], [VERSION, [NAME, 'Facebook']], [
 
-            /(headlesschrome) ([\w\.]+)/i                                       // Chrome Headless
+            /headlesschrome(?:\/([\w\.]+)|\s)/i                                 // Chrome Headless
             ], [VERSION, [NAME, 'Chrome Headless']], [
 
             /\swv\).+(chrome)\/([\w\.]+)/i                                      // Chrome WebView
@@ -9044,6 +9265,9 @@ var __WEBPACK_AMD_DEFINE_RESULT__;/**
 
             /version\/([\w\.]+).+?(mobile\s?safari|safari)/i                    // Safari & Safari Mobile
             ], [VERSION, NAME], [
+
+            /webkit.+?(gsa)\/([\w\.]+).+?(mobile\s?safari|safari)(\/[\w\.]+)/i  // Google Search Appliance on iOS
+            ], [[NAME, 'GSA'], VERSION], [
 
             /webkit.+?(mobile\s?safari|safari)(\/[\w\.]+)/i                     // Safari < 3.0
             ], [NAME, [VERSION, mapper.str, maps.browser.oldsafari.version]], [
@@ -9368,9 +9592,11 @@ var __WEBPACK_AMD_DEFINE_RESULT__;/**
 
             /android.+(\w+)\s+build\/hm\1/i,                                    // Xiaomi Hongmi 'numeric' models
             /android.+(hm[\s\-_]*note?[\s_]*(?:\d\w)?)\s+build/i,               // Xiaomi Hongmi
-            /android.+(mi[\s\-_]*(?:one|one[\s_]plus|note lte)?[\s_]*(?:\d\w)?)\s+build/i    // Xiaomi Mi
+            /android.+(mi[\s\-_]*(?:one|one[\s_]plus|note lte)?[\s_]*(?:\d\w)?)\s+build/i,    // Xiaomi Mi
+            /android.+(redmi[\s\-_]*(?:note)?(?:[\s_]*[\w\s]+)?)\s+build/i      // Redmi Phones
             ], [[MODEL, /_/g, ' '], [VENDOR, 'Xiaomi'], [TYPE, MOBILE]], [
-
+            /android.+(mi[\s\-_]*(?:pad)?(?:[\s_]*[\w\s]+)?)\s+build/i          // Mi Pad tablets
+            ],[[MODEL, /_/g, ' '], [VENDOR, 'Xiaomi'], [TYPE, TABLET]], [
             /android.+;\s(m[1-5]\snote)\sbuild/i                                // Meizu Tablet
             ], [MODEL, [VENDOR, 'Meizu'], [TYPE, TABLET]], [
 
@@ -9572,7 +9798,7 @@ var __WEBPACK_AMD_DEFINE_RESULT__;/**
             ], [NAME, VERSION],[
 
             /cfnetwork\/.+darwin/i,
-            /ip[honead]+(?:.*os\s([\w]+)*\slike\smac|;\sopera)/i                // iOS
+            /ip[honead]+(?:.*os\s([\w]+)\slike\smac|;\sopera)/i                 // iOS
             ], [[VERSION, /_/g, '.'], [NAME, 'iOS']], [
 
             /(mac\sos\sx)\s?([\w\s\.]+\w)*/i,
@@ -9593,7 +9819,7 @@ var __WEBPACK_AMD_DEFINE_RESULT__;/**
     /////////////////
     // Constructor
     ////////////////
-
+    /*
     var Browser = function (name, version) {
         this[NAME] = name;
         this[VERSION] = version;
@@ -9608,7 +9834,7 @@ var __WEBPACK_AMD_DEFINE_RESULT__;/**
     };
     var Engine = Browser;
     var OS = Browser;
-
+    */
     var UAParser = function (uastring, extensions) {
 
         if (typeof uastring === 'object') {
@@ -9622,30 +9848,35 @@ var __WEBPACK_AMD_DEFINE_RESULT__;/**
 
         var ua = uastring || ((window && window.navigator && window.navigator.userAgent) ? window.navigator.userAgent : EMPTY);
         var rgxmap = extensions ? util.extend(regexes, extensions) : regexes;
-        var browser = new Browser();
-        var cpu = new CPU();
-        var device = new Device();
-        var engine = new Engine();
-        var os = new OS();
+        //var browser = new Browser();
+        //var cpu = new CPU();
+        //var device = new Device();
+        //var engine = new Engine();
+        //var os = new OS();
 
         this.getBrowser = function () {
+            var browser = { name: undefined, version: undefined };
             mapper.rgx.call(browser, ua, rgxmap.browser);
             browser.major = util.major(browser.version); // deprecated
             return browser;
         };
         this.getCPU = function () {
+            var cpu = { architecture: undefined };
             mapper.rgx.call(cpu, ua, rgxmap.cpu);
             return cpu;
         };
         this.getDevice = function () {
+            var device = { vendor: undefined, model: undefined, type: undefined };
             mapper.rgx.call(device, ua, rgxmap.device);
             return device;
         };
         this.getEngine = function () {
+            var engine = { name: undefined, version: undefined };
             mapper.rgx.call(engine, ua, rgxmap.engine);
             return engine;
         };
         this.getOS = function () {
+            var os = { name: undefined, version: undefined };
             mapper.rgx.call(os, ua, rgxmap.os);
             return os;
         };
@@ -9664,11 +9895,11 @@ var __WEBPACK_AMD_DEFINE_RESULT__;/**
         };
         this.setUA = function (uastring) {
             ua = uastring;
-            browser = new Browser();
-            cpu = new CPU();
-            device = new Device();
-            engine = new Engine();
-            os = new OS();
+            //browser = new Browser();
+            //cpu = new CPU();
+            //device = new Device();
+            //engine = new Engine();
+            //os = new OS();
             return this;
         };
         return this;
@@ -9715,10 +9946,39 @@ var __WEBPACK_AMD_DEFINE_RESULT__;/**
         if (typeof module !== UNDEF_TYPE && module.exports) {
             exports = module.exports = UAParser;
         }
+        // TODO: test!!!!!!!!
+        /*
+        if (require && require.main === module && process) {
+            // cli
+            var jsonize = function (arr) {
+                var res = [];
+                for (var i in arr) {
+                    res.push(new UAParser(arr[i]).getResult());
+                }
+                process.stdout.write(JSON.stringify(res, null, 2) + '\n');
+            };
+            if (process.stdin.isTTY) {
+                // via args
+                jsonize(process.argv.slice(2));
+            } else {
+                // via pipe
+                var str = '';
+                process.stdin.on('readable', function() {
+                    var read = process.stdin.read();
+                    if (read !== null) {
+                        str += read;
+                    }
+                });
+                process.stdin.on('end', function () {
+                    jsonize(str.replace(/\n$/, '').split('\n'));
+                });
+            }
+        }
+        */
         exports.UAParser = UAParser;
     } else {
         // requirejs env (optional)
-        if ("function" === FUNC_TYPE && __webpack_require__(131)) {
+        if ("function" === FUNC_TYPE && __webpack_require__(177)) {
             !(__WEBPACK_AMD_DEFINE_RESULT__ = function () {
                 return UAParser;
             }.call(exports, __webpack_require__, exports, module),
@@ -9755,7 +10015,7 @@ var __WEBPACK_AMD_DEFINE_RESULT__;/**
 
 /***/ }),
 
-/***/ 131:
+/***/ 177:
 /***/ (function(module, exports) {
 
 /* WEBPACK VAR INJECTION */(function(__webpack_amd_options__) {/* globals __webpack_amd_options__ */
@@ -9794,7 +10054,7 @@ Expand your audience<!--deDE:Erweitern Sie Ihr Publikum--><!--frFR:Élargir votr
 <a href="#language-enUS" class="tools-hidden-on-javascript-disabled website-start-up-animation-number-7">en</a>
 <a href="#language-frFR" class="tools-hidden-on-javascript-disabled website-start-up-animation-number-6">fr</a>
 <span class="glyphicon glyphicon-arrow-left arrow-left-api website-start-up-animation-number-5"></span>
-<a href="http://torben.website/internationalisation/api/internationalisation/1.0.29/" class="api-link website-start-up-animation-number-4">
+<a href="http://torben.website/internationalisation/api/internationalisation/1.0.34/" class="api-link website-start-up-animation-number-4">
 <langreplace>
 API<span>Documentation</span>
 </langreplace>
@@ -10284,6 +10544,6 @@ about this website
 </p>
 </div></footer>
 <a href="#top">top<!--deDE:nach oben--><!--frFR:ascendant--></a>
-<script src="index.js?md5=21aa94cdff23ebd59487"></script>
+<script src="index.js?md5=3d498dfff8ebd188c1d9"></script>
 
 </body></html>
