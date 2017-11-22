@@ -53,8 +53,8 @@
     "babel-plugin-transform-proto-to-assign": "^6.23.0",
     "babel-polyfill": "^6.23.0",
     "babel-preset-env": "^1.6.1",
-    "clientnode": "^1.0.282",
-    "documentation-website": "^1.0.76",
+    "clientnode": "^1.0.286",
+    "documentation-website": "^1.0.77",
     "eslint": "^4.11.0",
     "eslint-config-google": "^0.9.1",
     "eslint-plugin-flowtype": "^2.36.0",
@@ -64,7 +64,7 @@
     "jsdoc": "^3.5.3",
     "qunit": "^2.4.1",
     "source-map-support": "^0.5.0",
-    "weboptimizer": "^1.0.417",
+    "weboptimizer": "^1.0.420",
     "webpack": "^3.8.1",
     "webpack-dev-server": "^2.9.4"
   },
@@ -91,12 +91,10 @@
       "aliases": {
         "clientnode/test$": "clientnode/test.compiled"
       },
-      "preprocessor": {
-        "javaScript": {
-          "options": {
-            "presets": {
-              "__evaluate__": "[['env', {targets: self.targetTechnology === 'node' ? {node: 'current'} : {browsers: 'last 2 versions', node: 'current'}}]].concat('stage-0')"
-            }
+      "optimizer": {
+        "babelMinify": {
+          "module": {
+            "mangle": false
           }
         }
       },
