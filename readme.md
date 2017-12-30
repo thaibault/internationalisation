@@ -10,13 +10,17 @@ This library written by Torben Sickert stand under a creative commons naming
 3.0 unported license. see http://creativecommons.org/licenses/by/3.0/deed.de
 endregion -->
 
+Project status
+--------------
+
 [![npm version](https://badge.fury.io/js/internationalisation.svg)](https://www.npmjs.com/package/internationalisation)
 [![downloads](https://img.shields.io/npm/dy/internationalisation.svg)](https://www.npmjs.com/package/internationalisation)
 [![build status](https://travis-ci.org/thaibault/internationalisation.svg?branch=master)](https://travis-ci.org/thaibault/internationalisation)
+[![code coverage](https://coveralls.io/repos/github/thaibault/internationalisation/badge.svg)](https://coveralls.io/github/thaibault/internationalisation)
 [![dependencies](https://img.shields.io/david/thaibault/internationalisation.svg)](https://david-dm.org/thaibault/internationalisation)
-[![devDependencies](https://img.shields.io/david/dev/thaibault/internationalisation.svg)](https://david-dm.org/thaibault/internationalisation?type=dev)
-[![peerDependencies](https://img.shields.io/david/peer/thaibault/internationalisation.svg)](https://david-dm.org/thaibault/internationalisation?type=peer)
-[![documentation-website](https://img.shields.io/website-up-down-green-red/http/torben.website/internationalisation.svg?label=documentation-website)](http://torben.website/internationalisation)
+[![development dependencies](https://img.shields.io/david/dev/thaibault/internationalisation.svg)](https://david-dm.org/thaibault/internationalisation?type=dev)
+[![peer dependencies](https://img.shields.io/david/peer/thaibault/internationalisation.svg)](https://david-dm.org/thaibault/internationalisation?type=peer)
+[![documentation website](https://img.shields.io/website-up-down-green-red/http/torben.website/internationalisation.svg?label=documentation-website)](http://torben.website/internationalisation)
 
 <!--|deDE:Einsatz-->
 <!--|frFR:Utilisier-->
