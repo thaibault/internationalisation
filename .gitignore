@@ -13,7 +13,7 @@ backup
 cache/*
 !cache/.gitkeep
 .cache
-certificate/
+certificate
 !certificate/localhost/*
 !certificate/letsEncrypt/configuration/.gitkeep
 !certificate/letsEncrypt/log/.gitkeep
@@ -27,7 +27,7 @@ log.txt
 .local
 .node-xmlhttprequest-sync*
 .nyc_output
-renderedData/*
+renderedData
 !renderedData/.gitkeep
 source/image/sprite.png
 .ssh
@@ -36,15 +36,15 @@ source/image/sprite.png
 build
 dist
 target
-***/*.compiled.*
-***/*.compiled
+*.compiled.*
+*.compiled
 *Bundle.*
 !/data/**/*
 .dynamicConfiguration-*.json
 *.dll-manifest.json
 
 # Profiling data.
-***/*.profile
+*.profile
 
 # Packages
 .SRCINFO
