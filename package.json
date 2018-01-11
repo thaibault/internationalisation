@@ -51,11 +51,11 @@
     "jquery": "*"
   },
   "devDependencies": {
-    "babel-eslint": "^8.1.2",
+    "babel-eslint": "^8.2.1",
     "babel-plugin-transform-proto-to-assign": "^6.23.0",
     "babel-polyfill": "^6.23.0",
     "babel-preset-env": "^1.6.1",
-    "clientnode": "^1.0.319",
+    "clientnode": "^1.0.322",
     "coveralls": "^3.0.0",
     "documentation-website": "^1.0.89",
     "eslint": "^4.14.0",
@@ -66,11 +66,11 @@
     "jquery": "^3.2.1",
     "jsdoc": "^3.5.3",
     "nyc": "^11.4.1",
-    "qunit": "^2.4.1",
+    "qunit": "^2.5.0",
     "source-map-support": "^0.5.0",
-    "weboptimizer": "^1.0.463",
+    "weboptimizer": "^1.0.469",
     "webpack": "^3.10.0",
-    "webpack-dev-server": "^2.9.5"
+    "webpack-dev-server": "^2.10.1"
   },
   "webOptimizer": {
     "injection": {
