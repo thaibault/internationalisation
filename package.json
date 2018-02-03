@@ -58,7 +58,7 @@
     "clientnode": "^1.0.326",
     "coveralls": "^3.0.0",
     "documentation-website": "^1.0.93",
-    "eslint": "^4.16.0",
+    "eslint": "^4.17.0",
     "eslint-config-google": "^0.9.1",
     "eslint-plugin-flowtype": "^2.42.0",
     "eslint-plugin-jsdoc": "^3.3.0",
