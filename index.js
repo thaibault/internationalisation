@@ -489,15 +489,21 @@ export class Language extends $.Tools.class {
         let result:string
         if (this._options.initial)
             result = this._options.initial
-        else if ('localStorage' in $.global && $.global.localStorage.getItem(
-            this._options.sessionDescription
-        )) {
+        else if (
+            'localStorage' in $.global &&
+            $.global.localStorage &&
+            $.global.localStorage.getItem(this._options.sessionDescription)
+        ) {
             result = $.global.localStorage.getItem(
                 this._options.sessionDescription)
             this.debug(
                 'Determine "{1}", because of local storage information.',
                 result)
-        } else if ('navigator' in $.global && $.global.navigator.language) {
+        } else if (
+            'navigator' in $.global &&
+            $.global.navigator &&
+            $.global.navigator.language
+        ) {
             result = $.global.navigator.language
             this.debug(
                 'Determine "{1}", because of browser settings.', result)
