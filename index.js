@@ -20,10 +20,6 @@
 // region imports
 import {$ as binding} from 'clientnode'
 import type {$DomNode} from 'clientnode'
-// NOTE: Only needed for debugging this file.
-try {
-    module.require('source-map-support/register')
-} catch (error) {}
 // endregion
 export const $:any = binding
 // region types
