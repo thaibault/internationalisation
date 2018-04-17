@@ -35,9 +35,10 @@ registerTest(async function(
     // region tests
     // / region public methods
     // // region special
-    this.test('initialize', (assert:Object):Promise<Language> =>
+    this.test('initialize', (assert:Object):Promise<void> =>
         language.initialize().then((subLanguage:Language):void =>
-            assert.strictEqual(subLanguage, language)).then(assert.async()))
+            assert.strictEqual(subLanguage, language)
+        ).then(assert.async()))
     // // endregion
     this.test('switch', async (assert:Object):Promise<void> => {
         const done:Function = assert.async()
@@ -89,7 +90,7 @@ registerTest(async function(
             '</div> '))
         done()
     })
-    this.test('refresh', (assert:Object):Promise<Language> =>
+    this.test('refresh', (assert:Object):Promise<void> =>
         language.refresh().then((subLanguage:Language):void =>
             assert.strictEqual(subLanguage, language)
         ).then(assert.async()))
@@ -127,7 +128,7 @@ registerTest(async function(
                 language._determineUsefulLanguage()),
             language._normalizeLanguage(referenceLanguage))
     })
-    this.test('_handleSwitchEffect', (assert:Object):Promise<Language> =>
+    this.test('_handleSwitchEffect', (assert:Object):Promise<void> =>
         language._handleSwitchEffect('deDE', false).then((
             subLanguage:Language
         ):void => assert.strictEqual(subLanguage, language)).then(
