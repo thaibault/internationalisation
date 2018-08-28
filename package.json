@@ -1,6 +1,6 @@
 {
   "name": "internationalisation",
-  "version": "1.0.104",
+  "version": "1.0.105",
   "license": "CC-BY-3.0",
   "description": "Expand your audience",
   "homepage": "https://torben.website/internationalisation",
@@ -49,10 +49,10 @@
     "jquery": "*"
   },
   "devDependencies": {
-    "babel-eslint": "*",
     "@babel/plugin-transform-proto-to-assign": "*",
     "@babel/polyfill": "*",
     "@babel/preset-env": "*",
+    "babel-eslint": "*",
     "clientnode": "*",
     "coveralls": "*",
     "documentation-website": "*",
