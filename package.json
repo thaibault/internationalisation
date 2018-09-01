@@ -71,6 +71,15 @@
     "webpack-dev-server": "*"
   },
   "webOptimizer": {
+    "debug": {
+      "module": {
+        "optimizer": {
+          "babelMinify": {
+            "module": null
+          }
+        }
+      }
+    },
     "export": {
       "development": {
         "tool": false
