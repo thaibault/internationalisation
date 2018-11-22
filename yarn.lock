@@ -2625,9 +2625,9 @@ doctrine@^2.1.0:
     esutils "^2.0.2"
 
 documentation-website@*:
-  version "1.0.179"
-  resolved "https://registry.yarnpkg.com/documentation-website/-/documentation-website-1.0.179.tgz#b204f068d66b728ea432549b92956de35346c2bf"
-  integrity sha512-WpKaXqUkiQTynsHJP7KrNce0joxU+LAYUqDHDT0D2N1eqpliqm4Sk927PLY+SpiTPM2/vZ9VltGsw/mlcdPdwA==
+  version "1.0.180"
+  resolved "https://registry.yarnpkg.com/documentation-website/-/documentation-website-1.0.180.tgz#a231a29127d1a49c6633687bec7f0142322a6963"
+  integrity sha512-6oN59NdWa7hh0a2JryCOdkNZO7/eGiPhX/VqheWf9a5L7RiaO3v2wqZJ4/Qpwh/GRJmxE3HRBhFfWs5URstSZQ==
   dependencies:
     boostnode "*"
     bootstrap "^3.3.7"
@@ -3974,9 +3974,9 @@ internal-ip@^3.0.1:
     ipaddr.js "^1.5.2"
 
 internationalisation@*:
-  version "1.0.143"
-  resolved "https://registry.yarnpkg.com/internationalisation/-/internationalisation-1.0.143.tgz#cb74a450f8bb41b5c0536d5cc6f65ef5ffa46b31"
-  integrity sha512-IsrUjPLFhNEWPC2DZ23Zv+AhM/H/Sr+IKJ15fqSFfNnEHDljod/kQ5T/KjT7up0KcY9owYUEKUSoryDxAko5vA==
+  version "1.0.144"
+  resolved "https://registry.yarnpkg.com/internationalisation/-/internationalisation-1.0.144.tgz#d0a1d380a230fe33a1eee41db73dbe78bcb0abe6"
+  integrity sha512-JMvAC4eMip3NZn5BQRUjKId3piAa0LyRaIsvdfrMrEgsr8fxn2wd8KH1/FlWeCZuALuzYEDyCEIL8PGXlR1WxQ==
 
 interpret@^1.1.0:
   version "1.1.0"
@@ -7164,9 +7164,9 @@ webidl-conversions@^4.0.2:
   integrity sha512-YQ+BmxuTgd6UXZW3+ICGfyqRyHXVlD5GtQr5+qjiNW7bF0cqrzX500HVXPBOvgXb5YnzDd+h0zqyv61KUD7+Sg==
 
 weboptimizer@*:
-  version "2.0.331"
-  resolved "https://registry.yarnpkg.com/weboptimizer/-/weboptimizer-2.0.331.tgz#769e1852de5cb70deede6d702899accbb1735f1d"
-  integrity sha512-BAxJ4gJ+CTowXDeAd6vUDVsjG7ox8JDjjTTR+jLln/iKHUWVWypL9kM+PzkDKDYnij67K/w73nhMRAIgWG4rEQ==
+  version "2.0.332"
+  resolved "https://registry.yarnpkg.com/weboptimizer/-/weboptimizer-2.0.332.tgz#aec35967422b05fdbb60e077264dbdee1f2e8a2e"
+  integrity sha512-JkMFBk0yJJFSUUoJcVXCz3vfKdu4pKt1UhA023R7Vk/3zpZl8ZRWsp8W3dsyJAtbVIzFNcyPT9CteuysNCFVvA==
   dependencies:
     "@babel/core" "*"
     "@babel/plugin-proposal-class-properties" "*"
