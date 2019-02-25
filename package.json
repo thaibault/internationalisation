@@ -28,7 +28,7 @@
   },
   "scripts": {
     "build": "webOptimizer build",
-    "build:export": "webOptimizer build '{__reference__: \"export\"}'",
+    "build:export": "webOptimizer build '{__reference__: \"target:export\"}'",
     "clear": "webOptimizer clear",
     "document": "webOptimizer document",
     "lint": "webOptimizer check:type; webOptimizer lint",
@@ -80,19 +80,6 @@
         }
       }
     },
-    "export": {
-      "module": {
-        "preprocessor": {
-          "javaScript": {
-            "options": {
-              "plugins": {
-                "__remove__": "@babel/plugin-transform-runtime"
-              }
-            }
-          }
-        }
-      }
-    },
     "files": {
       "compose": {
         "cascadingStyleSheet": null
@@ -120,6 +107,19 @@
           "module": {
             "#": "Activating this module would produces this error for task \"test:browser\": \"Uncaught (in promise) TypeError: c is not a function\".",
             "mangle": false
+          }
+        }
+      }
+    },
+    "target:export": {
+      "module": {
+        "preprocessor": {
+          "javaScript": {
+            "options": {
+              "plugins": {
+                "__remove__": "@babel/plugin-transform-runtime"
+              }
+            }
           }
         }
       }
