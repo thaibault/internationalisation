@@ -2067,9 +2067,9 @@ cli-width@^2.0.0:
   integrity sha1-/xnt6Kml5XkyQUewwR8PvLq+1jk=
 
 clientnode@*:
-  version "3.0.260"
-  resolved "https://registry.yarnpkg.com/clientnode/-/clientnode-3.0.260.tgz#e0a1aab4ed7000795c73504cd3ee17b3107cecb7"
-  integrity sha512-PpmeM7uZ+7aG44zdCmmq/C6hR0BZxHPs8vui+9tHvXP4SLNwyNNSdekXGrVeSAnVhZl086fjSY0luaqkK5sW9Q==
+  version "3.0.262"
+  resolved "https://registry.yarnpkg.com/clientnode/-/clientnode-3.0.262.tgz#8e74f85be0d5a60d65bb6e62d27a1d34860844db"
+  integrity sha512-U8X6YmJNn1eb9VoTu2gBBEoOghxh3CWAP66+9hbLSn8YP0H1fZg97C+CnFBCEECvKRGoLgiyoY8pczfiDTd44Q==
   dependencies:
     colors "*"
 
@@ -3873,9 +3873,9 @@ internal-ip@^4.2.0:
     ipaddr.js "^1.9.0"
 
 internationalisation@*:
-  version "1.0.176"
-  resolved "https://registry.yarnpkg.com/internationalisation/-/internationalisation-1.0.176.tgz#5fcfe552a9a5a2c878e5128427a9198a1a8281a5"
-  integrity sha512-0hDBpwSYbzeWFeM6ORqWSon+m8G66vY3Bp07DSEtZirr8/U9TgZHRLnRKFi49C2qneU6Drr0e5OYlsDgbzWbZg==
+  version "1.0.177"
+  resolved "https://registry.yarnpkg.com/internationalisation/-/internationalisation-1.0.177.tgz#4f61fecdd67b6ea91d21c32d2b921891ccc9c476"
+  integrity sha512-4eJXXWXF1KGxkAbBOKLZtAemBOBW7/S9XuUTCxgukTCX0b0lwjs1wTrarVKblUR1dXs86RX4JV61X439nJlf9g==
 
 interpret@^1.1.0:
   version "1.2.0"
@@ -5203,9 +5203,9 @@ p-is-promise@^2.0.0:
   integrity sha512-pzQPhYMCAgLAKPWD2jC3Se9fEfrD9npNos0y150EeqZll7akhEgGhTW/slB6lHku8AvYGiJ+YJ5hfHKePPgFWg==
 
 p-limit@^2.0.0:
-  version "2.1.0"
-  resolved "https://registry.yarnpkg.com/p-limit/-/p-limit-2.1.0.tgz#1d5a0d20fb12707c758a655f6bbc4386b5930d68"
-  integrity sha512-NhURkNcrVB+8hNfLuysU8enY5xn2KXphsHBaC2YmRNTZRc7RWusw6apSpdEj3jo4CMb6W9nrF6tTnsJsJeyu6g==
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/p-limit/-/p-limit-2.2.0.tgz#417c9941e6027a9abcba5092dd2904e255b5fbc2"
+  integrity sha512-pZbTJpoUsCzV48Mc9Nh51VbwO0X9cuPFE8gYwx9BTCt9SF8/b7Zljd2fVgOxhIF/HDTKgpVzs+GPhyKfjLLFRQ==
   dependencies:
     p-try "^2.0.0"
 
