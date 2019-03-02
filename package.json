@@ -71,43 +71,20 @@
     "webpack-dev-server": "*"
   },
   "webOptimizer": {
-    "debug": {
-      "module": {
-        "optimizer": {
-          "babelMinify": {
-            "module": null
-          }
-        }
-      }
-    },
     "files": {
       "compose": {
         "cascadingStyleSheet": null
       }
     },
-    "injection": {
-      "external": {
-        "implicit": {
-          "pattern": {
-            "exclude": {
-              "__append__": {
-                "__evaluate__": "/^clientnode\\/test(?:\\.compiled)?(?:\\.js)?$/"
-              }
-            }
-          }
-        }
-      }
-    },
     "module": {
       "aliases": {
-        "clientnode/test$": "clientnode/test.compiled"
+        "#": "We need to process this file dynamically when testing different environments.",
+        "__remove__": "clientnode/test$"
       },
       "optimizer": {
         "babelMinify": {
-          "module": {
-            "#": "Activating this module would produces this error for task \"test:browser\": \"Uncaught (in promise) TypeError: c is not a function\".",
-            "mangle": false
-          }
+          "#": "Activating this module would produces this error for task \"test:browser\": \"Uncaught (in promise) TypeError: c is not a function\".",
+          "__evaluate__": "self.debug ? {} : {module: {mangle: false}}"
         }
       }
     },
