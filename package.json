@@ -71,11 +71,6 @@
     "webpack-dev-server": "*"
   },
   "webOptimizer": {
-    "files": {
-      "compose": {
-        "cascadingStyleSheet": null
-      }
-    },
     "module": {
       "aliases": {
         "#": "We need to process this file dynamically when testing different environments.",
