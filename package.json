@@ -43,11 +43,6 @@
     "update:documentation": "documentationWebsite --log-level info",
     "watch": "webOptimizer build --watch"
   },
-  "peerDependencies": {
-    "@babel/plugin-transform-runtime": "*",
-    "clientnode": "*",
-    "jquery": "*"
-  },
   "devDependencies": {
     "@babel/plugin-transform-proto-to-assign": "*",
     "@babel/preset-env": "*",
@@ -68,6 +63,11 @@
     "webpack": "*",
     "webpack-cli": "*",
     "webpack-dev-server": "*"
+  },
+  "peerDependencies": {
+    "@babel/plugin-transform-runtime": "*",
+    "clientnode": "*",
+    "jquery": "*"
   },
   "sideEffects": false,
   "webOptimizer": {
