@@ -27,21 +27,21 @@
     "url": "https://github.com/thaibault/internationalisation"
   },
   "scripts": {
-    "build": "webOptimizer build",
-    "build:export": "webOptimizer build '{__reference__: \"target:export\"}'",
-    "clear": "webOptimizer clear",
-    "document": "webOptimizer document",
-    "lint": "webOptimizer check:type; webOptimizer lint",
+    "build": "weboptimizer build",
+    "build:export": "weboptimizer build '{__reference__: \"target:export\"}'",
+    "clear": "weboptimizer clear",
+    "document": "weboptimizer document",
+    "lint": "weboptimizer check:type; weboptimizer lint",
     "prepare": "yarn build",
     "report:coverage": "nyc report --reporter=text-lcov | coveralls",
-    "serve": "webOptimizer serve",
+    "serve": "weboptimizer serve",
     "start": "yarn serve",
     "test": "nyc yarn test:plain",
-    "test:browser": "webOptimizer test:browser",
-    "test:plain": "webOptimizer test",
+    "test:browser": "weboptimizer test:browser",
+    "test:plain": "weboptimizer test",
     "update": "yarn version --patch && yarn publish",
     "update:documentation": "documentationWebsite --log-level info",
-    "watch": "webOptimizer build --watch"
+    "watch": "weboptimizer build --watch"
   },
   "devDependencies": {
     "@babel/plugin-transform-proto-to-assign": "*",
