@@ -233,7 +233,7 @@ export class Internationalisation <TElement extends HTMLElement = HTMLElement>
             !this._options.selection.includes(language)
         ) {
             this.debug('"{1}" isn\'t one of the allowed languages.', language)
-            return $.when(this.$domNode)
+            return Promise.resolve(this.$domNode)
         }
         return this.acquireLock(
             this._options.toolsLockDescription,
@@ -253,23 +253,27 @@ export class Internationalisation <TElement extends HTMLElement = HTMLElement>
                     this.debug('{1} "{2}".', actionDescription, language)
                     this._switchCurrentLanguageIndicator(language)
                     this.fireEvent(
-                        (ensure ? 'ensure' : 'switch'), true, this,
-                        this.currentLanguage, language)
+                        (ensure ? 'ensure' : 'switch'),
+                        true,
+                        this,
+                        this.currentLanguage,
+                        language
+                    )
                     this._$domNodeToFade = null
                     this._replacements = []
-                    const [
-                        $lastTextNodeToTranslate:$DomNode,
-                        $lastLanguageDomNode:$DomNode
-                    ] = this._collectTextNodesToReplace(language, ensure)
+                    const [$lastTextNodeToTranslate, $lastLanguageDomNode] =
+                        this._collectTextNodesToReplace(language, ensure)
                     this._ensureLastTextNodeHavingLanguageIndicator(
-                        $lastTextNodeToTranslate, $lastLanguageDomNode, ensure)
+                        $lastTextNodeToTranslate, $lastLanguageDomNode, ensure
+                    )
                     this._handleSwitchEffect(language, ensure)
-                    return $.when(this.$domNode)
+                    return Promise.resolve(this.$domNode)
                 }
                 this.debug(
-                    '"{1}" is already current selected language.', language)
+                    '"{1}" is already current selected language.', language
+                )
                 this.releaseLock(this._options.toolsLockDescription)
-                return $.when(this.$domNode)
+                return Promise.resolve(this.$domNode)
             }
         )
     }
@@ -311,7 +315,7 @@ export class Internationalisation <TElement extends HTMLElement = HTMLElement>
                 )
                 this.releaseLock(this._options.toolsLockDescription)
             }
-            return this
+            return
         }
         this._switchLanguage(language)
         await this.fireEvent(
@@ -329,9 +333,9 @@ export class Internationalisation <TElement extends HTMLElement = HTMLElement>
      * @returns Returns the current instance.
      */
     _movePreReplacementNodes():void {
-        const self:Language = this
+        const self:Internationalisation<TElement> = this
         this.$domNode.find(':not(iframe)').contents().each(function():void {
-            const $this:$DomNode = $(this)
+            const $this:$DomNode<TElement> = $(this)
             const nodeName:string = $this.prop('nodeName').toLowerCase()
             if (self._options.replacementDomNodeName.includes(nodeName)) {
                 if (!['#comment', '#text'].includes(nodeName))
@@ -347,7 +351,7 @@ export class Internationalisation <TElement extends HTMLElement = HTMLElement>
                         .prop('textContent', $this.prop('textContent')
                         .replace(regularExpression, match[1]))
                     let selfFound:boolean = false
-                    $this.parent().contents().each(function():?false {
+                    $this.parent().contents().each(function():false|void {
                         if (selfFound && $(this).Tools('text').trim()) {
                             $this.appendTo(this)
                             return false
@@ -369,69 +373,78 @@ export class Internationalisation <TElement extends HTMLElement = HTMLElement>
     _collectTextNodesToReplace(
         language:string, ensure:boolean
     ):Array<$DomNode> {
-        let $currentTextNodeToTranslate:?$DomNode = null
-        let $currentLanguageDomNode:?$DomNode = null
-        let $lastTextNodeToTranslate:?$DomNode = null
-        let $lastLanguageDomNode:?$DomNode = null
+        let $currentTextNodeToTranslate:null|$DomNode = null
+        let $currentLanguageDomNode:null|$DomNode = null
+        let $lastTextNodeToTranslate:null|$DomNode = null
+        let $lastLanguageDomNode:null|$DomNode = null
         this.knownTranslation = {}
-        const self:Language = this
-        this.$domNode.find(':not(iframe)').contents().each(function():?true {
-            const $currentDomNode:$DomNode = $(this)
-            const nodeName:string =
-                $currentDomNode.prop('nodeName').toLowerCase()
-            if (self._options.replaceDomNodeNames.includes(
-                nodeName.toLowerCase()
-            )) {
-                // NOTE: We skip empty and nested text nodes
-                if (
-                    $currentDomNode.Tools('text').trim() &&
-                    $currentDomNode.parents(
-                        self._options.replaceDomNodeNames.join()
-                    ).length === 0
-                ) {
-                    $lastLanguageDomNode =
-                        self._ensureLastTextNodeHavingLanguageIndicator(
-                            $lastTextNodeToTranslate,
-                            $lastLanguageDomNode,
-                            ensure
+        const self:Internationalisation<TElement> = this
+        this.$domNode.find(':not(iframe)').contents().each(
+            function():true|void {
+                const $currentDomNode:$DomNode = $(this)
+                const nodeName:string =
+                    $currentDomNode.prop('nodeName').toLowerCase()
+                if (self._options.replaceDomNodeNames.includes(
+                    nodeName.toLowerCase()
+                )) {
+                    // NOTE: We skip empty and nested text nodes
+                    if (
+                        $currentDomNode.Tools('text').trim() &&
+                        $currentDomNode.parents(
+                            self._options.replaceDomNodeNames.join()
+                        ).length === 0
+                    ) {
+                        $lastLanguageDomNode =
+                            self._ensureLastTextNodeHavingLanguageIndicator(
+                                $lastTextNodeToTranslate,
+                                $lastLanguageDomNode,
+                                ensure
+                            )
+                        $currentTextNodeToTranslate = $currentDomNode
+                    }
+                } else if ($currentTextNodeToTranslate) {
+                    if (self._options.replacementDomNodeName.includes(
+                        nodeName
+                    )) {
+                        let content:string = $currentDomNode.prop(
+                            'textContent'
                         )
-                    $currentTextNodeToTranslate = $currentDomNode
+                        if (nodeName !== '#comment')
+                            content = $currentDomNode.html()
+                        const match:?Array<string> = content.match(new RegExp(
+                            self._options.replacementLanguagePattern
+                        ))
+                        if (Array.isArray(match) && match[1] === language) {
+                            // Save known text translations.
+                            self.knownTranslation[
+                                $currentTextNodeToTranslate
+                                    .Tools('text')
+                                    .trim()
+                            ] = match[2].trim()
+                            self._registerTextNodeToChange(
+                                $currentTextNodeToTranslate,
+                                $currentDomNode,
+                                match,
+                                $currentLanguageDomNode
+                            )
+                            $lastTextNodeToTranslate =
+                                $currentTextNodeToTranslate
+                            $lastLanguageDomNode = $currentLanguageDomNode
+                            $currentTextNodeToTranslate = null
+                            $currentLanguageDomNode = null
+                        } else if ($currentDomNode.prop('textContent').match(
+                            new RegExp(self._options.currentLanguagePattern)
+                        ))
+                            $currentLanguageDomNode = $currentDomNode
+                        return true
+                    }
+                    $lastTextNodeToTranslate = null
+                    $lastLanguageDomNode = null
+                    $currentTextNodeToTranslate = null
+                    $currentLanguageDomNode = null
                 }
-            } else if ($currentTextNodeToTranslate) {
-                if (self._options.replacementDomNodeName.includes(nodeName)) {
-                    let content:string = $currentDomNode.prop('textContent')
-                    if (nodeName !== '#comment')
-                        content = $currentDomNode.html()
-                    const match:?Array<string> = content.match(new RegExp(
-                        self._options.replacementLanguagePattern
-                    ))
-                    if (Array.isArray(match) && match[1] === language) {
-                        // Save known text translations.
-                        self.knownTranslation[
-                            $currentTextNodeToTranslate.Tools('text').trim()
-                        ] = match[2].trim()
-                        self._registerTextNodeToChange(
-                            $currentTextNodeToTranslate,
-                            $currentDomNode,
-                            match,
-                            $currentLanguageDomNode
-                        )
-                        $lastTextNodeToTranslate = $currentTextNodeToTranslate
-                        $lastLanguageDomNode = $currentLanguageDomNode
-                        $currentTextNodeToTranslate = null
-                        $currentLanguageDomNode = null
-                    } else if ($currentDomNode.prop('textContent').match(
-                        new RegExp(self._options.currentLanguagePattern)
-                    ))
-                        $currentLanguageDomNode = $currentDomNode
-                    return true
-                }
-                $lastTextNodeToTranslate = null
-                $lastLanguageDomNode = null
-                $currentTextNodeToTranslate = null
-                $currentLanguageDomNode = null
             }
-        })
+        )
         this._registerKnownTextNodes()
         return [$lastTextNodeToTranslate, $lastLanguageDomNode]
     }
@@ -513,10 +526,12 @@ export class Internationalisation <TElement extends HTMLElement = HTMLElement>
             $.global.localStorage.getItem(this._options.sessionDescription)
         ) {
             result = $.global.localStorage.getItem(
-                this._options.sessionDescription)
+                this._options.sessionDescription
+            )
             this.debug(
                 'Determine "{1}", because of local storage information.',
-                result)
+                result
+            )
         } else if (
             'navigator' in $.global &&
             $.global.navigator &&
@@ -524,7 +539,8 @@ export class Internationalisation <TElement extends HTMLElement = HTMLElement>
         ) {
             result = $.global.navigator.language
             this.debug(
-                'Determine "{1}", because of browser settings.', result)
+                'Determine "{1}", because of browser settings.', result
+            )
         } else {
             result = this._options.default
             this.debug('Determine "{1}", because of default option.', result)
@@ -535,13 +551,17 @@ export class Internationalisation <TElement extends HTMLElement = HTMLElement>
             !this._options.selection.includes(result)
         ) {
             this.debug(
-                '"{1}" isn\'t one of the allowed languages. Set language' +
-                ' to "{2}".', result, this._options.selection[0])
+                '"{1}" isn\'t one of the allowed languages. Set language to ' +
+                '"{2}".',
+                result,
+                this._options.selection[0]
+            )
             result = this._options.selection[0]
         }
         if ('localStorage' in $.global)
             $.global.localStorage.setItem(
-                this._options.sessionDescription, result)
+                this._options.sessionDescription, result
+            )
         return result
     }
     /**
@@ -567,8 +587,10 @@ export class Internationalisation <TElement extends HTMLElement = HTMLElement>
      * @returns Returns the current instance.
      */
     _registerTextNodeToChange(
-        $currentTextNodeToTranslate:$DomNode, $currentDomNode:?$DomNode,
-        match:Array<string>, $currentLanguageDomNode:?$DomNode
+        $currentTextNodeToTranslate:$DomNode,
+        $currentDomNode:$DomNode,
+        match:Array<string>,
+        $currentLanguageDomNode:?$DomNode
     ):void {
         this._addTextNodeToFade($currentTextNodeToTranslate)
         if ($currentDomNode)
@@ -635,16 +657,19 @@ export class Internationalisation <TElement extends HTMLElement = HTMLElement>
                     */
                     $currentLanguageDomNode = $('body')
                     let currentDomNodeFound:boolean = false
-                    replacement.$textNodeToTranslate.parent().contents(
-                    ).each(function():?false {
-                        if (currentDomNodeFound) {
-                            replacement.$currentLanguageDomNode =
-                                $currentLanguageDomNode= $(this)
-                            return false
-                        }
-                        if (this === replacement.$textNodeToTranslate[0])
-                            currentDomNodeFound = true
-                    })
+                    replacement
+                        .$textNodeToTranslate
+                        .parent()
+                        .contents().each(function():false|void {
+                            if (currentDomNodeFound) {
+                                replacement.$currentLanguageDomNode =
+                                    $currentLanguageDomNode =
+                                    $(this)
+                                return false
+                            }
+                            if (this === replacement.$textNodeToTranslate[0])
+                                currentDomNodeFound = true
+                        })
                 }
                 const currentLanguage:string =
                     $currentLanguageDomNode.prop('textContent')
@@ -652,27 +677,32 @@ export class Internationalisation <TElement extends HTMLElement = HTMLElement>
                     this.warn(
                         `Text node "${replacement.textToReplace}" is marked ` +
                         `as "${currentLanguage}" and has same translation ` +
-                        'language as it already is.')
+                        'language as it already is.'
+                    )
                 const nodeName:string = replacement.$nodeToReplace.prop(
                     'nodeName'
                 ).toLowerCase()
                 if (nodeName === '#comment')
                     replacement.$textNodeToTranslate.after($(
-                        `<!--${currentLanguage}:${currentText}-->`))
+                        `<!--${currentLanguage}:${currentText}-->`
+                    ))
                 else
                     replacement.$textNodeToTranslate.after($(
                         `<${nodeName}>${currentLanguage}:${currentText}</` +
                         `${nodeName}>`
                     ).hide())
                 replacement.$textNodeToTranslate.after($(`<!--${language}-->`))
-                if (replacement.$textNodeToTranslate.prop(
-                    'nodeName'
-                ) === '#text')
+                if (
+                    replacement.$textNodeToTranslate.prop('nodeName') ===
+                        '#text'
+                )
                     replacement.$textNodeToTranslate.prop(
-                        'textContent', replacement.textToReplace)
+                        'textContent', replacement.textToReplace
+                    )
                 else
                     replacement.$textNodeToTranslate.html(
-                        replacement.textToReplace)
+                        replacement.textToReplace
+                    )
                 $currentLanguageDomNode.remove()
                 replacement.$nodeToReplace.remove()
             }
@@ -681,7 +711,8 @@ export class Internationalisation <TElement extends HTMLElement = HTMLElement>
         for (const content in this._textNodesWithKnownTranslation)
             if (this._textNodesWithKnownTranslation.hasOwnProperty(content))
                 this._textNodesWithKnownTranslation[content].prop(
-                    'textContent', content)
+                    'textContent', content
+                )
         if ('localStorage' in $.global)
             $.global.localStorage.setItem(
                 this._options.sessionDescription, language
