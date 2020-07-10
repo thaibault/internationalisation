@@ -101,13 +101,13 @@ export class Internationalisation <TElement extends HTMLElement = HTMLElement>
     extends BoundTools<TElement> {
     static _name:string = 'Internationalisation'
 
-    currentLanguage:string
+    currentLanguage:string = 'enUS'
     knownTranslations:Mapping = {}
 
     _$domNodeToFade:null|$DomNode = null
     _options:Options = {} as Options
     _replacements:Array<Replacement> = []
-    _textNodesWithKnownTranslation:Mapping<$DomNode<HTMLTextElement>>
+    _textNodesWithKnownTranslation:Mapping<$DomNode> = {}
     // region public methods
     // / region special
     /**
@@ -115,7 +115,7 @@ export class Internationalisation <TElement extends HTMLElement = HTMLElement>
      * nodes are grabbed.
      * @param options - An options object.
      * @param currentLanguage - Initial language to use.
-     * @param knownTranslation - Initial mapping of known language strings and
+     * @param knownTranslations - Initial mapping of known language strings and
      * their corresponding translations, to boost language replacements or
      * saves redundant replacements in dom tree.
      * @param $domNodeToFade - Initial dom node to fade.
@@ -127,14 +127,14 @@ export class Internationalisation <TElement extends HTMLElement = HTMLElement>
     async initialize(
         options:object = {},
         currentLanguage:string = '',
-        knownTranslation:Mapping = {},
+        knownTranslations:Mapping = {},
         $domNodeToFade:null|$DomNode = null,
         replacements:Array<Replacement> = [],
-        textNodesWithKnownTranslation:Mapping<$DomNode<HTMLTextElement>> = {}
+        textNodesWithKnownTranslation:Mapping<$DomNode> = {}
     ):Promise<$DomNode<TElement>> {
         // region properties
         this.currentLanguage = currentLanguage
-        this.knownTranslation = knownTranslation
+        this.knownTranslations = knownTranslations
         this._$domNodeToFade = $domNodeToFade
         this._replacements = replacements
         this._textNodesWithKnownTranslation = textNodesWithKnownTranslation
@@ -164,26 +164,25 @@ export class Internationalisation <TElement extends HTMLElement = HTMLElement>
                 enEN: ['en_en', 'en-en', 'english'],
                 frFR: ['fr', 'fr_fr', 'fr-fr', 'french']
             },
-            onSwitched: this.constructor.noop,
-            onEnsured: this.constructor.noop,
-            onSwitch: this.constructor.noop,
-            onEnsure: this.constructor.noop,
+            onSwitched: Tools.noop,
+            onEnsured: Tools.noop,
+            onSwitch: Tools.noop,
+            onEnsure: Tools.noop,
             domNode: {knownTranslation: 'div.toc'}
         }
         // endregion
         super.initialize(options)
-        this._options.preReplacementLanguagePattern =
-            this.constructor.stringFormat(
-                this._options.preReplacementLanguagePattern,
-                this._options.replacementLanguagePattern.substr(
-                    1, this._options.replacementLanguagePattern.length - 2
-                )
+        this._options.preReplacementLanguagePattern = Tools.stringFormat(
+            this._options.preReplacementLanguagePattern,
+            this._options.replacementLanguagePattern.substr(
+                1, this._options.replacementLanguagePattern.length - 2
             )
-        this._options.toolsLockDescription = this.constructor.stringFormat(
-            this._options.toolsLockDescription, this.constructor.name
         )
-        this._options.sessionDescription = this.constructor.stringFormat(
-            this._options.sessionDescription, this.constructor.name
+        this._options.toolsLockDescription = Tools.stringFormat(
+            this._options.toolsLockDescription, Internationalisation.name
+        )
+        this._options.sessionDescription = Tools.stringFormat(
+            this._options.sessionDescription, Internationalisation.name
         )
         this.$domNodes = this.grabDomNode(this._options.domNode, this.$domNode)
         this.$domNodes.switchLanguageButtons = $(
@@ -374,7 +373,7 @@ export class Internationalisation <TElement extends HTMLElement = HTMLElement>
         let $currentLanguageDomNode:null|$DomNode = null
         let $lastTextNodeToTranslate:null|$DomNode = null
         let $lastLanguageDomNode:null|$DomNode = null
-        this.knownTranslation = {}
+        this.knownTranslations = {}
         const self:Internationalisation<TElement> = this
         this.$domNode.find(':not(iframe)').contents().each(
             function():true|void {
@@ -384,7 +383,7 @@ export class Internationalisation <TElement extends HTMLElement = HTMLElement>
                 if (self._options.replaceDomNodeNames.includes(
                     nodeName.toLowerCase()
                 )) {
-                    // NOTE: We skip empty and nested text nodes
+                    // NOTE: We skip empty and nested text nodes.
                     if (
                         $currentDomNode.Tools('text').trim() &&
                         $currentDomNode.parents(
@@ -413,7 +412,7 @@ export class Internationalisation <TElement extends HTMLElement = HTMLElement>
                         ))
                         if (Array.isArray(match) && match[1] === language) {
                             // Save known text translations.
-                            self.knownTranslation[
+                            self.knownTranslations[
                                 $currentTextNodeToTranslate
                                     .Tools('text')
                                     .trim()
@@ -452,41 +451,49 @@ export class Internationalisation <TElement extends HTMLElement = HTMLElement>
     _registerKnownTextNodes():void {
         this._textNodesWithKnownTranslation = {}
         const self:Language = this
-        this.$domNodes.knownTranslation.find(':not(iframe)').contents(
-        ).each(function():void {
-            const $currentDomNode:$DomNode = $(this)
-            // NOTE: We skip empty and nested text nodes.
-            if (
-                !self._options.replaceDomNodeNames.includes(
-                    $currentDomNode.prop('nodeName').toLowerCase()
-                ) &&
-                $currentDomNode.Tools('text').trim() &&
-                $currentDomNode.parents(
-                    self._options.replaceDomNodeNames.join()
-                ).length === 0 &&
-                self.knownTranslation.hasOwnProperty($currentDomNode.Tools(
-                    'text'
-                ).trim())
-            ) {
-                self._addTextNodeToFade($currentDomNode)
-                if (self._textNodesWithKnownTranslation.hasOwnProperty(
-                    self.knownTranslation[$currentDomNode.prop(
-                        'textContent'
-                    ).trim()]
-                ))
-                    self._textNodesWithKnownTranslation[self.knownTranslation[
-                        $currentDomNode.prop('textContent').trim()
-                    ]] = self._textNodesWithKnownTranslation[
-                        self.knownTranslation[$currentDomNode.prop(
+        this.$domNodes
+            .knownTranslations
+            .find(':not(iframe)')
+            .contents()
+            .each(function():void {
+                const $currentDomNode:$DomNode = $(this)
+                // NOTE: We skip empty and nested text nodes.
+                if (
+                    !self._options.replaceDomNodeNames.includes(
+                        $currentDomNode.prop('nodeName').toLowerCase()
+                    ) &&
+                    $currentDomNode.Tools('text').trim() &&
+                    $currentDomNode.parents(
+                        self._options.replaceDomNodeNames.join()
+                    ).length === 0 &&
+                    self.knownTranslations.hasOwnProperty(
+                        $currentDomNode.Tools('text').trim()
+                    )
+                ) {
+                    self._addTextNodeToFade($currentDomNode)
+                    if (self._textNodesWithKnownTranslation.hasOwnProperty(
+                        self.knownTranslations[$currentDomNode.prop(
                             'textContent'
                         ).trim()]
-                    ].add($currentDomNode)
-                else
-                    self._textNodesWithKnownTranslation[self.knownTranslation[
-                        $currentDomNode.prop('textContent').trim()
-                    ]] = $currentDomNode
-            }
-        })
+                    ))
+                        self._textNodesWithKnownTranslation[
+                            self.knownTranslations[
+                                $currentDomNode.prop('textContent').trim()
+                            ]
+                        ] =
+                            self._textNodesWithKnownTranslation[
+                                self.knownTranslations[$currentDomNode.prop(
+                                    'textContent'
+                                ).trim()]
+                            ].add($currentDomNode)
+                    else
+                        self._textNodesWithKnownTranslation[
+                            self.knownTranslations[
+                                $currentDomNode.prop('textContent').trim()
+                            ]
+                        ] = $currentDomNode
+                }
+            })
     }
     /**
      * Normalizes a given language string.
@@ -587,7 +594,7 @@ export class Internationalisation <TElement extends HTMLElement = HTMLElement>
         $currentTextNodeToTranslate:$DomNode,
         $currentDomNode:$DomNode,
         match:Array<string>,
-        $currentLanguageDomNode:?$DomNode
+        $currentLanguageDomNode:null|$DomNode
     ):void {
         this._addTextNodeToFade($currentTextNodeToTranslate)
         if ($currentDomNode)

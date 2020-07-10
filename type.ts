@@ -34,7 +34,7 @@ export type Replacement = {
     $textNodeToTranslate:$DomNode;
     $nodeToReplace:$DomNode;
     textToReplace:string;
-    $currentLanguageDomNode:?$DomNode;
+    $currentLanguageDomNode:null|$DomNode;
 }
 export type Options = BaseOptions & {
 }
