@@ -159,7 +159,7 @@ describe('internationalisation', () => {
             $domNode.children(),
             ['1', '2', '3'],
             $domNode.children()
-        ).toBeUndefined()
+        )).toBeUndefined()
 
         expect(internationalisation._replacements).toHaveLength(1)
         internationalisation._replacements = []
