@@ -185,7 +185,7 @@ export class Internationalisation <TElement extends HTMLElement = HTMLElement>
         this._options.sessionDescription = this.constructor.stringFormat(
             this._options.sessionDescription, this.constructor.name
         )
-        this.$domNodes = this.grabDomNode(this._options.domNode)
+        this.$domNodes = this.grabDomNode(this._options.domNode, this.$domNode)
         this.$domNodes.switchLanguageButtons = $(
             `a[href^="#${this._options.languageHashPrefix}"]`
         )
@@ -224,7 +224,7 @@ export class Internationalisation <TElement extends HTMLElement = HTMLElement>
      * @param ensure - Indicates if a switch effect should be avoided.
      * @returns Returns the current instance wrapped in a promise.
      */
-    switch(
+    async switch(
         language:string|true, ensure:boolean = false
     ):Promise<$DomNode<TElement>> {
         if (
@@ -233,49 +233,46 @@ export class Internationalisation <TElement extends HTMLElement = HTMLElement>
             !this._options.selection.includes(language)
         ) {
             this.debug('"{1}" isn\'t one of the allowed languages.', language)
-            return Promise.resolve(this.$domNode)
+            return this.$domNode
         }
-        return this.acquireLock(
-            this._options.toolsLockDescription,
-            ():Promise<$DomNode<TElement>> => {
-                if (language === true) {
-                    ensure = true
-                    language = this.currentLanguage
-                } else
-                    language = this._normalizeLanguage(language)
-                if (
-                    ensure && language !== this._options.default ||
-                    this.currentLanguage !== language
-                ) {
-                    let actionDescription:string = 'Switch to'
-                    if (ensure)
-                        actionDescription = 'Ensure'
-                    this.debug('{1} "{2}".', actionDescription, language)
-                    this._switchCurrentLanguageIndicator(language)
-                    this.fireEvent(
-                        (ensure ? 'ensure' : 'switch'),
-                        true,
-                        this,
-                        this.currentLanguage,
-                        language
-                    )
-                    this._$domNodeToFade = null
-                    this._replacements = []
-                    const [$lastTextNodeToTranslate, $lastLanguageDomNode] =
-                        this._collectTextNodesToReplace(language, ensure)
-                    this._ensureLastTextNodeHavingLanguageIndicator(
-                        $lastTextNodeToTranslate, $lastLanguageDomNode, ensure
-                    )
-                    this._handleSwitchEffect(language, ensure)
-                    return Promise.resolve(this.$domNode)
-                }
-                this.debug(
-                    '"{1}" is already current selected language.', language
-                )
-                this.releaseLock(this._options.toolsLockDescription)
-                return Promise.resolve(this.$domNode)
-            }
+        await this.acquireLock(this._options.toolsLockDescription)
+        if (language === true) {
+            ensure = true
+            language = this.currentLanguage
+        } else
+            language = this._normalizeLanguage(language)
+        if (
+            ensure &&
+            language !== this._options.default ||
+            this.currentLanguage !== language
+        ) {
+            let actionDescription:string = 'Switch to'
+            if (ensure)
+                actionDescription = 'Ensure'
+            this.debug('{1} "{2}".', actionDescription, language)
+            this._switchCurrentLanguageIndicator(language)
+            this.fireEvent(
+                (ensure ? 'ensure' : 'switch'),
+                true,
+                this,
+                this.currentLanguage,
+                language
+            )
+            this._$domNodeToFade = null
+            this._replacements = []
+            const [$lastTextNodeToTranslate, $lastLanguageDomNode] =
+                this._collectTextNodesToReplace(language, ensure)
+            this._ensureLastTextNodeHavingLanguageIndicator(
+                $lastTextNodeToTranslate, $lastLanguageDomNode, ensure
+            )
+            this._handleSwitchEffect(language, ensure)
+            return this.$domNode
+        }
+        this.debug(
+            '"{1}" is already current selected language.', language
         )
+        this.releaseLock(this._options.toolsLockDescription)
+        return this.$domNode
     }
     /**
      * Ensures current selected language.

@@ -1,4 +1,3 @@
-// @flow
 // #!/usr/bin/env node
 // -*- coding: utf-8 -*-
 'use strict'
@@ -15,67 +14,81 @@
     endregion
 */
 // region imports
-import type {$DomNode} from 'clientnode'
-import registerTest from 'clientnode/test'
+import Tools, {augment$, determine$} from 'clientnode'
+import {$Global, $DomNode} from 'clientnode/type'
+import {getInitializedBrowser} from 'weboptimizer/browser'
+import {InitializedBrowser} from 'weboptimizer/type'
 
-import type Language from './index'
+import Internationalisation from './index'
 // endregion
-registerTest(async function(
-    roundType:string, targetTechnology:?string, $:any
-):Promise<void> {
-    require('./index')
-    const $bodyDomNode:$DomNode = $('body')
-    if ('localStorage' in $.global.window)
-        $.global.window.localStorage.removeItem('Language')
-    const language:Language = await $.Language({
-        allowedLanguages: ['enUS', 'deDE', 'frFR'],
-        domNodeSelectorPrefix: 'body #qunit-fixture',
-        initial: 'enUS'
+describe('internationalisation', () => {
+    // region mockup
+    let $domNode:$DomNode<HTMLBodyElement>
+    let internationalisation:Internationalisation<HTMLBodyElement>
+    beforeAll(async ():Promise<void> => {
+        const browser:InitializedBrowser = await getInitializedBrowser()
+        globalThis.window = browser.window as Window & typeof globalThis
+        if ('localStorage' in globalThis.window)
+            globalThis.window.localStorage.removeItem('Internationalisation')
+        jest.resetModules();
+        (globalThis as $Global).$ = require('jquery')
+        augment$(determine$())
+        /*
+            NOTE: Import plugin with side effects (augmenting "$" scope /
+            registering plugin) when other imports are only used as type.
+        */
+        require('./index')
+        $domNode = await $(window.document.body).Language({
+            allowedLanguages: ['enUS', 'deDE', 'frFR'], initial: 'enUS'
+        })
+        internationalisation = $domNode.data('Internationalisation')
     })
+    // endregion
     // region tests
     // / region public methods
     // // region special
-    this.test('initialize', (assert:Object):Promise<void> =>
-        language.initialize().then((subLanguage:Language):void =>
-            assert.strictEqual(subLanguage, language)
-        ).then(assert.async()))
+    test('initialize', ():void =>
+        expect(intenationalisation.initialize())
+            .resolves
+            .toStricEqual($domNode)
+    )
     // // endregion
-    this.test('switch', async (assert:Object):Promise<void> => {
-        const done:Function = assert.async()
-        let subLanguage:Language = await language.switch('en')
-        assert.strictEqual(subLanguage, language)
-        $('#qunit-fixture').html('<div>english<!--deDE:german--></div>')
-        await language.switch('deDE')
-        assert.ok($.Tools.class.isEquivalentDOM(
-            $('#qunit-fixture').html().replace(/(?: |\n)+/g, ' '),
+    test('switch', async ():Promise<void> => {
+        expect(await internationalisation.switch('en')).toStrictEqual($domNode)
+        $domNode.html('<div>english<!--deDE:german--></div>')
+        await internationalisation.switch('deDE')
+        expect(Tools.isEquivalentDOM(
+            $domNode.html().replace(/(?: |\n)+/g, ' '),
             (
                 '<div style="opacity: 1">' +
                     'german<!--deDE--><!--enUS:english-->' +
                 '</div>'
-            )))
-        await language.switch('deDE')
-        assert.ok($.Tools.class.isEquivalentDOM(
-            $('#qunit-fixture').html().replace(/(?: |\n)+/g, ' '),
+            )
+        )).toStrictEqual(true)
+        await internationalisation.switch('deDE')
+        expect(Tools.isEquivalentDOM(
+            $domNode.html().replace(/(?: |\n)+/g, ' '),
             '<div style="opacity: 1">' +
                 'german<!--deDE--><!--enUS:english-->' +
-            '</div>'))
-        await language.switch('en')
-        assert.ok($.Tools.class.isEquivalentDOM(
-            $('#qunit-fixture').html().replace(/(?: |\n)+/g, ' '),
+            '</div>'
+        )).toStrictEqual(true)
+        await internationalisation.switch('en')
+        expect(Tools.isEquivalentDOM(
+            $domNode.html().replace(/(?: |\n)+/g, ' '),
             '<div style="opacity: 1">' +
                 'english<!--enUS--><!--deDE:german-->' +
-            '</div>'))
-        $('#qunit-fixture').html(`
+            '</div>'
+        )).toStrictEqual(true)
+        $domNode.html(`
             <div class="toc">
                 <ul><li><a href="#">english</a></li></ul>
             </div>
             <div>english<!--deDE:german--></div>
         `)
-        subLanguage = await language.initialize()
-        await subLanguage.switch('de')
-        assert.ok(
-            $.Tools.class.isEquivalentDOM($('#qunit-fixture').html(
-            ).replace(/(?: |\n)+/g, ' '),
+        await internationalisation.initialize()
+        await internationalisation.switch('de')
+        expect(Tools.isEquivalentDOM(
+            $domNode.html().replace(/(?: |\n)+/g, ' '),
             ' <div class="toc"> ' +
                 '<ul>' +
                     '<li style="opacity: 1">' +
@@ -87,80 +100,91 @@ registerTest(async function(
             ' </div>' +
             ' <div style="opacity: 1">' +
                 'german<!--deDE--><!--enUS:english-->' +
-            '</div> '))
-        done()
+            '</div> '
+        )).toStrictEqual(true)
     })
-    this.test('refresh', (assert:Object):Promise<void> =>
-        language.refresh().then((subLanguage:Language):void =>
-            assert.strictEqual(subLanguage, language)
-        ).then(assert.async()))
+    test('refresh', ():void =>
+        expect(internationalisation.refresh()).resolves.toStrictEqual($domNode)
+    )
     // / endregion
     // / region protected methods
-    this.test('_normalizeLanguage', (assert:Object):void => {
-        for (const test:Array<string> of [
-            ['de', 'deDE'],
-            ['de-de', 'deDE'],
-            ['en-us', 'enUS'],
-            ['fr', 'frFR'],
-            ['', 'enUS']
-        ])
-            assert.strictEqual(
-                language._normalizeLanguage(test[0]), test[1])
-    })
-    this.test('_determineUsefulLanguage', (assert:Object):void => {
-        if (typeof $.global.window.localStorage !== 'undefined') {
-            $.global.window.localStorage[
-                language._options.sessionDescription
+    test.each([
+        ['de', 'deDE'],
+        ['de-de', 'deDE'],
+        ['en-us', 'enUS'],
+        ['fr', 'frFR'],
+        ['', 'enUS']
+    ])(
+        `_normalizeLanguage('%s') === '%s'`,
+        (given:string, expected:string):void =>
+            expect(internationalisation._normalizeLanguage(given))
+                .toStrictEqual(expected)
+    )
+    test('_determineUsefulLanguage', ():void => {
+        if (typeof globalThis.window.localStorage !== 'undefined') {
+            globalThis.window.localStorage[
+                internationalisation._options.sessionDescription
             ] = 'enUS'
-            assert.strictEqual(language._determineUsefulLanguage(), 'enUS')
-            delete $.global.window.localStorage[
-                language._options.sessionDescription]
+            expect(internationalisation._determineUsefulLanguage())
+                .toStrictEqual('enUS')
+            delete globalThis.window.localStorage[
+                internationalisation._options.sessionDescription
+            ]
         }
-        let referenceLanguage:string = language._options.default
+        let referenceLanguage:string = internationalisation._options.default
         if (
-            'navigator' in $.global &&
-            $.global.navigator &&
-            typeof $.global.navigator.language !== 'undefined'
+            'navigator' in globalThis &&
+            globalThis.navigator &&
+            typeof globalThis.navigator.language !== 'undefined'
         )
-            referenceLanguage = $.global.navigator.language
-        assert.strictEqual(
-            language._normalizeLanguage(
-                language._determineUsefulLanguage()),
-            language._normalizeLanguage(referenceLanguage))
+            referenceLanguage = globalThis.navigator.language
+        expect(internationalisation._normalizeLanguage(
+            internationsalisation._determineUsefulLanguage()
+        )).toStrictEqual(
+            internationalisation._normalizeLanguage(referenceLanguage)
+        )
     })
-    this.test('_handleSwitchEffect', (assert:Object):Promise<void> =>
-        language._handleSwitchEffect('deDE', false).then((
-            subLanguage:Language
-        ):void => assert.strictEqual(subLanguage, language)).then(
-            assert.async()))
-    this.test('_addTextNodeToFade', (assert:Object):void =>
-        assert.strictEqual(
-            language._addTextNodeToFade($bodyDomNode), language))
-    this.test('_registerTextNodeToChange', (assert:Object):void => {
-        language._registerTextNodeToChange(
-            $bodyDomNode, $bodyDomNode.children(), ['1', '2', '3'],
-            $bodyDomNode.children())
+    test('_handleSwitchEffect', ():void =>
+        expect(internationalisation._handleSwitchEffect('deDE', false))
+            .resolves
+            .toBeUndefined()
+    )
+    test('_addTextNodeToFade', ():void =>
+        expect(internationalisation._addTextNodeToFade($domNode))
+            .toBeUndefined()
+    )
+    test('_registerTextNodeToChange', ():void => {
+        expect(internationalisation._registerTextNodeToChange(
+            $domNode,
+            $domNode.children(),
+            ['1', '2', '3'],
+            $domNode.children()
+        ).toBeUndefined()
 
-        assert.strictEqual(language._replacements.length, 1)
-        language._replacements = []
+        expect(internationalisation._replacements).toHaveLength(1)
+        internationalisation._replacements = []
     })
-    this.test('_ensureLastTextNodeHavingLanguageIndicator', (
-        assert:Object
-    ):void => assert.strictEqual(
-        language._ensureLastTextNodeHavingLanguageIndicator(
+    test('_ensureLastTextNodeHavingLanguageIndicator', ():void =>
+        expect(internationalisation._ensureLastTextNodeHavingLanguageIndicator(
             null, null, false
-        ), null))
-    this.test('_switchLanguage', (assert:Object):Promise<Language> =>
-        $.Language().then((language:Language):void => {
-            assert.strictEqual(language._switchLanguage('deDE'), language)
-            assert.strictEqual(language.currentLanguage, 'deDE')
-        }).then(assert.async()))
-    this.test('_switchCurrentLanguageIndicator', (assert:Object):void =>
-        assert.strictEqual(
-            language._switchCurrentLanguageIndicator('deDE'), language))
+        )).toStrictEqual(null)
+    )
+    test('_switchLanguage', async ():Promise<void> => {
+        const $subDomNode:$DomNode<HTMLBodyElement> =
+            await $domNode.Internationalisation()
+        const subInternationalisation:Internationalisation<HTMLBodyElement>  =
+            $subDomNode.data('Internationalisation')
+        expect(subInternationalisation._switchLanguage('deDE'))
+            .toStrictEqual($subDomNode)
+        expect(subInternationsalisation.currentLanguage).toStrictEqual('deDE')
+    })
+    test('_switchCurrentLanguageIndicator', ():void =>
+        expect(internationalisation._switchCurrentLanguageIndicator('deDE'))
+            .toBeUndefined()
+    )
     // / endregion
     // endregion
-}, 'full')
+})
 // region vim modline
 // vim: set tabstop=4 shiftwidth=4 expandtab:
 // vim: foldmethod=marker foldmarker=region,endregion:
