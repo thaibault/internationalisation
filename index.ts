@@ -99,7 +99,7 @@ import {Options, Replacement} from './type'
  */
 export class Internationalisation <TElement extends HTMLElement = HTMLElement>
     extends BoundTools<TElement> {
-    static _name:string = 'Internationalisation'
+    static readonly _name:'Internationalisation' = 'Internationalisation'
 
     currentLanguage:string = 'enUS'
     knownTranslations:Mapping = {}
