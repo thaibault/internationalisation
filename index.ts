@@ -597,7 +597,7 @@ export class Internationalisation<TElement extends HTMLElement = HTMLElement>
         $lastTextNodeToTranslate:null|$DomNode<HTMLItem>,
         $lastLanguageDomNode:null|$DomNode,
         ensure:boolean
-    ):?$DomNode {
+    ):null|$DomNode {
         if ($lastTextNodeToTranslate && !$lastLanguageDomNode) {
             /*
                 Last text node doesn't have a current language indicating dom
@@ -629,12 +629,12 @@ export class Internationalisation<TElement extends HTMLElement = HTMLElement>
                 !trimmedText.endsWith(this._options.templateDelimiter.post) &&
                 this._options.templateDelimiter.post
             ) {
-                let $currentLanguageDomNode:$DomNode =
+                let $currentLanguageDomNode:null|$DomNode<HTMLItem> =
                     replacement.$currentLanguageDomNode
-                if (!replacement.$currentLanguageDomNode) {
+                if (!$currentLanguageDomNode) {
                     /*
-                        Language note wasn't present initially. So we have to
-                        determine it now.
+                        Language dom node wasn't present initially. So we have
+                        to determine it now.
                     */
                     $currentLanguageDomNode = $('body')
                     let currentDomNodeFound:boolean = false
@@ -653,7 +653,7 @@ export class Internationalisation<TElement extends HTMLElement = HTMLElement>
                         })
                 }
                 const currentLanguage:string =
-                    $currentLanguageDomNode.prop('textContent')
+                    ($currentLanguageDomNode as $DomNode).prop('textContent')
                 if (language === currentLanguage)
                     this.warn(
                         `Text node "${replacement.textToReplace}" is marked ` +

@@ -18,7 +18,11 @@
 */
 // region imports
 import {
-    $DomNode, ExtendableOptions as BaseOptions, Mapping, Scope as BaseScope
+    $DomNode,
+    ExtendableOptions as BaseOptions,
+    HTMLItem,
+    Mapping,
+    Scope as BaseScope
 } from 'clientnode/type'
 // endregion
 // region exports
@@ -31,10 +35,10 @@ declare global {
     interface JQuery<TElement = HTMLElement> extends Scope<TElement> {}
 }
 export type Replacement = {
-    $textNodeToTranslate:$DomNode;
-    $nodeToReplace:$DomNode;
+    $textNodeToTranslate:$DomNode<HTMLItem>;
+    $nodeToReplace:$DomNode<HTMLItem>;
     textToReplace:string;
-    $currentLanguageDomNode:null|$DomNode;
+    $currentLanguageDomNode:null|$DomNode<HTMLItem>;
 }
 export type Options = BaseOptions & {
     currentLanguageIndicatorClassName:string;

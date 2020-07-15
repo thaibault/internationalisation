@@ -38,19 +38,20 @@ describe('internationalisation', () => {
             registering plugin) when other imports are only used as type.
         */
         require('./index')
-        $domNode = await $(window.document.body).Language({
-            allowedLanguages: ['enUS', 'deDE', 'frFR'], initial: 'enUS'
-        })
+        $domNode = await $(window.document.body as HTMLBodyElement)
+            .Internationalisation({
+                allowedLanguages: ['enUS', 'deDE', 'frFR'], initial: 'enUS'
+            })
         internationalisation = $domNode.data('Internationalisation')
     })
     // endregion
     // region tests
     // / region public methods
     // // region special
-    test('initialize', ():void =>
-        expect(intenationalisation.initialize())
+    test('initialize', ():Promise<void> =>
+        expect(internationalisation.initialize())
             .resolves
-            .toStricEqual($domNode)
+            .toStrictEqual($domNode)
     )
     // // endregion
     test('switch', async ():Promise<void> => {
@@ -103,7 +104,7 @@ describe('internationalisation', () => {
             '</div> '
         )).toStrictEqual(true)
     })
-    test('refresh', ():void =>
+    test('refresh', ():Promise<void> =>
         expect(internationalisation.refresh()).resolves.toStrictEqual($domNode)
     )
     // / endregion
@@ -139,12 +140,12 @@ describe('internationalisation', () => {
         )
             referenceLanguage = globalThis.navigator.language
         expect(internationalisation._normalizeLanguage(
-            internationsalisation._determineUsefulLanguage()
+            internationalisation._determineUsefulLanguage()
         )).toStrictEqual(
             internationalisation._normalizeLanguage(referenceLanguage)
         )
     })
-    test('_handleSwitchEffect', ():void =>
+    test('_handleSwitchEffect', ():Promise<void> =>
         expect(internationalisation._handleSwitchEffect('deDE', false))
             .resolves
             .toBeUndefined()
@@ -176,7 +177,7 @@ describe('internationalisation', () => {
             $subDomNode.data('Internationalisation')
         expect(subInternationalisation._switchLanguage('deDE'))
             .toStrictEqual($subDomNode)
-        expect(subInternationsalisation.currentLanguage).toStrictEqual('deDE')
+        expect(subInternationalisation.currentLanguage).toStrictEqual('deDE')
     })
     test('_switchCurrentLanguageIndicator', ():void =>
         expect(internationalisation._switchCurrentLanguageIndicator('deDE'))
