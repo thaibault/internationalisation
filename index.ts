@@ -139,7 +139,7 @@ export class Internationalisation<TElement extends HTMLElement = HTMLElement>
         toolsLockDescription: '{1}Switch'
     }
     _replacements:Array<Replacement> = []
-    _textNodesWithKnownTranslation:Mapping<$DomNode> = {}
+    _textNodesWithKnownTranslation:Mapping<$DomNode<HTMLItem>> = {}
     // region public methods
     // / region special
     /**
@@ -349,10 +349,10 @@ export class Internationalisation<TElement extends HTMLElement = HTMLElement>
      */
     _collectTextNodesToReplace(
         language:string, ensure:boolean
-    ):Array<$DomNode> {
+    ):Array<null|$DomNode> {
         let $currentTextNodeToTranslate:null|$DomNode<HTMLItem> = null
         let $currentLanguageDomNode:null|$DomNode = null
-        let $lastTextNodeToTranslate:null|$DomNode = null
+        let $lastTextNodeToTranslate:null|$DomNode<HTMLItem> = null
         let $lastLanguageDomNode:null|$DomNode = null
         this.knownTranslations = {}
         const self:Internationalisation<TElement> = this
@@ -410,7 +410,7 @@ export class Internationalisation<TElement extends HTMLElement = HTMLElement>
                                 self._options.currentLanguagePattern
                             ))
                     )
-                        $currentLanguageDomNode = $currentDomNode
+                        $currentLanguageDomNode = $currentDomNode as $DomNode
                     return
                 }
                 $lastTextNodeToTranslate = null
@@ -428,13 +428,13 @@ export class Internationalisation<TElement extends HTMLElement = HTMLElement>
      */
     _registerKnownTextNodes():void {
         this._textNodesWithKnownTranslation = {}
-        const self:Language = this
+        const self:Internationalisation<TElement> = this
         this.$domNodes
             .knownTranslations
             .find(':not(iframe)')
             .contents()
             .each(function():void {
-                const $currentDomNode:$DomNode = $(this)
+                const $currentDomNode:$DomNode<HTMLItem> = $(this)
                 // NOTE: We skip empty and nested text nodes.
                 if (
                     !self._options.replaceDomNodeNames.includes(
@@ -463,7 +463,7 @@ export class Internationalisation<TElement extends HTMLElement = HTMLElement>
                                 self.knownTranslations[$currentDomNode.prop(
                                     'textContent'
                                 ).trim()]
-                            ].add($currentDomNode)
+                            ].add(this)
                     else
                         self._textNodesWithKnownTranslation[
                             self.knownTranslations[
@@ -499,33 +499,34 @@ export class Internationalisation<TElement extends HTMLElement = HTMLElement>
      * @returns Returns the determined language.
      */
     _determineUsefulLanguage():string {
-        let result:string
+        let result:string|undefined
         if (this._options.initial)
             result = this._options.initial
-        else if (
-            'localStorage' in $.global &&
-            $.global.localStorage &&
-            $.global.localStorage.getItem(this._options.sessionDescription)
-        ) {
-            result = $.global.localStorage.getItem(
-                this._options.sessionDescription
-            )
-            this.debug(
-                'Determine "{1}", because of local storage information.',
-                result
-            )
-        } else if (
-            'navigator' in $.global &&
-            $.global.navigator &&
-            $.global.navigator.language
-        ) {
-            result = $.global.navigator.language
-            this.debug(
-                'Determine "{1}", because of browser settings.', result
-            )
-        } else {
+        else if ($.global.window) {
+            if (
+                $.global.window.localStorage &&
+                $.global.window.localStorage.getItem(this._options.sessionDescription)
+            ) {
+                result = $.global.window.localStorage.getItem(
+                    this._options.sessionDescription
+                ) as string
+                this.debug(
+                    `Determine "${result}", because of local storage ` +
+                    'information.'
+                )
+            } else if (
+                $.global.window.navigator &&
+                $.global.window.navigator.language
+            ) {
+                result = $.global.window.navigator.language
+                this.debug(
+                    `Determine "${result}", because of browser settings.`
+                )
+            }
+        }
+        if (!result) {
             result = this._options.default
-            this.debug('Determine "{1}", because of default option.', result)
+            this.debug(`Determine "${result}", because of default option.`)
         }
         result = this._normalizeLanguage(result)
         if (
@@ -533,15 +534,13 @@ export class Internationalisation<TElement extends HTMLElement = HTMLElement>
             !this._options.selection.includes(result)
         ) {
             this.debug(
-                '"{1}" isn\'t one of the allowed languages. Set language to ' +
-                '"{2}".',
-                result,
-                this._options.selection[0]
+                `"${result}" isn\'t one of the allowed languages. Set ` +
+                `language to "${this._options.selection[0]}".`
             )
             result = this._options.selection[0]
         }
-        if ('localStorage' in $.global)
-            $.global.localStorage.setItem(
+        if ($.global.window && $.global.window.localStorage)
+            $.global.window.localStorage.setItem(
                 this._options.sessionDescription, result
             )
         return result
@@ -551,8 +550,8 @@ export class Internationalisation<TElement extends HTMLElement = HTMLElement>
      * @param $textNode - Text node with content to translate.
      * @returns Returns the current instance.
      */
-    _addTextNodeToFade($textNode:$DomNode):void {
-        const $parent:$DomNode = $textNode.parent()
+    _addTextNodeToFade($textNode:$DomNode<HTMLItem>):void {
+        const $parent:$DomNode = $textNode.parent() as $DomNode
         if (this._$domNodeToFade)
             this._$domNodeToFade = this._$domNodeToFade.add($parent)
         else
@@ -569,8 +568,8 @@ export class Internationalisation<TElement extends HTMLElement = HTMLElement>
      * @returns Returns the current instance.
      */
     _registerTextNodeToChange(
-        $currentTextNodeToTranslate:$DomNode,
-        $currentDomNode:$DomNode,
+        $currentTextNodeToTranslate:$DomNode<HTMLItem>,
+        $currentDomNode:$DomNode<HTMLItem>,
         match:Array<string>,
         $currentLanguageDomNode:null|$DomNode
     ):void {
@@ -595,8 +594,8 @@ export class Internationalisation<TElement extends HTMLElement = HTMLElement>
      * comment node.
      */
     _ensureLastTextNodeHavingLanguageIndicator(
-        $lastTextNodeToTranslate:?$DomNode,
-        $lastLanguageDomNode:?$DomNode,
+        $lastTextNodeToTranslate:null|$DomNode<HTMLItem>,
+        $lastLanguageDomNode:null|$DomNode,
         ensure:boolean
     ):?$DomNode {
         if ($lastTextNodeToTranslate && !$lastLanguageDomNode) {
