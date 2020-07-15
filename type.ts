@@ -18,7 +18,7 @@
 */
 // region imports
 import {
-    $DomNode, Options as BaseOptions, Scope as BaseScope
+    $DomNode, ExtendableOptions as BaseOptions, Mapping, Scope as BaseScope
 } from 'clientnode/type'
 // endregion
 // region exports
@@ -37,6 +37,35 @@ export type Replacement = {
     $currentLanguageDomNode:null|$DomNode;
 }
 export type Options = BaseOptions & {
+    currentLanguageIndicatorClassName:string;
+    currentLanguagePattern:string;
+    default:string;
+    domNode:{
+        knownTranslation:string
+    };
+    fadeEffect:boolean;
+    initial:null|string;
+    languageHashPrefix:string;
+    languageMapping:Mapping<Array<string>>;
+    onSwitched:Function;
+    onEnsured:Function;
+    onSwitch:Function;
+    onEnsure:Function;
+    preReplacementLanguagePattern:string;
+    replaceDomNodeNames:Array<string>;
+    replacementDomNodeName:Array<string>;
+    replacementLanguagePattern:string;
+    selection:Array<string>;
+    sessionDescription:string;
+    templateDelimiter:{
+        pre:string;
+        post:string;
+    };
+    textNodeParent:{
+        hideAnimation:[Mapping<number|string>, Mapping<number|string>];
+        showAnimation:[Mapping<number|string>, Mapping<number|string>];
+    };
+    toolsLockDescription:string;
 }
 // endregion
 // region vim modline
