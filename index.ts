@@ -430,7 +430,7 @@ export class Internationalisation<TElement extends HTMLElement = HTMLElement>
         this._textNodesWithKnownTranslation = {}
         const self:Internationalisation<TElement> = this
         this.$domNodes
-            .knownTranslations
+            .knownTranslation
             .find(':not(iframe)')
             .contents()
             .each(function():void {
