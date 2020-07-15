@@ -46,6 +46,7 @@
   },
   "devDependencies": {
     "@babel/plugin-transform-proto-to-assign": "*",
+    "@types/ejs": "*",
     "@types/jest": "*",
     "@types/jquery": "*",
     "@types/jsdom": "*",
@@ -69,7 +70,7 @@
     "webpack-dev-server": "*"
   },
   "peerDependencies": {
-    "@babel/plugin-transform-runtime": "*",
+    "@babel/runtime": "*",
     "clientnode": "*",
     "jquery": "*"
   },
