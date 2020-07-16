@@ -1,6 +1,6 @@
 {
   "name": "internationalisation",
-  "version": "1.0.202",
+  "version": "1.0.203",
   "license": "CC-BY-3.0",
   "description": "Expand your audience",
   "homepage": "https://torben.website/internationalisation",
@@ -46,6 +46,7 @@
   },
   "devDependencies": {
     "@babel/plugin-transform-proto-to-assign": "*",
+    "@babel/preset-env": "*",
     "@types/ejs": "*",
     "@types/html-minifier": "*",
     "@types/jest": "*",
@@ -55,7 +56,6 @@
     "@types/node": "*",
     "@typescript-eslint/eslint-plugin": "*",
     "@typescript-eslint/parser": "*",
-    "@babel/preset-env": "*",
     "babel-eslint": "*",
     "clientnode": "*",
     "documentation-website": "*",
