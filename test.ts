@@ -58,8 +58,6 @@ describe('internationalisation', () => {
         expect(await internationalisation.switch('en')).toStrictEqual($domNode)
         $domNode.html('<div>english<!--deDE:german--></div>')
         await internationalisation.switch('deDE')
-        // TODO
-        console.log($domNode.html().replace(/(?: |\n)+/g, ' '))
         expect(Tools.isEquivalentDOM(
             $domNode.html().replace(/(?: |\n)+/g, ' '),
             (
@@ -174,12 +172,10 @@ describe('internationalisation', () => {
         )).toStrictEqual(null)
     )
     test('_switchLanguage', async ():Promise<void> => {
-        const $subDomNode:$DomNode<HTMLBodyElement> =
-            await $domNode.Internationalisation()
-        const subInternationalisation:Internationalisation<HTMLBodyElement>  =
-            $subDomNode.data('Internationalisation')
-        expect(subInternationalisation._switchLanguage('deDE'))
-            .toStrictEqual($subDomNode)
+        const subInternationalisation:Internationalisation<HTMLBodyElement> =
+            (await $domNode.Internationalisation())
+                .data('Internationalisation')
+        expect(subInternationalisation._switchLanguage('deDE')).toBeUndefined()
         expect(subInternationalisation.currentLanguage).toStrictEqual('deDE')
     })
     test('_switchCurrentLanguageIndicator', ():void =>

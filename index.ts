@@ -230,7 +230,7 @@ export class Internationalisation<TElement extends HTMLElement = HTMLElement>
                 actionDescription = 'Ensure'
             this.debug('{1} "{2}".', actionDescription, language)
             this._switchCurrentLanguageIndicator(language)
-            this.fireEvent(
+            await this.fireEvent(
                 (ensure ? 'ensure' : 'switch'),
                 true,
                 this,
@@ -244,7 +244,7 @@ export class Internationalisation<TElement extends HTMLElement = HTMLElement>
             this._ensureLastTextNodeHavingLanguageIndicator(
                 $lastTextNodeToTranslate, $lastLanguageDomNode, ensure
             )
-            this._handleSwitchEffect(language, ensure)
+            await this._handleSwitchEffect(language, ensure)
             return this.$domNode
         }
         this.debug(
@@ -583,9 +583,9 @@ export class Internationalisation<TElement extends HTMLElement = HTMLElement>
             })
     }
     /**
-     * Checks if last text has a language indication comment node. This
+     * Checks if last text node has a language indication comment node. This
      * function is called after each parsed dom text node.
-     * @param $lastTextNodeToTranslate - Last text to node to check.
+     * @param $lastTextNodeToTranslate - Last text node to check.
      * @param $lastLanguageDomNode - A potential given language indication
      * commend node.
      * @param ensure - Indicates if current language should be ensured again
