@@ -20,7 +20,7 @@
 import Tools, {BoundTools, $} from 'clientnode'
 import {$DomNode, HTMLItem, Mapping} from 'clientnode/type'
 
-import {Options, Replacement} from './type'
+import {$DomNodes, Options, Replacement} from './type'
 // endregion
 // region plugins/classes
 /**
@@ -99,7 +99,7 @@ export class Internationalisation<TElement extends HTMLElement = HTMLElement>
     extends BoundTools<TElement> {
     static readonly _name:'Internationalisation' = 'Internationalisation'
 
-    $domNodes:Mapping<$DomNode> = {}
+    $domNodes:$DomNode
     currentLanguage:string = 'enUS'
     knownTranslations:Mapping = {}
     readonly self:typeof Internationalisation = Internationalisation

@@ -21,7 +21,7 @@ import {InitializedBrowser} from 'weboptimizer/type'
 
 import Internationalisation from './index'
 // endregion
-describe('internationalisation', () => {
+describe(Internationalisation._name, () => {
     // region mockup
     let $domNode:$DomNode<HTMLBodyElement>
     let internationalisation:Internationalisation<HTMLBodyElement>
@@ -29,7 +29,8 @@ describe('internationalisation', () => {
         const browser:InitializedBrowser = await getInitializedBrowser()
         globalThis.window = browser.window as Window & typeof globalThis
         if ('localStorage' in globalThis.window)
-            globalThis.window.localStorage.removeItem('Internationalisation')
+            globalThis.window.localStorage
+                .removeItem(Internationalisation._name)
         jest.resetModules();
         (globalThis as $Global).$ = require('jquery')
         augment$(determine$())
@@ -42,7 +43,7 @@ describe('internationalisation', () => {
             .Internationalisation({
                 allowedLanguages: ['enUS', 'deDE', 'frFR'], initial: 'enUS'
             })
-        internationalisation = $domNode.data('Internationalisation')
+        internationalisation = $domNode.data(Internationalisation._name)
     })
     // endregion
     // region tests
@@ -174,7 +175,7 @@ describe('internationalisation', () => {
     test('_switchLanguage', async ():Promise<void> => {
         const subInternationalisation:Internationalisation<HTMLBodyElement> =
             (await $domNode.Internationalisation())
-                .data('Internationalisation')
+                .data(Internationalisation._name)
         expect(subInternationalisation._switchLanguage('deDE')).toBeUndefined()
         expect(subInternationalisation.currentLanguage).toStrictEqual('deDE')
     })
