@@ -21,7 +21,7 @@ import {InitializedBrowser} from 'weboptimizer/type'
 
 import Internationalisation from './index'
 // endregion
-describe(Internationalisation._name, () => {
+describe(Internationalisation._name, ():void => {
     // region mockup
     let $domNode:$DomNode<HTMLBodyElement>
     let internationalisation:Internationalisation<HTMLBodyElement>
