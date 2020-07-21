@@ -39,13 +39,17 @@ export type Replacement = {
     textToReplace:string;
     $currentLanguageDomNode:null|$DomNode<HTMLItem>;
 }
+export type DomNodes<Type = string> = {
+    knownTranslation:Type;
+}
+export type $DomNodes = DomNodes<$DomNode> & {
+    switchLanguageButtons:$DomNode<HTMLLinkElement>;
+}
 export type Options = BaseOptions & {
     currentLanguageIndicatorClassName:string;
     currentLanguagePattern:string;
     default:string;
-    domNode:{
-        knownTranslation:string
-    };
+    domNode:DomNodes;
     fadeEffect:boolean;
     initial:null|string;
     languageHashPrefix:string;

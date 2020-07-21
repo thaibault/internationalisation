@@ -19,31 +19,35 @@ import {$Global, $DomNode} from 'clientnode/type'
 import {getInitializedBrowser} from 'weboptimizer/browser'
 import {InitializedBrowser} from 'weboptimizer/type'
 
+/*
+    NOTE: Import and use only as type. Since real loading should be delayed
+    until dom environment has been created.
+*/
 import Internationalisation from './index'
 // endregion
-describe(Internationalisation._name, ():void => {
+describe('Internationalisation', ():void => {
     // region mockup
     let $domNode:$DomNode<HTMLBodyElement>
     let internationalisation:Internationalisation<HTMLBodyElement>
+    let internationalisationClass:typeof Internationalisation
     beforeAll(async ():Promise<void> => {
         const browser:InitializedBrowser = await getInitializedBrowser()
         globalThis.window = browser.window as Window & typeof globalThis
-        if ('localStorage' in globalThis.window)
-            globalThis.window.localStorage
-                .removeItem(Internationalisation._name)
-        jest.resetModules();
         (globalThis as $Global).$ = require('jquery')
         augment$(determine$())
         /*
             NOTE: Import plugin with side effects (augmenting "$" scope /
             registering plugin) when other imports are only used as type.
         */
-        require('./index')
+        internationalisationClass = require('./index').default
+        if (globalThis.window.localStorage)
+            globalThis.window.localStorage
+                .removeItem(internationalisationClass._name)
         $domNode = await $(window.document.body as HTMLBodyElement)
             .Internationalisation({
                 allowedLanguages: ['enUS', 'deDE', 'frFR'], initial: 'enUS'
             })
-        internationalisation = $domNode.data(Internationalisation._name)
+        internationalisation = $domNode.data(internationalisationClass._name)
     })
     // endregion
     // region tests
@@ -175,7 +179,7 @@ describe(Internationalisation._name, ():void => {
     test('_switchLanguage', async ():Promise<void> => {
         const subInternationalisation:Internationalisation<HTMLBodyElement> =
             (await $domNode.Internationalisation())
-                .data(Internationalisation._name)
+                .data(internationalisationClass._name)
         expect(subInternationalisation._switchLanguage('deDE')).toBeUndefined()
         expect(subInternationalisation.currentLanguage).toStrictEqual('deDE')
     })

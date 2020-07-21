@@ -30,7 +30,7 @@ import {$DomNodes, Options, Replacement} from './type'
  * after name mangling.
  *
  * @property currentLanguage - Saves the current language.
- * @property knowntranslations - Saves a mapping of known language strings and
+ * @property knownTranslations - Saves a mapping of known language strings and
  * their corresponding translations, to boost language replacements or saves
  * redundant replacements in dom tree.
  *
@@ -99,7 +99,7 @@ export class Internationalisation<TElement extends HTMLElement = HTMLElement>
     extends BoundTools<TElement> {
     static readonly _name:'Internationalisation' = 'Internationalisation'
 
-    $domNodes:$DomNode
+    $domNodes:$DomNodes = null as unknown as $DomNodes
     currentLanguage:string = 'enUS'
     knownTranslations:Mapping = {}
     readonly self:typeof Internationalisation = Internationalisation
@@ -161,8 +161,8 @@ export class Internationalisation<TElement extends HTMLElement = HTMLElement>
             this._options.sessionDescription, this.self._name
         )
         this.$domNodes = this.grabDomNode(
-            this._options.domNode as Mapping<string>, this.$domNode
-        )
+            this._options.domNode as Mapping, this.$domNode
+        ) as $DomNodes
         this.$domNodes.switchLanguageButtons = $(
             `a[href^="#${this._options.languageHashPrefix}"]`
         )
@@ -719,7 +719,7 @@ export class Internationalisation<TElement extends HTMLElement = HTMLElement>
 export default Internationalisation
 // endregion
 // region handle $ extending
-if ('fn' in $)
+if ($.fn)
     $.fn.Internationalisation = function<TElement = HTMLElement>(
         ...parameter:Array<any>
     ):$DomNode<TElement> {
