@@ -146,7 +146,7 @@ export class Internationalisation<TElement extends HTMLElement = HTMLElement>
      * @param options - An options object.
      * @returns Returns the current instance wrapped in a promise.
      */
-    initialize(options:object = {}):Promise<$DomNode<TElement>> {
+    initialize(options:Partial<Options> = {}):Promise<$DomNode<TElement>> {
         super.initialize(options)
         this._options.preReplacementLanguagePattern = Tools.stringFormat(
             this._options.preReplacementLanguagePattern,

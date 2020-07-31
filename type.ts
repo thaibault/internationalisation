@@ -18,9 +18,9 @@
 // region imports
 import {
     $DomNode,
-    ExtendableOptions as BaseOptions,
     HTMLItem,
     Mapping,
+    Options as BaseOptions,
     Scope as BaseScope
 } from 'clientnode/type'
 // endregion
@@ -45,7 +45,7 @@ export type DomNodes<Type = string> = {
 export type $DomNodes = DomNodes<$DomNode> & {
     switchLanguageButtons:$DomNode<HTMLLinkElement>;
 }
-export type Options = BaseOptions & {
+export type Options = Partial<BaseOptions> & {
     currentLanguageIndicatorClassName:string;
     currentLanguagePattern:string;
     default:string;
