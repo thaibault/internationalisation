@@ -18,7 +18,7 @@
 */
 // region imports
 import Tools, {BoundTools, $} from 'clientnode'
-import {$DomNode, HTMLItem, Mapping} from 'clientnode/type'
+import {$DomNode, HTMLItem, Mapping, RecursivePartial} from 'clientnode/type'
 
 import {$DomNodes, Options, Replacement} from './type'
 // endregion
@@ -89,7 +89,7 @@ import {$DomNodes, Options, Replacement} from './type'
  * language switch should be performed.
  * @property _options.onEnsure - Callback which should be called before a
  * language switch should be ensured.
- * @property _options.domNode - A mapping of needed internal dom node
+ * @property _options.domNodes - A mapping of needed internal dom node
  * descriptions to their corresponding selectors.
  * @property _replacements - Saves all text nodes which should be replaced.
  * @property _textNodesWithKnownTranslation - Saves a mapping of known text
@@ -109,7 +109,7 @@ export class Internationalisation<TElement extends HTMLElement = HTMLElement>
         currentLanguageIndicatorClassName: 'current',
         currentLanguagePattern: '^[a-z]{2}[A-Z]{2}$',
         default: 'enUS',
-        domNode: {knownTranslation: 'div.toc'},
+        domNodes: {knownTranslation: 'div.toc'},
         fadeEffect: true,
         initial: null,
         languageHashPrefix: 'language-',
@@ -146,7 +146,9 @@ export class Internationalisation<TElement extends HTMLElement = HTMLElement>
      * @param options - An options object.
      * @returns Returns the current instance wrapped in a promise.
      */
-    initialize(options:Partial<Options> = {}):Promise<$DomNode<TElement>> {
+    initialize(
+        options:RecursivePartial<Options> = {}
+    ):Promise<$DomNode<TElement>> {
         super.initialize(options)
         this._options.preReplacementLanguagePattern = Tools.stringFormat(
             this._options.preReplacementLanguagePattern,
@@ -161,8 +163,8 @@ export class Internationalisation<TElement extends HTMLElement = HTMLElement>
             this._options.sessionDescription, this.self._name
         )
         this.$domNodes = this.grabDomNode(
-            this._options.domNode as Mapping, this.$domNode
-        ) as $DomNodes
+            this._options.domNodes as Mapping<string>, this.$domNode
+        ) as unknown as $DomNodes
         this.$domNodes.switchLanguageButtons = $(
             `a[href^="#${this._options.languageHashPrefix}"]`
         )

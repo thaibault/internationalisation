@@ -18,9 +18,12 @@
 // region imports
 import {
     $DomNode,
+    $DomNodes as $BaseDomNodes,
+    DomNodes as BaseDomNodes,
     HTMLItem,
     Mapping,
     Options as BaseOptions,
+    RecursivePartial,
     Scope as BaseScope
 } from 'clientnode/type'
 // endregion
@@ -39,17 +42,18 @@ export type Replacement = {
     textToReplace:string;
     $currentLanguageDomNode:null|$DomNode<HTMLItem>;
 }
-export type DomNodes<Type = string> = {
+export type DomNodes<Type = string> = RecursivePartial<BaseDomNodes> & {
     knownTranslation:Type;
 }
-export type $DomNodes = DomNodes<$DomNode> & {
-    switchLanguageButtons:$DomNode<HTMLLinkElement>;
-}
-export type Options = Partial<BaseOptions> & {
+export type $DomNodes =
+    RecursivePartial<$BaseDomNodes> &
+    DomNodes<$DomNode> &
+    {switchLanguageButtons:$DomNode<HTMLLinkElement>}
+export type Options = RecursivePartial<BaseOptions> & {
     currentLanguageIndicatorClassName:string;
     currentLanguagePattern:string;
     default:string;
-    domNode:DomNodes;
+    domNodes:DomNodes;
     fadeEffect:boolean;
     initial:null|string;
     languageHashPrefix:string;
