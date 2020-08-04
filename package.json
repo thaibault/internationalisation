@@ -46,7 +46,6 @@
   },
   "devDependencies": {
     "@babel/plugin-transform-proto-to-assign": "*",
-    "@babel/preset-env": "*",
     "@types/ejs": "*",
     "@types/html-minifier": "*",
     "@types/jest": "*",
