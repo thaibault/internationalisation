@@ -140,7 +140,6 @@ describe('Internationalisation', ():void => {
         }
         let referenceLanguage:string = internationalisation._options.default
         if (
-            'navigator' in globalThis &&
             globalThis.navigator &&
             typeof globalThis.navigator.language !== 'undefined'
         )

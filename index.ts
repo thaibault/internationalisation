@@ -503,10 +503,9 @@ export class Internationalisation<TElement extends HTMLElement = HTMLElement>
         if (this._options.initial)
             result = this._options.initial
         else if ($.global.window) {
-            if (
-                $.global.window.localStorage &&
-                $.global.window.localStorage.getItem(this._options.sessionDescription)
-            ) {
+            if ($.global.window.localStorage?.getItem(
+                this._options.sessionDescription
+            )) {
                 result = $.global.window.localStorage.getItem(
                     this._options.sessionDescription
                 ) as string
@@ -514,10 +513,7 @@ export class Internationalisation<TElement extends HTMLElement = HTMLElement>
                     `Determine "${result}", because of local storage ` +
                     'information.'
                 )
-            } else if (
-                $.global.window.navigator &&
-                $.global.window.navigator.language
-            ) {
+            } else if ($.global.window.navigator?.language) {
                 result = $.global.window.navigator.language
                 this.debug(
                     `Determine "${result}", because of browser settings.`
@@ -539,7 +535,7 @@ export class Internationalisation<TElement extends HTMLElement = HTMLElement>
             )
             result = this._options.selection[0]
         }
-        if ($.global.window && $.global.window.localStorage)
+        if ($.global.window?.localStorage)
             $.global.window.localStorage.setItem(
                 this._options.sessionDescription, result
             )
