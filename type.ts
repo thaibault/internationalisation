@@ -31,52 +31,52 @@ import {
 export type InternationalisationFunction<TElement = HTMLElement> =
     (...parameter:Array<any>) => $DomNode<TElement>
 export interface Scope<TElement = HTMLElement> extends BaseScope<TElement> {
-    Internationalisation:InternationalisationFunction<TElement>;
+    Internationalisation:InternationalisationFunction<TElement>
 }
 declare global {
     interface JQuery<TElement = HTMLElement> extends Scope<TElement> {}
 }
 export type Replacement = {
-    $textNodeToTranslate:$DomNode<HTMLItem>;
-    $nodeToReplace:$DomNode<HTMLItem>;
-    textToReplace:string;
-    $currentLanguageDomNode:null|$DomNode<HTMLItem>;
+    $textNodeToTranslate:$DomNode<HTMLItem>
+    $nodeToReplace:$DomNode<HTMLItem>
+    textToReplace:string
+    $currentLanguageDomNode:null|$DomNode<HTMLItem>
 }
 export type DomNodes<Type = string> = RecursivePartial<BaseDomNodes> & {
-    knownTranslation:Type;
+    knownTranslation:Type
 }
 export type $DomNodes =
     RecursivePartial<$BaseDomNodes> &
     DomNodes<$DomNode> &
     {switchLanguageButtons:$DomNode<HTMLLinkElement>}
 export type Options = RecursivePartial<BaseOptions> & {
-    currentLanguageIndicatorClassName:string;
-    currentLanguagePattern:string;
-    default:string;
-    domNodes:DomNodes;
-    fadeEffect:boolean;
-    initial:null|string;
-    languageHashPrefix:string;
-    languageMapping:Mapping<Array<string>>;
-    onSwitched:Function;
-    onEnsured:Function;
-    onSwitch:Function;
-    onEnsure:Function;
-    preReplacementLanguagePattern:string;
-    replaceDomNodeNames:Array<string>;
-    replacementDomNodeName:Array<string>;
-    replacementLanguagePattern:string;
-    selection:Array<string>;
-    sessionDescription:string;
+    currentLanguageIndicatorClassName:string
+    currentLanguagePattern:string
+    default:string
+    domNodes:DomNodes
+    fadeEffect:boolean
+    initial:null|string
+    languageHashPrefix:string
+    languageMapping:Mapping<Array<string>>
+    onSwitched:Function
+    onEnsured:Function
+    onSwitch:Function
+    onEnsure:Function
+    preReplacementLanguagePattern:string
+    replaceDomNodeNames:Array<string>
+    replacementDomNodeName:Array<string>
+    replacementLanguagePattern:string
+    selection:Array<string>
+    sessionDescription:string
     templateDelimiter:{
-        pre:string;
-        post:string;
-    };
+        pre:string
+        post:string
+    }
     textNodeParent:{
-        hideAnimation:[Mapping<number|string>, Mapping<number|string>];
-        showAnimation:[Mapping<number|string>, Mapping<number|string>];
-    };
-    toolsLockDescription:string;
+        hideAnimation:[Mapping<number|string>, Mapping<number|string>]
+        showAnimation:[Mapping<number|string>, Mapping<number|string>]
+    }
+    toolsLockDescription:string
 }
 // endregion
 // region vim modline
