@@ -15,7 +15,7 @@
 */
 // region imports
 import Tools, {augment$, determine$} from 'clientnode'
-import {$Global, $DomNode} from 'clientnode/type'
+import {FirstParameter, $Global, $DomNode} from 'clientnode/type'
 import {getInitializedBrowser} from 'weboptimizer/browser'
 import {InitializedBrowser} from 'weboptimizer/type'
 
@@ -115,15 +115,22 @@ describe('Internationalisation', ():void => {
     )
     // / endregion
     // / region protected methods
-    test.each([
-        ['de', 'deDE'],
-        ['de-de', 'deDE'],
-        ['en-us', 'enUS'],
-        ['fr', 'frFR'],
-        ['', 'enUS']
+    /*
+        NOTE: We cannot use clientnodes "testEach" helper since
+        "internationalisation isn't available during test specification time.
+    */
+    test.each<[
+        ReturnType<Internationalisation['_normalizeLanguage']>,
+        FirstParameter<Internationalisation['_normalizeLanguage']>
+    ]>([
+        ['deDE', 'de'],
+        ['deDE', 'de-de'],
+        ['enUS', 'en-us'],
+        ['frFR', 'fr'],
+        ['enUS', '']
     ])(
-        `_normalizeLanguage('%s') === '%s'`,
-        (given:string, expected:string):void =>
+        `'%s' === _normalizeLanguage('%s')`,
+        (expected:string, given:string):void =>
             expect(internationalisation._normalizeLanguage(given))
                 .toStrictEqual(expected)
     )
