@@ -130,7 +130,10 @@ describe('Internationalisation', ():void => {
         ['enUS', '']
     ])(
         `'%s' === _normalizeLanguage('%s')`,
-        (expected:string, given:string):void =>
+        (
+            expected:ReturnType<Internationalisation['_normalizeLanguage']>,
+            given:FirstParameter<Internationalisation['_normalizeLanguage']>
+        ):void =>
             expect(internationalisation._normalizeLanguage(given))
                 .toStrictEqual(expected)
     )
