@@ -247,9 +247,7 @@ export class Internationalisation<TElement extends HTMLElement = HTMLElement>
             await this._handleSwitchEffect(language, ensure)
             return this.$domNode
         }
-        this.debug(
-            '"{1}" is already current selected language.', language
-        )
+        this.debug('"{1}" is already current selected language.', language)
         this.releaseLock(this._options.toolsLockDescription)
         return this.$domNode
     }
