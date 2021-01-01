@@ -8321,9 +8321,9 @@ webidl-conversions@^6.1.0:
   integrity sha512-qBIvFLGiBpLjfwmYAaHPXsn+ho5xZnGvyGvsarywGNc8VyQJUMHJ8OBKGGrPER0okBeMDaan4mNBlgBROxuI8w==
 
 weboptimizer@*:
-  version "2.0.866"
-  resolved "https://registry.yarnpkg.com/weboptimizer/-/weboptimizer-2.0.866.tgz#5efc71c82b591c06a058c473bb53b9e9a48ba802"
-  integrity sha512-VeGPLo5E88n6yO9/bzdFlyrkP9MGvxWoWFYt55UhB2/poI5VOICZdc6v2ibP5koGfc2/sXTJ6cLi9TYKFc87Yg==
+  version "2.0.868"
+  resolved "https://registry.yarnpkg.com/weboptimizer/-/weboptimizer-2.0.868.tgz#9dbcc51d0a9010e2382bdb82603cd999891d70e6"
+  integrity sha512-IG2fxFkvoh7moyeLLm174Px6AjpLUgyzKAoFfQaa41mqqc0nFPRKbvqNO1sdQ95JdaV008F72hXVVJJPFvOymw==
   dependencies:
     "@babel/core" "*"
     "@babel/plugin-proposal-class-properties" "*"
