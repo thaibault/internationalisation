@@ -99,8 +99,13 @@
     "webpack": {
       "watchOptions": {
         "ignored": {
-          "__prepend__": "**/node_modules/**/*.ts",
-          "__remove__": "**/node_modules/**"
+          "__prepend__": [
+            "**/node_modules/**/node_modules",
+            "**/node_modules/**/*.jsx",
+            "**/node_modules/**/*.ts",
+            "**/node_modules/**/*.tsx"
+          ],
+          "__remove__": "**/node_modules"
         }
       }
     }
