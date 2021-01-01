@@ -95,6 +95,14 @@
           }
         }
       }
+    },
+    "webpack": {
+      "watchOptions": {
+        "ignored": {
+          "__prepend__": "**/node_modules/**/*.ts",
+          "__remove__": "**/node_modules/**"
+        }
+      }
     }
   }
 }
