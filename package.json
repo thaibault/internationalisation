@@ -83,6 +83,16 @@
         ]
       }
     },
+    "#": "Only reasonable if have a linked clientnode repository next to this one and updates their should be propagated directly in development mode.",
+    "development": {
+      "server": {
+        "contentBase": {
+          "__append__": {
+            "__evaluate__": "path.resolve(self.path.base, '../clientnode')"
+          }
+        }
+      }
+    },
     "target:export": {
       "module": {
         "preprocessor": {
