@@ -18,9 +18,9 @@
 */
 // region imports
 import Tools, {BoundTools, $} from 'clientnode'
-import {$DomNode, HTMLItem, Mapping, RecursivePartial} from 'clientnode/type'
+import {HTMLItem, Mapping, RecursivePartial, $DomNode} from 'clientnode/type'
 
-import {$DomNodes, Options, Replacement} from './type'
+import {Options, Replacement, $DomNodes} from './type'
 // endregion
 // region plugins/classes
 /**
