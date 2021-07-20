@@ -95,8 +95,9 @@ import {Options, Replacement, $DomNodes} from './type'
  * @property _textNodesWithKnownTranslation - Saves a mapping of known text
  * snippets to their corresponding $-extended dom nodes.
  */
-export class Internationalisation<TElement extends HTMLElement = HTMLElement>
-    extends BoundTools<TElement> {
+export class Internationalisation<
+    TElement extends HTMLElement = HTMLElement, LockType = string|void
+> extends BoundTools<TElement, LockType> {
     static readonly _name:'Internationalisation' = 'Internationalisation'
 
     $domNodes:$DomNodes = null as unknown as $DomNodes
@@ -307,7 +308,7 @@ export class Internationalisation<TElement extends HTMLElement = HTMLElement>
      * @returns Returns the current instance.
      */
     _movePreReplacementNodes():void {
-        const self:Internationalisation<TElement> = this
+        const self:Internationalisation<TElement, LockType> = this
         this.$domNode.find(':not(iframe)').contents().each(function():void {
             const $this:$DomNode<HTMLItem> = $(this)
             const nodeName:string = $this.prop('nodeName').toLowerCase()
@@ -353,7 +354,7 @@ export class Internationalisation<TElement extends HTMLElement = HTMLElement>
         let $lastTextNodeToTranslate:null|$DomNode<HTMLItem> = null
         let $lastLanguageDomNode:null|$DomNode = null
         this.knownTranslations = {}
-        const self:Internationalisation<TElement> = this
+        const self:Internationalisation<TElement, LockType> = this
         this.$domNode.find(':not(iframe)').contents().each(function():void {
             const $currentDomNode:$DomNode<HTMLItem> = $(this)
             const nodeName:string =
@@ -426,7 +427,7 @@ export class Internationalisation<TElement extends HTMLElement = HTMLElement>
      */
     _registerKnownTextNodes():void {
         this._textNodesWithKnownTranslation = {}
-        const self:Internationalisation<TElement> = this
+        const self:Internationalisation<TElement, LockType> = this
         this.$domNodes
             .knownTranslation
             .find(':not(iframe)')
