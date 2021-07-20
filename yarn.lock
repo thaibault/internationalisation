@@ -3110,9 +3110,9 @@ cli-table3@^0.5.0:
     colors "^1.1.2"
 
 clientnode@*:
-  version "3.0.744"
-  resolved "https://registry.yarnpkg.com/clientnode/-/clientnode-3.0.744.tgz#29c0d52fd406eb692d3fb23b0c583a79aae67956"
-  integrity sha512-HpfVW1PTzbu6XxGlLeZL2jYpH83/XF+yRtZPFxeoOjRE7g25J8K94hlDJmoWgCTc3fdAcudRQG7v/7A0gbg9mg==
+  version "3.0.745"
+  resolved "https://registry.yarnpkg.com/clientnode/-/clientnode-3.0.745.tgz#4b39c4417c4e262811ec5ab7da14505f0e85db8a"
+  integrity sha512-3Bk3aXlH3v5CzdPA+316sdcsaSh9QAcPX93dUknKSiZzFbCUCNkTBXYdAOjVHm5gOQRZoNVflg9XF670z4EthA==
   dependencies:
     "@types/webpack" "https://registry.yarnpkg.com/@favware/skip-dependency/-/skip-dependency-1.1.0.tgz"
 
@@ -7990,9 +7990,9 @@ webidl-conversions@^6.1.0:
   integrity sha512-qBIvFLGiBpLjfwmYAaHPXsn+ho5xZnGvyGvsarywGNc8VyQJUMHJ8OBKGGrPER0okBeMDaan4mNBlgBROxuI8w==
 
 weboptimizer@*:
-  version "2.0.976"
-  resolved "https://registry.yarnpkg.com/weboptimizer/-/weboptimizer-2.0.976.tgz#281f00c134ac8ce88b0c35d9287d06091928f7e0"
-  integrity sha512-zdS0nvhLx4yagoXjGNGnAw/l+tMpTbYHVdIvPx/wCjgzmBb3ya5tf3RCsVXC8gVOpeknIAK3/6NntLdbrhE3BA==
+  version "2.0.978"
+  resolved "https://registry.yarnpkg.com/weboptimizer/-/weboptimizer-2.0.978.tgz#e301fe82463454ca1359c448a5402d6c9a32bf12"
+  integrity sha512-l5L46ZlKNT+Hp3u0kpdvZ/SAvmvPspZYz2HqRYC7ZPXQy93rk0AYevMnJuRE9ptU60cebS6oQc4czUzKXgwSMw==
   dependencies:
     "@babel/core" "*"
     "@babel/plugin-proposal-class-properties" "*"
@@ -8146,9 +8146,9 @@ webpack@*:
     webpack-sources "^2.3.0"
 
 website-utilities@*:
-  version "1.0.237"
-  resolved "https://registry.yarnpkg.com/website-utilities/-/website-utilities-1.0.237.tgz#68d79696f0dc5b4f6e455aaba46b10356d039b55"
-  integrity sha512-XLurKYNnNBY9jlZUSCwMTEAf2apxzwE7sT7mgL8WVB/sqYmj2muI0zXLsCir1f43W6rESv9vylTO6Wl5L424NQ==
+  version "1.0.238"
+  resolved "https://registry.yarnpkg.com/website-utilities/-/website-utilities-1.0.238.tgz#d590db7c6d560bd1f63ebe7b531084c1ba35288c"
+  integrity sha512-wcMTx5DKLnfwXRNE3ge8r6u8iOkiqaZXPQgaUxcuKbHwcHUFWjXfbFcNjA2LzToi3FwcFjHLjMyww3IqnOA7uQ==
   dependencies:
     "@types/webpack" "https://registry.yarnpkg.com/@favware/skip-dependency/-/skip-dependency-1.1.0.tgz"
 
