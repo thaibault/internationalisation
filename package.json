@@ -46,6 +46,7 @@
     "watch": "weboptimizer build --watch"
   },
   "devDependencies": {
+    "@babel/eslint-parser": "*",
     "@babel/plugin-transform-proto-to-assign": "*",
     "@types/ejs": "*",
     "@types/html-minifier": "*",
@@ -57,7 +58,6 @@
     "@types/workbox-webpack-plugin": "*",
     "@typescript-eslint/eslint-plugin": "*",
     "@typescript-eslint/parser": "*",
-    "babel-eslint": "*",
     "clientnode": "*",
     "documentation-website": "*",
     "eslint": "*",
