@@ -19,10 +19,10 @@
     "internationalisation"
   ],
   "files": [
-    "index.ts",
-    "type.ts"
+    "index.d.ts",
+    "index.js",
+    "type.d.ts"
   ],
-  "main": "index.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/thaibault/internationalisation"
