@@ -110,7 +110,7 @@ export class Internationalisation<
         currentLanguageIndicatorClassName: 'current',
         currentLanguagePattern: '^[a-z]{2}[A-Z]{2}$',
         default: 'enUS',
-        domNodes: {knownTranslation: 'div.toc'},
+        domNodes: {knownTranslation: 'div.toc'} as Options['domNodes'],
         fadeEffect: true,
         initial: null,
         languageHashPrefix: 'language-',
@@ -163,12 +163,14 @@ export class Internationalisation<
         this._options.sessionDescription = Tools.stringFormat(
             this._options.sessionDescription, this.self._name
         )
+
         this.$domNodes = this.grabDomNode(
             this._options.domNodes as Mapping<string>, this.$domNode
-        ) as unknown as $DomNodes
+        ) as $DomNodes
         this.$domNodes.switchLanguageButtons = $(
             `a[href^="#${this._options.languageHashPrefix}"]`
         )
+
         this._movePreReplacementNodes()
         this.currentLanguage = this._normalizeLanguage(this._options.default)
         /*

@@ -42,12 +42,11 @@ export type Replacement = {
     textToReplace:string
     $currentLanguageDomNode:null|$DomNode<HTMLItem>
 }
-export type DomNodes<Type = string> = RecursivePartial<BaseDomNodes> & {
-    knownTranslation:Type
-}
+export type DomNodes<Type = string> =
+    BaseDomNodes &
+    {knownTranslation:Type}
 export type $DomNodes =
-    RecursivePartial<$BaseDomNodes> &
-    DomNodes<$DomNode> &
+    $BaseDomNodes &
     {switchLanguageButtons:$DomNode<HTMLLinkElement>}
 export type Options = RecursivePartial<BaseOptions> & {
     currentLanguageIndicatorClassName:string

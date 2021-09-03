@@ -2984,9 +2984,9 @@ cli-table3@^0.5.0:
     colors "^1.1.2"
 
 clientnode@*:
-  version "3.0.802"
-  resolved "https://registry.yarnpkg.com/clientnode/-/clientnode-3.0.802.tgz#57e3e06fcf70baada8d8979d30f986949af672fa"
-  integrity sha512-voOU9nL0Hys5rs6swkvw+IOcB0r+QfnCAOM3eoqecm8aJQHbcvNuEaZfzPoX+a/DPdr/bGKOwCApcqdSVP4kBA==
+  version "3.0.803"
+  resolved "https://registry.yarnpkg.com/clientnode/-/clientnode-3.0.803.tgz#8a0261581c1c323d2182d352eb1ec7d5f4680132"
+  integrity sha512-xeXQCU6lJ6dLX4fGAZIo10XGPJ/JL5FjORVZwXChmmin/groznMpgzgw0Hqor2SbQtiQah9zo2lPXLik6jV+fg==
   dependencies:
     "@types/webpack" "https://registry.yarnpkg.com/@favware/skip-dependency/-/skip-dependency-1.1.0.tgz"
 
@@ -3472,9 +3472,9 @@ ejs@*:
     jake "^10.6.1"
 
 electron-to-chromium@^1.3.47, electron-to-chromium@^1.3.811:
-  version "1.3.828"
-  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.3.828.tgz#0dee975b5bf45d6357af266f350fcdb6736a5e40"
-  integrity sha512-2kx537tLqIVfUpx7LRknZce5PcCyxyBB1YUVOhxlkrDoCqFITGJGYfBAvSxGOdqlp+R9pHeU9Ai/dsHgsqjrvQ==
+  version "1.3.829"
+  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.3.829.tgz#efd360b594824fcd84e24c6eb0c8e41e2a44fbc7"
+  integrity sha512-5EXDbvsaLRxS1UOfRr8Hymp3dR42bvBNPgzVuPwUFj3v66bpvDUcNwwUywQUQYn/scz26/3Sgd3fNVGQOlVwvQ==
 
 emittery@^0.8.1:
   version "0.8.1"
