@@ -18,7 +18,9 @@
 */
 // region imports
 import Tools, {BoundTools, $} from 'clientnode'
-import {HTMLItem, Mapping, RecursivePartial, $DomNode} from 'clientnode/type'
+import {
+    HTMLItem, Mapping, ParametersExceptFirst, RecursivePartial, $DomNode
+} from 'clientnode/type'
 
 import {DefaultOptions, Options, Replacement, $DomNodes} from './type'
 // endregion
@@ -111,6 +113,7 @@ export class Internationalisation<
             enEN: ['en_en', 'en-en', 'english'],
             frFR: ['fr', 'fr_fr', 'fr-fr', 'french']
         },
+        name: 'Internationalisation',
         onSwitched: Tools.noop,
         onEnsured: Tools.noop,
         onSwitch: Tools.noop,
@@ -731,13 +734,14 @@ export default Internationalisation
 // region handle $ extending
 if ($.fn)
     $.fn.Internationalisation = function<TElement = HTMLElement>(
-        ...parameter:Array<any>
+        this:$DomNode<TElement>,
+        ...parameters:ParametersExceptFirst<(typeof Tools)['controller']>
     ):$DomNode<TElement> {
-        return Tools.controller(
+        return Tools.controller<TElement, $DomNode<TElement>>(
             Internationalisation,
-            parameter,
-            this as unknown as $DomNode<TElement>
-        )
+            parameters,
+            this
+        )!
     }
 // endregion
 // region vim modline

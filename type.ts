@@ -57,6 +57,7 @@ export interface DefaultOptions {
     initial:null|string
     languageHashPrefix:string
     languageMapping:Mapping<Array<string>>
+    name:string
     onSwitched:Function
     onEnsured:Function
     onSwitch:Function
