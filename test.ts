@@ -29,7 +29,7 @@ describe('Internationalisation', ():void => {
     // region mockup
     let $domNode:$DomNode<HTMLBodyElement>
     let internationalisation:Internationalisation<HTMLBodyElement>
-    let internationalisationClass:typeof Internationalisation
+
     beforeAll(async ():Promise<void> => {
         const browser:InitializedBrowser = await getInitializedBrowser()
         globalThis.window = browser.window as Window & typeof globalThis
@@ -39,15 +39,17 @@ describe('Internationalisation', ():void => {
             NOTE: Import plugin with side effects (augmenting "$" scope /
             registering plugin) when other imports are only used as type.
         */
-        internationalisationClass = require('./index').default
+        require('./index')
+
         if (globalThis.window.localStorage)
-            globalThis.window.localStorage
-                .removeItem(internationalisationClass._name)
+            globalThis.window.localStorage.removeItem('Internationalisation')
+
         $domNode = await $(window.document.body as HTMLBodyElement)
             .Internationalisation({
                 allowedLanguages: ['enUS', 'deDE', 'frFR'], initial: 'enUS'
             })
-        internationalisation = $domNode.data(internationalisationClass._name)
+
+        internationalisation = $domNode.data('Internationalisation')
     })
     // endregion
     // region tests
@@ -140,15 +142,15 @@ describe('Internationalisation', ():void => {
     test('_determineUsefulLanguage', ():void => {
         if (typeof globalThis.window.localStorage !== 'undefined') {
             globalThis.window.localStorage[
-                internationalisation._options.sessionDescription
+                internationalisation.options.sessionDescription
             ] = 'enUS'
             expect(internationalisation._determineUsefulLanguage())
                 .toStrictEqual('enUS')
             delete globalThis.window.localStorage[
-                internationalisation._options.sessionDescription
+                internationalisation.options.sessionDescription
             ]
         }
-        let referenceLanguage:string = internationalisation._options.default
+        let referenceLanguage:string = internationalisation.options.default
         if (
             globalThis.navigator &&
             typeof globalThis.navigator.language !== 'undefined'
@@ -188,7 +190,7 @@ describe('Internationalisation', ():void => {
     test('_switchLanguage', async ():Promise<void> => {
         const subInternationalisation:Internationalisation<HTMLBodyElement> =
             (await $domNode.Internationalisation())
-                .data(internationalisationClass._name)
+                .data('Internationalisation')
         expect(subInternationalisation._switchLanguage('deDE')).toBeUndefined()
         expect(subInternationalisation.currentLanguage).toStrictEqual('deDE')
     })

@@ -20,7 +20,7 @@
 import Tools, {BoundTools, $} from 'clientnode'
 import {HTMLItem, Mapping, RecursivePartial, $DomNode} from 'clientnode/type'
 
-import {Options, Replacement, $DomNodes} from './type'
+import {DefaultOptions, Options, Replacement, $DomNodes} from './type'
 // endregion
 // region plugins/classes
 /**
@@ -97,7 +97,7 @@ import {Options, Replacement, $DomNodes} from './type'
 export class Internationalisation<
     TElement extends HTMLElement = HTMLElement, LockType = string|void
 > extends BoundTools<TElement, LockType> {
-    static _defaultOptions:Options = {
+    static _defaultOptions:DefaultOptions = {
         currentLanguageIndicatorClassName: 'current',
         currentLanguagePattern: '^[a-z]{2}[A-Z]{2}$',
         default: 'enUS',
@@ -133,6 +133,8 @@ export class Internationalisation<
     currentLanguage:string = 'enUS'
     knownTranslations:Mapping = {}
 
+    options:Options = null as unknown as Options
+
     _$domNodeToFade:null|$DomNode = null
     _replacements:Array<Replacement> = []
     _textNodesWithKnownTranslation:Mapping<$DomNode<HTMLItem>> = {}
@@ -147,7 +149,10 @@ export class Internationalisation<
     initialize(
         options:RecursivePartial<Options> = {}
     ):Promise<$DomNode<TElement>> {
-        super.initialize(options)
+        super.initialize(Tools.extend<Options>(
+            true, {} as Options, Internationalisation._defaultOptions, options
+        ))
+
         this.options.preReplacementLanguagePattern = Tools.stringFormat(
             this.options.preReplacementLanguagePattern,
             this.options.replacementLanguagePattern.substr(
@@ -534,7 +539,7 @@ export class Internationalisation<
         result = this._normalizeLanguage(result)
         if (
             this.options.selection.length &&
-            !this._options.selection.includes(result)
+            !this.options.selection.includes(result)
         ) {
             this.debug(
                 `"${result}" isn\'t one of the allowed languages. Set ` +
@@ -728,7 +733,7 @@ if ($.fn)
     $.fn.Internationalisation = function<TElement = HTMLElement>(
         ...parameter:Array<any>
     ):$DomNode<TElement> {
-        return $.Tools().controller(
+        return Tools.controller(
             Internationalisation,
             parameter,
             this as unknown as $DomNode<TElement>
