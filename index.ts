@@ -85,6 +85,8 @@ import {DefaultOptions, Options, Replacement, $DomNodes} from './type'
  * @property static:_defaultOptions.onEnsure - Callback which should be called
  * before a language switch should be ensured.
  *
+ * @property options - Finally configured given options.
+ *
  * @property currentLanguage - Saves the current language.
  * @property knownTranslations - Saves a mapping of known language strings and
  * their corresponding translations, to boost language replacements or saves
