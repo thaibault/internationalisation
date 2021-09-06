@@ -33,7 +33,7 @@ describe('Internationalisation', ():void => {
     beforeAll(async ():Promise<void> => {
         const browser:InitializedBrowser = await getInitializedBrowser()
         globalThis.window = browser.window as Window & typeof globalThis
-        (globalThis as $Global).$ = require('jquery')
+        ;(globalThis as unknown as $Global).$ = require('jquery')
         augment$(determine$())
         /*
             NOTE: Import plugin with side effects (augmenting "$" scope /
