@@ -171,7 +171,7 @@ export class Internationalisation<
             this.options.sessionDescription, this.options.name
         )
 
-        this.$domNodes = this.grabDomNode(
+        this.$domNodes = this.grabDomNodes(
             this.options.domNodes as Mapping<string>, this.$domNode
         ) as $DomNodes
         this.$domNodes.switchLanguageButtons =
