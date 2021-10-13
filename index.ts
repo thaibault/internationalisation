@@ -17,7 +17,7 @@
     endregion
 */
 // region imports
-import Tools, {BoundTools, $} from 'clientnode'
+import Tools, {BoundTools, Lock, $} from 'clientnode'
 import {
     HTMLItem, Mapping, ParametersExceptFirst, RecursivePartial, $DomNode
 } from 'clientnode/type'
@@ -66,8 +66,7 @@ import {DefaultOptions, Options, Replacement, $DomNodes} from './type'
  * text in another language).
  * @property static:_defaultOptions.replaceDomNodeNames - Tag names which
  * indicates dom nodes which should be replaced.
- * @property static:_defaultOptions.toolsLockDescription - Lock description for
- * the locking mechanism provided by the extended tools class.
+ * @property static:_defaultOptions.lockDescription - Lock description.
  * @property static:_defaultOptions.languageHashPrefix - Hash prefix to
  * determine current active language by url.
  * @property static:_defaultOptions.sessionDescription - Name to use for saving
@@ -92,6 +91,8 @@ import {DefaultOptions, Options, Replacement, $DomNodes} from './type'
  * their corresponding translations, to boost language replacements or saves
  * redundant replacements in dom tree.
  *
+ * @property lock - Lock instance when updating dom noes.
+ *
  * @property _$domNodeToFade - Saves all $-extended dom nodes which should be
  * animated.
  * @property _replacements - Saves all text nodes which should be replaced.
@@ -115,6 +116,7 @@ export class Internationalisation<
             enEN: ['en_en', 'en-en', 'english'],
             frFR: ['fr', 'fr_fr', 'fr-fr', 'french']
         },
+        lockDescription: '{1}Switch'
         name: 'Internationalisation',
         onSwitched: Tools.noop,
         onEnsured: Tools.noop,
@@ -130,13 +132,14 @@ export class Internationalisation<
         textNodeParent: {
             hideAnimation: [{opacity: 0}, {duration: 'fast'}],
             showAnimation: [{opacity: 1}, {duration: 'fast'}]
-        },
-        toolsLockDescription: '{1}Switch'
+        }
     }
 
     $domNodes:$DomNodes = null as unknown as $DomNodes
     currentLanguage:string = 'enUS'
     knownTranslations:Mapping = {}
+
+    lock:Lock = new Lock()
 
     options:Options = null as unknown as Options
 
@@ -164,8 +167,8 @@ export class Internationalisation<
                 1, this.options.replacementLanguagePattern.length - 2
             )
         )
-        this.options.toolsLockDescription = Tools.stringFormat(
-            this.options.toolsLockDescription, this.options.name
+        this.options.lockDescription = Tools.stringFormat(
+            this.options.lockDescription, this.options.name
         )
         this.options.sessionDescription = Tools.stringFormat(
             this.options.sessionDescription, this.options.name
@@ -228,7 +231,7 @@ export class Internationalisation<
             this.debug('"{1}" isn\'t one of the allowed languages.', language)
             return this.$domNode
         }
-        await this.acquireLock(this.options.toolsLockDescription)
+        await this.lock.acquire(this.options.lockDescription)
         if (language === true) {
             ensure = true
             language = this.currentLanguage
@@ -262,7 +265,7 @@ export class Internationalisation<
             return this.$domNode
         }
         this.debug('"{1}" is already current selected language.', language)
-        this.releaseLock(this.options.toolsLockDescription)
+        this.lock.release(this.options.lockDescription)
         return this.$domNode
     }
     /**
@@ -303,7 +306,7 @@ export class Internationalisation<
                     oldLanguage,
                     language
                 )
-                this.releaseLock(this.options.toolsLockDescription)
+                this.lock.release(this.options.lockDescription)
             }
             return
         }
@@ -315,7 +318,7 @@ export class Internationalisation<
             oldLanguage,
             language
         )
-        this.releaseLock(this.options.toolsLockDescription)
+        this.lock.release(this.options.lockDescription)
     }
     /**
      * Moves pre replacement dom nodes into next dom node behind translation
