@@ -116,7 +116,7 @@ export class Internationalisation<
             enEN: ['en_en', 'en-en', 'english'],
             frFR: ['fr', 'fr_fr', 'fr-fr', 'french']
         },
-        lockDescription: '{1}Switch'
+        lockDescription: '{1}Switch',
         name: 'Internationalisation',
         onSwitched: Tools.noop,
         onEnsured: Tools.noop,
