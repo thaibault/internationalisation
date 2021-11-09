@@ -21,6 +21,7 @@ import {
     HTMLItem,
     Mapping,
     Options as BaseOptions,
+    UnknownFunction,
     $DomNodes as $BaseDomNodes,
     $T
 } from 'clientnode/type'
@@ -58,11 +59,12 @@ export interface DefaultOptions {
     initial:null|string
     languageHashPrefix:string
     languageMapping:Mapping<Array<string>>
+    lockDescription:string
     name:string
-    onSwitched:Function
-    onEnsured:Function
-    onSwitch:Function
-    onEnsure:Function
+    onSwitched:UnknownFunction
+    onEnsured:UnknownFunction
+    onSwitch:UnknownFunction
+    onEnsure:UnknownFunction
     preReplacementLanguagePattern:string
     replaceDomNodeNames:Array<string>
     replacementDomNodeName:Array<string>
@@ -77,7 +79,6 @@ export interface DefaultOptions {
         hideAnimation:[Mapping<number|string>, Mapping<number|string>]
         showAnimation:[Mapping<number|string>, Mapping<number|string>]
     }
-    toolsLockDescription:string
 }
 export type Options = BaseOptions & DefaultOptions
 // endregion
