@@ -13,22 +13,21 @@ endregion -->
 Project status
 --------------
 
-[![npm](https://img.shields.io/npm/v/errorreporter?color=%23d55e5d&label=npm%20package%20version&logoColor=%23d55e5d)](https://www.npmjs.com/package/errorreporter)
-[![npm downloads](https://img.shields.io/npm/dy/errorreporter.svg)](https://www.npmjs.com/package/errorreporter)
+[![npm](https://img.shields.io/npm/v/internationalisation?color=%23d55e5d&label=npm%20package%20version&logoColor=%23d55e5d)](https://www.npmjs.com/package/internationalisation)
+[![npm downloads](https://img.shields.io/npm/dy/internationalisation.svg)](https://www.npmjs.com/package/internationalisation)
+[![<LABEL>](https://github.com/thaibault/internationalisation/actions/workflows/build.yaml/badge.svg)](https://github.com/thaibault/internationalisation/actions/workflows/build.yaml)
+[![<LABEL>](https://github.com/thaibault/internationalisation/actions/workflows/test.yaml/badge.svg)](https://github.com/thaibault/internationalisation/actions/workflows/test.yaml)
+[![<LABEL>](https://github.com/thaibault/internationalisation/actions/workflows/test:coverage:report.yaml/badge.svg)](https://github.com/thaibault/internationalisation/actions/workflows/test:coverage:report.yaml)
+[![<LABEL>](https://github.com/thaibault/internationalisation/actions/workflows/check:types.yaml/badge.svg)](https://github.com/thaibault/internationalisation/actions/workflows/check:types.yaml)
+[![<LABEL>](https://github.com/thaibault/internationalisation/actions/workflows/lint.yaml/badge.svg)](https://github.com/thaibault/internationalisation/actions/workflows/lint.yaml)
 
-[![<LABEL>](https://github.com/thaibault/errorreporter/actions/workflows/build.yaml/badge.svg)](https://github.com/thaibault/errorreporter/actions/workflows/build.yaml)
-[![<LABEL>](https://github.com/thaibault/errorreporter/actions/workflows/test.yaml/badge.svg)](https://github.com/thaibault/errorreporter/actions/workflows/test.yaml)
-[![<LABEL>](https://github.com/thaibault/errorreporter/actions/workflows/test:coverage:report.yaml/badge.svg)](https://github.com/thaibault/errorreporter/actions/workflows/test:coverage:report.yaml)
-[![<LABEL>](https://github.com/thaibault/errorreporter/actions/workflows/check:types.yaml/badge.svg)](https://github.com/thaibault/errorreporter/actions/workflows/check:types.yaml)
-[![<LABEL>](https://github.com/thaibault/errorreporter/actions/workflows/lint.yaml/badge.svg)](https://github.com/thaibault/errorreporter/actions/workflows/lint.yaml)
-
-[![npm version](https://badge.fury.io/js/internationalisation.svg)](https://www.npmjs.com/package/internationalisation)
-[![downloads](https://img.shields.io/npm/dy/internationalisation.svg)](https://www.npmjs.com/package/internationalisation)
-[![build status](https://travis-ci.org/thaibault/internationalisation.svg?branch=master)](https://travis-ci.org/thaibault/internationalisation)
 [![code coverage](https://coveralls.io/repos/github/thaibault/internationalisation/badge.svg)](https://coveralls.io/github/thaibault/internationalisation)
+
+<!-- Too unstable yet
 [![dependencies](https://img.shields.io/david/thaibault/internationalisation.svg)](https://david-dm.org/thaibault/internationalisation)
 [![development dependencies](https://img.shields.io/david/dev/thaibault/internationalisation.svg)](https://david-dm.org/thaibault/internationalisation?type=dev)
 [![peer dependencies](https://img.shields.io/david/peer/thaibault/internationalisation.svg)](https://david-dm.org/thaibault/internationalisation?type=peer)
+-->
 [![documentation website](https://img.shields.io/website-up-down-green-red/https/torben.website/internationalisation.svg?label=documentation-website)](https://torben.website/internationalisation)
 
 <!--|deDE:Einsatz-->
