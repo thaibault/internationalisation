@@ -15,7 +15,7 @@
 */
 // region imports
 import Tools, {augment$, determine$} from 'clientnode'
-import {FirstParameter, $Global, $DomNode} from 'clientnode/type'
+import {FirstParameter, $Global, $T} from 'clientnode/type'
 import {getInitializedBrowser} from 'weboptimizer/browser'
 import {InitializedBrowser} from 'weboptimizer/type'
 
@@ -27,7 +27,7 @@ import Internationalisation from './index'
 // endregion
 describe('Internationalisation', ():void => {
     // region mockup
-    let $domNode:$DomNode<HTMLBodyElement>
+    let $domNode:$T<HTMLBodyElement>
     let internationalisation:Internationalisation<HTMLBodyElement>
 
     beforeAll(async ():Promise<void> => {

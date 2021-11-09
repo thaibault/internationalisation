@@ -19,7 +19,7 @@
 // region imports
 import Tools, {BoundTools, Lock, $} from 'clientnode'
 import {
-    HTMLItem, Mapping, ParametersExceptFirst, RecursivePartial, $DomNode
+    HTMLItem, Mapping, ParametersExceptFirst, RecursivePartial, $T
 } from 'clientnode/type'
 
 import {DefaultOptions, Options, Replacement, $DomNodes} from './type'
@@ -99,9 +99,9 @@ import {DefaultOptions, Options, Replacement, $DomNodes} from './type'
  * @property _textNodesWithKnownTranslation - Saves a mapping of known text
  * snippets to their corresponding $-extended dom nodes.
  */
-export class Internationalisation<
-    TElement extends HTMLElement = HTMLElement, LockType = string|void
-> extends BoundTools<TElement, LockType> {
+export class Internationalisation<TElement = HTMLElement> extends
+    BoundTools<TElement>
+{
     static _defaultOptions:DefaultOptions = {
         currentLanguageIndicatorClassName: 'current',
         currentLanguagePattern: '^[a-z]{2}[A-Z]{2}$',
@@ -143,20 +143,21 @@ export class Internationalisation<
 
     options:Options = null as unknown as Options
 
-    _$domNodeToFade:null|$DomNode = null
+    _$domNodeToFade:null|$T = null
     _replacements:Array<Replacement> = []
-    _textNodesWithKnownTranslation:Mapping<$DomNode<HTMLItem>> = {}
+    _textNodesWithKnownTranslation:Mapping<$T<HTMLItem>> = {}
     // region public methods
     // / region special
     /**
      * Initializes the plugin. Current language is set and later needed dom
      * nodes are grabbed.
      * @param options - An options object.
+     *
      * @returns Returns the current instance wrapped in a promise.
      */
     initialize(
         options:RecursivePartial<Options> = {}
-    ):Promise<$DomNode<TElement>> {
+    ):Promise<$T<TElement>> {
         super.initialize(Tools.extend<Options>(
             true, {} as Options, Internationalisation._defaultOptions, options
         ))
@@ -181,17 +182,20 @@ export class Internationalisation<
             $(`a[href^="#${this.options.languageHashPrefix}"]`)
 
         this._movePreReplacementNodes()
+
         this.currentLanguage = this._normalizeLanguage(this.options.default)
         /*
             NOTE: Only switch current language indicator if we haven't an
             initial language switch which will perform the indicator switch.
         */
         const newLanguage:string = this._determineUsefulLanguage()
+
         this.on(
             this.$domNodes.switchLanguageButtons,
             'click',
-            (event:Event):Promise<$DomNode<TElement>> => {
+            (event:Event):Promise<$T<TElement>> => {
                 event.preventDefault()
+
                 return this.switch(
                     $(event.target)
                         .attr('href')
@@ -212,7 +216,6 @@ export class Internationalisation<
     /**
      * Switches the current language to given language. This method is mutual
      * synchronized.
-     *
      * @param language - New language as string or "true". If set to "true" it
      * indicates that the dom tree should be checked again current language to
      * ensure every text node has right content.
@@ -222,21 +225,25 @@ export class Internationalisation<
      */
     async switch(
         language:string|true, ensure:boolean = false
-    ):Promise<$DomNode<TElement>> {
+    ):Promise<$T<TElement>> {
         if (
             language !== true &&
             this.options.selection.length &&
             !this.options.selection.includes(language)
         ) {
             this.debug('"{1}" isn\'t one of the allowed languages.', language)
+
             return this.$domNode
         }
+
         await this.lock.acquire(this.options.lockDescription)
+
         if (language === true) {
             ensure = true
             language = this.currentLanguage
         } else
             language = this._normalizeLanguage(language)
+
         if (
             ensure &&
             language !== this.options.default ||
@@ -245,8 +252,11 @@ export class Internationalisation<
             let actionDescription:string = 'Switch to'
             if (ensure)
                 actionDescription = 'Ensure'
+
             this.debug('{1} "{2}".', actionDescription, language)
+
             this._switchCurrentLanguageIndicator(language)
+
             await this.fireEvent(
                 (ensure ? 'ensure' : 'switch'),
                 true,
@@ -254,6 +264,7 @@ export class Internationalisation<
                 this.currentLanguage,
                 language
             )
+
             this._$domNodeToFade = null
             this._replacements = []
             const [$lastTextNodeToTranslate, $lastLanguageDomNode] =
@@ -261,19 +272,25 @@ export class Internationalisation<
             this._ensureLastTextNodeHavingLanguageIndicator(
                 $lastTextNodeToTranslate, $lastLanguageDomNode, ensure
             )
+
             await this._handleSwitchEffect(language, ensure)
+
             return this.$domNode
         }
+
         this.debug('"{1}" is already current selected language.', language)
+
         this.lock.release(this.options.lockDescription)
+
         return this.$domNode
     }
     /**
      * Ensures current selected language.
      * @returns Returns the current instance wrapped in a promise.
      */
-    refresh():Promise<$DomNode<TElement>> {
+    refresh():Promise<$T<TElement>> {
         this._movePreReplacementNodes()
+
         return this.switch(true)
     }
     // / endregion
@@ -281,7 +298,6 @@ export class Internationalisation<
     /**
      * Depending an activated switching effect this method initialized the
      * effect of replace all text string directly.
-     *
      * @param language - New language to use.
      * @param ensure - Indicates if current language should be ensured again
      * every text node content.
@@ -294,11 +310,13 @@ export class Internationalisation<
             await this._$domNodeToFade
                 .animate(...this.options.textNodeParent.hideAnimation)
                 .promise()
+
             this._switchLanguage(language)
             if (this._$domNodeToFade) {
                 await this._$domNodeToFade
                     .animate(...this.options.textNodeParent.showAnimation)
                     .promise()
+
                 await this.fireEvent(
                     (ensure ? 'ensured' : 'switched'),
                     true,
@@ -306,11 +324,15 @@ export class Internationalisation<
                     oldLanguage,
                     language
                 )
+
                 this.lock.release(this.options.lockDescription)
             }
+
             return
         }
+
         this._switchLanguage(language)
+
         await this.fireEvent(
             (ensure ? 'ensured' : 'switched'),
             true,
@@ -318,6 +340,7 @@ export class Internationalisation<
             oldLanguage,
             language
         )
+
         this.lock.release(this.options.lockDescription)
     }
     /**
@@ -326,14 +349,15 @@ export class Internationalisation<
      * @returns Returns the current instance.
      */
     _movePreReplacementNodes():void {
-        const self:Internationalisation<TElement, LockType> = this
+        const self:Internationalisation<TElement> = this
         this.$domNode.find(':not(iframe)').contents().each(function():void {
-            const $this:$DomNode<HTMLItem> = $(this)
+            const $this:$T<HTMLItem> = $(this)
             const nodeName:string = $this.prop('nodeName').toLowerCase()
             if (self.options.replacementDomNodeName.includes(nodeName)) {
                 if (!['#comment', '#text'].includes(nodeName))
                     // NOTE: Hide replacement dom nodes.
                     $this.hide()
+
                 const regularExpression:RegExp = new RegExp(
                     self.options.preReplacementLanguagePattern
                 )
@@ -344,12 +368,15 @@ export class Internationalisation<
                     $this
                         .prop('textContent', $this.prop('textContent')
                         .replace(regularExpression, match[1]))
+
                     let selfFound:boolean = false
                     $this.parent().contents().each(function():false|void {
                         if (selfFound && $(this).Tools('text').trim()) {
                             $this.appendTo(this as Element)
+
                             return false
                         }
+
                         if ($this[0] === this)
                             selfFound = true
                     })
@@ -362,19 +389,22 @@ export class Internationalisation<
      * @param language - New language to use.
      * @param ensure - Indicates if the whole dom should be checked again
      * current language to ensure every text node has right content.
+     *
      * @returns Return a tuple of last text and language dom node to translate.
      */
     _collectTextNodesToReplace(
         language:string, ensure:boolean
-    ):Array<null|$DomNode> {
-        let $currentTextNodeToTranslate:null|$DomNode<HTMLItem> = null
-        let $currentLanguageDomNode:null|$DomNode = null
-        let $lastTextNodeToTranslate:null|$DomNode<HTMLItem> = null
-        let $lastLanguageDomNode:null|$DomNode = null
+    ):Array<null|$T> {
+        let $currentTextNodeToTranslate:null|$T<HTMLItem> = null
+        let $currentLanguageDomNode:null|$T = null
+        let $lastTextNodeToTranslate:null|$T<HTMLItem> = null
+        let $lastLanguageDomNode:null|$T = null
+
         this.knownTranslations = {}
-        const self:Internationalisation<TElement, LockType> = this
+        const self:Internationalisation<TElement> = this
+
         this.$domNode.find(':not(iframe)').contents().each(function():void {
-            const $currentDomNode:$DomNode<HTMLItem> = $(this)
+            const $currentDomNode:$T<HTMLItem> = $(this)
             const nodeName:string =
                 $currentDomNode.prop('nodeName').toLowerCase()
             if (self.options.replaceDomNodeNames.includes(
@@ -400,6 +430,7 @@ export class Internationalisation<
                     let content:string = $currentDomNode.prop('textContent')
                     if (nodeName !== '#comment')
                         content = $currentDomNode.html()
+
                     const match:Array<string>|null = content.match(new RegExp(
                         self.options.replacementLanguagePattern
                     ))
@@ -427,16 +458,20 @@ export class Internationalisation<
                                 new RegExp(self.options.currentLanguagePattern)
                             )
                     )
-                        $currentLanguageDomNode = $currentDomNode as $DomNode
+                        $currentLanguageDomNode = $currentDomNode as $T
+
                     return
                 }
+
                 $lastTextNodeToTranslate = null
                 $lastLanguageDomNode = null
                 $currentTextNodeToTranslate = null
                 $currentLanguageDomNode = null
             }
         })
+
         this._registerKnownTextNodes()
+
         return [$lastTextNodeToTranslate, $lastLanguageDomNode]
     }
     /**
@@ -445,13 +480,15 @@ export class Internationalisation<
      */
     _registerKnownTextNodes():void {
         this._textNodesWithKnownTranslation = {}
-        const self:Internationalisation<TElement, LockType> = this
+
+        const self:Internationalisation<TElement> = this
+
         this.$domNodes
             .knownTranslation
             .find(':not(iframe)')
             .contents()
             .each(function():void {
-                const $currentDomNode:$DomNode<HTMLItem> = $(this)
+                const $currentDomNode:$T<HTMLItem> = $(this)
                 // NOTE: We skip empty and nested text nodes.
                 if (
                     !self.options.replaceDomNodeNames.includes(
@@ -493,6 +530,7 @@ export class Internationalisation<
     /**
      * Normalizes a given language string.
      * @param language - New language to use.
+     *
      * @returns Returns the normalized version of given language.
      */
     _normalizeLanguage(language:string):string {
@@ -529,19 +567,23 @@ export class Internationalisation<
                 result = $.global.window.localStorage.getItem(
                     this.options.sessionDescription
                 ) as string
+
                 this.debug(
                     `Determine "${result}", because of local storage ` +
                     'information.'
                 )
             } else if ($.global.window.navigator?.language) {
                 result = $.global.window.navigator.language
+
                 this.debug(
                     `Determine "${result}", because of browser settings.`
                 )
             }
         }
+
         if (!result) {
             result = this.options.default
+
             this.debug(`Determine "${result}", because of default option.`)
         }
         result = this._normalizeLanguage(result)
@@ -553,21 +595,26 @@ export class Internationalisation<
                 `"${result}" isn\'t one of the allowed languages. Set ` +
                 `language to "${this.options.selection[0]}".`
             )
+
             result = this.options.selection[0]
         }
+
         if ($.global.window?.localStorage)
             $.global.window.localStorage.setItem(
                 this.options.sessionDescription, result
             )
+
         return result
     }
     /**
      * Registers a text node to change its content with given replacement.
      * @param $textNode - Text node with content to translate.
+     *
      * @returns Returns the current instance.
      */
-    _addTextNodeToFade($textNode:$DomNode<HTMLItem>):void {
-        const $parent:$DomNode = $textNode.parent() as $DomNode
+    _addTextNodeToFade($textNode:$T<HTMLItem>):void {
+        const $parent:$T = $textNode.parent() as $T
+
         if (this._$domNodeToFade)
             this._$domNodeToFade = this._$domNodeToFade.add($parent)
         else
@@ -581,15 +628,17 @@ export class Internationalisation<
      * @param match - A matching array of replacement's text content.
      * @param $currentLanguageDomNode - A potential given text node indicating
      * the language of given text node.
+     *
      * @returns Returns the current instance.
      */
     _registerTextNodeToChange(
-        $currentTextNodeToTranslate:$DomNode<HTMLItem>,
-        $currentDomNode:$DomNode<HTMLItem>,
+        $currentTextNodeToTranslate:$T<HTMLItem>,
+        $currentDomNode:$T<HTMLItem>,
         match:Array<string>,
-        $currentLanguageDomNode:null|$DomNode
+        $currentLanguageDomNode:null|$T
     ):void {
         this._addTextNodeToFade($currentTextNodeToTranslate)
+
         if ($currentDomNode)
             this._replacements.push({
                 $textNodeToTranslate: $currentTextNodeToTranslate,
@@ -606,14 +655,15 @@ export class Internationalisation<
      * commend node.
      * @param ensure - Indicates if current language should be ensured again
      * every text node content.
+     *
      * @returns Returns the retrieved or newly created language indicating
      * comment node.
      */
     _ensureLastTextNodeHavingLanguageIndicator(
-        $lastTextNodeToTranslate:null|$DomNode<HTMLItem>,
-        $lastLanguageDomNode:null|$DomNode,
+        $lastTextNodeToTranslate:null|$T<HTMLItem>,
+        $lastLanguageDomNode:null|$T,
         ensure:boolean
-    ):null|$DomNode {
+    ):null|$T {
         if ($lastTextNodeToTranslate && !$lastLanguageDomNode) {
             /*
                 Last text node doesn't have a current language indicating dom
@@ -622,15 +672,18 @@ export class Internationalisation<
             let currentLocalLanguage:string = this.currentLanguage
             if (ensure)
                 currentLocalLanguage = this.options.default
+
             $lastLanguageDomNode = $(`<!--${currentLocalLanguage}-->`)
             $lastTextNodeToTranslate.after($lastLanguageDomNode)
         }
+
         return $lastLanguageDomNode
     }
     /**
      * Performs the low level text replacements for switching to given
      * language.
      * @param language - The new language to switch to.
+     *
      * @returns Returns the current instance.
      */
     _switchLanguage(language:string):void {
@@ -639,13 +692,14 @@ export class Internationalisation<
             if (replacement.$textNodeToTranslate.prop('nodeName') === '#text')
                 currentText =
                     replacement.$textNodeToTranslate.prop('textContent')
+
             const trimmedText:string = currentText.trim()
             if (
                 !this.options.templateDelimiter ||
                 !trimmedText.endsWith(this.options.templateDelimiter.post) &&
                 this.options.templateDelimiter.post
             ) {
-                let $currentLanguageDomNode:null|$DomNode<HTMLItem> =
+                let $currentLanguageDomNode:null|$T<HTMLItem> =
                     replacement.$currentLanguageDomNode
                 if (!$currentLanguageDomNode) {
                     /*
@@ -668,14 +722,16 @@ export class Internationalisation<
                                 currentDomNodeFound = true
                         })
                 }
+
                 const currentLanguage:string =
-                    ($currentLanguageDomNode as $DomNode).prop('textContent')
+                    ($currentLanguageDomNode as $T).prop('textContent')
                 if (language === currentLanguage)
                     this.warn(
                         `Text node "${replacement.textToReplace}" is marked ` +
                         `as "${currentLanguage}" and has same translation ` +
                         'language as it already is.'
                     )
+
                 const nodeName:string = replacement.$nodeToReplace.prop(
                     'nodeName'
                 ).toLowerCase()
@@ -688,7 +744,9 @@ export class Internationalisation<
                         `<${nodeName}>${currentLanguage}:${currentText}</` +
                         `${nodeName}>`
                     ).hide())
+
                 replacement.$textNodeToTranslate.after($(`<!--${language}-->`))
+
                 if (
                     replacement.$textNodeToTranslate.prop('nodeName') ===
                         '#text'
@@ -700,26 +758,30 @@ export class Internationalisation<
                     replacement.$textNodeToTranslate.html(
                         replacement.textToReplace
                     )
+
                 $currentLanguageDomNode.remove()
                 replacement.$nodeToReplace.remove()
             }
         }
+
         // Translate registered known text nodes.
         for (const content in this._textNodesWithKnownTranslation)
             if (this._textNodesWithKnownTranslation.hasOwnProperty(content))
-                this._textNodesWithKnownTranslation[content].prop(
-                    'textContent', content
-                )
+                this._textNodesWithKnownTranslation[content]
+                    .prop('textContent', content)
+
         if ('localStorage' in $.global)
             $.global.localStorage.setItem(
                 this.options.sessionDescription, language
             )
+
         this.currentLanguage = language
     }
     /**
      * Switches the current language indicator in language switch triggered dom
      * nodes.
      * @param language - The new language to switch to.
+     *
      * @returns Returns the current instance.
      */
     _switchCurrentLanguageIndicator(language:string):void {
@@ -728,6 +790,7 @@ export class Internationalisation<
             `${this.currentLanguage}"].` +
             this.options.currentLanguageIndicatorClassName
         ).removeClass(this.options.currentLanguageIndicatorClassName)
+
         $(
             `a[href="#${this.options.languageHashPrefix}${language}"]`
         ).addClass(this.options.currentLanguageIndicatorClassName)
@@ -739,10 +802,10 @@ export default Internationalisation
 // region handle $ extending
 if ($.fn)
     $.fn.Internationalisation = function<TElement = HTMLElement>(
-        this:$DomNode<TElement>,
+        this:$T<TElement>,
         ...parameters:ParametersExceptFirst<(typeof Tools)['controller']>
-    ):$DomNode<TElement> {
-        return Tools.controller<TElement, $DomNode<TElement>>(
+    ):$T<TElement> {
+        return Tools.controller<TElement, $T<TElement>>(
             Internationalisation,
             parameters,
             this
