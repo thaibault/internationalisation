@@ -17,37 +17,41 @@
 */
 // region imports
 import {
-    $DomNode,
     $DomNodes as $BaseDomNodes,
     DomNodes as BaseDomNodes,
     HTMLItem,
     Mapping,
     Options as BaseOptions,
     RecursivePartial,
-    Scope as BaseScope
+    Scope as BaseScope,
+    $T
 } from 'clientnode/type'
 // endregion
 // region exports
 export type InternationalisationFunction<TElement = HTMLElement> =
     (...parameter:Array<any>) => $DomNode<TElement>
+
 export interface Scope<TElement = HTMLElement> extends BaseScope<TElement> {
     Internationalisation:InternationalisationFunction<TElement>
 }
 declare global {
     interface JQuery<TElement = HTMLElement> extends Scope<TElement> {}
 }
+
 export interface Replacement {
     $textNodeToTranslate:$DomNode<HTMLItem>
     $nodeToReplace:$DomNode<HTMLItem>
     textToReplace:string
     $currentLanguageDomNode:null|$DomNode<HTMLItem>
 }
+
 export type DomNodes<Type = string> =
     BaseDomNodes &
     {knownTranslation:Type}
 export type $DomNodes =
     $BaseDomNodes &
     {switchLanguageButtons:$DomNode<HTMLLinkElement>}
+
 export interface DefaultOptions {
     currentLanguageIndicatorClassName:string
     currentLanguagePattern:string
