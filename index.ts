@@ -812,10 +812,10 @@ export default Internationalisation
 if ($.fn)
     $.fn.Internationalisation = function<TElement = HTMLElement>(
         this:$T<TElement>, ...parameters:Array<unknown>
-    ):$T<TElement> {
+    ):Promise<$T<TElement>> {
         return Tools.controller<TElement>(
             Internationalisation, parameters, this
-        ) as $T<TElement>
+        ) as Promise<$T<TElement>>
     }
 // endregion
 // region vim modline
