@@ -278,8 +278,7 @@ export class Internationalisation<TElement = HTMLElement> extends BoundTools<
 
         this.debug('"{1}" is already current selected language.', language)
 
-        this.lock.release(this.options.lockDescription)
-            .then(Tools.noop, Tools.noop)
+        void this.lock.release(this.options.lockDescription)
 
         return this.$domNode
     }
@@ -324,8 +323,7 @@ export class Internationalisation<TElement = HTMLElement> extends BoundTools<
                     language
                 )
 
-                this.lock.release(this.options.lockDescription)
-                    .then(Tools.noop, Tools.noop)
+                void this.lock.release(this.options.lockDescription)
             }
 
             return
@@ -341,8 +339,7 @@ export class Internationalisation<TElement = HTMLElement> extends BoundTools<
             language
         )
 
-        this.lock.release(this.options.lockDescription)
-            .then(Tools.noop, Tools.noop)
+        void this.lock.release(this.options.lockDescription)
     }
     /**
      * Moves pre replacement dom nodes into next dom node behind translation
