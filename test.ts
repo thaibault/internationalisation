@@ -54,14 +54,14 @@ describe('Internationalisation', ():void => {
     })
     // endregion
     // region tests
-    // / region public methods
-    // // region special
+    /// region public methods
+    //// region special
     test('initialize', ():Promise<void> =>
         expect(internationalisation.initialize())
             .resolves
             .toStrictEqual($domNode)
     )
-    // // endregion
+    //// endregion
     test('switch', async ():Promise<void> => {
         expect(await internationalisation.switch('en')).toStrictEqual($domNode)
         $domNode.html('<div>english<!--deDE:german--></div>')
@@ -116,8 +116,8 @@ describe('Internationalisation', ():void => {
     test('refresh', ():Promise<void> =>
         expect(internationalisation.refresh()).resolves.toStrictEqual($domNode)
     )
-    // / endregion
-    // / region protected methods
+    /// endregion
+    /// region protected methods
     /*
         NOTE: We cannot use clientnodes "testEach" helper since
         "internationalisation isn't available during test specification time.
@@ -199,7 +199,7 @@ describe('Internationalisation', ():void => {
         expect(internationalisation._switchCurrentLanguageIndicator('deDE'))
             .toBeUndefined()
     )
-    // / endregion
+    /// endregion
     // endregion
 })
 // region vim modline

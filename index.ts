@@ -145,7 +145,7 @@ export class Internationalisation<TElement = HTMLElement> extends BoundTools<
     _replacements:Array<Replacement> = []
     _textNodesWithKnownTranslation:Mapping<$T<HTMLItem>> = {}
     // region public methods
-    // / region special
+    /// region special
     /**
      * Initializes the plugin. Current language is set and later needed dom
      * nodes are grabbed.
@@ -211,7 +211,7 @@ export class Internationalisation<TElement = HTMLElement> extends BoundTools<
 
         return this.switch(newLanguage, true) as unknown as R
     }
-    // / endregion
+    /// endregion
     /**
      * Switches the current language to given language. This method is mutual
      * synchronized.
@@ -291,7 +291,7 @@ export class Internationalisation<TElement = HTMLElement> extends BoundTools<
 
         return this.switch(true)
     }
-    // / endregion
+    /// endregion
     // region protected methods
     /**
      * Depending an activated switching effect this method initialized the
