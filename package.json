@@ -48,6 +48,9 @@
     "update:documentation": "documentationWebsite --log-level info",
     "watch": "weboptimizer build --watch"
   },
+  "dependencies": {
+    "@types/webpack": "https://registry.yarnpkg.com/@favware/skip-dependency/-/skip-dependency-1.1.1.tgz"
+  },
   "devDependencies": {
     "@babel/eslint-parser": "*",
     "@babel/plugin-transform-proto-to-assign": "*",
@@ -89,6 +92,10 @@
     "jquery": {
       "optional": true
     }
+  },
+  "engines": {
+    "node": ">=17",
+    "npm": ">=7"
   },
   "resolutions": {
     "@types/webpack": "https://registry.yarnpkg.com/@favware/skip-dependency/-/skip-dependency-1.1.1.tgz",
@@ -149,8 +156,5 @@
         }
       }
     }
-  },
-  "dependencies": {
-    "@types/webpack": "https://registry.yarnpkg.com/@favware/skip-dependency/-/skip-dependency-1.1.1.tgz"
   }
 }

@@ -15,6 +15,7 @@ Project status
 
 [![npm](https://img.shields.io/npm/v/internationalisation?color=%23d55e5d&label=npm%20package%20version&logoColor=%23d55e5d)](https://www.npmjs.com/package/internationalisation)
 [![npm downloads](https://img.shields.io/npm/dy/internationalisation.svg)](https://www.npmjs.com/package/internationalisation)
+
 [![<LABEL>](https://github.com/thaibault/internationalisation/actions/workflows/build.yaml/badge.svg)](https://github.com/thaibault/internationalisation/actions/workflows/build.yaml)
 [![<LABEL>](https://github.com/thaibault/internationalisation/actions/workflows/test.yaml/badge.svg)](https://github.com/thaibault/internationalisation/actions/workflows/test.yaml)
 [![<LABEL>](https://github.com/thaibault/internationalisation/actions/workflows/test:coverage:report.yaml/badge.svg)](https://github.com/thaibault/internationalisation/actions/workflows/test:coverage:report.yaml)
