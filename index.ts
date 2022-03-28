@@ -351,7 +351,8 @@ export class Internationalisation<TElement = HTMLElement> extends BoundTools<
 
         this.$domNode.find(':not(iframe)').contents().each(function():void {
             const $this:$T<HTMLItem> = $(this)
-            const nodeName:string = $this.prop('nodeName').toLowerCase()
+            const nodeName:string =
+                ($this.prop('nodeName') as string).toLowerCase()
 
             if (self.options.replacementDomNodeName.includes(nodeName)) {
                 if (!['#comment', '#text'].includes(nodeName))
@@ -360,13 +361,13 @@ export class Internationalisation<TElement = HTMLElement> extends BoundTools<
 
                 const regularExpression =
                     new RegExp(self.options.preReplacementLanguagePattern)
-                const match:Array<string>|null = $this
-                    .prop('textContent')
-                    .match(regularExpression)
+                const match:Array<string>|null =
+                    ($this.prop('textContent') as string)
+                        .match(regularExpression)
                 if (match && match[0]) {
                     $this.prop(
                         'textContent',
-                        $this.prop('textContent')
+                        ($this.prop('textContent') as string)
                             .replace(regularExpression, match[1])
                     )
 
@@ -407,7 +408,7 @@ export class Internationalisation<TElement = HTMLElement> extends BoundTools<
         this.$domNode.find(':not(iframe)').contents().each(function():void {
             const $currentDomNode:$T<HTMLItem> = $(this)
             const nodeName:string =
-                $currentDomNode.prop('nodeName').toLowerCase()
+                ($currentDomNode.prop('nodeName') as string).toLowerCase()
             if (self.options.replaceDomNodeNames.includes(
                 nodeName.toLowerCase()
             )) {
@@ -428,7 +429,8 @@ export class Internationalisation<TElement = HTMLElement> extends BoundTools<
                 }
             } else if ($currentTextNodeToTranslate) {
                 if (self.options.replacementDomNodeName.includes(nodeName)) {
-                    let content:string = $currentDomNode.prop('textContent')
+                    let content:string =
+                        $currentDomNode.prop('textContent') as string
                     if (nodeName !== '#comment')
                         content = $currentDomNode.html()
 
@@ -453,8 +455,7 @@ export class Internationalisation<TElement = HTMLElement> extends BoundTools<
                         $currentTextNodeToTranslate = null
                         $currentLanguageDomNode = null
                     } else if (
-                        $currentDomNode
-                            .prop('textContent')
+                        ($currentDomNode.prop('textContent') as string)
                             .match(
                                 new RegExp(self.options.currentLanguagePattern)
                             )
@@ -493,7 +494,8 @@ export class Internationalisation<TElement = HTMLElement> extends BoundTools<
                 // NOTE: We skip empty and nested text nodes.
                 if (
                     !self.options.replaceDomNodeNames.includes(
-                        $currentDomNode.prop('nodeName').toLowerCase()
+                        ($currentDomNode.prop('nodeName') as string)
+                            .toLowerCase()
                     ) &&
                     $currentDomNode.Tools('text').trim() &&
                     $currentDomNode.parents(
@@ -507,24 +509,27 @@ export class Internationalisation<TElement = HTMLElement> extends BoundTools<
                     self._addTextNodeToFade($currentDomNode)
                     if (Object.prototype.hasOwnProperty.call(
                         self._textNodesWithKnownTranslation,
-                        self.knownTranslations[$currentDomNode.prop(
-                            'textContent'
+                        self.knownTranslations[(
+                            $currentDomNode.prop('textContent') as string
                         ).trim()]
                     ))
                         self._textNodesWithKnownTranslation[
                             self.knownTranslations[
-                                $currentDomNode.prop('textContent').trim()
+                                ($currentDomNode.prop('textContent') as string)
+                                    .trim()
                             ]
                         ] =
                             self._textNodesWithKnownTranslation[
-                                self.knownTranslations[$currentDomNode.prop(
-                                    'textContent'
+                                self.knownTranslations[(
+                                    $currentDomNode.prop('textContent') as
+                                        string
                                 ).trim()]
                             ].add(this)
                     else
                         self._textNodesWithKnownTranslation[
                             self.knownTranslations[
-                                $currentDomNode.prop('textContent').trim()
+                                ($currentDomNode.prop('textContent') as string)
+                                    .trim()
                             ]
                         ] = $currentDomNode
                 }
@@ -693,9 +698,14 @@ export class Internationalisation<TElement = HTMLElement> extends BoundTools<
     _switchLanguage(language:string):void {
         for (const replacement of this._replacements) {
             let currentText:string = replacement.$textNodeToTranslate.html()
-            if (replacement.$textNodeToTranslate.prop('nodeName') === '#text')
+            if (
+                (
+                    replacement.$textNodeToTranslate.prop('nodeName') as string
+                ) === '#text'
+            )
                 currentText =
-                    replacement.$textNodeToTranslate.prop('textContent')
+                    replacement.$textNodeToTranslate.prop('textContent') as
+                        string
 
             const trimmedText:string = currentText.trim()
             if (
@@ -720,15 +730,18 @@ export class Internationalisation<TElement = HTMLElement> extends BoundTools<
                                 replacement.$currentLanguageDomNode =
                                     $currentLanguageDomNode =
                                     $(this)
+
                                 return false
                             }
+
                             if (this === replacement.$textNodeToTranslate[0])
                                 currentDomNodeFound = true
                         })
                 }
 
                 const currentLanguage:string =
-                    ($currentLanguageDomNode as $T).prop('textContent')
+                    ($currentLanguageDomNode as $T).prop('textContent') as
+                        string
                 if (language === currentLanguage)
                     this.warn(
                         `Text node "${replacement.textToReplace}" is marked ` +
@@ -736,8 +749,8 @@ export class Internationalisation<TElement = HTMLElement> extends BoundTools<
                         'language as it already is.'
                     )
 
-                const nodeName:string = replacement.$nodeToReplace.prop(
-                    'nodeName'
+                const nodeName:string = (
+                    replacement.$nodeToReplace.prop('nodeName') as string
                 ).toLowerCase()
                 if (nodeName === '#comment')
                     replacement.$textNodeToTranslate.after($(

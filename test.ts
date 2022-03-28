@@ -14,7 +14,7 @@
     endregion
 */
 // region imports
-import Tools, {augment$, determine$} from 'clientnode'
+import Tools, {augment$, currentRequire, determine$} from 'clientnode'
 import {FirstParameter, $Global, $T} from 'clientnode/type'
 import {getInitializedBrowser} from 'weboptimizer/browser'
 import {InitializedBrowser} from 'weboptimizer/type'
@@ -34,7 +34,8 @@ describe('Internationalisation', ():void => {
         const browser:InitializedBrowser = await getInitializedBrowser()
         globalThis.window = browser.window as Window & typeof globalThis
 
-        ;(globalThis as unknown as $Global).$ = eval('require')('jquery')
+        ;(globalThis as unknown as $Global).$ =
+            currentRequire!<typeof import('jquery')>('jquery')
         augment$(determine$())
         /*
             NOTE: Import plugin with side effects (augmenting "$" scope /
@@ -50,7 +51,8 @@ describe('Internationalisation', ():void => {
                 allowedLanguages: ['enUS', 'deDE', 'frFR'], initial: 'enUS'
             })
 
-        internationalisation = $domNode.data('Internationalisation')
+        internationalisation = $domNode.data('Internationalisation') as
+            Internationalisation<HTMLBodyElement>
     })
     // endregion
     // region tests
@@ -191,7 +193,8 @@ describe('Internationalisation', ():void => {
     test('_switchLanguage', async ():Promise<void> => {
         const subInternationalisation:Internationalisation<HTMLBodyElement> =
             (await $domNode.Internationalisation())
-                .data('Internationalisation')
+                .data('Internationalisation') as
+                    Internationalisation<HTMLBodyElement>
         expect(subInternationalisation._switchLanguage('deDE')).toBeUndefined()
         expect(subInternationalisation.currentLanguage).toStrictEqual('deDE')
     })
