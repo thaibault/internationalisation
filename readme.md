@@ -181,9 +181,9 @@ translation node. In this case you can simple wrap a self defined dom node.
 
     #!HTML
 
-    <langreplace>
+    <lang-replace>
         Your englisch version with <strong>dom nodes</strong> inside.
-    </langreplace>
+    </lang-replace>
     <!--deDE:
         Ihre deutsche Variante mit eingebetteten <strong>dom Knoten</strong>.
     -->
@@ -201,15 +201,15 @@ It is also possible to use an alternative replacement node.
 
     #!HTML
 
-    <langreplace>
+    <lang-replace>
         Your englisch version with <strong>dom nodes</strong> inside.
-    </langreplace>
-    <langreplacement>deDE:
+    </lang-replace>
+    <lang-replacement>deDE:
         Ihre deutsche Variante mit eingebetteten <strong>dom Knoten</strong>.
-    </langreplacement>
-    <langreplacement>frFR:
+    </lang-replacement>
+    <lang-replacement>frFR:
         Votre version français <strong>dom nodes</strong> à l'intérieur.
-    </langreplacement>
+    </lang-replacement>
 
 Usually the language dom node precedes the text node to translate. It is
 possible to write a special syntax to use a replacement for the next dom node
@@ -315,8 +315,8 @@ to initialize the plugin with different configuration.
             preReplacementLanguagePattern: '^\\|({1})$',
             replacementLanguagePattern: '^([a-z]{2}[A-Z]{2}):((.|\\s)*)$',
             currentLanguagePattern: '^[a-z]{2}[A-Z]{2}$',
-            replacementDomNodeName: ['#comment', 'langreplacement'],
-            replaceDomNodeNames: ['#text', 'langreplace'],
+            replacementDomNodeName: ['#comment', 'lang-replacement'],
+            replaceDomNodeNames: ['#text', 'lang-replace'],
             toolsLockDescription: '{1}Switch',
             languageHashPrefix: 'language-',
             currentLanguageIndicatorClassName: 'current',
