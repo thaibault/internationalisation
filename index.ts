@@ -107,7 +107,7 @@ export class Internationalisation<TElement = HTMLElement> extends BoundTools<
         domNodes: {knownTranslation: 'div.toc'} as Options['domNodes'],
         fadeEffect: true,
         initial: null,
-        languageHashPrefix: 'language-',
+        languageHashPrefix: 'lang-',
         languageMapping: {
             deDE: ['de', 'de_de', 'de-de', 'german', 'deutsch'],
             enUS: ['en', 'en_us', 'en-us'],
