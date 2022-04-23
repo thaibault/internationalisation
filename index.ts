@@ -542,21 +542,15 @@ export class Internationalisation<TElement = HTMLElement> extends BoundTools<
      * @returns Returns the normalized version of given language.
      */
     _normalizeLanguage(language:string):string {
-        for (const otherLanguage in this.options.languageMapping)
-            if (Object.prototype.hasOwnProperty.call(
-                this.options.languageMapping, otherLanguage
-            )) {
-                if (!this.options.languageMapping[otherLanguage].includes(
-                    otherLanguage.toLowerCase()
-                ))
-                    this.options.languageMapping[otherLanguage].push(
-                        otherLanguage.toLowerCase())
+        for (const [otherLanguage, aliases] of Object.entries(
+            this.options.languageMapping
+        )) {
+            if (!aliases.includes(otherLanguage.toLowerCase()))
+                aliases.push(otherLanguage.toLowerCase())
 
-                if (this.options.languageMapping[otherLanguage].includes(
-                    language.toLowerCase()
-                ))
-                    return otherLanguage
-            }
+            if (aliases.includes(language.toLowerCase()))
+                return otherLanguage
+        }
 
         return this.options.default
     }
@@ -782,12 +776,10 @@ export class Internationalisation<TElement = HTMLElement> extends BoundTools<
         }
 
         // Translate registered known text nodes.
-        for (const content in this._textNodesWithKnownTranslation)
-            if (Object.prototype.hasOwnProperty.call(
-                this._textNodesWithKnownTranslation, content
-            ))
-                this._textNodesWithKnownTranslation[content]
-                    .prop('textContent', content)
+        for (const [content, node] of Object.entries(
+            this._textNodesWithKnownTranslation
+        ))
+            node.prop('textContent', content)
 
         if ('localStorage' in $.global)
             $.global.localStorage.setItem(
