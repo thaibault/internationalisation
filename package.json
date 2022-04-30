@@ -61,7 +61,6 @@
     "@types/jest": "*",
     "@types/jquery": "*",
     "@types/jsdom": "*",
-    "@types/mini-css-extract-plugin": "*",
     "@types/node": "*",
     "@types/rimraf": "*",
     "@types/webpack-env": "*",
