@@ -67,15 +67,23 @@ after needed dependencies:
     Script-Tag in deine Webseite integrieren:
 -->
 
-    #!HTML
-
-    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
-    <script src="https://goo.gl/HEL97d"></script>
-    <!--Inject downloaded file:-->
-    <script src="index.compiled.js"></script>
-    <!--Or integrate via cdn:
-    <script src="https://goo.gl/3Axp2L"></script>
-    -->
+```HTML
+<script
+    src="https://code.jquery.com/jquery-3.6.0.min.js"
+    integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+    crossorigin="anonymous"
+></script>
+<script
+    src="https://torben.website/clientnode/data/distributionBundle/index.js"
+></script>
+<!--Inject downloaded file:
+<script src="index.js"></script>
+-->
+<!--Or integrate via cdn:-->
+<script
+    src="https://torben.website/internationalisation/data/distributionBundle/index.js"
+></script>
+```
 
 The compiled bundle supports AMD, commonjs, commonjs2 and variable injection
 into given context (UMD) as export format: You can use a module bundler if you
@@ -96,15 +104,15 @@ If you are using npm as package manager you can simply add this tool to your
     <strong>package.json</strong> erweitern:
 -->
 
-    #!JSON
-
+```JSON
+...
+"dependencies": {
     ...
-    "dependencies": {
-        ...
-        "internationalisation": "latest",
-        ...
-    },
+    "internationalisation": "latest",
     ...
+},
+...
+```
 
 After updating your packages you can simply depend on this script and let
 a module bundler do the hard stuff or access it via an exported variable name
@@ -115,23 +123,23 @@ in given context.
     Context referenzieren.
 -->
 
-    #!JavaScript
-
-    ...
-    import Language from 'internationalisation'
-    class SpecialLanguage extends Language...
-    Language({options..})
-    // or
-    import {$} from 'internationalisation'
-    $.Language()
-    class SpecialLanguage extends $.Language.class ...
-    // or
-    Language = require('internationalisation').default
-    value instanceof Language
-    // or
-    $ = require('internationalisation').$
-    $.Language()
-    ...
+```JavaScript
+...
+import Language from 'internationalisation'
+class SpecialLanguage extends Language...
+Language({options..})
+// or
+import {$} from 'internationalisation'
+$.Language()
+class SpecialLanguage extends $.Language.class ...
+// or
+Language = require('internationalisation').default
+value instanceof Language
+// or
+$ = require('internationalisation').$
+$.Language()
+...
+```
 
 <!--|deDE:Verwendung-->
 <!--|frFR:Demande-->
@@ -153,15 +161,15 @@ directly in markup. See how easy it is:
 
 <!--showExample-->
 
-    #!HTML
-
-    <p>
-        Your englisch version.
-        <!--deDE:Ihre deutsche Variante.-->
-        <!--frFR:
-            Sa version française.
-        -->
-    </p>
+```HTML
+<p>
+    Your englisch version.
+    <!--deDE:Ihre deutsche Variante.-->
+    <!--frFR:
+        Sa version française.
+    -->
+</p>
+```
 
 Sometime you need to explicit mark a text node as text to replace with next
 translation node. In this case you can simple wrap a self defined dom node.
@@ -178,17 +186,17 @@ translation node. In this case you can simple wrap a self defined dom node.
 
 <!--showExample-->
 
-    #!HTML
-
-    <lang-replace>
-        Your englisch version with <strong>dom nodes</strong> inside.
-    </lang-replace>
-    <!--deDE:
-        Ihre deutsche Variante mit eingebetteten <strong>dom Knoten</strong>.
-    -->
-    <!--frFR:
-        Votre version français <strong>dom nodes</strong> à l'intérieur.
-    -->
+```HTML
+<lang-replace>
+    Your englisch version with <strong>dom nodes</strong> inside.
+</lang-replace>
+<!--deDE:
+    Ihre deutsche Variante mit eingebetteten <strong>dom Knoten</strong>.
+-->
+<!--frFR:
+    Votre version français <strong>dom nodes</strong> à l'intérieur.
+-->
+```
 
 It is also possible to use an alternative replacement node.
 <!--deDE:Man kann auch einen alternative Ersetzungsknoten einsetzten.-->
@@ -198,17 +206,17 @@ It is also possible to use an alternative replacement node.
 
 <!--showExample-->
 
-    #!HTML
-
-    <lang-replace>
-        Your englisch version with <strong>dom nodes</strong> inside.
-    </lang-replace>
-    <lang-replacement>deDE:
-        Ihre deutsche Variante mit eingebetteten <strong>dom Knoten</strong>.
-    </lang-replacement>
-    <lang-replacement>frFR:
-        Votre version français <strong>dom nodes</strong> à l'intérieur.
-    </lang-replacement>
+```HTML
+<lang-replace>
+    Your englisch version with <strong>dom nodes</strong> inside.
+</lang-replace>
+<lang-replacement>deDE:
+    Ihre deutsche Variante mit eingebetteten <strong>dom Knoten</strong>.
+</lang-replacement>
+<lang-replacement>frFR:
+    Votre version français <strong>dom nodes</strong> à l'intérieur.
+</lang-replacement>
+```
 
 Usually the language dom node precedes the text node to translate. It is
 possible to write a special syntax to use a replacement for the next dom node
@@ -226,10 +234,10 @@ containing text.
 
 <!--showExample-->
 
-    #!HTML
-
-    <!--|deDE:Ihre deutsche Variante.--><!--|frFR:Votre version français.-->
-    <p>Your englisch version.</p>
+```HTML
+<!--|deDE:Ihre deutsche Variante.--><!--|frFR:Votre version français.-->
+<p>Your englisch version.</p>
+```
 
 Its possible to save one translation once if you specify the area with known
 translations.
@@ -244,19 +252,19 @@ translations.
 
 <!--showExample-->
 
-    #!HTML
-
-    <!--The "div.toc" selector defines the default known language area.-->
-    <div class="toc">
+```HTML
+<!--The "div.toc" selector defines the default known language area.-->
+<div class="toc">
+  <ul>
+    <li><a href="title-1">title 1</a></li>
       <ul>
-        <li><a href="title-1">title 1</a></li>
-          <ul>
-            <li><a href="title-2">title 2</a></li>
-          </ul>
+        <li><a href="title-2">title 2</a></li>
       </ul>
-    </div>
-    <h1 id="title-1">title 1<!--deDE:Titel 1--><!--frFR:titre 1--></h1>
-    <h2 id="title-2">title 2<!--deDE:Titel 2--><!--frFR:titre 2--></h2>
+  </ul>
+</div>
+<h1 id="title-1">title 1<!--deDE:Titel 1--><!--frFR:titre 1--></h1>
+<h2 id="title-2">title 2<!--deDE:Titel 2--><!--frFR:titre 2--></h2>
+```
 
 With the below initialisation you can simple add this links everywhere in your
 page to switch language. On click you will switch the current language
@@ -276,11 +284,11 @@ interactively. Try it by yourself:
 
 <!--showExample-->
 
-    #!HTML
-
-    <a href="#language-deDE">de</a>
-    <a href="#language-enUS">en</a>
-    <a href="#language-frFR">fr</a>
+```HTML
+<a href="#language-deDE">de</a>
+<a href="#language-enUS">en</a>
+<a href="#language-frFR">fr</a>
+```
 
 Here you can see a complete initialisation example with all available options
 to initialize the plugin with different configuration.
@@ -294,45 +302,54 @@ to initialize the plugin with different configuration.
     différentes configurations pour initialiser.
 -->
 
-    #!HTML
+```HTML
+<script
+    src="https://code.jquery.com/jquery-3.6.0.min.js"
+    integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+    crossorigin="anonymous"
+></script>
+<script
+    src="https://torben.website/clientnode/data/distributionBundle/index.js"
+></script>
+<script
+    src="https://torben.website/internationalisation/data/distributionBundle/index.js"
+></script>
 
-    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
-    <script src="https://goo.gl/HEL97d"></script>
-    <script src="https://goo.gl/3Axp2L"></script>
-    <script>
-        $(($) => $.Language({
-            domNodeSelectorPrefix: 'body',
-            default: 'enUS',
-            selection: [],
-            initial: null,
-            templateDelimiter: {pre: '{{', post: '}}'},
-            fadeEffect: true,
-            textNodeParent: {
-                showAnimation: [{opacity: 1}, {duration: 'fast'}],
-                hideAnimation: [{opacity: 0}, {duration: 'fast'}]
-            },
-            preReplacementLanguagePattern: '^\\|({1})$',
-            replacementLanguagePattern: '^([a-z]{2}[A-Z]{2}):((.|\\s)*)$',
-            currentLanguagePattern: '^[a-z]{2}[A-Z]{2}$',
-            replacementDomNodeName: ['#comment', 'lang-replacement'],
-            replaceDomNodeNames: ['#text', 'lang-replace'],
-            toolsLockDescription: '{1}Switch',
-            languageHashPrefix: 'language-',
-            currentLanguageIndicatorClassName: 'current',
-            sessionDescription: '{1}',
-            languageMapping: {
-                deDE: ['de', 'de_de', 'de-de', 'german', 'deutsch'],
-                enUS: ['en', 'en_us', 'en-us'],
-                enEN: ['en_en', 'en-en', 'english'],
-                frFR: ['fr', 'fr_fr', 'fr-fr', 'french']
-            },
-            onSwitched: $.noop(),
-            onEnsured: $.noop(),
-            onSwitch: $.noop(),
-            onEnsure: $.noop(),
-            domNode: {knownTranslation: 'div.toc'}
-        }))
-    </script>
+<script>
+    $(($) => $.Language({
+        domNodeSelectorPrefix: 'body',
+        default: 'enUS',
+        selection: [],
+        initial: null,
+        templateDelimiter: {pre: '{{', post: '}}'},
+        fadeEffect: true,
+        textNodeParent: {
+            showAnimation: [{opacity: 1}, {duration: 'fast'}],
+            hideAnimation: [{opacity: 0}, {duration: 'fast'}]
+        },
+        preReplacementLanguagePattern: '^\\|({1})$',
+        replacementLanguagePattern: '^([a-z]{2}[A-Z]{2}):((.|\\s)*)$',
+        currentLanguagePattern: '^[a-z]{2}[A-Z]{2}$',
+        replacementDomNodeName: ['#comment', 'lang-replacement'],
+        replaceDomNodeNames: ['#text', 'lang-replace'],
+        toolsLockDescription: '{1}Switch',
+        languageHashPrefix: 'language-',
+        currentLanguageIndicatorClassName: 'current',
+        sessionDescription: '{1}',
+        languageMapping: {
+            deDE: ['de', 'de_de', 'de-de', 'german', 'deutsch'],
+            enUS: ['en', 'en_us', 'en-us'],
+            enEN: ['en_en', 'en-en', 'english'],
+            frFR: ['fr', 'fr_fr', 'fr-fr', 'french']
+        },
+        onSwitched: $.noop(),
+        onEnsured: $.noop(),
+        onSwitch: $.noop(),
+        onEnsure: $.noop(),
+        domNode: {knownTranslation: 'div.toc'}
+    }))
+</script>
+```
 
 <!-- region modline
 vim: set tabstop=4 shiftwidth=4 expandtab:
