@@ -14,6 +14,7 @@
     endregion
 */
 // region imports
+import {beforeAll, describe, expect, test} from '@jest/globals'
 import Tools, {augment$, currentRequire, determine$} from 'clientnode'
 import {FirstParameter, $Global, $T} from 'clientnode/type'
 import {getInitializedBrowser} from 'weboptimizer/browser'
@@ -32,7 +33,6 @@ describe('Internationalisation', ():void => {
 
     beforeAll(async ():Promise<void> => {
         const browser:InitializedBrowser = await getInitializedBrowser()
-        globalThis.window = browser.window as Window & typeof globalThis
 
         ;(globalThis as unknown as $Global).$ =
             currentRequire!<typeof import('jquery')>('jquery')
@@ -124,10 +124,7 @@ describe('Internationalisation', ():void => {
         NOTE: We cannot use clientnodes "testEach" helper since
         "internationalisation isn't available during test specification time.
     */
-    test.each<[
-        ReturnType<Internationalisation['_normalizeLanguage']>,
-        FirstParameter<Internationalisation['_normalizeLanguage']>
-    ]>([
+    test.each([
         ['deDE', 'de'],
         ['deDE', 'de-de'],
         ['enUS', 'en-us'],
