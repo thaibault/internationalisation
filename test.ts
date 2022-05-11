@@ -18,7 +18,6 @@ import {beforeAll, describe, expect, test} from '@jest/globals'
 import Tools, {augment$, currentRequire, determine$} from 'clientnode'
 import {FirstParameter, $Global, $T} from 'clientnode/type'
 import {getInitializedBrowser} from 'weboptimizer/browser'
-import {InitializedBrowser} from 'weboptimizer/type'
 
 /*
     NOTE: Import and use only as type. Since real loading should be delayed
@@ -32,7 +31,7 @@ describe('Internationalisation', ():void => {
     let internationalisation:Internationalisation<HTMLBodyElement>
 
     beforeAll(async ():Promise<void> => {
-        const browser:InitializedBrowser = await getInitializedBrowser()
+        await getInitializedBrowser()
 
         ;(globalThis as unknown as $Global).$ =
             currentRequire!<typeof import('jquery')>('jquery')
