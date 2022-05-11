@@ -97,15 +97,21 @@ after needed dependencies:</p>
     Du kannst einfach das Plugin als Zip-Archiv herunterladen und per
     Script-Tag in deine Webseite integrieren:
 -->
-<pre><code>#!HTML
-
-&lt;script src=&quot;https://code.jquery.com/jquery-3.1.1.min.js&quot;&gt;&lt;/script&gt;
-&lt;script src=&quot;https://goo.gl/HEL97d&quot;&gt;&lt;/script&gt;
-&lt;!--Inject downloaded file:--&gt;
-&lt;script src=&quot;index.compiled.js&quot;&gt;&lt;/script&gt;
-&lt;!--Or integrate via cdn:
-&lt;script src=&quot;https://goo.gl/3Axp2L&quot;&gt;&lt;/script&gt;
---&gt;
+<pre class="prettyprint source lang-HTML"><code>&lt;script
+    src=&quot;https://code.jquery.com/jquery-3.6.0.min.js&quot;
+    integrity=&quot;sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=&quot;
+    crossorigin=&quot;anonymous&quot;
+>&lt;/script>
+&lt;script
+    src=&quot;https://torben.website/clientnode/data/distributionBundle/index.js&quot;
+>&lt;/script>
+&lt;!--Inject downloaded file:
+&lt;script src=&quot;index.js&quot;>&lt;/script>
+-->
+&lt;!--Or integrate via cdn:-->
+&lt;script
+    src=&quot;https://torben.website/internationalisation/data/distributionBundle/index.js&quot;
+>&lt;/script>
 </code></pre>
 <p>The compiled bundle supports AMD, commonjs, commonjs2 and variable injection
 into given context (UMD) as export format: You can use a module bundler if you
@@ -123,9 +129,7 @@ want.</p>
     Nutzt du npm als Paket-Manager, dann solltest du einfach deine
     <strong>package.json</strong> erweitern:
 -->
-<pre><code>#!JSON
-
-...
+<pre class="prettyprint source lang-JSON"><code>...
 &quot;dependencies&quot;: {
     ...
     &quot;internationalisation&quot;: &quot;latest&quot;,
@@ -141,9 +145,7 @@ in given context.</p>
     JavaScript-Module importieren oder die exportierte Variable im gegebenen
     Context referenzieren.
 -->
-<pre><code>#!JavaScript
-
-...
+<pre class="prettyprint source lang-JavaScript"><code>...
 import Language from 'internationalisation'
 class SpecialLanguage extends Language...
 Language({options..})
@@ -175,15 +177,13 @@ directly in markup. See how easy it is:</p>
     Chaîne à être réglé.
 -->
 <!--showExample-->
-<pre><code>#!HTML
-
-&lt;p&gt;
+<pre class="prettyprint source lang-HTML"><code>&lt;p>
     Your englisch version.
-    &lt;!--deDE:Ihre deutsche Variante.--&gt;
+    &lt;!--deDE:Ihre deutsche Variante.-->
     &lt;!--frFR:
         Sa version française.
-    --&gt;
-&lt;/p&gt;
+    -->
+&lt;/p>
 </code></pre>
 <p>Sometime you need to explicit mark a text node as text to replace with next
 translation node. In this case you can simple wrap a self defined dom node.</p>
@@ -198,17 +198,15 @@ translation node. In this case you can simple wrap a self defined dom node.</p>
     peuvent être facilement enveloppé d'un noeud DOM auto-défini.
 -->
 <!--showExample-->
-<pre><code>#!HTML
-
-&lt;lang-replace&gt;
-    Your englisch version with &lt;strong&gt;dom nodes&lt;/strong&gt; inside.
-&lt;/lang-replace&gt;
+<pre class="prettyprint source lang-HTML"><code>&lt;lang-replace>
+    Your englisch version with &lt;strong>dom nodes&lt;/strong> inside.
+&lt;/lang-replace>
 &lt;!--deDE:
-    Ihre deutsche Variante mit eingebetteten &lt;strong&gt;dom Knoten&lt;/strong&gt;.
---&gt;
+    Ihre deutsche Variante mit eingebetteten &lt;strong>dom Knoten&lt;/strong>.
+-->
 &lt;!--frFR:
-    Votre version français &lt;strong&gt;dom nodes&lt;/strong&gt; à l'intérieur.
---&gt;
+    Votre version français &lt;strong>dom nodes&lt;/strong> à l'intérieur.
+-->
 </code></pre>
 <p>It is also possible to use an alternative replacement node.</p>
 <!--deDE:Man kann auch einen alternative Ersetzungsknoten einsetzten.-->
@@ -216,17 +214,15 @@ translation node. In this case you can simple wrap a self defined dom node.</p>
     Donc, il est possible d'utiliser alternative à nœud de remplacement.
 -->
 <!--showExample-->
-<pre><code>#!HTML
-
-&lt;lang-replace&gt;
-    Your englisch version with &lt;strong&gt;dom nodes&lt;/strong&gt; inside.
-&lt;/lang-replace&gt;
-&lt;lang-replacement&gt;deDE:
-    Ihre deutsche Variante mit eingebetteten &lt;strong&gt;dom Knoten&lt;/strong&gt;.
-&lt;/lang-replacement&gt;
-&lt;lang-replacement&gt;frFR:
-    Votre version français &lt;strong&gt;dom nodes&lt;/strong&gt; à l'intérieur.
-&lt;/lang-replacement&gt;
+<pre class="prettyprint source lang-HTML"><code>&lt;lang-replace>
+    Your englisch version with &lt;strong>dom nodes&lt;/strong> inside.
+&lt;/lang-replace>
+&lt;lang-replacement>deDE:
+    Ihre deutsche Variante mit eingebetteten &lt;strong>dom Knoten&lt;/strong>.
+&lt;/lang-replacement>
+&lt;lang-replacement>frFR:
+    Votre version français &lt;strong>dom nodes&lt;/strong> à l'intérieur.
+&lt;/lang-replacement>
 </code></pre>
 <p>Usually the language dom node precedes the text node to translate. It is
 possible to write a special syntax to use a replacement for the next dom node
@@ -242,10 +238,8 @@ containing text.</p>
     pour le nœud DOM prochaine à utiliser.
 -->
 <!--showExample-->
-<pre><code>#!HTML
-
-&lt;!--|deDE:Ihre deutsche Variante.--&gt;&lt;!--|frFR:Votre version français.--&gt;
-&lt;p&gt;Your englisch version.&lt;/p&gt;
+<pre class="prettyprint source lang-HTML"><code>&lt;!--|deDE:Ihre deutsche Variante.-->&lt;!--|frFR:Votre version français.-->
+&lt;p>Your englisch version.&lt;/p>
 </code></pre>
 <p>Its possible to save one translation once if you specify the area with known
 translations.</p>
@@ -258,19 +252,17 @@ translations.</p>
     que le Région est marquée avec des traductions connues.
 -->
 <!--showExample-->
-<pre><code>#!HTML
-
-&lt;!--The &quot;div.toc&quot; selector defines the default known language area.--&gt;
-&lt;div class=&quot;toc&quot;&gt;
-  &lt;ul&gt;
-    &lt;li&gt;&lt;a href=&quot;title-1&quot;&gt;title 1&lt;/a&gt;&lt;/li&gt;
-      &lt;ul&gt;
-        &lt;li&gt;&lt;a href=&quot;title-2&quot;&gt;title 2&lt;/a&gt;&lt;/li&gt;
-      &lt;/ul&gt;
-  &lt;/ul&gt;
-&lt;/div&gt;
-&lt;h1 id=&quot;title-1&quot;&gt;title 1&lt;!--deDE:Titel 1--&gt;&lt;!--frFR:titre 1--&gt;&lt;/h1&gt;
-&lt;h2 id=&quot;title-2&quot;&gt;title 2&lt;!--deDE:Titel 2--&gt;&lt;!--frFR:titre 2--&gt;&lt;/h2&gt;
+<pre class="prettyprint source lang-HTML"><code>&lt;!--The &quot;div.toc&quot; selector defines the default known language area.-->
+&lt;div class=&quot;toc&quot;>
+  &lt;ul>
+    &lt;li>&lt;a href=&quot;title-1&quot;>title 1&lt;/a>&lt;/li>
+      &lt;ul>
+        &lt;li>&lt;a href=&quot;title-2&quot;>title 2&lt;/a>&lt;/li>
+      &lt;/ul>
+  &lt;/ul>
+&lt;/div>
+&lt;h1 id=&quot;title-1&quot;>title 1&lt;!--deDE:Titel 1-->&lt;!--frFR:titre 1-->&lt;/h1>
+&lt;h2 id=&quot;title-2&quot;>title 2&lt;!--deDE:Titel 2-->&lt;!--frFR:titre 2-->&lt;/h2>
 </code></pre>
 <p>With the below initialisation you can simple add this links everywhere in your
 page to switch language. On click you will switch the current language
@@ -288,11 +280,9 @@ interactively. Try it by yourself:</p>
     ajustée. Essayez par vous-même:
 -->
 <!--showExample-->
-<pre><code>#!HTML
-
-&lt;a href=&quot;#language-deDE&quot;&gt;de&lt;/a&gt;
-&lt;a href=&quot;#language-enUS&quot;&gt;en&lt;/a&gt;
-&lt;a href=&quot;#language-frFR&quot;&gt;fr&lt;/a&gt;
+<pre class="prettyprint source lang-HTML"><code>&lt;a href=&quot;#language-deDE&quot;>de&lt;/a>
+&lt;a href=&quot;#language-enUS&quot;>en&lt;/a>
+&lt;a href=&quot;#language-frFR&quot;>fr&lt;/a>
 </code></pre>
 <p>Here you can see a complete initialisation example with all available options
 to initialize the plugin with different configuration.</p>
@@ -305,13 +295,20 @@ to initialize the plugin with different configuration.</p>
     Ici vous pouvez voir toutes les options disponibles pour le plug-in
     différentes configurations pour initialiser.
 -->
-<pre><code>#!HTML
+<pre class="prettyprint source lang-HTML"><code>&lt;script
+    src=&quot;https://code.jquery.com/jquery-3.6.0.min.js&quot;
+    integrity=&quot;sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=&quot;
+    crossorigin=&quot;anonymous&quot;
+>&lt;/script>
+&lt;script
+    src=&quot;https://torben.website/clientnode/data/distributionBundle/index.js&quot;
+>&lt;/script>
+&lt;script
+    src=&quot;https://torben.website/internationalisation/data/distributionBundle/index.js&quot;
+>&lt;/script>
 
-&lt;script src=&quot;https://code.jquery.com/jquery-3.1.1.min.js&quot;&gt;&lt;/script&gt;
-&lt;script src=&quot;https://goo.gl/HEL97d&quot;&gt;&lt;/script&gt;
-&lt;script src=&quot;https://goo.gl/3Axp2L&quot;&gt;&lt;/script&gt;
-&lt;script&gt;
-    $(($) =&gt; $.Language({
+&lt;script>
+    $(($) => $.Language({
         domNodeSelectorPrefix: 'body',
         default: 'enUS',
         selection: [],
@@ -343,7 +340,7 @@ to initialize the plugin with different configuration.</p>
         onEnsure: $.noop(),
         domNode: {knownTranslation: 'div.toc'}
     }))
-&lt;/script&gt;
+&lt;/script>
 </code></pre>
 <!-- region modline
 vim: set tabstop=4 shiftwidth=4 expandtab:
@@ -365,7 +362,7 @@ endregion --></article>
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.10</a> on Wed May 11 2022 18:54:55 GMT+0200 (Mitteleuropäische Sommerzeit)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.10</a> on Wed May 11 2022 19:04:29 GMT+0200 (Mitteleuropäische Sommerzeit)
 </footer>
 
 <script> prettyPrint(); </script>

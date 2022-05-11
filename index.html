@@ -7,15 +7,21 @@
 --><div class="doc-toc" style="display:none"><!--|deDE:Inhalt--><h2 id="content">Content</h2></div><!--|deDE:Installation--><h2 id="doc-installation">Installation</h2><!--|deDE:Klassische Dom-Integration--><h3 id="doc-classical-dom-injection">Classical dom injection</h3><p>You can simply download the compiled version as zip file here and inject it after needed dependencies:</p><!--deDE:
     Du kannst einfach das Plugin als Zip-Archiv herunterladen und per
     Script-Tag in deine Webseite integrieren:
---><pre><code>#!HTML
-
-&lt;script src="https://code.jquery.com/jquery-3.1.1.min.js"&gt;&lt;/script&gt;
-&lt;script src="https://goo.gl/HEL97d"&gt;&lt;/script&gt;
-&lt;!--Inject downloaded file:--&gt;
-&lt;script src="index.compiled.js"&gt;&lt;/script&gt;
-&lt;!--Or integrate via cdn:
-&lt;script src="https://goo.gl/3Axp2L"&gt;&lt;/script&gt;
---&gt;
+--><pre><code class="language-HTML"><span class="hljs-tag">&lt;<span class="hljs-name">script</span>
+    <span class="hljs-attr">src</span>=<span class="hljs-string">"https://code.jquery.com/jquery-3.6.0.min.js"</span>
+    <span class="hljs-attr">integrity</span>=<span class="hljs-string">"sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="</span>
+    <span class="hljs-attr">crossorigin</span>=<span class="hljs-string">"anonymous"</span>
+&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">script</span>
+    <span class="hljs-attr">src</span>=<span class="hljs-string">"https://torben.website/clientnode/data/distributionBundle/index.js"</span>
+&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+<span class="hljs-comment">&lt;!--Inject downloaded file:
+&lt;script src="index.js"&gt;&lt;/script&gt;
+--&gt;</span>
+<span class="hljs-comment">&lt;!--Or integrate via cdn:--&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">script</span>
+    <span class="hljs-attr">src</span>=<span class="hljs-string">"https://torben.website/internationalisation/data/distributionBundle/index.js"</span>
+&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
 </code></pre><p>The compiled bundle supports AMD, commonjs, commonjs2 and variable injection into given context (UMD) as export format: You can use a module bundler if you want.</p><!--deDE:
     Das kompilierte Bundle unterstützt AMD, commonjs, commonjs2 und
     Variable-Injection in den gegebenen Context (UMD) als Export-Format:
@@ -23,35 +29,31 @@
 --><!--|deDE:Paket-Management und Modul-Komposition--><h3 id="doc-package-managed-and-module-bundled">Package managed and module bundled</h3><p>If you are using npm as package manager you can simply add this tool to your <strong>package.json</strong> as dependency:</p><!--deDE:
     Nutzt du npm als Paket-Manager, dann solltest du einfach deine
     <strong>package.json</strong> erweitern:
---><pre><code>#!JSON
-
-...
-"dependencies": {
+--><pre><code class="language-JSON">...
+<span class="hljs-attr">"dependencies"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
     ...
-    "internationalisation": "latest",
+    <span class="hljs-attr">"internationalisation"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"latest"</span><span class="hljs-punctuation">,</span>
     ...
-},
+<span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
 ...
 </code></pre><p>After updating your packages you can simply depend on this script and let a module bundler do the hard stuff or access it via an exported variable name in given context.</p><!--deDE:
     Nach einem Update deiner Pakete kannst du dieses Plugin einfach in deine
     JavaScript-Module importieren oder die exportierte Variable im gegebenen
     Context referenzieren.
---><pre><code>#!JavaScript
-
-...
-import Language from 'internationalisation'
-class SpecialLanguage extends Language...
-Language({options..})
-// or
-import {$} from 'internationalisation'
-$.Language()
-class SpecialLanguage extends $.Language.class ...
-// or
-Language = require('internationalisation').default
-value instanceof Language
-// or
-$ = require('internationalisation').$
-$.Language()
+--><pre><code class="language-JavaScript">...
+<span class="hljs-keyword">import</span> <span class="hljs-title class_">Language</span> <span class="hljs-keyword">from</span> <span class="hljs-string">'internationalisation'</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">SpecialLanguage</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_ inherited__">Language</span>...
+<span class="hljs-title class_">Language</span>({options..})
+<span class="hljs-comment">// or</span>
+<span class="hljs-keyword">import</span> {$} <span class="hljs-keyword">from</span> <span class="hljs-string">'internationalisation'</span>
+$.<span class="hljs-title class_">Language</span>()
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">SpecialLanguage</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_ inherited__">$.Language.class</span> ...
+<span class="hljs-comment">// or</span>
+<span class="hljs-title class_">Language</span> = <span class="hljs-built_in">require</span>(<span class="hljs-string">'internationalisation'</span>).<span class="hljs-property">default</span>
+value <span class="hljs-keyword">instanceof</span> <span class="hljs-title class_">Language</span>
+<span class="hljs-comment">// or</span>
+$ = <span class="hljs-built_in">require</span>(<span class="hljs-string">'internationalisation'</span>).<span class="hljs-property">$</span>
+$.<span class="hljs-title class_">Language</span>()
 ...
 </code></pre><!--|deDE:Verwendung--><!--|frFR:Demande--><h2 id="doc-usage">Usage</h2><p>To add two versions of a text string you can simply add your translation directly in markup. See how easy it is:</p><!--deDE:
     Um zwei Sprachversionen eines Text Knotens im Markup anzubieten müssen
@@ -61,15 +63,13 @@ $.Language()
     Doit offrir deux versions linguistiques d'un nœud de texte dans la balise
     facile à traduire que par Commentez versions alternatives derrière le
     Chaîne à être réglé.
---><!--showExample--><pre><code>#!HTML
-
-&lt;p&gt;
+--><!--showExample--><pre><code class="language-HTML"><span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>
     Your englisch version.
-    &lt;!--deDE:Ihre deutsche Variante.--&gt;
-    &lt;!--frFR:
+    <span class="hljs-comment">&lt;!--deDE:Ihre deutsche Variante.--&gt;</span>
+    <span class="hljs-comment">&lt;!--frFR:
         Sa version française.
-    --&gt;
-&lt;/p&gt;
+    --&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
 </code></pre><p>Sometime you need to explicit mark a text node as text to replace with next translation node. In this case you can simple wrap a self defined dom node.</p><!--deDE:
     Manchmal muss man Textknoten explizit als übersetzbar markieren, da sie
     beispielsweise selbst aus mehr als nur einem Knoten bestehen. In solchen
@@ -78,30 +78,26 @@ $.Language()
     Parfois, vous devez sélectionner explicitement les nœuds de texte comme
     traduisible, car ils Ainsi, même consister en plus d'un noeud. dans ce Cas
     peuvent être facilement enveloppé d'un noeud DOM auto-défini.
---><!--showExample--><pre><code>#!HTML
-
-&lt;lang-replace&gt;
-    Your englisch version with &lt;strong&gt;dom nodes&lt;/strong&gt; inside.
-&lt;/lang-replace&gt;
-&lt;!--deDE:
+--><!--showExample--><pre><code class="language-HTML"><span class="hljs-tag">&lt;<span class="hljs-name">lang-replace</span>&gt;</span>
+    Your englisch version with <span class="hljs-tag">&lt;<span class="hljs-name">strong</span>&gt;</span>dom nodes<span class="hljs-tag">&lt;/<span class="hljs-name">strong</span>&gt;</span> inside.
+<span class="hljs-tag">&lt;/<span class="hljs-name">lang-replace</span>&gt;</span>
+<span class="hljs-comment">&lt;!--deDE:
     Ihre deutsche Variante mit eingebetteten &lt;strong&gt;dom Knoten&lt;/strong&gt;.
---&gt;
-&lt;!--frFR:
+--&gt;</span>
+<span class="hljs-comment">&lt;!--frFR:
     Votre version français &lt;strong&gt;dom nodes&lt;/strong&gt; à l'intérieur.
---&gt;
+--&gt;</span>
 </code></pre><p>It is also possible to use an alternative replacement node.</p><!--deDE:Man kann auch einen alternative Ersetzungsknoten einsetzten.--><!--frFR:
     Donc, il est possible d'utiliser alternative à nœud de remplacement.
---><!--showExample--><pre><code>#!HTML
-
-&lt;lang-replace&gt;
-    Your englisch version with &lt;strong&gt;dom nodes&lt;/strong&gt; inside.
-&lt;/lang-replace&gt;
-&lt;lang-replacement&gt;deDE:
-    Ihre deutsche Variante mit eingebetteten &lt;strong&gt;dom Knoten&lt;/strong&gt;.
-&lt;/lang-replacement&gt;
-&lt;lang-replacement&gt;frFR:
-    Votre version français &lt;strong&gt;dom nodes&lt;/strong&gt; à l'intérieur.
-&lt;/lang-replacement&gt;
+--><!--showExample--><pre><code class="language-HTML"><span class="hljs-tag">&lt;<span class="hljs-name">lang-replace</span>&gt;</span>
+    Your englisch version with <span class="hljs-tag">&lt;<span class="hljs-name">strong</span>&gt;</span>dom nodes<span class="hljs-tag">&lt;/<span class="hljs-name">strong</span>&gt;</span> inside.
+<span class="hljs-tag">&lt;/<span class="hljs-name">lang-replace</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">lang-replacement</span>&gt;</span>deDE:
+    Ihre deutsche Variante mit eingebetteten <span class="hljs-tag">&lt;<span class="hljs-name">strong</span>&gt;</span>dom Knoten<span class="hljs-tag">&lt;/<span class="hljs-name">strong</span>&gt;</span>.
+<span class="hljs-tag">&lt;/<span class="hljs-name">lang-replacement</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">lang-replacement</span>&gt;</span>frFR:
+    Votre version français <span class="hljs-tag">&lt;<span class="hljs-name">strong</span>&gt;</span>dom nodes<span class="hljs-tag">&lt;/<span class="hljs-name">strong</span>&gt;</span> à l'intérieur.
+<span class="hljs-tag">&lt;/<span class="hljs-name">lang-replacement</span>&gt;</span>
 </code></pre><p>Usually the language dom node precedes the text node to translate. It is possible to write a special syntax to use a replacement for the next dom node containing text.</p><!--deDE:
     Normalerweise folgt der Sprach-DOM-Knoten auf den Textknoten der übersetzt
     werden soll. Es ist mit einer speziellen Syntax möglich einen
@@ -110,29 +106,25 @@ $.Language()
     Normalement, le nœud DOM voix suit le nœud de texte de la traduction
     devrait être. Il est doté d'une syntaxe spéciale possible une Nœud voix Dom
     pour le nœud DOM prochaine à utiliser.
---><!--showExample--><pre><code>#!HTML
-
-&lt;!--|deDE:Ihre deutsche Variante.--&gt;&lt;!--|frFR:Votre version français.--&gt;
-&lt;p&gt;Your englisch version.&lt;/p&gt;
+--><!--showExample--><pre><code class="language-HTML"><span class="hljs-comment">&lt;!--|deDE:Ihre deutsche Variante.--&gt;</span><span class="hljs-comment">&lt;!--|frFR:Votre version français.--&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>Your englisch version.<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
 </code></pre><p>Its possible to save one translation once if you specify the area with known translations.</p><!--deDE:
     Es ist möglich eine Übersetzung an nur einem Ort zu speichern, sofern der
     Bereich mit bekannten Übersetzungen markiert wird.
 --><!--frFR:
     Il est possible d'enregistrer une traduction en un seul endroit, à moins
     que le Région est marquée avec des traductions connues.
---><!--showExample--><pre><code>#!HTML
-
-&lt;!--The "div.toc" selector defines the default known language area.--&gt;
-&lt;div class="toc"&gt;
-  &lt;ul&gt;
-    &lt;li&gt;&lt;a href="title-1"&gt;title 1&lt;/a&gt;&lt;/li&gt;
-      &lt;ul&gt;
-        &lt;li&gt;&lt;a href="title-2"&gt;title 2&lt;/a&gt;&lt;/li&gt;
-      &lt;/ul&gt;
-  &lt;/ul&gt;
-&lt;/div&gt;
-&lt;h1 id="title-1"&gt;title 1&lt;!--deDE:Titel 1--&gt;&lt;!--frFR:titre 1--&gt;&lt;/h1&gt;
-&lt;h2 id="title-2"&gt;title 2&lt;!--deDE:Titel 2--&gt;&lt;!--frFR:titre 2--&gt;&lt;/h2&gt;
+--><!--showExample--><pre><code class="language-HTML"><span class="hljs-comment">&lt;!--The "div.toc" selector defines the default known language area.--&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"toc"</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">ul</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">li</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">"title-1"</span>&gt;</span>title 1<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">ul</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">li</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">"title-2"</span>&gt;</span>title 2<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">ul</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">ul</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">h1</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"title-1"</span>&gt;</span>title 1<span class="hljs-comment">&lt;!--deDE:Titel 1--&gt;</span><span class="hljs-comment">&lt;!--frFR:titre 1--&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">h1</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">h2</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"title-2"</span>&gt;</span>title 2<span class="hljs-comment">&lt;!--deDE:Titel 2--&gt;</span><span class="hljs-comment">&lt;!--frFR:titre 2--&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">h2</span>&gt;</span>
 </code></pre><p>With the below initialisation you can simple add this links everywhere in your page to switch language. On click you will switch the current language interactively. Try it by yourself:</p><!--deDE:
     Mit der unten aufgezeigten Konfiguration können Sie einfach folgenden Links
     an beliebiger Stelle im Markup plazieren. Beim Klicken auf die
@@ -143,11 +135,9 @@ $.Language()
     liens suivants placer n'importe où dans le balisage. Lorsque vous cliquez
     sur l' Langue échange de liens est la langue de votre site en conséquence
     ajustée. Essayez par vous-même:
---><!--showExample--><pre><code>#!HTML
-
-&lt;a href="#language-deDE"&gt;de&lt;/a&gt;
-&lt;a href="#language-enUS"&gt;en&lt;/a&gt;
-&lt;a href="#language-frFR"&gt;fr&lt;/a&gt;
+--><!--showExample--><pre><code class="language-HTML"><span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">"#language-deDE"</span>&gt;</span>de<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">"#language-enUS"</span>&gt;</span>en<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">"#language-frFR"</span>&gt;</span>fr<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
 </code></pre><p>Here you can see a complete initialisation example with all available options to initialize the plugin with different configuration.</p><!--deDE:
     Hier können Sie ein Komplettbeispiel der Initialisierung sehen und alle
     verfügbaren Optionen betrachten, um das Plugin in verschiedenen
@@ -155,45 +145,52 @@ $.Language()
 --><!--frFR:
     Ici vous pouvez voir toutes les options disponibles pour le plug-in
     différentes configurations pour initialiser.
---><pre><code>#!HTML
+--><pre><code class="language-HTML"><span class="hljs-tag">&lt;<span class="hljs-name">script</span>
+    <span class="hljs-attr">src</span>=<span class="hljs-string">"https://code.jquery.com/jquery-3.6.0.min.js"</span>
+    <span class="hljs-attr">integrity</span>=<span class="hljs-string">"sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="</span>
+    <span class="hljs-attr">crossorigin</span>=<span class="hljs-string">"anonymous"</span>
+&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">script</span>
+    <span class="hljs-attr">src</span>=<span class="hljs-string">"https://torben.website/clientnode/data/distributionBundle/index.js"</span>
+&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">script</span>
+    <span class="hljs-attr">src</span>=<span class="hljs-string">"https://torben.website/internationalisation/data/distributionBundle/index.js"</span>
+&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
 
-&lt;script src="https://code.jquery.com/jquery-3.1.1.min.js"&gt;&lt;/script&gt;
-&lt;script src="https://goo.gl/HEL97d"&gt;&lt;/script&gt;
-&lt;script src="https://goo.gl/3Axp2L"&gt;&lt;/script&gt;
-&lt;script&gt;
-    $(($) =&gt; $.Language({
-        domNodeSelectorPrefix: 'body',
-        default: 'enUS',
-        selection: [],
-        initial: null,
-        templateDelimiter: {pre: '{{', post: '}}'},
-        fadeEffect: true,
-        textNodeParent: {
-            showAnimation: [{opacity: 1}, {duration: 'fast'}],
-            hideAnimation: [{opacity: 0}, {duration: 'fast'}]
+<span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="language-javascript">
+    $(($) =&gt; $.<span class="hljs-title class_">Language</span>({
+        <span class="hljs-attr">domNodeSelectorPrefix</span>: <span class="hljs-string">'body'</span>,
+        <span class="hljs-attr">default</span>: <span class="hljs-string">'enUS'</span>,
+        <span class="hljs-attr">selection</span>: [],
+        <span class="hljs-attr">initial</span>: <span class="hljs-literal">null</span>,
+        <span class="hljs-attr">templateDelimiter</span>: {<span class="hljs-attr">pre</span>: <span class="hljs-string">'{{'</span>, <span class="hljs-attr">post</span>: <span class="hljs-string">'}}'</span>},
+        <span class="hljs-attr">fadeEffect</span>: <span class="hljs-literal">true</span>,
+        <span class="hljs-attr">textNodeParent</span>: {
+            <span class="hljs-attr">showAnimation</span>: [{<span class="hljs-attr">opacity</span>: <span class="hljs-number">1</span>}, {<span class="hljs-attr">duration</span>: <span class="hljs-string">'fast'</span>}],
+            <span class="hljs-attr">hideAnimation</span>: [{<span class="hljs-attr">opacity</span>: <span class="hljs-number">0</span>}, {<span class="hljs-attr">duration</span>: <span class="hljs-string">'fast'</span>}]
         },
-        preReplacementLanguagePattern: '^\\|({1})$',
-        replacementLanguagePattern: '^([a-z]{2}[A-Z]{2}):((.|\\s)*)$',
-        currentLanguagePattern: '^[a-z]{2}[A-Z]{2}$',
-        replacementDomNodeName: ['#comment', 'lang-replacement'],
-        replaceDomNodeNames: ['#text', 'lang-replace'],
-        toolsLockDescription: '{1}Switch',
-        languageHashPrefix: 'language-',
-        currentLanguageIndicatorClassName: 'current',
-        sessionDescription: '{1}',
-        languageMapping: {
-            deDE: ['de', 'de_de', 'de-de', 'german', 'deutsch'],
-            enUS: ['en', 'en_us', 'en-us'],
-            enEN: ['en_en', 'en-en', 'english'],
-            frFR: ['fr', 'fr_fr', 'fr-fr', 'french']
+        <span class="hljs-attr">preReplacementLanguagePattern</span>: <span class="hljs-string">'^\\|({1})$'</span>,
+        <span class="hljs-attr">replacementLanguagePattern</span>: <span class="hljs-string">'^([a-z]{2}[A-Z]{2}):((.|\\s)*)$'</span>,
+        <span class="hljs-attr">currentLanguagePattern</span>: <span class="hljs-string">'^[a-z]{2}[A-Z]{2}$'</span>,
+        <span class="hljs-attr">replacementDomNodeName</span>: [<span class="hljs-string">'#comment'</span>, <span class="hljs-string">'lang-replacement'</span>],
+        <span class="hljs-attr">replaceDomNodeNames</span>: [<span class="hljs-string">'#text'</span>, <span class="hljs-string">'lang-replace'</span>],
+        <span class="hljs-attr">toolsLockDescription</span>: <span class="hljs-string">'{1}Switch'</span>,
+        <span class="hljs-attr">languageHashPrefix</span>: <span class="hljs-string">'language-'</span>,
+        <span class="hljs-attr">currentLanguageIndicatorClassName</span>: <span class="hljs-string">'current'</span>,
+        <span class="hljs-attr">sessionDescription</span>: <span class="hljs-string">'{1}'</span>,
+        <span class="hljs-attr">languageMapping</span>: {
+            <span class="hljs-attr">deDE</span>: [<span class="hljs-string">'de'</span>, <span class="hljs-string">'de_de'</span>, <span class="hljs-string">'de-de'</span>, <span class="hljs-string">'german'</span>, <span class="hljs-string">'deutsch'</span>],
+            <span class="hljs-attr">enUS</span>: [<span class="hljs-string">'en'</span>, <span class="hljs-string">'en_us'</span>, <span class="hljs-string">'en-us'</span>],
+            <span class="hljs-attr">enEN</span>: [<span class="hljs-string">'en_en'</span>, <span class="hljs-string">'en-en'</span>, <span class="hljs-string">'english'</span>],
+            <span class="hljs-attr">frFR</span>: [<span class="hljs-string">'fr'</span>, <span class="hljs-string">'fr_fr'</span>, <span class="hljs-string">'fr-fr'</span>, <span class="hljs-string">'french'</span>]
         },
-        onSwitched: $.noop(),
-        onEnsured: $.noop(),
-        onSwitch: $.noop(),
-        onEnsure: $.noop(),
-        domNode: {knownTranslation: 'div.toc'}
+        <span class="hljs-attr">onSwitched</span>: $.<span class="hljs-title function_">noop</span>(),
+        <span class="hljs-attr">onEnsured</span>: $.<span class="hljs-title function_">noop</span>(),
+        <span class="hljs-attr">onSwitch</span>: $.<span class="hljs-title function_">noop</span>(),
+        <span class="hljs-attr">onEnsure</span>: $.<span class="hljs-title function_">noop</span>(),
+        <span class="hljs-attr">domNode</span>: {<span class="hljs-attr">knownTranslation</span>: <span class="hljs-string">'div.toc'</span>}
     }))
-&lt;/script&gt;
+</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
 </code></pre></div><div class="section__inner section__about-this-website"><h2 id="about-this-website">About this website<!--deDE:Impressum--><!--frFR:Mentions légales--></h2><p>Provider of<!--deDE:Anbieter von--><!--frFR:Fournisseur de--> <a href="https://torben.website/internationalisation">https://torben.website/internationalisation </a>:<br>Torben Sickert<br>Waldstraße 29<br>791194 Gundelfingen i.Br.<br>Phone:<!--deDE:Tel.:--><!--frFR:Téléphone:--> <a href="tel:004917610248185">+49 (0) 176 <span>/</span> 10 248 185<br>Email:<!--deDE:E-Mail:--> </a><a href="mailto:info@torben.website">info@torben.website</a><br>Website:<!--deDE:Webseite:--><!--frFR:Site:--> <a href="https://torben.website">https://torben.website</a><br><span class="tools-visible-on-javascript-enabled icon icon-arrow-left section__inner__arrow-left-home"></span> <a href="#home" class="tools-visible-on-javascript-enabled">home<!--deDE:Startseite--><!--frFR:Maison--></a></p><h2>Disclaimer<!--deDE:Haftungsausschluss--><!--frFR:Désistement--></h2><h3>Liability for content<!--deDE:Haftung für Inhalte--><!--frFR:Responsabilité quant au contenu--></h3><p>Die Inhalte unserer Seiten wurden mit größter Sorgfalt erstellt. Für die Richtigkeit, Vollständigkeit und Aktualität der Inhalte können wir jedoch keine Gewähr übernehmen. Als Diensteanbieter sind wir gemäß § 7 Abs.1 TMG für eigene Inhalte auf diesen Seiten nach den allgemeinen Gesetzen verantwortlich. Nach §§ 8 bis 10 TMG sind wir als Diensteanbieter jedoch nicht verpflichtet, übermittelte oder gespeicherte fremde Informationen zu überwachen oder nach Umständen zu forschen, die auf eine rechtswidrige Tätigkeit hinweisen. Verpflichtungen zur Entfernung oder Sperrung der Nutzung von Informationen nach den allgemeinen Gesetzen bleiben hiervon unberührt. Eine diesbezügliche Haftung ist jedoch erst ab dem Zeitpunkt der Kenntnis einer konkreten Rechtsverletzung möglich. Bei Bekannt werden von entsprechenden Rechtsverletzungen werden wir diese Inhalte umgehend entfernen.</p><h3>Liability for links<!--deDE:Haftung für Links--><!--frFR:Responsabilité pour les liens--></h3><p>Unser Angebot enthält Links zu externen Webseiten Dritter, auf deren Inhalte wir keinen Einfluss haben. Deshalb können wir für diese fremden Inhalte auch keine Gewähr übernehmen. Für die Inhalte der verlinkten Seiten ist stets der jeweilige Anbieter oder Betreiber der Seiten verantwortlich. Die verlinkten Seiten wurden zum Zeitpunkt der Verlinkung auf mögliche Rechtsverstöße überprüft. Rechtswidrige Inhalte waren zum Zeitpunkt der Verlinkung nicht erkennbar. Eine permanente inhaltliche Kontrolle der verlinkten Seiten ist jedoch ohne konkrete Anhaltspunkte einer Rechtsverletzung nicht zumutbar. Bei Bekanntwerden von Rechtsverletzungen werden wir derartige Links umgehend entfernen.</p><h3>Copyright<!--deDE:Urheberrecht--><!--frFR:Droit d'auteur--></h3><p>Die durch die Seitenbetreiber erstellten Inhalte und Werke auf diesen Seiten unterliegen dem deutschen Urheberrecht. Die Vervielfältigung, Bearbeitung, Verbreitung und jede Art der Verwertung außerhalb der Grenzen des Urheberrechtes bedürfen der schriftlichen Zustimmung des jeweiligen Autors bzw. Erstellers. Downloads und Kopien dieser Seite sind nur für den privaten, nicht kommerziellen Gebrauch gestattet. Soweit die Inhalte auf dieser Seite nicht vom Betreiber erstellt wurden, werden die Urheberrechte Dritter beachtet. Insbesondere werden Inhalte Dritter als solche gekennzeichnet. Sollten Sie trotzdem auf eine Urheberrechtsverletzung aufmerksam werden, bitten wir um einen entsprechenden Hinweis. Bei Bekanntwerden von Rechtsverletzungen werden wir derartige Inhalte umgehend entfernen.</p><h3>Privacy Policy<!--deDE:Datenschutz--><!--frFR:Politique de confidentialité--></h3><p>Die Nutzung unserer Webseite ist in der Regel ohne Angabe personenbezogener Daten möglich. Soweit auf unseren Seiten personenbezogene Daten (beispielsweise Name, Anschrift oder E-Mail-Adressen) erhoben werden, erfolgt dies, soweit möglich, stets auf freiwilliger Basis. Diese Daten werden ohne Ihre ausdrückliche Zustimmung nicht an Dritte weitergegeben. Wir darauf hin, dass die Datenübertragung im Internet (z.B. bei der Kommunikation per E-Mail) Sicherheitslücken aufweisen kann. Ein lückenloser Schutz der Daten vor dem Zugriff durch Dritte ist nicht möglich. Der Nutzung von im Rahmen der Impressumspflicht veröffentlichten Kontaktdaten durch Dritte zur Übersendung von nicht ausdrücklich angeforderter Werbung und Informationsmaterialien wird hiermit ausdrücklich widersprochen. Die Betreiber der Seiten behalten sich ausdrücklich rechtliche Schritte im Falle der unverlangten Zusendung von Werbeinformationen, etwa durch Spam-Mails, vor.</p><h3>Privacy Statement for using Google Analytics<!--deDE:Datenschutzerklärung für die Nutzung von Google Analytics--><!--frFR:
         Déclaration de confidentialité de l'utilisation de Google Analytics
     --></h3><p>Diese Website benutzt Google Analytics, einen Webanalysedienst der Google Inc. ("Google"). Google Analytics verwendet sog. "Cookies", Textdateien, die auf Ihrem Computer gespeichert werden und die eine Analyse der Benutzung der Website durch Sie ermöglichen. Die durch den Cookie erzeugten Informationen über Ihre Benutzung dieser Website werden in der Regel an einen Server von Google in den USA übertragen und dort gespeichert. Im Falle der Aktivierung der IP-Anonymisierung auf dieser Webseite wird Ihre IP-Adresse von Google jedoch innerhalb von Mitgliedstaaten der Europäischen Union oder in anderen Vertragsstaaten des Abkommens über den Europäischen Wirtschaftsraum zuvor gekürzt. Nur in Ausnahmefällen wird die volle IP-Adresse an einen Server von Google in den USA übertragen und dort gekürzt. Im Auftrag des Betreibers dieser Website wird Google diese Informationen benutzen, um Ihre Nutzung der Website auszuwerten, um Reports über die Websiteaktivitäten zusammenzustellen und um weitere mit der Websitenutzung und der Internetnutzung verbundene Dienstleistungen gegenüber dem Websitebetreiber zu erbringen. Die im Rahmen von Google Analytics von Ihrem Browser übermittelte IP-Adresse wird nicht mit anderen Daten von Google zusammengeführt. Sie können die Speicherung der Cookies durch eine entsprechende Einstellung Ihrer Browser-Software verhindern; wir weisen Sie jedoch darauf hin, dass Sie in diesem Fall gegebenenfalls nicht sämtliche Funktionen dieser Website vollumfänglich werden nutzen können. Sie können darüber hinaus die Erfassung der durch das Cookie erzeugten und auf Ihre Nutzung der Website bezogenen Daten (inkl. Ihrer IP-Adresse) an Google sowie die Verarbeitung dieser Daten durch Google verhindern, indem Sie das unter dem folgenden <a href="http://tools.google.com/dlpage/gaoptout?hl=de">Link </a>verfügbare Browser-Plugin herunterladen und installieren.</p><h3>Copyright Statement</h3><p>Unless noted otherwise, all artwork on this website is protected property of the website author. Any use for commercial purpose, reproduction and publication requires the author's written permission. Commercial work created in cooperation or bound by contract with third parties are specifically marked. Respective copyrights apply.</p></div></section><footer class="footer"><div class="footer__inner"><p class="wu-start-up-animation-number-12">internationalisation maintained by<!--deDE:internationalisation betrieben von--><!--frFR:internationalisation exploité par--> <a href="https://torben.website">thaibault</a> · © 2013 Torben Sickert · <a href="#about-this-website">about this website<!--deDE:Impressum--><!--frFR:Mentions légales--></a></p></div></footer><a href="#top" class="top-link">top<!--deDE:nach oben--><!--frFR:ascendant--></a><script defer="" src="index.js?md5=07dd182e6c80bc431292"></script></body></html>
