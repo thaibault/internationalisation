@@ -3191,9 +3191,9 @@ cli-table3@^0.5.0:
     colors "^1.1.2"
 
 clientnode@*:
-  version "3.0.913"
-  resolved "https://registry.yarnpkg.com/clientnode/-/clientnode-3.0.913.tgz#202811024291f818bf1e940f0affd588a0a2f4ab"
-  integrity sha512-8rhCU/9/U0+T2nHkGn2ywXtoAjS6tvLfSP0CIC9sFRMwgSDMY+8lqFyhrGB88o/GFqxky3rQc8s0doSJQdDpDQ==
+  version "3.0.914"
+  resolved "https://registry.yarnpkg.com/clientnode/-/clientnode-3.0.914.tgz#17b7cb48d618eada5c459800174c533d6c43a761"
+  integrity sha512-zZT4pbZut+Ql+idQwPJqHT84yrbjbbCKp+rKdsNlNvA8+SW85V0QtD3HRa63NdPY0L3NbrOYE6UyJaojAyvSDQ==
 
 cliui@^4.0.0:
   version "4.1.0"
@@ -3568,9 +3568,9 @@ doctrine@^3.0.0:
     esutils "^2.0.2"
 
 documentation-website@*:
-  version "1.0.271"
-  resolved "https://registry.yarnpkg.com/documentation-website/-/documentation-website-1.0.271.tgz#3e14f998b38f7af3c392a6e0b3f3f29d60f20a68"
-  integrity sha512-W7TR27sOT5/AbO5E63mQobzJvCjKfcMuskoGpKwNSuPggMYXFtrxXEF6XdNYilK1Kmfqd0aAX0pC8ckxweoh8w==
+  version "1.0.272"
+  resolved "https://registry.yarnpkg.com/documentation-website/-/documentation-website-1.0.272.tgz#d235813dad611b0c50eb720ffe03f2fc97727717"
+  integrity sha512-mWp1ksg/FzeJ52xu1IHOXUoOZ/3apEPWxdw9LMFIpgACI5fUw6Ppj9YkxQCC5JEKPOQ4Wovm9gJfdZL+XzAanA==
   dependencies:
     "@types/webpack" "https://registry.yarnpkg.com/@favware/skip-dependency/-/skip-dependency-1.1.1.tgz"
 
@@ -7104,9 +7104,9 @@ webidl-conversions@^7.0.0:
   integrity sha512-VwddBukDzu71offAQR975unBIGqfKZpM+8ZX6ySk8nYhVoo5CYaZyzt3YBvYtRtO+aoGlqxPg/B87NGVZ/fu6g==
 
 weboptimizer@*:
-  version "2.0.1179"
-  resolved "https://registry.yarnpkg.com/weboptimizer/-/weboptimizer-2.0.1179.tgz#bccc5cea34f631a3f1df0dcc402b30fe6a4cd9aa"
-  integrity sha512-m2oRDwZBaKS5VzpIDZ7KsxvZ0QvMaVh88i7LS2YGove+DnLNKY00XsbXXTbEd4/Uy/ecEXwkQjxOEt7RXR0ejQ==
+  version "2.0.1180"
+  resolved "https://registry.yarnpkg.com/weboptimizer/-/weboptimizer-2.0.1180.tgz#296785c9516252486870904457fe1e5d9f0b8e68"
+  integrity sha512-smb4Q6QERDUUJdaXdg1hhGjKOQGKd1fJVG9JyIIhMUk/Lkb5S+/h6/qZZHDsda+EHs3VjWxPHKJHoDLTDLntSA==
   dependencies:
     "@babel/core" "*"
     "@babel/plugin-proposal-decorators" "*"
