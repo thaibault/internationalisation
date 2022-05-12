@@ -3087,9 +3087,9 @@ camelcase@^6.2.0:
   integrity sha512-Gmy6FhYlCY7uOElZUSbxo2UCDH8owEk996gkbrpsgGtrJLM3J7jGxl9Ic7Qwwj4ivOE5AWZWRMecDdF7hqGjFA==
 
 caniuse-lite@^1.0.30000844, caniuse-lite@^1.0.30001332:
-  version "1.0.30001339"
-  resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30001339.tgz#f9aece4ea8156071613b27791547ba0b33f176cf"
-  integrity sha512-Es8PiVqCe+uXdms0Gu5xP5PF2bxLR7OBp3wUzUnuO7OHzhOfCyg3hdiGWVPVxhiuniOzng+hTc1u3fEQ0TlkSQ==
+  version "1.0.30001340"
+  resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30001340.tgz#029a2f8bfc025d4820fafbfaa6259fd7778340c7"
+  integrity sha512-jUNz+a9blQTQVu4uFcn17uAD8IDizPzQkIKh3LCJfg9BkyIqExYYdyc/ZSlWUSKb8iYiXxKsxbv4zYSvkqjrxw==
 
 catharsis@^0.9.0:
   version "0.9.0"
@@ -3191,9 +3191,9 @@ cli-table3@^0.5.0:
     colors "^1.1.2"
 
 clientnode@*:
-  version "3.0.911"
-  resolved "https://registry.yarnpkg.com/clientnode/-/clientnode-3.0.911.tgz#e32642573edf0ae850ac6325280ee01f032eeaea"
-  integrity sha512-+Cx+/LjkuAOsJiaMgN0GaOU4ryZW2B9EHeE+Spr5+OeMCo0vuR2z9vJ2n06DnFw1Yt6WQtTra7q3RiPWYal+Eg==
+  version "3.0.912"
+  resolved "https://registry.yarnpkg.com/clientnode/-/clientnode-3.0.912.tgz#98252bce0c084c5f0dc78ad6d2df130ce610ceea"
+  integrity sha512-7ek4ig6j2Ijajm9jIPTK5OOcYVhjawu7IrWf6iqni98O/ugNX6gOU19hB0+7CoQsqoX7lp3Yf5TvJrQz+KF6Kw==
 
 cliui@^4.0.0:
   version "4.1.0"
@@ -3568,9 +3568,9 @@ doctrine@^3.0.0:
     esutils "^2.0.2"
 
 documentation-website@*:
-  version "1.0.267"
-  resolved "https://registry.yarnpkg.com/documentation-website/-/documentation-website-1.0.267.tgz#01d6ee2f8b2fc93e85009c13b8b53708d2368bd2"
-  integrity sha512-Y0AeoOnpWTfPmAt39LEjNTyenkMzLAJUpTwesxULI1uCaSZ2YSUe8FRAHsUDXdbt9KqLkdlw5AEnshMTw4Rxew==
+  version "1.0.269"
+  resolved "https://registry.yarnpkg.com/documentation-website/-/documentation-website-1.0.269.tgz#239e8eb109686c8e6e668127a8af6683ccd4a34f"
+  integrity sha512-C2HqhajolxeCKR/JEXB2X31wec6uOipBSu/FSC5mBOYei1fVXcHvkNqDOM0eucvfRKtDRz79lhAxnnDK6Vvm6Q==
   dependencies:
     "@types/webpack" "https://registry.yarnpkg.com/@favware/skip-dependency/-/skip-dependency-1.1.1.tgz"
 
@@ -4251,9 +4251,9 @@ globals@^11.1.0:
   integrity sha512-WOBp/EEGUiIsJSp7wcv/y6MO+lV9UoncWqxuFfm8eBwzWNgyfBd6Gz+IeKQ9jCmyhoH99g15M3T+QaVHFjizVA==
 
 globals@^13.6.0, globals@^13.9.0:
-  version "13.14.0"
-  resolved "https://registry.yarnpkg.com/globals/-/globals-13.14.0.tgz#daf3ff9b4336527cf56e98330b6f64bea9aff9df"
-  integrity sha512-ERO68sOYwm5UuLvSJTY7w7NP2c8S4UcXs3X1GBX8cwOr+ShOcDBbCY5mH4zxz0jsYCdJ8ve8Mv9n2YGJMB1aeg==
+  version "13.15.0"
+  resolved "https://registry.yarnpkg.com/globals/-/globals-13.15.0.tgz#38113218c907d2f7e98658af246cef8b77e90bac"
+  integrity sha512-bpzcOlgDhMG070Av0Vy5Owklpv1I6+j96GhUI7Rh7IzDCKLzboflLrrfqMu8NquDbiR4EOQk7XzJwqVJxicxog==
   dependencies:
     type-fest "^0.20.2"
 
@@ -7104,9 +7104,9 @@ webidl-conversions@^7.0.0:
   integrity sha512-VwddBukDzu71offAQR975unBIGqfKZpM+8ZX6ySk8nYhVoo5CYaZyzt3YBvYtRtO+aoGlqxPg/B87NGVZ/fu6g==
 
 weboptimizer@*:
-  version "2.0.1177"
-  resolved "https://registry.yarnpkg.com/weboptimizer/-/weboptimizer-2.0.1177.tgz#94bac4f638158398a0d47bc0260667eb3370f178"
-  integrity sha512-orxgo+zUZPYVCMR3DOYGbf2JY++WXt+5SuGpz2BixJtqAaTiOwkHHfJPJ4pyjYx/d1ILFQoljZOla76b8vyqSw==
+  version "2.0.1178"
+  resolved "https://registry.yarnpkg.com/weboptimizer/-/weboptimizer-2.0.1178.tgz#f8fbb462d0dcc29b4e18e5f6946fcc2e1da15e26"
+  integrity sha512-EVYc1oTD4e0AUlSPCvZEUWh/k39mfuhmpeoX+XcnY29QqgU9guo/1JJe+ZKQ+3gL+yvkNRqTiQw+Urwap8+r8A==
   dependencies:
     "@babel/core" "*"
     "@babel/plugin-proposal-decorators" "*"
@@ -7421,9 +7421,9 @@ yargs@^10.0.3:
     yargs-parser "^8.1.0"
 
 yargs@^17.3.1:
-  version "17.4.1"
-  resolved "https://registry.yarnpkg.com/yargs/-/yargs-17.4.1.tgz#ebe23284207bb75cee7c408c33e722bfb27b5284"
-  integrity sha512-WSZD9jgobAg3ZKuCQZSa3g9QOJeCCqLoLAykiWgmXnDo9EPnn4RPf5qVTtzgOx66o6/oqhcA5tHtJXpG8pMt3g==
+  version "17.5.0"
+  resolved "https://registry.yarnpkg.com/yargs/-/yargs-17.5.0.tgz#2706c5431f8c119002a2b106fc9f58b9bb9097a3"
+  integrity sha512-3sLxVhbAB5OC8qvVRebCLWuouhwh/rswsiDYx3WGxajUk/l4G20SKfrKKFeNIHboUFt2JFgv2yfn+5cgOr/t5A==
   dependencies:
     cliui "^7.0.2"
     escalade "^3.1.1"
