@@ -18,17 +18,12 @@ Project status
 
 [![<LABEL>](https://github.com/thaibault/internationalisation/actions/workflows/build.yaml/badge.svg)](https://github.com/thaibault/internationalisation/actions/workflows/build.yaml)
 [![<LABEL>](https://github.com/thaibault/internationalisation/actions/workflows/test.yaml/badge.svg)](https://github.com/thaibault/internationalisation/actions/workflows/test.yaml)
-[![<LABEL>](https://github.com/thaibault/internationalisation/actions/workflows/test:coverage:report.yaml/badge.svg)](https://github.com/thaibault/internationalisation/actions/workflows/test:coverage:report.yaml)
-[![<LABEL>](https://github.com/thaibault/internationalisation/actions/workflows/check:types.yaml/badge.svg)](https://github.com/thaibault/internationalisation/actions/workflows/check:types.yaml)
+[![<LABEL>](https://github.com/thaibault/internationalisation/actions/workflows/test-coverage-report.yaml/badge.svg)](https://github.com/thaibault/internationalisation/actions/workflows/test-coverage-report.yaml)
+[![<LABEL>](https://github.com/thaibault/internationalisation/actions/workflows/check-types.yaml/badge.svg)](https://github.com/thaibault/internationalisation/actions/workflows/check-types.yaml)
 [![<LABEL>](https://github.com/thaibault/internationalisation/actions/workflows/lint.yaml/badge.svg)](https://github.com/thaibault/internationalisation/actions/workflows/lint.yaml)
 
 [![code coverage](https://coveralls.io/repos/github/thaibault/internationalisation/badge.svg)](https://coveralls.io/github/thaibault/internationalisation)
 
-<!-- Too unstable yet
-[![dependencies](https://img.shields.io/david/thaibault/internationalisation.svg)](https://david-dm.org/thaibault/internationalisation)
-[![development dependencies](https://img.shields.io/david/dev/thaibault/internationalisation.svg)](https://david-dm.org/thaibault/internationalisation?type=dev)
-[![peer dependencies](https://img.shields.io/david/peer/thaibault/internationalisation.svg)](https://david-dm.org/thaibault/internationalisation?type=peer)
--->
 [![documentation website](https://img.shields.io/website-up-down-green-red/https/torben.website/internationalisation.svg?label=documentation-website)](https://torben.website/internationalisation)
 
 <!--|deDE:Einsatz-->
