@@ -93,8 +93,8 @@
     }
   },
   "engines": {
-    "node": ">=17",
-    "npm": ">=7"
+    "node": ">=19",
+    "npm": ">=8"
   },
   "resolutions": {
     "@types/webpack": "https://registry.yarnpkg.com/@favware/skip-dependency/-/skip-dependency-1.1.1.tgz",
