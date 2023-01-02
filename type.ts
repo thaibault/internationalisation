@@ -28,7 +28,7 @@ import {
 // endregion
 // region exports
 export type InternationalisationFunction<TElement = HTMLElement> =
-    (..._parameters:Array<unknown>) => Promise<$T<TElement>>
+    (...parameters:Array<unknown>) => Promise<$T<TElement>>
 
 declare global {
     interface JQuery<TElement = HTMLElement> {
