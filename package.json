@@ -59,7 +59,6 @@
     "@types/jquery": "*",
     "@types/jsdom": "*",
     "@types/node": "*",
-    "@types/rimraf": "*",
     "@types/webpack-env": "*",
     "@typescript-eslint/eslint-plugin": "*",
     "@typescript-eslint/parser": "*",
