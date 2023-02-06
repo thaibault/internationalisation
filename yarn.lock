@@ -1551,7 +1551,16 @@
   dependencies:
     "@types/sizzle" "*"
 
-"@types/jsdom@*", "@types/jsdom@^20.0.0":
+"@types/jsdom@*":
+  version "21.1.0"
+  resolved "https://registry.yarnpkg.com/@types/jsdom/-/jsdom-21.1.0.tgz#219f15e3370da3f85d18fe02ae86bda7ff66104a"
+  integrity sha512-leWreJOdnuIxq9Y70tBVm/bvTuh31DSlF/r4l7Cfi4uhVQqLHD0Q4v301GMisEMwwbMgF7ZKxuZ+Jbd4NcdmRw==
+  dependencies:
+    "@types/node" "*"
+    "@types/tough-cookie" "*"
+    parse5 "^7.0.0"
+
+"@types/jsdom@^20.0.0":
   version "20.0.1"
   resolved "https://registry.yarnpkg.com/@types/jsdom/-/jsdom-20.0.1.tgz#07c14bc19bd2f918c1929541cdaacae894744808"
   integrity sha512-d0r18sZPmMQr1eG35u12FZfhIXNrnsPU/g5wvRKCUf/tOGilKKwYMYGqh33BNR6ba+2gkHw1EUiHoN3mn7E5IQ==
@@ -1589,9 +1598,9 @@
   integrity sha512-Y4XFY5VJAuw0FgAqPNd6NNoV44jbq9Bz2L7Rh/J6jLTiHBSBJa9fxqQIvkIld4GsoDOcCbvzOUAbLPsSKKg+uA==
 
 "@types/node@*":
-  version "18.11.18"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-18.11.18.tgz#8dfb97f0da23c2293e554c5a50d61ef134d7697f"
-  integrity sha512-DHQpWGjyQKSHj3ebjFI/wRKcqQcdR+MoFBygntYOZytCqNfkd2ZC4ARDJ2DQqhjH5p85Nnd3jhUJIXrszFX/JA==
+  version "18.11.19"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-18.11.19.tgz#35e26df9ec441ab99d73e99e9aca82935eea216d"
+  integrity sha512-YUgMWAQBWLObABqrvx8qKO1enAvBUdjZOAWQ5grBAkp5LQv45jBvYKZ3oFS9iKRCQyFjqw6iuEa1vmFqtxYLZw==
 
 "@types/prettier@^2.1.5":
   version "2.7.2"
@@ -3199,9 +3208,9 @@ cli-table3@^0.5.0:
     colors "^1.1.2"
 
 clientnode@*:
-  version "3.0.1018"
-  resolved "https://registry.yarnpkg.com/clientnode/-/clientnode-3.0.1018.tgz#29dccb215e7b973e6ee8077b1aa37d8884182cf1"
-  integrity sha512-jDMSmIJoPeYBJzPwL9+17fFiQP4QwgaWdsNgoDsEg1OCxTLr8n6QxvysuE8Rc4+N/lFQu1L7V91EEPzMKmP6ng==
+  version "3.0.1020"
+  resolved "https://registry.yarnpkg.com/clientnode/-/clientnode-3.0.1020.tgz#a49c80657b9cf72f9b6bb8935237cb9603c8db7d"
+  integrity sha512-Ld26ZQWJ7FWh7JPjqvchsixLkOiVxkDUdRmb9b+IBf564+kE1P289r4C/rZCbVW4j5DOGnCZ/rfpg2kuiwNG0w==
 
 cliui@^4.0.0:
   version "4.1.0"
@@ -3579,9 +3588,9 @@ doctrine@^3.0.0:
     esutils "^2.0.2"
 
 documentation-website@*:
-  version "1.0.292"
-  resolved "https://registry.yarnpkg.com/documentation-website/-/documentation-website-1.0.292.tgz#d03784ff4a5f6f02425c68fd1564fb1136d1f84f"
-  integrity sha512-RX0Ho+G/6W8j6SazBtVnegJO1DPCRpMiWnZjz8HHuDVS0Vt/ODavilW0XPy40B0g5B6M6naafYO4nIRahVlVFw==
+  version "1.0.293"
+  resolved "https://registry.yarnpkg.com/documentation-website/-/documentation-website-1.0.293.tgz#d3ee22dc3f6ba19b11a09e8e25432230ff867df3"
+  integrity sha512-xchhIN2b/ROeN9qnVSXX+yZrS95Xit690jKpKIXqERs1d9m3YoqGRdkQSjz90g5mfJbvcbp6JDH2f1xqEMrFiw==
 
 dom-converter@^0.2.0:
   version "0.2.0"
@@ -5707,9 +5716,9 @@ node-int64@^0.4.0:
   integrity sha512-O5lz91xSOeoXP6DulyHfllpq+Eg00MWitZIbtPfoSEvqIHdl5gfcY6hYzDWnj0qD5tz52PI08u9qUvSVeUBeHw==
 
 node-releases@^2.0.8:
-  version "2.0.9"
-  resolved "https://registry.yarnpkg.com/node-releases/-/node-releases-2.0.9.tgz#fe66405285382b0c4ac6bcfbfbe7e8a510650b4d"
-  integrity sha512-2xfmOrRkGogbTK9R6Leda0DGiXeY3p2NJpy4+gNCffdUvV6mdEJnaDEic1i3Ec2djAo8jWYoJMR5PB0MSMpxUA==
+  version "2.0.10"
+  resolved "https://registry.yarnpkg.com/node-releases/-/node-releases-2.0.10.tgz#c311ebae3b6a148c89b1813fd7c4d3c024ef537f"
+  integrity sha512-5GFldHPXVG/YZmFzJvKK2zDSzPKhEp0+ZR5SVaoSag9fsL5YgHbUHDfnG5494ISANDcK4KwPXAx2xqVEydmd7w==
 
 normalize-path@^3.0.0, normalize-path@~3.0.0:
   version "3.0.0"
@@ -7125,9 +7134,9 @@ webidl-conversions@^7.0.0:
   integrity sha512-VwddBukDzu71offAQR975unBIGqfKZpM+8ZX6ySk8nYhVoo5CYaZyzt3YBvYtRtO+aoGlqxPg/B87NGVZ/fu6g==
 
 weboptimizer@*:
-  version "2.0.1285"
-  resolved "https://registry.yarnpkg.com/weboptimizer/-/weboptimizer-2.0.1285.tgz#5197e70bfa8ce577305c8033b47ae3ac653dfb54"
-  integrity sha512-gD/qoKamqqw0gcnwMavJg+cqGVHkeCSvV3J25gBCjhxwLMzv6JcAVo1YGtI9kW2X2ksWM289fRYtTSeQbke0tw==
+  version "2.0.1288"
+  resolved "https://registry.yarnpkg.com/weboptimizer/-/weboptimizer-2.0.1288.tgz#1b69e1a56401fad437ef02d4f426b9259d3d557b"
+  integrity sha512-qCv//WfH2/v7pRyciaaNshC0dsCWsa0IObusDlnEoRRwgfMlh8X960b+R61+b0OcM4raTKFMZoacVY62jgOaKA==
   dependencies:
     "@babel/core" "*"
     "@babel/plugin-proposal-decorators" "*"
