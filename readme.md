@@ -13,18 +13,18 @@ endregion -->
 Project status
 --------------
 
-[![npm](https://img.shields.io/npm/v/internationalisation?color=%23d55e5d&label=npm%20package%20version&logoColor=%23d55e5d)](https://www.npmjs.com/package/internationalisation)
-[![npm downloads](https://img.shields.io/npm/dy/internationalisation.svg)](https://www.npmjs.com/package/internationalisation)
+[![npm](https://img.shields.io/npm/v/internationalisation?color=%23d55e5d&label=npm%20package%20version&logoColor=%23d55e5d&style=for-the-badge)](https://www.npmjs.com/package/internationalisation)
+[![npm downloads](https://img.shields.io/npm/dy/internationalisation.svg?style=for-the-badge)](https://www.npmjs.com/package/internationalisation)
 
-[![<LABEL>](https://github.com/thaibault/internationalisation/actions/workflows/build.yaml/badge.svg)](https://github.com/thaibault/internationalisation/actions/workflows/build.yaml)
-[![<LABEL>](https://github.com/thaibault/internationalisation/actions/workflows/test.yaml/badge.svg)](https://github.com/thaibault/internationalisation/actions/workflows/test.yaml)
-[![<LABEL>](https://github.com/thaibault/internationalisation/actions/workflows/test-coverage-report.yaml/badge.svg)](https://github.com/thaibault/internationalisation/actions/workflows/test-coverage-report.yaml)
-[![<LABEL>](https://github.com/thaibault/internationalisation/actions/workflows/check-types.yaml/badge.svg)](https://github.com/thaibault/internationalisation/actions/workflows/check-types.yaml)
-[![<LABEL>](https://github.com/thaibault/internationalisation/actions/workflows/lint.yaml/badge.svg)](https://github.com/thaibault/internationalisation/actions/workflows/lint.yaml)
+[![build](https://img.shields.io/github/actions/workflow/status/thaibault/internationalisation/build.yaml?style=for-the-badge)](https://github.com/thaibault/internationalisation/actions/workflows/build.yaml)
 
-[![code coverage](https://coveralls.io/repos/github/thaibault/internationalisation/badge.svg)](https://coveralls.io/github/thaibault/internationalisation)
+[![check types](https://img.shields.io/github/actions/workflow/status/thaibault/internationalisation/check-types.yaml?label=check%20types&style=for-the-badge)](https://github.com/thaibault/internationalisation/actions/workflows/check-types.yaml)
+[![lint](https://img.shields.io/github/actions/workflow/status/thaibault/internationalisation/lint.yaml?label=lint&style=for-the-badge)](https://github.com/thaibault/internationalisation/actions/workflows/lint.yaml)
+[![test](https://img.shields.io/github/actions/workflow/status/thaibault/internationalisation/test-coverage-report.yaml?label=test&style=for-the-badge)](https://github.com/thaibault/internationalisation/actions/workflows/test-coverage-report.yaml)
 
-[![documentation website](https://img.shields.io/website-up-down-green-red/https/torben.website/internationalisation.svg?label=documentation-website)](https://torben.website/internationalisation)
+[![code coverage](https://img.shields.io/coverallsCoverage/github/thaibault/internationalisation?label=code%20coverage&style=for-the-badge)](https://coveralls.io/github/thaibault/internationalisation)
+
+[![documentation website](https://img.shields.io/website-up-down-green-red/https/torben.website/internationalisation.svg?label=documentation-website&style=for-the-badge)](https://torben.website/internationalisation)
 
 <!--|deDE:Einsatz-->
 <!--|frFR:Utilisier-->
