@@ -15,8 +15,9 @@
 */
 // region imports
 import {beforeAll, describe, expect, test} from '@jest/globals'
-import Tools, {augment$, currentRequire, determine$} from 'clientnode'
-import {FirstParameter, $Global, $T} from 'clientnode/type'
+import {
+    $Global, $T, augment$, currentRequire, determine$, FirstParameter, Tools
+} from 'clientnode'
 import {getInitializedBrowser} from 'weboptimizer/browser'
 
 /*
@@ -68,24 +69,24 @@ describe('Internationalisation', ():void => {
         $domNode.html('<div>english<!--deDE:german--></div>')
         await internationalisation.switch('deDE')
         expect(Tools.isEquivalentDOM(
-            $domNode.html().replace(/(?: |\n)+/g, ' '),
+            $domNode.html().replace(/[ \n]+/g, ' '),
             (
                 '<div style="opacity: 1">' +
                     'german<!--deDE--><!--enUS:english-->' +
                 '</div>'
             )
         )).toStrictEqual(true)
-        return
+
         await internationalisation.switch('deDE')
         expect(Tools.isEquivalentDOM(
-            $domNode.html().replace(/(?: |\n)+/g, ' '),
+            $domNode.html().replace(/[ \n]+/g, ' '),
             '<div style="opacity: 1">' +
                 'german<!--deDE--><!--enUS:english-->' +
             '</div>'
         )).toStrictEqual(true)
         await internationalisation.switch('en')
         expect(Tools.isEquivalentDOM(
-            $domNode.html().replace(/(?: |\n)+/g, ' '),
+            $domNode.html().replace(/[ \n]+/g, ' '),
             '<div style="opacity: 1">' +
                 'english<!--enUS--><!--deDE:german-->' +
             '</div>'
@@ -99,7 +100,7 @@ describe('Internationalisation', ():void => {
         await internationalisation.initialize()
         await internationalisation.switch('de')
         expect(Tools.isEquivalentDOM(
-            $domNode.html().replace(/(?: |\n)+/g, ' '),
+            $domNode.html().replace(/[ \n]+/g, ' '),
             ' <div class="toc"> ' +
                 '<ul>' +
                     '<li style="opacity: 1">' +
@@ -166,17 +167,22 @@ describe('Internationalisation', ():void => {
             .resolves
             .toBeUndefined()
     )
-    test('_addTextNodeToFade', ():void =>
-        expect(internationalisation._addTextNodeToFade($domNode))
-            .toBeUndefined()
-    )
-    test('_registerTextNodeToChange', ():void => {
-        expect(internationalisation._registerTextNodeToChange(
+    test('_addTextNodeToFade', () => {
+        internationalisation._addTextNodeToFade($domNode)
+
+        expect(internationalisation._$domNodeToFade!.has($domNode[0]).length)
+            .toStrictEqual(1)
+    })
+    test('_registerTextNodeToChange', () => {
+        internationalisation._registerTextNodeToChange(
             $domNode,
             $domNode.children(),
             ['1', '2', '3'],
             $domNode.children()
-        )).toBeUndefined()
+        )
+
+        expect(internationalisation._replacements[0].$textNodeToTranslate)
+            .toStrictEqual($domNode)
 
         expect(internationalisation._replacements).toHaveLength(1)
         internationalisation._replacements = []
@@ -191,13 +197,20 @@ describe('Internationalisation', ():void => {
             (await $domNode.Internationalisation())
                 .data('Internationalisation') as
                     Internationalisation<HTMLBodyElement>
-        expect(subInternationalisation._switchLanguage('deDE')).toBeUndefined()
-        expect(subInternationalisation.currentLanguage).toStrictEqual('deDE')
+
+        subInternationalisation._switchLanguage('deDE')
+
+        // TODO check changed text node content
+        expect(true).toStrictEqual(true)
+        expect(subInternationalisation.currentLanguage)
+            .toStrictEqual('deDE')
     })
-    test('_switchCurrentLanguageIndicator', ():void =>
-        expect(internationalisation._switchCurrentLanguageIndicator('deDE'))
-            .toBeUndefined()
-    )
+    test('_switchCurrentLanguageIndicator', () => {
+        internationalisation._switchCurrentLanguageIndicator('deDE')
+
+        // TODO check switched indicator content
+        expect(true).toStrictEqual(true)
+    })
     /// endregion
     // endregion
 })

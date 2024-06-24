@@ -17,8 +17,19 @@
     endregion
 */
 // region imports
-import Tools, {BoundTools, Lock, $} from 'clientnode'
-import {HTMLItem, Mapping, RecursivePartial, $T} from 'clientnode/type'
+import {
+    $,
+    $T,
+    BoundTools,
+    extend,
+    HTMLItem,
+    Lock,
+    Mapping,
+    NOOP,
+    RecursivePartial,
+    format,
+    Tools
+} from 'clientnode'
 
 import {DefaultOptions, Options, Replacement, $DomNodes} from './type'
 // endregion
@@ -26,71 +37,66 @@ import {DefaultOptions, Options, Replacement, $DomNodes} from './type'
 /**
  * This plugin holds all needed methods to extend a website for
  * internationalisation.
- * @property static:_defaultOptions - Options extended by the options given to
- * the initializer method.
- * @property static:_defaultOptions.currentLanguageIndicatorClassName - Class
- * name which marks current language switcher button or link.
- * @property static:_defaultOptions.currentLanguagePattern - Saves a pattern to
+ * @property _defaultOptions - Options extended by the options given to the
+ * initializer method.
+ * @property _defaultOptions.currentLanguageIndicatorClassName - Class name
+ * which marks current language switcher button or link.
+ * @property _defaultOptions.currentLanguagePattern - Saves a pattern to
  * recognize current language marker.
- * @property static:_defaultOptions.domNodes - A mapping of needed internal dom
- * node descriptions to their corresponding selectors.
- * @property static:_defaultOptions.domNodeSelectorPrefix - Selector prefix for
- * all nodes to take into account.
- * @property static:_defaultOptions.default - Initial language to use.
- * @property static:_defaultOptions.selection - List of all supported
- * languages.
- * @property static:_defaultOptions.initial - Initial set language (if omitted
- * it will be determined based on environment informations).
- * @property static:_defaultOptions.templateDelimiter - Template delimiter to
+ * @property _defaultOptions.domNodes - A mapping of needed internal dom node
+ * descriptions to their corresponding selectors.
+ * @property _defaultOptions.domNodeSelectorPrefix - Selector prefix for all
+ * nodes to take into account.
+ * @property _defaultOptions.default - Initial language to use.
+ * @property _defaultOptions.selection - List of all supported languages.
+ * @property _defaultOptions.initial - Initial set language (if omitted it will
+ * be determined based on environment informations).
+ * @property _defaultOptions.templateDelimiter - Template delimiter to
  * recognize dynamic content.
- * @property static:_defaultOptions.templateDelimiter.pre - Delimiter which
- * introduces a dynamic expression.
- * @property static:_defaultOptions.templateDelimiter.post - Delimiter which
- * finishes a dynamic expression.
- * @property static:_defaultOptions.fadeEffect - Indicates whether a fade
- * effect should be performed.
- * @property static:_defaultOptions.textNodeParent - Saves informations how
- * parent dom nodes should be animated when containing text will be switched.
- * @property static:_defaultOptions.textNodeParent.showAnimation - Fade in
- * options when a new text should appear.
- * @property static:_defaultOptions.textNodeParent.hideAnimation - Fade out
- * effect options when a text node should be removed before switching them.
- * @property static:_defaultOptions.preReplacementLanguagePattern - Pattern to
+ * @property _defaultOptions.templateDelimiter.pre - Delimiter which introduces
+ * a dynamic expression.
+ * @property _defaultOptions.templateDelimiter.post - Delimiter which finishes
+ * a dynamic expression.
+ * @property _defaultOptions.fadeEffect - Indicates whether a fade effect
+ * should be performed.
+ * @property _defaultOptions.textNodeParent - Saves informations how parent dom
+ * nodes should be animated when containing text will be switched.
+ * @property _defaultOptions.textNodeParent.showAnimation - Fade in options
+ * when a new text should appear.
+ * @property _defaultOptions.textNodeParent.hideAnimation - Fade out effect
+ * options when a text node should be removed before switching them.
+ * @property _defaultOptions.preReplacementLanguagePattern - Pattern to
  * introduce a pre replacement language node.
- * @property static:_defaultOptions.replacementLanguagePattern - Text pattern
- * to introduce a post replacement node.
- * @property static:_defaultOptions.replacementDomNodeName - Dom node tag name
- * which should be interpreted as a hidden alternate language node (contains
- * text in another language).
- * @property static:_defaultOptions.replaceDomNodeNames - Tag names which
- * indicates dom nodes which should be replaced.
- * @property static:_defaultOptions.lockDescription - Lock description.
- * @property static:_defaultOptions.languageHashPrefix - Hash prefix to
- * determine current active language by url.
- * @property static:_defaultOptions.sessionDescription - Name to use for saving
+ * @property _defaultOptions.replacementLanguagePattern - Text pattern to
+ * introduce a post replacement node.
+ * @property _defaultOptions.replacementDomNodeName - Dom node tag name which
+ * should be interpreted as a hidden alternate language node (contains text in
+ * another language).
+ * @property _defaultOptions.replaceDomNodeNames - Tag names which indicates
+ * dom nodes which should be replaced.
+ * @property _defaultOptions.lockDescription - Lock description.
+ * @property _defaultOptions.languageHashPrefix - Hash prefix to determine
+ * current active language by url.
+ * @property _defaultOptions.sessionDescription - Name to use for saving
  * preferred language in local storage for current session.
- * @property static:_defaultOptions.languageMapping - A mapping of alternate
- * language descriptions.
- * @property static:_defaultOptions.onSwitched - Callback which will be
- * triggered after a language switch has been finished.
- * @property static:_defaultOptions.onEnsured - Callback which will be
- * triggered after a language check has been performed. Needed if some nodes
- * have another language active then others. Useful if only some parts of the
- * dom tree was updated and a full language update isn't required.
- * @property static:_defaultOptions.onSwitch - Callback which should be called
- * before a language switch should be performed.
- * @property static:_defaultOptions.onEnsure - Callback which should be called
- * before a language switch should be ensured.
- *
+ * @property _defaultOptions.languageMapping - A mapping of alternate language
+ * descriptions.
+ * @property _defaultOptions.onSwitched - Callback which will be triggered
+ * after a language switch has been finished.
+ * @property _defaultOptions.onEnsured - Callback which will be triggered after
+ * a language check has been performed. Needed if some nodes have another
+ * language active then others. Useful if only some parts of the dom tree was
+ * updated and a full language update isn't required.
+ * @property _defaultOptions.onSwitch - Callback which should be called before
+ * a language switch should be performed.
+ * @property _defaultOptions.onEnsure - Callback which should be called before
+ * a language switch should be ensured.
  * @property options - Finally configured given options.
- *
  * @property currentLanguage - Saves the current language.
  * @property knownTranslations - Saves a mapping of known language strings and
  * their corresponding translations, to boost language replacements or saves
  * redundant replacements in dom tree.
- *
  * @property lock - Lock instance when updating dom noes.
- *
  * @property _$domNodeToFade - Saves all $-extended dom nodes which should be
  * animated.
  * @property _replacements - Saves all text nodes which should be replaced.
@@ -116,10 +122,10 @@ export class Internationalisation<TElement = HTMLElement> extends BoundTools<
         },
         lockDescription: '{1}Switch',
         name: 'Internationalisation',
-        onSwitched: Tools.noop,
-        onEnsured: Tools.noop,
-        onSwitch: Tools.noop,
-        onEnsure: Tools.noop,
+        onSwitched: NOOP,
+        onEnsured: NOOP,
+        onSwitch: NOOP,
+        onEnsure: NOOP,
         preReplacementLanguagePattern: '^\\|({1})$',
         replaceDomNodeNames: ['#text', 'lang-replace'],
         replacementDomNodeName: ['#comment', 'lang-replacement'],
@@ -150,26 +156,25 @@ export class Internationalisation<TElement = HTMLElement> extends BoundTools<
      * Initializes the plugin. Current language is set and later needed dom
      * nodes are grabbed.
      * @param options - An options object.
-     *
      * @returns Returns the current instance wrapped in a promise.
      */
     initialize<R = Promise<$T<TElement>>>(
         options:RecursivePartial<Options> = {}
     ):R {
-        super.initialize(Tools.extend<Options>(
+        super.initialize(extend<Options>(
             true, {} as Options, Internationalisation._defaultOptions, options
         ))
 
-        this.options.preReplacementLanguagePattern = Tools.stringFormat(
+        this.options.preReplacementLanguagePattern = format(
             this.options.preReplacementLanguagePattern,
             this.options.replacementLanguagePattern.substr(
                 1, this.options.replacementLanguagePattern.length - 2
             )
         )
-        this.options.lockDescription = Tools.stringFormat(
+        this.options.lockDescription = format(
             this.options.lockDescription, this.options.name
         )
-        this.options.sessionDescription = Tools.stringFormat(
+        this.options.sessionDescription = format(
             this.options.sessionDescription, this.options.name
         )
 
@@ -219,7 +224,6 @@ export class Internationalisation<TElement = HTMLElement> extends BoundTools<
      * indicates that the dom tree should be checked again current language to
      * ensure every text node has right content.
      * @param ensure - Indicates if a switch effect should be avoided.
-     *
      * @returns Returns the current instance wrapped in a promise.
      */
     async switch(language:string|true, ensure = false):Promise<$T<TElement>> {
@@ -294,12 +298,11 @@ export class Internationalisation<TElement = HTMLElement> extends BoundTools<
     /// endregion
     // region protected methods
     /**
-     * Depending an activated switching effect this method initialized the
+     * Depending on activated switching effect this method initialized the
      * effect of replace all text string directly.
      * @param language - New language to use.
      * @param ensure - Indicates if current language should be ensured again
      * every text node content.
-     *
      * @returns Returns the current instance wrapped in a promise.
      */
     async _handleSwitchEffect(language:string, ensure:boolean):Promise<void> {
@@ -344,7 +347,6 @@ export class Internationalisation<TElement = HTMLElement> extends BoundTools<
     /**
      * Moves pre replacement dom nodes into next dom node behind translation
      * text to use the same translation algorithm for both.
-     * @returns Returns the current instance.
      */
     _movePreReplacementNodes():void {
         const self:Internationalisation<TElement> = this
@@ -391,16 +393,15 @@ export class Internationalisation<TElement = HTMLElement> extends BoundTools<
      * @param language - New language to use.
      * @param ensure - Indicates if the whole dom should be checked again
      * current language to ensure every text node has right content.
-     *
      * @returns Return a tuple of last text and language dom node to translate.
      */
     _collectTextNodesToReplace(
         language:string, ensure:boolean
-    ):Array<null|$T> {
+    ):Array<null|$T<HTMLItem>> {
         let $currentTextNodeToTranslate:null|$T<HTMLItem> = null
         let $currentLanguageDomNode:null|$T = null
         let $lastTextNodeToTranslate:null|$T<HTMLItem> = null
-        let $lastLanguageDomNode:null|$T = null
+        let $lastLanguageDomNode:null|$T<HTMLItem> = null
 
         this.knownTranslations = {}
         const self:Internationalisation<TElement> = this
@@ -478,7 +479,6 @@ export class Internationalisation<TElement = HTMLElement> extends BoundTools<
     }
     /**
      * Iterates all text nodes in language known area with known translations.
-     * @returns Returns the current instance.
      */
     _registerKnownTextNodes():void {
         this._textNodesWithKnownTranslation = {}
@@ -538,7 +538,6 @@ export class Internationalisation<TElement = HTMLElement> extends BoundTools<
     /**
      * Normalizes a given language string.
      * @param language - New language to use.
-     *
      * @returns Returns the normalized version of given language.
      */
     _normalizeLanguage(language:string):string {
@@ -612,10 +611,8 @@ export class Internationalisation<TElement = HTMLElement> extends BoundTools<
     /**
      * Registers a text node to change its content with given replacement.
      * @param $textNode - Text node with content to translate.
-     *
-     * @returns Returns the current instance.
      */
-    _addTextNodeToFade($textNode:$T<HTMLItem>):void {
+    _addTextNodeToFade($textNode:$T<HTMLItem>) {
         const $parent:$T = $textNode.parent() as $T
 
         if (this._$domNodeToFade)
@@ -631,15 +628,13 @@ export class Internationalisation<TElement = HTMLElement> extends BoundTools<
      * @param match - A matching array of replacement's text content.
      * @param $currentLanguageDomNode - A potential given text node indicating
      * the language of given text node.
-     *
-     * @returns Returns the current instance.
      */
     _registerTextNodeToChange(
         $currentTextNodeToTranslate:$T<HTMLItem>,
         $currentDomNode:$T<HTMLItem>,
         match:Array<string>,
         $currentLanguageDomNode:null|$T
-    ):void {
+    ) {
         this._addTextNodeToFade($currentTextNodeToTranslate)
 
         if ($currentDomNode)
@@ -658,15 +653,14 @@ export class Internationalisation<TElement = HTMLElement> extends BoundTools<
      * commend node.
      * @param ensure - Indicates if current language should be ensured again
      * every text node content.
-     *
      * @returns Returns the retrieved or newly created language indicating
      * comment node.
      */
     _ensureLastTextNodeHavingLanguageIndicator(
         $lastTextNodeToTranslate:null|$T<HTMLItem>,
-        $lastLanguageDomNode:null|$T,
+        $lastLanguageDomNode:null|$T<HTMLItem>,
         ensure:boolean
-    ):null|$T {
+    ):null|$T<HTMLItem> {
         if ($lastTextNodeToTranslate && !$lastLanguageDomNode) {
             /*
                 Last text node doesn't have a current language indicating dom
@@ -686,8 +680,6 @@ export class Internationalisation<TElement = HTMLElement> extends BoundTools<
      * Performs the low level text replacements for switching to given
      * language.
      * @param language - The new language to switch to.
-     *
-     * @returns Returns the current instance.
      */
     _switchLanguage(language:string):void {
         for (const replacement of this._replacements) {
@@ -792,10 +784,8 @@ export class Internationalisation<TElement = HTMLElement> extends BoundTools<
      * Switches the current language indicator in language switch triggered dom
      * nodes.
      * @param language - The new language to switch to.
-     *
-     * @returns Returns the current instance.
      */
-    _switchCurrentLanguageIndicator(language:string):void {
+    _switchCurrentLanguageIndicator(language:string) {
         $(
             `a[href="#${this.options.languageHashPrefix}` +
             `${this.currentLanguage}"].` +

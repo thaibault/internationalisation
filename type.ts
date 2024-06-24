@@ -17,14 +17,14 @@
 */
 // region imports
 import {
+    $DomNodes as $BaseDomNodes,
+    $T,
     DomNodes as BaseDomNodes,
     HTMLItem,
     Mapping,
     Options as BaseOptions,
-    UnknownFunction,
-    $DomNodes as $BaseDomNodes,
-    $T
-} from 'clientnode/type'
+    UnknownFunction
+} from 'clientnode'
 // endregion
 // region exports
 export type InternationalisationFunction<TElement = HTMLElement> =
