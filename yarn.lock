@@ -4961,31 +4961,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"clientnode@npm:3.0.1151":
-  version: 3.0.1151
-  resolution: "clientnode@npm:3.0.1151"
-  peerDependencies:
-    "@babel/runtime": "*"
-    "@types/prop-types": "*"
-    jquery: "*"
-    node-fetch: "*"
-    prop-types: "*"
-  peerDependenciesMeta:
-    "@babel/runtime":
-      optional: true
-    "@types/prop-types":
-      optional: true
-    jquery:
-      optional: true
-    node-fetch:
-      optional: true
-    prop-types:
-      optional: true
-  checksum: 10c0/94b9af58259fc5caa2abbf9076125fa511b22cdf13bda730a904226a4d4c196a89a8dec3f77d2dd5201969c56a653b4a8d10d1adf5e5a4ee1ac5c5e9746e8ea7
-  languageName: node
-  linkType: hard
-
-"clientnode@npm:^3.0.1153":
+"clientnode@npm:3.0.1153":
   version: 3.0.1153
   resolution: "clientnode@npm:3.0.1153"
   peerDependencies:
@@ -5006,6 +4982,30 @@ __metadata:
     prop-types:
       optional: true
   checksum: 10c0/304ab132d3ffd3348019db4733004deb9fe8f26ae2d9a3f7085bc79a1ca7ae0ec2e823bb82c06ba75e1cf5bc0e19bc94f0b1c7d4a6e42e16b21603e7962c26c8
+  languageName: node
+  linkType: hard
+
+"clientnode@npm:^3.0.1155":
+  version: 3.0.1155
+  resolution: "clientnode@npm:3.0.1155"
+  peerDependencies:
+    "@babel/runtime": "*"
+    "@types/prop-types": "*"
+    jquery: "*"
+    node-fetch: "*"
+    prop-types: "*"
+  peerDependenciesMeta:
+    "@babel/runtime":
+      optional: true
+    "@types/prop-types":
+      optional: true
+    jquery:
+      optional: true
+    node-fetch:
+      optional: true
+    prop-types:
+      optional: true
+  checksum: 10c0/ca50fa694db23036f6d5c62b874daa5f6bd8a4b1dcea96f83c5bd705c090f930ab554aefbcce64307bcea14c9914017b6a1353afb92b9a8420ff9d5023b76681
   languageName: node
   linkType: hard
 
@@ -5858,9 +5858,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-jsdoc@npm:^48.3.0":
-  version: 48.3.0
-  resolution: "eslint-plugin-jsdoc@npm:48.3.0"
+"eslint-plugin-jsdoc@npm:^48.4.0":
+  version: 48.4.0
+  resolution: "eslint-plugin-jsdoc@npm:48.4.0"
   dependencies:
     "@es-joy/jsdoccomment": "npm:~0.43.1"
     are-docs-informative: "npm:^0.0.2"
@@ -5874,7 +5874,7 @@ __metadata:
     synckit: "npm:^0.9.0"
   peerDependencies:
     eslint: ^7.0.0 || ^8.0.0 || ^9.0.0
-  checksum: 10c0/2444f71114bf21edf4002be205adec60a47d03e6225420b8f44fe2f46738fe5301fe5596f2523b8394255992b1652922331564d25c699c8159fa8020bc7aec5e
+  checksum: 10c0/fcb858c45c64d9e63556fbeda047ba371c42b62ae305e53a41f26b11518caaa7b6b18c080f9a5d8f4ff8ac0dcb7a95716865774ff0db7f681ca5dc068dde8a11
   languageName: node
   linkType: hard
 
@@ -7115,18 +7115,18 @@ __metadata:
     "@types/webpack-env": "npm:^1.18.5"
     "@typescript-eslint/eslint-plugin": "npm:^7.13.1"
     "@typescript-eslint/parser": "npm:^7.13.1"
-    clientnode: "npm:^3.0.1153"
+    clientnode: "npm:^3.0.1155"
     documentation-website: "npm:^1.0.326"
     eslint: "npm:^9.5.0"
     eslint-config-google: "npm:^0.14.0"
-    eslint-plugin-jsdoc: "npm:^48.3.0"
+    eslint-plugin-jsdoc: "npm:^48.4.0"
     favicons-webpack-plugin: "npm:^6.0.1"
     image-minimizer-webpack-plugin: "npm:^4.0.2"
     jest: "npm:^29.7.0"
     jquery: "npm:^3.7.1"
     jsdoc: "npm:^4.0.3"
     typescript-eslint: "npm:^7.13.1"
-    weboptimizer: "npm:^2.0.1481"
+    weboptimizer: "npm:^2.0.1482"
     webpack-dev-server: "npm:^5.0.4"
   peerDependencies:
     "@babel/runtime": "*"
@@ -11028,9 +11028,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"weboptimizer@npm:^2.0.1481":
-  version: 2.0.1481
-  resolution: "weboptimizer@npm:2.0.1481"
+"weboptimizer@npm:^2.0.1482":
+  version: 2.0.1482
+  resolution: "weboptimizer@npm:2.0.1482"
   dependencies:
     "@babel/core": "npm:^7.24.7"
     "@babel/plugin-proposal-class-properties": "npm:^7.18.6"
@@ -11043,7 +11043,7 @@ __metadata:
     babel-loader: "npm:^9.1.3"
     babel-plugin-transform-modern-regexp: "npm:^0.0.6"
     babel-preset-minify: "npm:^0.5.2"
-    clientnode: "npm:3.0.1151"
+    clientnode: "npm:3.0.1153"
     ejs: "npm:^3.1.10"
     exports-loader: "npm:^5.0.0"
     extract-loader: "npm:^5.1.0"
@@ -11169,7 +11169,7 @@ __metadata:
       optional: true
   bin:
     weboptimizer: index.js
-  checksum: 10c0/1605c7880e03eaf30d0020426e79c9566274fcb77c1669bd2429f5fd9fa5831a8a1fccb51eac23833a760b2963f39c5aad2a71cf471bcb6c4dacf57a0847a60d
+  checksum: 10c0/3437a137c54b24de7111242391eecfdc370d62b6b7821c281ad800fbaa0c4723c55e6c2fb1f6f5e9d63ec383e2170ee38ab59d1ea85720518ca5fe16050416d9
   languageName: node
   linkType: hard
 
