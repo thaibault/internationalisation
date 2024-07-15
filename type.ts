@@ -82,7 +82,3 @@ export interface DefaultOptions {
 }
 export type Options = BaseOptions & DefaultOptions
 // endregion
-// region vim modline
-// vim: set tabstop=4 shiftwidth=4 expandtab:
-// vim: foldmethod=marker foldmarker=region,endregion:
-// endregion
