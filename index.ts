@@ -179,7 +179,7 @@ export class Internationalisation<TElement = HTMLElement> extends BoundTools<
         )
 
         this.$domNodes = this.grabDomNodes(
-            this.options.domNodes as Mapping<string>,
+            this.options.domNodes as Mapping,
             this.$domNode as unknown as $T<Node>
         ) as $DomNodes
         this.$domNodes.switchLanguageButtons =
@@ -197,14 +197,14 @@ export class Internationalisation<TElement = HTMLElement> extends BoundTools<
         this.on(
             this.$domNodes.switchLanguageButtons,
             'click',
-            (event:Event):Promise<$T<TElement>> => {
+            (event:Event) => {
                 event.preventDefault()
 
-                return this.switch(
-                    $(event.target as Node)
-                        .attr('href')!
-                        .substr(this.options.languageHashPrefix.length + 1)
-                )
+                const url = $(event.target as Node).attr('href')
+                if (url)
+                    void this.switch(url.substring(
+                        this.options.languageHashPrefix.length + 1
+                    ))
             }
         )
 
@@ -313,21 +313,16 @@ export class Internationalisation<TElement = HTMLElement> extends BoundTools<
                 .promise()
 
             this._switchLanguage(language)
-            if (this._$domNodeToFade) {
-                await this._$domNodeToFade
-                    .animate(...this.options.textNodeParent.showAnimation)
-                    .promise()
 
-                await this.fireEvent(
-                    (ensure ? 'ensured' : 'switched'),
-                    true,
-                    this,
-                    oldLanguage,
-                    language
-                )
+            await this._$domNodeToFade
+                .animate(...this.options.textNodeParent.showAnimation)
+                .promise()
 
-                void this.lock.release(this.options.lockDescription)
-            }
+            await this.fireEvent(
+                'switched', true, this, oldLanguage, language
+            )
+
+            void this.lock.release(this.options.lockDescription)
 
             return
         }
@@ -374,7 +369,7 @@ export class Internationalisation<TElement = HTMLElement> extends BoundTools<
                     )
 
                     let selfFound = false
-                    $this.parent().contents().each(function():false|void {
+                    $this.parent().contents().each(function():false|undefined {
                         if (selfFound && $(this).Tools('text').trim()) {
                             $this.appendTo(this as Element)
 
@@ -563,10 +558,15 @@ export class Internationalisation<TElement = HTMLElement> extends BoundTools<
         if (this.options.initial)
             result = this.options.initial
 
-        else if ($.global.window)
-            if ($.global.window.localStorage?.getItem(
-                this.options.sessionDescription
-            )) {
+        else if (Object.prototype.hasOwnProperty.call($.global, 'window'))
+            if (
+                Object.prototype.hasOwnProperty.call(
+                    $.global.window, 'localStorage'
+                ) &&
+                $.global.window.localStorage.getItem(
+                    this.options.sessionDescription
+                )
+            ) {
                 result = $.global.window.localStorage.getItem(
                     this.options.sessionDescription
                 ) as string
@@ -575,7 +575,12 @@ export class Internationalisation<TElement = HTMLElement> extends BoundTools<
                     `Determine "${result}", because of local storage ` +
                     'information.'
                 )
-            } else if ($.global.window.navigator?.language) {
+            } else if (
+                Object.prototype.hasOwnProperty.call(
+                    $.global.window, 'navigator'
+                ) &&
+                $.global.window.navigator.language
+            ) {
                 result = $.global.window.navigator.language
 
                 this.debug(
@@ -601,7 +606,12 @@ export class Internationalisation<TElement = HTMLElement> extends BoundTools<
             result = this.options.selection[0]
         }
 
-        if ($.global.window?.localStorage)
+        if (
+            Object.prototype.hasOwnProperty.call($.global, 'window') &&
+            Object.prototype.hasOwnProperty.call(
+                $.global.window, 'localStorage'
+            )
+        )
             $.global.window.localStorage.setItem(
                 this.options.sessionDescription, result
             )
@@ -631,7 +641,7 @@ export class Internationalisation<TElement = HTMLElement> extends BoundTools<
      */
     _registerTextNodeToChange(
         $currentTextNodeToTranslate:$T<HTMLItem>,
-        $currentDomNode:$T<HTMLItem>,
+        $currentDomNode:$T<HTMLItem>|null,
         match:Array<string>,
         $currentLanguageDomNode:null|$T
     ) {
@@ -711,7 +721,7 @@ export class Internationalisation<TElement = HTMLElement> extends BoundTools<
                     replacement
                         .$textNodeToTranslate
                         .parent()
-                        .contents().each(function():false|void {
+                        .contents().each(function():false|undefined {
                             if (currentDomNodeFound) {
                                 replacement.$currentLanguageDomNode =
                                     $currentLanguageDomNode =
@@ -801,7 +811,7 @@ export class Internationalisation<TElement = HTMLElement> extends BoundTools<
 export default Internationalisation
 // endregion
 // region handle $ extending
-if ($.fn)
+if (Object.prototype.hasOwnProperty.call($, 'fn'))
     $.fn.Internationalisation = function<TElement = HTMLElement>(
         this:$T<TElement>, ...parameters:Array<unknown>
     ):Promise<$T<TElement>> {

@@ -71,10 +71,13 @@ export interface DefaultOptions {
     replacementLanguagePattern:string
     selection:Array<string>
     sessionDescription:string
-    templateDelimiter:{
-        pre:string
-        post:string
-    }
+    templateDelimiter:(
+        null |
+        {
+            pre:string
+            post:string
+        }
+    )
     textNodeParent:{
         hideAnimation:[Mapping<number|string>, Mapping<number|string>]
         showAnimation:[Mapping<number|string>, Mapping<number|string>]

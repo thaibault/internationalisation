@@ -34,16 +34,21 @@ describe('Internationalisation', ():void => {
     beforeAll(async ():Promise<void> => {
         await getInitializedBrowser()
 
-        ;(globalThis as unknown as $Global).$ =
-            currentRequire!<typeof import('jquery')>('jquery')
+        if (currentRequire)
+            (globalThis as unknown as $Global).$ =
+                currentRequire<typeof import('jquery')>('jquery')
+
         augment$(determine$())
         /*
-            NOTE: Import plugin with side effects (augmenting "$" scope /
+            NOTE: Import plugin with side effects (augmenting "$" scope
             registering plugin) when other imports are only used as type.
         */
+        // eslint-disable-next-line @typescript-eslint/no-require-imports
         require('./index')
 
-        if (globalThis.window.localStorage)
+        if (Object.prototype.hasOwnProperty.call(
+            globalThis.window, 'localStorage'
+        ))
             globalThis.window.localStorage.removeItem('Internationalisation')
 
         $domNode = await $(window.document.body as HTMLBodyElement)
@@ -135,9 +140,10 @@ describe('Internationalisation', ():void => {
         (
             expected:ReturnType<Internationalisation['_normalizeLanguage']>,
             given:FirstParameter<Internationalisation['_normalizeLanguage']>
-        ):void =>
+        ) => {
             expect(internationalisation._normalizeLanguage(given))
                 .toStrictEqual(expected)
+        }
     )
     test('_determineUsefulLanguage', ():void => {
         if (typeof globalThis.window.localStorage !== 'undefined') {
@@ -152,7 +158,7 @@ describe('Internationalisation', ():void => {
         }
         let referenceLanguage:string = internationalisation.options.default
         if (
-            globalThis.navigator &&
+            Object.prototype.hasOwnProperty.call(globalThis, 'navigator') &&
             typeof globalThis.navigator.language !== 'undefined'
         )
             referenceLanguage = globalThis.navigator.language
@@ -170,7 +176,7 @@ describe('Internationalisation', ():void => {
     test('_addTextNodeToFade', () => {
         internationalisation._addTextNodeToFade($domNode)
 
-        expect(internationalisation._$domNodeToFade!.has($domNode[0]).length)
+        expect(internationalisation._$domNodeToFade?.has($domNode[0]).length)
             .toStrictEqual(1)
     })
     test('_registerTextNodeToChange', () => {
@@ -187,11 +193,11 @@ describe('Internationalisation', ():void => {
         expect(internationalisation._replacements).toHaveLength(1)
         internationalisation._replacements = []
     })
-    test('_ensureLastTextNodeHavingLanguageIndicator', ():void =>
+    test('_ensureLastTextNodeHavingLanguageIndicator', () => {
         expect(internationalisation._ensureLastTextNodeHavingLanguageIndicator(
             null, null, false
         )).toStrictEqual(null)
-    )
+    })
     test('_switchLanguage', async ():Promise<void> => {
         const subInternationalisation:Internationalisation<HTMLBodyElement> =
             (await $domNode.Internationalisation())
