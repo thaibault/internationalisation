@@ -28,59 +28,59 @@ import {
 // endregion
 // region exports
 export type InternationalisationFunction<TElement = HTMLElement> =
-    (...parameters:Array<unknown>) => Promise<$T<TElement>>
+    (...parameters: Array<unknown>) => Promise<$T<TElement>>
 
 declare global {
     interface JQuery<TElement = HTMLElement> {
-        Internationalisation:InternationalisationFunction<TElement>
+        Internationalisation: InternationalisationFunction<TElement>
     }
 }
 
 export interface Replacement {
-    $textNodeToTranslate:$T<HTMLItem>
-    $nodeToReplace:$T<HTMLItem>
-    textToReplace:string
-    $currentLanguageDomNode:null|$T<HTMLItem>
+    $textNodeToTranslate: $T<HTMLItem>
+    $nodeToReplace: $T<HTMLItem>
+    textToReplace: string
+    $currentLanguageDomNode: null|$T<HTMLItem>
 }
 
 export type DomNodes<Type = string> =
     BaseDomNodes &
-    {knownTranslation:Type}
+    {knownTranslation: Type}
 export type $DomNodes =
     $BaseDomNodes &
-    {switchLanguageButtons:$T<HTMLLinkElement>}
+    {switchLanguageButtons: $T<HTMLLinkElement>}
 
 export interface DefaultOptions {
-    currentLanguageIndicatorClassName:string
-    currentLanguagePattern:string
-    default:string
-    domNodes:DomNodes
-    fadeEffect:boolean
-    initial:null|string
-    languageHashPrefix:string
-    languageMapping:Mapping<Array<string>>
-    lockDescription:string
-    name:string
-    onSwitched:UnknownFunction
-    onEnsured:UnknownFunction
-    onSwitch:UnknownFunction
-    onEnsure:UnknownFunction
-    preReplacementLanguagePattern:string
-    replaceDomNodeNames:Array<string>
-    replacementDomNodeName:Array<string>
-    replacementLanguagePattern:string
-    selection:Array<string>
-    sessionDescription:string
-    templateDelimiter:(
+    currentLanguageIndicatorClassName: string
+    currentLanguagePattern: string
+    default: string
+    domNodes: DomNodes
+    fadeEffect: boolean
+    initial: null|string
+    languageHashPrefix: string
+    languageMapping: Mapping<Array<string>>
+    lockDescription: string
+    name: string
+    onSwitched: UnknownFunction
+    onEnsured: UnknownFunction
+    onSwitch: UnknownFunction
+    onEnsure: UnknownFunction
+    preReplacementLanguagePattern: string
+    replaceDomNodeNames: Array<string>
+    replacementDomNodeName: Array<string>
+    replacementLanguagePattern: string
+    selection: Array<string>
+    sessionDescription: string
+    templateDelimiter: (
         null |
         {
-            pre:string
-            post:string
+            pre: string
+            post: string
         }
     )
-    textNodeParent:{
-        hideAnimation:[Mapping<number|string>, Mapping<number|string>]
-        showAnimation:[Mapping<number|string>, Mapping<number|string>]
+    textNodeParent: {
+        hideAnimation: [Mapping<number|string>, Mapping<number|string>]
+        showAnimation: [Mapping<number|string>, Mapping<number|string>]
     }
 }
 export type Options = BaseOptions & DefaultOptions

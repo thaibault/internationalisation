@@ -16,7 +16,14 @@
 // region imports
 import {beforeAll, describe, expect, test} from '@jest/globals'
 import {
-    $Global, $T, augment$, currentRequire, determine$, FirstParameter, Tools
+    $Global,
+    $T,
+    augment$,
+    currentRequire,
+    determine$,
+    FirstParameter,
+    HTMLItem,
+    Tools
 } from 'clientnode'
 import {getInitializedBrowser} from 'weboptimizer/browser'
 
@@ -26,12 +33,12 @@ import {getInitializedBrowser} from 'weboptimizer/browser'
 */
 import Internationalisation from './index'
 // endregion
-describe('Internationalisation', ():void => {
+describe('Internationalisation', (): void => {
     // region mockup
-    let $domNode:$T<HTMLBodyElement>
-    let internationalisation:Internationalisation<HTMLBodyElement>
+    let $domNode: $T<HTMLBodyElement>
+    let internationalisation: Internationalisation<HTMLBodyElement>
 
-    beforeAll(async ():Promise<void> => {
+    beforeAll(async (): Promise<void> => {
         await getInitializedBrowser()
 
         if (currentRequire)
@@ -63,13 +70,13 @@ describe('Internationalisation', ():void => {
     // region tests
     /// region public methods
     //// region special
-    test('initialize', ():Promise<void> =>
+    test('initialize', (): Promise<void> =>
         expect(internationalisation.initialize())
             .resolves
             .toStrictEqual($domNode)
     )
     //// endregion
-    test('switch', async ():Promise<void> => {
+    test('switch', async (): Promise<void> => {
         expect(await internationalisation.switch('en')).toStrictEqual($domNode)
         $domNode.html('<div>english<!--deDE:german--></div>')
         await internationalisation.switch('deDE')
@@ -120,7 +127,7 @@ describe('Internationalisation', ():void => {
             '</div> '
         )).toStrictEqual(true)
     })
-    test('refresh', ():Promise<void> =>
+    test('refresh', (): Promise<void> =>
         expect(internationalisation.refresh()).resolves.toStrictEqual($domNode)
     )
     /// endregion
@@ -138,14 +145,14 @@ describe('Internationalisation', ():void => {
     ])(
         `'%s' === _normalizeLanguage('%s')`,
         (
-            expected:ReturnType<Internationalisation['_normalizeLanguage']>,
-            given:FirstParameter<Internationalisation['_normalizeLanguage']>
+            expected: ReturnType<Internationalisation['_normalizeLanguage']>,
+            given: FirstParameter<Internationalisation['_normalizeLanguage']>
         ) => {
             expect(internationalisation._normalizeLanguage(given))
                 .toStrictEqual(expected)
         }
     )
-    test('_determineUsefulLanguage', ():void => {
+    test('_determineUsefulLanguage', (): void => {
         if (typeof globalThis.window.localStorage !== 'undefined') {
             globalThis.window.localStorage[
                 internationalisation.options.sessionDescription
@@ -156,7 +163,7 @@ describe('Internationalisation', ():void => {
                 internationalisation.options.sessionDescription
             ]
         }
-        let referenceLanguage:string = internationalisation.options.default
+        let referenceLanguage: string = internationalisation.options.default
         if (
             Object.prototype.hasOwnProperty.call(globalThis, 'navigator') &&
             typeof globalThis.navigator.language !== 'undefined'
@@ -168,7 +175,7 @@ describe('Internationalisation', ():void => {
             internationalisation._normalizeLanguage(referenceLanguage)
         )
     })
-    test('_handleSwitchEffect', ():Promise<void> =>
+    test('_handleSwitchEffect', (): Promise<void> =>
         expect(internationalisation._handleSwitchEffect('deDE', false))
             .resolves
             .toBeUndefined()
@@ -182,7 +189,7 @@ describe('Internationalisation', ():void => {
     test('_registerTextNodeToChange', () => {
         internationalisation._registerTextNodeToChange(
             $domNode,
-            $domNode.children(),
+            $domNode.children() as $T<HTMLItem>,
             ['1', '2', '3'],
             $domNode.children()
         )
@@ -198,8 +205,8 @@ describe('Internationalisation', ():void => {
             null, null, false
         )).toStrictEqual(null)
     })
-    test('_switchLanguage', async ():Promise<void> => {
-        const subInternationalisation:Internationalisation<HTMLBodyElement> =
+    test('_switchLanguage', async (): Promise<void> => {
+        const subInternationalisation: Internationalisation<HTMLBodyElement> =
             (await $domNode.Internationalisation())
                 .data('Internationalisation') as
                     Internationalisation<HTMLBodyElement>

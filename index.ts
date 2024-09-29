@@ -106,7 +106,7 @@ import {DefaultOptions, Options, Replacement, $DomNodes} from './type'
 export class Internationalisation<TElement = HTMLElement> extends BoundTools<
     TElement
 > {
-    static _defaultOptions:DefaultOptions = {
+    static _defaultOptions: DefaultOptions = {
         currentLanguageIndicatorClassName: 'current',
         currentLanguagePattern: '^[a-z]{2}[A-Z]{2}$',
         default: 'enUS',
@@ -139,17 +139,17 @@ export class Internationalisation<TElement = HTMLElement> extends BoundTools<
         }
     }
 
-    $domNodes:$DomNodes = null as unknown as $DomNodes
+    $domNodes = null as unknown as $DomNodes
     currentLanguage = 'enUS'
-    knownTranslations:Mapping = {}
+    knownTranslations: Mapping = {}
 
-    lock:Lock = new Lock()
+    lock = new Lock()
 
-    options:Options = null as unknown as Options
+    options = null as unknown as Options
 
-    _$domNodeToFade:null|$T = null
-    _replacements:Array<Replacement> = []
-    _textNodesWithKnownTranslation:Mapping<$T<HTMLItem>> = {}
+    _$domNodeToFade: null|$T = null
+    _replacements: Array<Replacement> = []
+    _textNodesWithKnownTranslation: Mapping<$T<HTMLItem>> = {}
     // region public methods
     /// region special
     /**
@@ -159,16 +159,16 @@ export class Internationalisation<TElement = HTMLElement> extends BoundTools<
      * @returns Returns the current instance wrapped in a promise.
      */
     initialize<R = Promise<$T<TElement>>>(
-        options:RecursivePartial<Options> = {}
-    ):R {
+        options: RecursivePartial<Options> = {}
+    ): R {
         super.initialize(extend<Options>(
             true, {} as Options, Internationalisation._defaultOptions, options
         ))
 
         this.options.preReplacementLanguagePattern = format(
             this.options.preReplacementLanguagePattern,
-            this.options.replacementLanguagePattern.substr(
-                1, this.options.replacementLanguagePattern.length - 2
+            this.options.replacementLanguagePattern.substring(
+                1, this.options.replacementLanguagePattern.length - 1
             )
         )
         this.options.lockDescription = format(
@@ -192,12 +192,12 @@ export class Internationalisation<TElement = HTMLElement> extends BoundTools<
             NOTE: Only switch current language indicator if we haven't an
             initial language switch which will perform the indicator switch.
         */
-        const newLanguage:string = this._determineUsefulLanguage()
+        const newLanguage: string = this._determineUsefulLanguage()
 
         this.on(
             this.$domNodes.switchLanguageButtons,
             'click',
-            (event:Event) => {
+            (event: Event) => {
                 event.preventDefault()
 
                 const url = $(event.target as Node).attr('href')
@@ -226,7 +226,7 @@ export class Internationalisation<TElement = HTMLElement> extends BoundTools<
      * @param ensure - Indicates if a switch effect should be avoided.
      * @returns Returns the current instance wrapped in a promise.
      */
-    async switch(language:string|true, ensure = false):Promise<$T<TElement>> {
+    async switch(language: string|true, ensure = false): Promise<$T<TElement>> {
         if (
             language !== true &&
             this.options.selection.length &&
@@ -290,7 +290,7 @@ export class Internationalisation<TElement = HTMLElement> extends BoundTools<
      * Ensures current selected language.
      * @returns Returns the current instance wrapped in a promise.
      */
-    refresh():Promise<$T<TElement>> {
+    refresh(): Promise<$T<TElement>> {
         this._movePreReplacementNodes()
 
         return this.switch(true)
@@ -305,8 +305,10 @@ export class Internationalisation<TElement = HTMLElement> extends BoundTools<
      * every text node content.
      * @returns Returns the current instance wrapped in a promise.
      */
-    async _handleSwitchEffect(language:string, ensure:boolean):Promise<void> {
-        const oldLanguage:string = this.currentLanguage
+    async _handleSwitchEffect(
+        language: string, ensure: boolean
+    ): Promise<void> {
+        const oldLanguage: string = this.currentLanguage
         if (!ensure && this.options.fadeEffect && this._$domNodeToFade) {
             await this._$domNodeToFade
                 .animate(...this.options.textNodeParent.hideAnimation)
@@ -343,12 +345,12 @@ export class Internationalisation<TElement = HTMLElement> extends BoundTools<
      * Moves pre replacement dom nodes into next dom node behind translation
      * text to use the same translation algorithm for both.
      */
-    _movePreReplacementNodes():void {
-        const self:Internationalisation<TElement> = this
+    _movePreReplacementNodes(): void {
+        const self: Internationalisation<TElement> = this
 
-        this.$domNode.find(':not(iframe)').contents().each(function():void {
-            const $this:$T<HTMLItem> = $(this)
-            const nodeName:string =
+        this.$domNode.find(':not(iframe)').contents().each(function(): void {
+            const $this: $T<HTMLItem> = $(this)
+            const nodeName: string =
                 ($this.prop('nodeName') as string).toLowerCase()
 
             if (self.options.replacementDomNodeName.includes(nodeName)) {
@@ -358,7 +360,7 @@ export class Internationalisation<TElement = HTMLElement> extends BoundTools<
 
                 const regularExpression =
                     new RegExp(self.options.preReplacementLanguagePattern)
-                const match:Array<string>|null =
+                const match: Array<string>|null =
                     ($this.prop('textContent') as string)
                         .match(regularExpression)
                 if (match && match[0]) {
@@ -369,7 +371,7 @@ export class Internationalisation<TElement = HTMLElement> extends BoundTools<
                     )
 
                     let selfFound = false
-                    $this.parent().contents().each(function():false|undefined {
+                    $this.parent().contents().each(function(): false|undefined {
                         if (selfFound && $(this).Tools('text').trim()) {
                             $this.appendTo(this as Element)
 
@@ -391,19 +393,19 @@ export class Internationalisation<TElement = HTMLElement> extends BoundTools<
      * @returns Return a tuple of last text and language dom node to translate.
      */
     _collectTextNodesToReplace(
-        language:string, ensure:boolean
-    ):Array<null|$T<HTMLItem>> {
-        let $currentTextNodeToTranslate:null|$T<HTMLItem> = null
-        let $currentLanguageDomNode:null|$T = null
-        let $lastTextNodeToTranslate:null|$T<HTMLItem> = null
-        let $lastLanguageDomNode:null|$T<HTMLItem> = null
+        language: string, ensure: boolean
+    ): Array<null|$T<HTMLItem>> {
+        let $currentTextNodeToTranslate: null|$T<HTMLItem> = null
+        let $currentLanguageDomNode: null|$T = null
+        let $lastTextNodeToTranslate: null|$T<HTMLItem> = null
+        let $lastLanguageDomNode: null|$T<HTMLItem> = null
 
         this.knownTranslations = {}
-        const self:Internationalisation<TElement> = this
+        const self: Internationalisation<TElement> = this
 
-        this.$domNode.find(':not(iframe)').contents().each(function():void {
-            const $currentDomNode:$T<HTMLItem> = $(this)
-            const nodeName:string =
+        this.$domNode.find(':not(iframe)').contents().each(function(): void {
+            const $currentDomNode: $T<HTMLItem> = $(this)
+            const nodeName: string =
                 ($currentDomNode.prop('nodeName') as string).toLowerCase()
             if (self.options.replaceDomNodeNames.includes(
                 nodeName.toLowerCase()
@@ -425,12 +427,12 @@ export class Internationalisation<TElement = HTMLElement> extends BoundTools<
                 }
             } else if ($currentTextNodeToTranslate) {
                 if (self.options.replacementDomNodeName.includes(nodeName)) {
-                    let content:string =
+                    let content: string =
                         $currentDomNode.prop('textContent') as string
                     if (nodeName !== '#comment')
                         content = $currentDomNode.html()
 
-                    const match:Array<string>|null = content.match(new RegExp(
+                    const match: Array<string>|null = content.match(new RegExp(
                         self.options.replacementLanguagePattern
                     ))
                     if (Array.isArray(match) && match[1] === language) {
@@ -475,17 +477,17 @@ export class Internationalisation<TElement = HTMLElement> extends BoundTools<
     /**
      * Iterates all text nodes in language known area with known translations.
      */
-    _registerKnownTextNodes():void {
+    _registerKnownTextNodes(): void {
         this._textNodesWithKnownTranslation = {}
 
-        const self:Internationalisation<TElement> = this
+        const self: Internationalisation<TElement> = this
 
         this.$domNodes
             .knownTranslation
             .find(':not(iframe)')
             .contents()
-            .each(function():void {
-                const $currentDomNode:$T<HTMLItem> = $(this)
+            .each(function(): void {
+                const $currentDomNode: $T<HTMLItem> = $(this)
                 // NOTE: We skip empty and nested text nodes.
                 if (
                     !self.options.replaceDomNodeNames.includes(
@@ -535,7 +537,7 @@ export class Internationalisation<TElement = HTMLElement> extends BoundTools<
      * @param language - New language to use.
      * @returns Returns the normalized version of given language.
      */
-    _normalizeLanguage(language:string):string {
+    _normalizeLanguage(language: string): string {
         for (const [otherLanguage, aliases] of Object.entries(
             this.options.languageMapping
         )) {
@@ -553,8 +555,8 @@ export class Internationalisation<TElement = HTMLElement> extends BoundTools<
      * settings.
      * @returns Returns the determined language.
      */
-    _determineUsefulLanguage():string {
-        let result:string|undefined
+    _determineUsefulLanguage(): string {
+        let result: string|undefined
         if (this.options.initial)
             result = this.options.initial
 
@@ -622,8 +624,8 @@ export class Internationalisation<TElement = HTMLElement> extends BoundTools<
      * Registers a text node to change its content with given replacement.
      * @param $textNode - Text node with content to translate.
      */
-    _addTextNodeToFade($textNode:$T<HTMLItem>) {
-        const $parent:$T = $textNode.parent() as $T
+    _addTextNodeToFade($textNode: $T<HTMLItem>) {
+        const $parent: $T = $textNode.parent() as $T
 
         if (this._$domNodeToFade)
             this._$domNodeToFade = this._$domNodeToFade.add($parent)
@@ -640,10 +642,10 @@ export class Internationalisation<TElement = HTMLElement> extends BoundTools<
      * the language of given text node.
      */
     _registerTextNodeToChange(
-        $currentTextNodeToTranslate:$T<HTMLItem>,
-        $currentDomNode:$T<HTMLItem>|null,
-        match:Array<string>,
-        $currentLanguageDomNode:null|$T
+        $currentTextNodeToTranslate: $T<HTMLItem>,
+        $currentDomNode: $T<HTMLItem>|null,
+        match: Array<string>,
+        $currentLanguageDomNode: null|$T
     ) {
         this._addTextNodeToFade($currentTextNodeToTranslate)
 
@@ -667,16 +669,16 @@ export class Internationalisation<TElement = HTMLElement> extends BoundTools<
      * comment node.
      */
     _ensureLastTextNodeHavingLanguageIndicator(
-        $lastTextNodeToTranslate:null|$T<HTMLItem>,
-        $lastLanguageDomNode:null|$T<HTMLItem>,
-        ensure:boolean
-    ):null|$T<HTMLItem> {
+        $lastTextNodeToTranslate: null|$T<HTMLItem>,
+        $lastLanguageDomNode: null|$T<HTMLItem>,
+        ensure: boolean
+    ): null|$T<HTMLItem> {
         if ($lastTextNodeToTranslate && !$lastLanguageDomNode) {
             /*
                 Last text node doesn't have a current language indicating dom
                 node.
             */
-            let currentLocalLanguage:string = this.currentLanguage
+            let currentLocalLanguage: string = this.currentLanguage
             if (ensure)
                 currentLocalLanguage = this.options.default
 
@@ -691,9 +693,9 @@ export class Internationalisation<TElement = HTMLElement> extends BoundTools<
      * language.
      * @param language - The new language to switch to.
      */
-    _switchLanguage(language:string):void {
+    _switchLanguage(language: string): void {
         for (const replacement of this._replacements) {
-            let currentText:string = replacement.$textNodeToTranslate.html()
+            let currentText: string = replacement.$textNodeToTranslate.html()
             if (
                 (
                     replacement.$textNodeToTranslate.prop('nodeName') as string
@@ -703,13 +705,13 @@ export class Internationalisation<TElement = HTMLElement> extends BoundTools<
                     replacement.$textNodeToTranslate.prop('textContent') as
                         string
 
-            const trimmedText:string = currentText.trim()
+            const trimmedText: string = currentText.trim()
             if (
                 !this.options.templateDelimiter ||
                 !trimmedText.endsWith(this.options.templateDelimiter.post) &&
                 this.options.templateDelimiter.post
             ) {
-                let $currentLanguageDomNode:null|$T<HTMLItem> =
+                let $currentLanguageDomNode: null|$T<HTMLItem> =
                     replacement.$currentLanguageDomNode
                 if (!$currentLanguageDomNode) {
                     /*
@@ -721,7 +723,7 @@ export class Internationalisation<TElement = HTMLElement> extends BoundTools<
                     replacement
                         .$textNodeToTranslate
                         .parent()
-                        .contents().each(function():false|undefined {
+                        .contents().each(function(): false|undefined {
                             if (currentDomNodeFound) {
                                 replacement.$currentLanguageDomNode =
                                     $currentLanguageDomNode =
@@ -735,7 +737,7 @@ export class Internationalisation<TElement = HTMLElement> extends BoundTools<
                         })
                 }
 
-                const currentLanguage:string =
+                const currentLanguage: string =
                     ($currentLanguageDomNode as $T).prop('textContent') as
                         string
                 if (language === currentLanguage)
@@ -745,7 +747,7 @@ export class Internationalisation<TElement = HTMLElement> extends BoundTools<
                         'language as it already is.'
                     )
 
-                const nodeName:string = (
+                const nodeName: string = (
                     replacement.$nodeToReplace.prop('nodeName') as string
                 ).toLowerCase()
                 if (nodeName === '#comment')
@@ -795,7 +797,7 @@ export class Internationalisation<TElement = HTMLElement> extends BoundTools<
      * nodes.
      * @param language - The new language to switch to.
      */
-    _switchCurrentLanguageIndicator(language:string) {
+    _switchCurrentLanguageIndicator(language: string) {
         $(
             `a[href="#${this.options.languageHashPrefix}` +
             `${this.currentLanguage}"].` +
@@ -813,8 +815,8 @@ export default Internationalisation
 // region handle $ extending
 if (Object.prototype.hasOwnProperty.call($, 'fn'))
     $.fn.Internationalisation = function<TElement = HTMLElement>(
-        this:$T<TElement>, ...parameters:Array<unknown>
-    ):Promise<$T<TElement>> {
+        this: $T<TElement>, ...parameters: Array<unknown>
+    ): Promise<$T<TElement>> {
         return Tools.controller<TElement>(
             Internationalisation, parameters, this
         ) as Promise<$T<TElement>>
