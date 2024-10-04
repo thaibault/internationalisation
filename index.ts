@@ -561,14 +561,9 @@ export class Internationalisation<TElement = HTMLElement> extends BoundTools<
             result = this.options.initial
 
         else if (Object.prototype.hasOwnProperty.call($.global, 'window'))
-            if (
-                Object.prototype.hasOwnProperty.call(
-                    $.global.window, 'localStorage'
-                ) &&
-                $.global.window.localStorage.getItem(
-                    this.options.sessionDescription
-                )
-            ) {
+            if ($.global.window?.localStorage.getItem(
+                this.options.sessionDescription
+            )) {
                 result = $.global.window.localStorage.getItem(
                     this.options.sessionDescription
                 ) as string
@@ -577,12 +572,7 @@ export class Internationalisation<TElement = HTMLElement> extends BoundTools<
                     `Determine "${result}", because of local storage ` +
                     'information.'
                 )
-            } else if (
-                Object.prototype.hasOwnProperty.call(
-                    $.global.window, 'navigator'
-                ) &&
-                $.global.window.navigator.language
-            ) {
+            } else if ($.global.window?.navigator.language) {
                 result = $.global.window.navigator.language
 
                 this.debug(
@@ -608,12 +598,7 @@ export class Internationalisation<TElement = HTMLElement> extends BoundTools<
             result = this.options.selection[0]
         }
 
-        if (
-            Object.prototype.hasOwnProperty.call($.global, 'window') &&
-            Object.prototype.hasOwnProperty.call(
-                $.global.window, 'localStorage'
-            )
-        )
+        if ($.global.window?.localStorage)
             $.global.window.localStorage.setItem(
                 this.options.sessionDescription, result
             )
@@ -785,7 +770,7 @@ export class Internationalisation<TElement = HTMLElement> extends BoundTools<
         ))
             node.prop('textContent', content)
 
-        if ('localStorage' in $.global)
+        if ($.global.localStorage)
             $.global.localStorage.setItem(
                 this.options.sessionDescription, language
             )
