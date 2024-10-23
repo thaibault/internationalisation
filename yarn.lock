@@ -4970,9 +4970,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"clientnode@npm:3.0.1214":
-  version: 3.0.1214
-  resolution: "clientnode@npm:3.0.1214"
+"clientnode@npm:3.0.1217, clientnode@npm:^3.0.1217":
+  version: 3.0.1217
+  resolution: "clientnode@npm:3.0.1217"
   peerDependencies:
     "@babel/runtime": "*"
     "@types/prop-types": "*"
@@ -4990,31 +4990,7 @@ __metadata:
       optional: true
     prop-types:
       optional: true
-  checksum: 10c0/77a7bfc7121d73cd1560fdc05e05510d5a69e0c022c3e5ca2a960153c7cc616627a3d9768e556c6fb7e056023641ea34e38b76f54dea8b03c96a8c71c3bb5202
-  languageName: node
-  linkType: hard
-
-"clientnode@npm:^3.0.1216":
-  version: 3.0.1216
-  resolution: "clientnode@npm:3.0.1216"
-  peerDependencies:
-    "@babel/runtime": "*"
-    "@types/prop-types": "*"
-    jquery: "*"
-    node-fetch: "*"
-    prop-types: "*"
-  peerDependenciesMeta:
-    "@babel/runtime":
-      optional: true
-    "@types/prop-types":
-      optional: true
-    jquery:
-      optional: true
-    node-fetch:
-      optional: true
-    prop-types:
-      optional: true
-  checksum: 10c0/11c67b3bc9b0d031bda01492c110144125622a46c212cabde5d90d159c6487b0a2ab5676abc50014205d8487a0722f989f550d84c2ae75dacfa53f3a9e1e30e2
+  checksum: 10c0/bea1622707640cb5f7258c81861c934695191ca8652db128214f9984c138c3e7a4ccaf45a14b3c394a675e406fbccb5b307e5c062cb218bf13d153cf314596a6
   languageName: node
   linkType: hard
 
@@ -7181,7 +7157,7 @@ __metadata:
     "@types/webpack-env": "npm:^1.18.5"
     "@typescript-eslint/eslint-plugin": "npm:^8.11.0"
     "@typescript-eslint/parser": "npm:^8.11.0"
-    clientnode: "npm:^3.0.1216"
+    clientnode: "npm:^3.0.1217"
     documentation-website: "npm:^1.0.336"
     eslint: "npm:^9.13.0"
     eslint-config-google: "npm:^0.14.0"
@@ -7192,7 +7168,7 @@ __metadata:
     jquery: "npm:^3.7.1"
     jsdoc: "npm:^4.0.4"
     typescript-eslint: "npm:^8.11.0"
-    weboptimizer: "npm:^2.0.1529"
+    weboptimizer: "npm:^2.0.1531"
     webpack-dev-server: "npm:^5.1.0"
   peerDependencies:
     "@babel/runtime": "*"
@@ -11185,9 +11161,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"weboptimizer@npm:^2.0.1529":
-  version: 2.0.1529
-  resolution: "weboptimizer@npm:2.0.1529"
+"weboptimizer@npm:^2.0.1531":
+  version: 2.0.1531
+  resolution: "weboptimizer@npm:2.0.1531"
   dependencies:
     "@babel/core": "npm:^7.25.9"
     "@babel/plugin-proposal-class-properties": "npm:^7.18.6"
@@ -11201,7 +11177,7 @@ __metadata:
     babel-loader: "npm:^9.2.1"
     babel-plugin-transform-modern-regexp: "npm:^0.0.6"
     babel-preset-minify: "npm:^0.5.2"
-    clientnode: "npm:3.0.1214"
+    clientnode: "npm:3.0.1217"
     ejs: "npm:^3.1.10"
     exports-loader: "npm:^5.0.0"
     extract-loader: "npm:^5.1.0"
@@ -11327,7 +11303,7 @@ __metadata:
       optional: true
   bin:
     weboptimizer: index.js
-  checksum: 10c0/2c5560379eb30118509c6535a39997b7a40eed5f95c151da326caf4ad4e9faf950bcc6b74c17e2c3bb444ef19ebf847ccc8f92eefae3eb204956f41720943a6a
+  checksum: 10c0/3535f28901dba2c8b56db1ea6a46504401a99fe335e397474e8330d307493324d4616fe19df430704b5d81f0e4b6a0ea1be3f2437b31333f27987adc6165ff73
   languageName: node
   linkType: hard
 
