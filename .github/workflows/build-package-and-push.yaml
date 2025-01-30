@@ -35,9 +35,9 @@ jobs:
         run: echo Newly determined version is \"${{ steps.build-package-and-push.outputs.version }}\".
         shell: bash
 
-      - name: Repository Dispatch
+     - name: Repository Dispatch
         uses: peter-evans/repository-dispatch@v1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          event-type: prepare-release-event
+          event-type: prepare-${{ inputs.type == 'candidate' && 'pre-' || '' }}release-event
           client-payload: '{"version": "${{ steps.prepare-release.outputs.version }}"}'
