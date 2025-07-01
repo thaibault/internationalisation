@@ -25,6 +25,7 @@ Project status
 
 [![code coverage](https://img.shields.io/coverallsCoverage/github/thaibault/internationalisation?label=code%20coverage&style=for-the-badge)](https://coveralls.io/github/thaibault/internationalisation)
 
+[![deploy documentation website](https://img.shields.io/github/actions/workflow/status/thaibault/internationalisation/deploy-documentation-website.yaml?label=deploy%20documentation%20website&style=for-the-badge)](https://github.com/thaibault/internationalisation/actions/workflows/deploy-documentation-website.yaml)
 [![documentation website](https://img.shields.io/website-up-down-green-red/https/torben.website/internationalisation.svg?label=documentation-website&style=for-the-badge)](https://torben.website/internationalisation)
 
 <!--|deDE:Einsatz-->
