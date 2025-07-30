@@ -177,6 +177,7 @@ __pycache__
 
 # Project specific
 *.js
+*.cjs
 *.mjs
 # ...
 
