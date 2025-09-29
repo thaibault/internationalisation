@@ -112,6 +112,7 @@ nosetests.xml
 
 .idea/**/*.iws
 .idea/copilot.data.migration.*.xml
+**/.idea/copilot.data.migration.*.xml
 
 .project
 .pydevproject
