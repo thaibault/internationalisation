@@ -49,31 +49,31 @@
     "watch": "weboptimizer build --watch"
   },
   "devDependencies": {
-    "@babel/eslint-parser": "^7.28.0",
+    "@babel/eslint-parser": "^7.28.5",
     "@babel/plugin-transform-proto-to-assign": "^7.27.1",
-    "@babel/runtime": "^7.27.6",
-    "@stylistic/eslint-plugin": "^5.1.0",
+    "@babel/runtime": "^7.28.4",
+    "@stylistic/eslint-plugin": "^5.5.0",
     "@types/ejs": "^3.1.5",
-    "@types/html-minifier": "^4.0.5",
+    "@types/html-minifier": "^4.0.6",
     "@types/imagemin": "^9.0.1",
-    "@types/jquery": "^3.5.32",
-    "@types/jsdom": "^21.1.7",
-    "@types/node": "^24.0.14",
+    "@types/jquery": "^3.5.33",
+    "@types/jsdom": "^27.0.0",
+    "@types/node": "^24.9.2",
     "@types/webpack-env": "^1.18.8",
-    "@typescript-eslint/eslint-plugin": "^8.37.0",
-    "@typescript-eslint/parser": "^8.37.0",
-    "clientnode": "^3.0.1302",
-    "documentation-website": "^1.0.392",
-    "eslint": "^9.31.0",
+    "@typescript-eslint/eslint-plugin": "^8.46.2",
+    "@typescript-eslint/parser": "^8.46.2",
+    "clientnode": "^3.0.1315",
+    "documentation-website": "^1.0.394",
+    "eslint": "^9.38.0",
     "eslint-config-google": "^0.14.0",
-    "eslint-plugin-jsdoc": "^51.3.4",
+    "eslint-plugin-jsdoc": "^61.1.10",
     "favicons-webpack-plugin": "^6.0.1",
-    "image-minimizer-webpack-plugin": "^4.1.3",
-    "jest": "^30.0.4",
+    "image-minimizer-webpack-plugin": "^4.1.4",
+    "jest": "^30.2.0",
     "jquery": "^3.7.1",
-    "jsdoc": "^4.0.4",
-    "typescript-eslint": "^8.37.0",
-    "weboptimizer": "^2.0.1597",
+    "jsdoc": "^4.0.5",
+    "typescript-eslint": "^8.46.2",
+    "weboptimizer": "^2.0.1620",
     "webpack-dev-server": "^5.2.2"
   },
   "peerDependencies": {
@@ -155,5 +155,5 @@
       }
     }
   },
-  "packageManager": "yarn@4.9.2+sha512.1fc009bc09d13cfd0e19efa44cbfc2b9cf6ca61482725eb35bbc5e257e093ebf4130db6dfe15d604ff4b79efd8e1e8e99b25fa7d0a6197c9f9826358d4d65c3c"
+  "packageManager": "yarn@4.10.3+sha512.c38cafb5c7bb273f3926d04e55e1d8c9dfa7d9c3ea1f36a4868fa028b9e5f72298f0b7f401ad5eb921749eb012eb1c3bb74bf7503df3ee43fd600d14a018266f"
 }
