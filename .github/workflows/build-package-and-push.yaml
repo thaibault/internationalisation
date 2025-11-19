@@ -41,4 +41,4 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           event-type: prepare-${{ inputs.type == 'candidate' && 'pre-' || '' }}release-event
-          client-payload: '{"version": "${{ steps.prepare-release.outputs.version }}"}'
+          client-payload: '{"version": "${{ steps.build-package-and-push.outputs.version }}"}'
