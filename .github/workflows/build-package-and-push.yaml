@@ -22,6 +22,7 @@ jobs:
   main:
     runs-on: ubuntu-latest
     container: node:lts
+
     steps:
       - uses: thaibault/build-package-push-action@main
         id: build-package-and-push
