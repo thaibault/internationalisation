@@ -24,6 +24,7 @@ import {
     extend,
     HTMLItem,
     Lock,
+    Logger,
     Mapping,
     NOOP,
     RecursivePartial,
@@ -33,6 +34,7 @@ import {
 
 import {DefaultOptions, Options, Replacement, $DomNodes} from './type'
 // endregion
+export const log = new Logger({name: 'internationalisation'})
 // region plugins/classes
 /**
  * This plugin holds all needed methods to extend a website for
@@ -232,7 +234,7 @@ export class Internationalisation<TElement = HTMLElement> extends BoundTools<
             this.options.selection.length &&
             !this.options.selection.includes(language)
         ) {
-            this.debug('"{1}" isn\'t one of the allowed languages.', language)
+            log.debug(`"${language}" isn't one of the allowed languages.`)
 
             return this.$domNode
         }
@@ -255,7 +257,7 @@ export class Internationalisation<TElement = HTMLElement> extends BoundTools<
             if (ensure)
                 actionDescription = 'Ensure'
 
-            this.debug('{1} "{2}".', actionDescription, language)
+            log.debug(`${actionDescription} "${language}".`)
 
             this._switchCurrentLanguageIndicator(language)
 
@@ -280,7 +282,7 @@ export class Internationalisation<TElement = HTMLElement> extends BoundTools<
             return this.$domNode
         }
 
-        this.debug('"{1}" is already current selected language.', language)
+        log.debug(`"${language}" is already current selected language.`)
 
         void this.lock.release(this.options.lockDescription)
 
@@ -568,14 +570,14 @@ export class Internationalisation<TElement = HTMLElement> extends BoundTools<
                     this.options.sessionDescription
                 ) as string
 
-                this.debug(
-                    `Determine "${result}", because of local storage ` +
+                log.debug(
+                    `Determine "${result}", because of local storage`,
                     'information.'
                 )
             } else if ($.global.window?.navigator.language) {
                 result = $.global.window.navigator.language
 
-                this.debug(
+                log.debug(
                     `Determine "${result}", because of browser settings.`
                 )
             }
@@ -583,15 +585,15 @@ export class Internationalisation<TElement = HTMLElement> extends BoundTools<
         if (!result) {
             result = this.options.default
 
-            this.debug(`Determine "${result}", because of default option.`)
+            log.debug(`Determine "${result}", because of default option.`)
         }
         result = this._normalizeLanguage(result)
         if (
             this.options.selection.length &&
             !this.options.selection.includes(result)
         ) {
-            this.debug(
-                `"${result}" isn't one of the allowed languages. Set ` +
+            log.debug(
+                `"${result}" isn't one of the allowed languages. Set`,
                 `language to "${this.options.selection[0]}".`
             )
 
@@ -726,9 +728,9 @@ export class Internationalisation<TElement = HTMLElement> extends BoundTools<
                     ($currentLanguageDomNode as $T).prop('textContent') as
                         string
                 if (language === currentLanguage)
-                    this.warn(
-                        `Text node "${replacement.textToReplace}" is marked ` +
-                        `as "${currentLanguage}" and has same translation ` +
+                    log.warn(
+                        `Text node "${replacement.textToReplace}" is marked`,
+                        `as "${currentLanguage}" and has same translation`,
                         'language as it already is.'
                     )
 
