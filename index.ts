@@ -409,6 +409,7 @@ export class Internationalisation<TElement = HTMLElement> extends BoundTools<
             const $currentDomNode: $T<HTMLItem> = $(this)
             const nodeName: string =
                 ($currentDomNode.prop('nodeName') as string).toLowerCase()
+
             if (self.options.replaceDomNodeNames.includes(
                 nodeName.toLowerCase()
             )) {
@@ -789,11 +790,17 @@ export class Internationalisation<TElement = HTMLElement> extends BoundTools<
             `a[href="#${this.options.languageHashPrefix}` +
             `${this.currentLanguage}"].` +
             this.options.currentLanguageIndicatorClassName
-        ).removeClass(this.options.currentLanguageIndicatorClassName)
+        ).each((_index, node) => {
+            console.log('remove', node)
+            $(node).removeClass(this.options.currentLanguageIndicatorClassName)
+        })
 
         $(
             `a[href="#${this.options.languageHashPrefix}${language}"]`
-        ).addClass(this.options.currentLanguageIndicatorClassName)
+        ).each((_index, node) => {
+            console.log('add', node)
+            $(node).addClass(this.options.currentLanguageIndicatorClassName)
+        })
     }
     // endregion
 }

@@ -16,6 +16,7 @@
 // region imports
 import {beforeAll, describe, expect, test} from '@jest/globals'
 import {
+    $,
     $Global,
     $T,
     augment$,
@@ -58,10 +59,10 @@ describe('Internationalisation', (): void => {
         ))
             globalThis.window.localStorage.removeItem('Internationalisation')
 
-        $domNode = await $(window.document.body as HTMLBodyElement)
-            .Internationalisation({
-                allowedLanguages: ['enUS', 'deDE', 'frFR'], initial: 'enUS'
-            })
+        const $body = $(window.document.body as HTMLBodyElement)
+        $domNode = await $body.Internationalisation({
+            allowedLanguages: ['enUS', 'deDE', 'frFR'], initial: 'enUS'
+        })
 
         internationalisation = $domNode.data('Internationalisation') as
             Internationalisation<HTMLBodyElement>
@@ -133,7 +134,7 @@ describe('Internationalisation', (): void => {
     /// endregion
     /// region protected methods
     /*
-        NOTE: We cannot use clientnodes "testEach" helper since
+        NOTE: We cannot use clientnode's "testEach" helper since
         "internationalisation isn't available during test specification time.
     */
     test.each([
@@ -211,18 +212,43 @@ describe('Internationalisation', (): void => {
                 .data('Internationalisation') as
                     Internationalisation<HTMLBodyElement>
 
-        subInternationalisation._switchLanguage('deDE')
+        subInternationalisation._switchLanguage('enUS')
+        expect(subInternationalisation.currentLanguage)
+            .toStrictEqual('enUS')
 
-        // TODO check changed text node content
-        expect(true).toStrictEqual(true)
+        subInternationalisation._switchLanguage('deDE')
         expect(subInternationalisation.currentLanguage)
             .toStrictEqual('deDE')
     })
     test('_switchCurrentLanguageIndicator', () => {
-        internationalisation._switchCurrentLanguageIndicator('deDE')
+        const englishLink =
+            `#${internationalisation.options.languageHashPrefix}enUS`
+        const $englishLink = $(`<a href="${englishLink}">`)
+        const germanLink =
+            `#${internationalisation.options.languageHashPrefix}deDE`
+        const $germanLink = $(`<a href="${germanLink}">`)
+        $domNode.append($englishLink)
+        $domNode.append($germanLink)
 
-        // TODO check switched indicator content
-        expect(true).toStrictEqual(true)
+        internationalisation._switchCurrentLanguageIndicator('enUS')
+        internationalisation.currentLanguage = 'enUS'
+
+        expect($englishLink.hasClass(
+            internationalisation.options.currentLanguageIndicatorClassName
+        )).toStrictEqual(true)
+        expect($germanLink.hasClass(
+            internationalisation.options.currentLanguageIndicatorClassName
+        )).toStrictEqual(false)
+
+        internationalisation._switchCurrentLanguageIndicator('deDE')
+        internationalisation.currentLanguage = 'deDE'
+
+        expect($englishLink.hasClass(
+            internationalisation.options.currentLanguageIndicatorClassName
+        )).toStrictEqual(false)
+        expect($germanLink.hasClass(
+            internationalisation.options.currentLanguageIndicatorClassName
+        )).toStrictEqual(true)
     })
     /// endregion
     // endregion
