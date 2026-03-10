@@ -18,6 +18,11 @@ on:
           - patch
           - candidate
 
+permissions:
+  # Required for OpenID Connect (OIDC) used by npm for "Trusted Publishing".
+  id-token: write
+  contents: read
+
 jobs:
   main:
     runs-on: ubuntu-latest
@@ -29,7 +34,8 @@ jobs:
         with:
           debug: ${{ inputs.debug || '' }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          npm-token: ${{ secrets.NPM_TOKEN }}
+          # Not needed anymore when using "Trusted Publishing".
+          #npm-token: ${{ secrets.NPM_TOKEN }}
           type: ${{ inputs.type || 'patch' }}
 
       - name: Print determined version.
