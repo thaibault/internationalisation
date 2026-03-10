@@ -21,7 +21,8 @@ on:
 permissions:
   # Required for OpenID Connect (OIDC) used by npm for "Trusted Publishing".
   id-token: write
-  contents: read
+  # Allows Git-Actions like push tags pushen and version bumps.
+  contents: write
 
 jobs:
   main:
