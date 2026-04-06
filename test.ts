@@ -32,12 +32,12 @@ import {getInitializedBrowser} from 'weboptimizer/browser'
     NOTE: Import and use only as type. Since real loading should be delayed
     until dom environment has been created.
 */
-import Internationalisation from './index'
+import Internationalization from './index'
 // endregion
 describe('Internationalisation', (): void => {
     // region mockup
     let $domNode: $T<HTMLBodyElement>
-    let internationalisation: Internationalisation<HTMLBodyElement>
+    let internationalisation: Internationalization<HTMLBodyElement>
 
     beforeAll(async (): Promise<void> => {
         await getInitializedBrowser()
@@ -65,7 +65,7 @@ describe('Internationalisation', (): void => {
         })
 
         internationalisation = $domNode.data('Internationalisation') as
-            Internationalisation<HTMLBodyElement>
+            Internationalization<HTMLBodyElement>
     })
     // endregion
     // region tests
@@ -146,8 +146,8 @@ describe('Internationalisation', (): void => {
     ])(
         `'%s' === _normalizeLanguage('%s')`,
         (
-            expected: ReturnType<Internationalisation['_normalizeLanguage']>,
-            given: FirstParameter<Internationalisation['_normalizeLanguage']>
+            expected: ReturnType<Internationalization['_normalizeLanguage']>,
+            given: FirstParameter<Internationalization['_normalizeLanguage']>
         ) => {
             expect(internationalisation._normalizeLanguage(given))
                 .toStrictEqual(expected)
@@ -207,10 +207,10 @@ describe('Internationalisation', (): void => {
         )).toStrictEqual(null)
     })
     test('_switchLanguage', async (): Promise<void> => {
-        const subInternationalisation: Internationalisation<HTMLBodyElement> =
+        const subInternationalisation: Internationalization<HTMLBodyElement> =
             (await $domNode.Internationalisation())
                 .data('Internationalisation') as
-                    Internationalisation<HTMLBodyElement>
+                    Internationalization<HTMLBodyElement>
 
         subInternationalisation._switchLanguage('enUS')
         expect(subInternationalisation.currentLanguage)

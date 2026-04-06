@@ -37,7 +37,6 @@ export interface DefaultOptions {
     languageHashPrefix: string
     languageMapping: Mapping<Array<string>>
     lockDescription: string
-    name: string
     preReplacementLanguagePattern: string
     replaceDomNodeNames: Array<string>
     replacementDomNodeName: Array<string>
@@ -54,10 +53,6 @@ export interface DefaultOptions {
             post: string
         }
     )
-    textNodeParent: {
-        hideAnimation: [Mapping<number|string>, Mapping<number|string>]
-        showAnimation: [Mapping<number|string>, Mapping<number|string>]
-    }
 }
 export type Options = DefaultOptions
 // endregion
