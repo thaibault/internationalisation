@@ -18,19 +18,9 @@
 */
 // region imports
 import {
-    $,
-    $T,
-    BoundTools,
-    extend,
-    HTMLItem,
-    Lock,
-    Logger,
-    Mapping,
-    NOOP,
-    RecursivePartial,
-    format,
-    Tools
+    extend, HTMLItem, Lock, Logger, Mapping, NOOP, RecursivePartial, format
 } from 'clientnode'
+import {property, Web} from 'web-component-wrapper'
 
 import {DefaultOptions, Options, Replacement, $DomNodes} from './type'
 // endregion
@@ -105,9 +95,15 @@ export const log = new Logger({name: 'internationalisation'})
  * @property _textNodesWithKnownTranslation - Saves a mapping of known text
  * snippets to their corresponding $-extended dom nodes.
  */
-export class Internationalisation<TElement = HTMLElement> extends BoundTools<
-    TElement
+export class Internationalisation<
+    TElement = HTMLElement,
+    ExternalProperties extends Mapping<unknown> = Mapping<unknown>,
+    InternalProperties extends Mapping<unknown> = Mapping<unknown>
+> extends Web<
+    TElement, ExternalProperties, InternalProperties
 > {
+    static _name = 'InternationalizationWebComponent'
+
     static _defaultOptions: DefaultOptions = {
         currentLanguageIndicatorClassName: 'current',
         currentLanguagePattern: '^[a-z]{2}[A-Z]{2}$',
@@ -141,32 +137,43 @@ export class Internationalisation<TElement = HTMLElement> extends BoundTools<
         }
     }
 
-    $domNodes = null as unknown as $DomNodes
+    domNodes = null
     currentLanguage = 'enUS'
     knownTranslations: Mapping = {}
 
     lock = new Lock()
 
+    @property()
     options = null as unknown as Options
 
-    _$domNodeToFade: null|$T = null
+    _domNodeToFade = null
     _replacements: Array<Replacement> = []
-    _textNodesWithKnownTranslation: Mapping<$T<HTMLItem>> = {}
+    _textNodesWithKnownTranslation: Mapping<HTMLItem> = {}
     // region public methods
-    /// region special
+    /// region live-cycle
+    /**
+     * Triggered when ever a given attribute has changed and triggers to update
+     * configured dom content.
+     * @param name - Attribute name which was updates.
+     * @param newValue - New updated value.
+     */
+    onUpdateAttribute(name: string, newValue: string) {
+        super.onUpdateAttribute(name, newValue)
+
+        if (name === 'options')
+            this.options = extend<Options>(
+                true,
+                {} as Options,
+                Internationalisation._defaultOptions,
+                this.options
+            )
+    }
     /**
      * Initializes the plugin. Current language is set and later needed dom
      * nodes are grabbed.
-     * @param options - An options object.
-     * @returns Returns the current instance wrapped in a promise.
+     * @returns Nothing.
      */
-    initialize<R = Promise<$T<TElement>>>(
-        options: RecursivePartial<Options> = {}
-    ): R {
-        super.initialize(extend<Options>(
-            true, {} as Options, Internationalisation._defaultOptions, options
-        ))
-
+    connectedCallback(): void {
         this.options.preReplacementLanguagePattern = format(
             this.options.preReplacementLanguagePattern,
             this.options.replacementLanguagePattern.substring(
@@ -805,14 +812,4 @@ export class Internationalisation<TElement = HTMLElement> extends BoundTools<
     // endregion
 }
 export default Internationalisation
-// endregion
-// region handle $ extending
-if (Object.prototype.hasOwnProperty.call($, 'fn'))
-    $.fn.Internationalisation = function<TElement = HTMLElement>(
-        this: $T<TElement>, ...parameters: Array<unknown>
-    ): Promise<$T<TElement>> {
-        return Tools.controller<TElement>(
-            Internationalisation, parameters, this
-        ) as Promise<$T<TElement>>
-    }
 // endregion

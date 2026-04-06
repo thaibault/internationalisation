@@ -65,14 +65,6 @@ after needed dependencies:
 -->
 
 ```HTML
-<script
-    src="https://code.jquery.com/jquery-3.6.0.min.js"
-    integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
-    crossorigin="anonymous"
-></script>
-<script
-    src="https://torben.website/clientnode/data/distributionBundle/index.js"
-></script>
 <!--Inject downloaded file:
 <script src="index.js"></script>
 -->
@@ -123,18 +115,8 @@ in given context.
 ```JavaScript
 ...
 import Language from 'internationalisation'
-class SpecialLanguage extends Language...
-Language({options..})
-// or
-import {$} from 'internationalisation'
-$.Language()
-class SpecialLanguage extends $.Language.class ...
-// or
-Language = require('internationalisation').default
-value instanceof Language
-// or
-$ = require('internationalisation').$
-$.Language()
+
+TODO
 ...
 ```
 
@@ -168,7 +150,7 @@ directly in markup. See how easy it is:
 </p>
 ```
 
-Sometime you need to explicit mark a text node as text to replace with next
+Sometimes you need to explicit mark a text node as text to replace with next
 translation node. In this case you can simple wrap a self defined dom node.
 <!--deDE:
     Manchmal muss man Textknoten explizit als übersetzbar markieren, da sie
@@ -300,14 +282,6 @@ to initialize the plugin with different configuration.
 -->
 
 ```HTML
-<script
-    src="https://code.jquery.com/jquery-3.6.0.min.js"
-    integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
-    crossorigin="anonymous"
-></script>
-<script
-    src="https://torben.website/clientnode/data/distributionBundle/index.js"
-></script>
 <script
     src="https://torben.website/internationalisation/data/distributionBundle/index.js"
 ></script>
