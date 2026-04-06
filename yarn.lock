@@ -5957,9 +5957,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"clientnode@npm:^4.0.1372":
-  version: 4.0.1372
-  resolution: "clientnode@npm:4.0.1372"
+"clientnode@npm:^4.0.1376":
+  version: 4.0.1376
+  resolution: "clientnode@npm:4.0.1376"
   peerDependencies:
     "@babel/runtime": "*"
     "@types/prop-types": "*"
@@ -5974,7 +5974,7 @@ __metadata:
       optional: true
     prop-types:
       optional: true
-  checksum: 10c0/51cd33573ef1d03329fe0bca483bd6af081238d156a9d05eede84c06af8035a7ecdd07510401130d0c8c6c0c14295ea5e3a6e8206a27210c452c7d3437ce00ca
+  checksum: 10c0/5dc6e8121be983b1aa89c58f36a64091f64dd2775de72f43b0567e85591f19a6c06338660e7dd337f314dad48d80c52d855aa3c4cfce3887ca7a230f9d0cd3dd
   languageName: node
   linkType: hard
 
@@ -8070,7 +8070,7 @@ __metadata:
     "@types/webpack-env": "npm:^1.18.8"
     "@typescript-eslint/eslint-plugin": "npm:^8.58.0"
     "@typescript-eslint/parser": "npm:^8.58.0"
-    clientnode: "npm:^4.0.1372"
+    clientnode: "npm:^4.0.1376"
     documentation-website: "npm:^1.0.401"
     eslint: "npm:^10.2.0"
     eslint-config-google: "npm:^0.14.0"
@@ -8080,7 +8080,7 @@ __metadata:
     jest: "npm:^30.3.0"
     jsdoc: "npm:^4.0.5"
     typescript-eslint: "npm:^8.58.0"
-    web-component-wrapper: "npm:^0.0.552"
+    web-component-wrapper: "npm:^0.0.553"
     weboptimizer: "npm:^3.0.16"
     webpack-dev-server: "npm:^5.2.3"
   peerDependencies:
@@ -12290,9 +12290,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"web-component-wrapper@npm:^0.0.552":
-  version: 0.0.552
-  resolution: "web-component-wrapper@npm:0.0.552"
+"web-component-wrapper@npm:^0.0.553":
+  version: 0.0.553
+  resolution: "web-component-wrapper@npm:0.0.553"
   peerDependencies:
     "@babel/runtime": "*"
     "@types/react": "*"
@@ -12311,7 +12311,7 @@ __metadata:
       optional: true
     react-dom:
       optional: true
-  checksum: 10c0/5584948c3f26791598b7dd750a950f420774f5cb8fb46a83ceb82facee149ee8c65a092cc68dffe82c16a4a198b0f50cf57c9595d3354aa3053e040a95721ddf
+  checksum: 10c0/5e6b9f8ca67819becffcb163e1f752385c65ad62fd3063724143216cec173fc2c02b708a14590a2e940a7b450c09b70e72f6d68d78a8716954b49048625f5270
   languageName: node
   linkType: hard
 

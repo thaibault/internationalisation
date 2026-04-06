@@ -17,59 +17,35 @@
 */
 // region imports
 import {
-    $DomNodes as $BaseDomNodes,
-    $T,
-    DomNodes as BaseDomNodes,
-    HTMLItem,
-    Mapping,
-    Options as BaseOptions,
-    UnknownFunction
+    HTMLItem, Mapping, Options as BaseOptions, UnknownFunction
 } from 'clientnode'
 // endregion
 // region exports
-export type InternationalisationFunction<TElement = HTMLElement> =
-    (...parameters: Array<unknown>) => Promise<$T<TElement>>
-
-declare global {
-    interface JQuery<TElement = HTMLElement> {
-        Internationalisation: InternationalisationFunction<TElement>
-    }
-}
-
 export interface Replacement {
-    $textNodeToTranslate: $T<HTMLItem>
-    $nodeToReplace: $T<HTMLItem>
+    textNodeToTranslate: HTMLItem
+    nodeToReplace: HTMLItem
     textToReplace: string
-    $currentLanguageDomNode: null|$T<HTMLItem>
+    currentLanguageDomNode: HTMLItem | null
 }
-
-export type DomNodes<Type = string> =
-    BaseDomNodes &
-    {knownTranslation: Type}
-export type $DomNodes =
-    $BaseDomNodes &
-    {switchLanguageButtons: $T<HTMLLinkElement>}
 
 export interface DefaultOptions {
     currentLanguageIndicatorClassName: string
     currentLanguagePattern: string
     default: string
-    domNodes: DomNodes
-    fadeEffect: boolean
+    useEffect: boolean
     initial: null|string
     languageHashPrefix: string
     languageMapping: Mapping<Array<string>>
     lockDescription: string
     name: string
-    onSwitched: UnknownFunction
-    onEnsured: UnknownFunction
-    onSwitch: UnknownFunction
-    onEnsure: UnknownFunction
     preReplacementLanguagePattern: string
     replaceDomNodeNames: Array<string>
     replacementDomNodeName: Array<string>
     replacementLanguagePattern: string
     selection: Array<string>
+    selectors: {
+        knownTranslation: string
+    }
     sessionDescription: string
     templateDelimiter: (
         null |
@@ -83,5 +59,5 @@ export interface DefaultOptions {
         showAnimation: [Mapping<number|string>, Mapping<number|string>]
     }
 }
-export type Options = BaseOptions & DefaultOptions
+export type Options = DefaultOptions
 // endregion

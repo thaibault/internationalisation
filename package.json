@@ -61,7 +61,7 @@
     "@types/webpack-env": "^1.18.8",
     "@typescript-eslint/eslint-plugin": "^8.58.0",
     "@typescript-eslint/parser": "^8.58.0",
-    "clientnode": "^4.0.1372",
+    "clientnode": "^4.0.1376",
     "documentation-website": "^1.0.401",
     "eslint": "^10.2.0",
     "eslint-config-google": "^0.14.0",
@@ -71,7 +71,7 @@
     "jest": "^30.3.0",
     "jsdoc": "^4.0.5",
     "typescript-eslint": "^8.58.0",
-    "web-component-wrapper": "^0.0.552",
+    "web-component-wrapper": "^0.0.553",
     "weboptimizer": "^3.0.16",
     "webpack-dev-server": "^5.2.3"
   },
