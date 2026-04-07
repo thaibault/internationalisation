@@ -625,8 +625,11 @@ export class Internationalization<
             if (ensure)
                 currentLocalLanguage = this.options.default
 
-            lastLanguageDomNode = $(`<!--${currentLocalLanguage}-->`)
-            lastTextNodeToTranslate.after(lastLanguageDomNode)
+            lastLanguageDomNode =
+                globalContext.document?.createComment(currentLocalLanguage) ||
+                null
+            if (lastLanguageDomNode)
+                lastTextNodeToTranslate.after(lastLanguageDomNode)
         }
 
         return lastLanguageDomNode
@@ -638,9 +641,13 @@ export class Internationalization<
      */
     _switchLanguage(language: string): void {
         for (const replacement of this._replacements) {
-            let currentText: string = replacement.textNodeToTranslate.html()
-            if (replacement.textNodeToTranslate.nodeName === '#text')
-                currentText = replacement.textNodeToTranslate.textContent
+            const currentText: string =
+                Object.prototype.hasOwnProperty.call(
+                    replacement.textNodeToTranslate, 'innerHTML'
+                ) ?
+                    (replacement.textNodeToTranslate as HTMLElement)
+                        .innerHTML :
+                    replacement.textNodeToTranslate.textContent
 
             const trimmedText: string = currentText.trim()
             if (
@@ -648,33 +655,33 @@ export class Internationalization<
                 !trimmedText.endsWith(this.options.templateDelimiter.post) &&
                 this.options.templateDelimiter.post
             ) {
-                let $currentLanguageDomNode: HTMLItem | null =
+                let currentLanguageDomNode: HTMLItem | null =
                     replacement.currentLanguageDomNode
-                if (!$currentLanguageDomNode) {
+                if (!currentLanguageDomNode) {
                     /*
                         Language dom node wasn't present initially. So we have
                         to determine it now.
                     */
                     currentLanguageDomNode = document.body
                     let currentDomNodeFound = false
-                    replacement
-                        .$textNodeToTranslate
-                        .parent()
-                        .contents().each(function(): false|undefined {
-                            if (currentDomNodeFound) {
-                                replacement.currentLanguageDomNode =
-                                    $currentLanguageDomNode =
-                                    $(this)
+                    for (const domNode of getAll(
+                        replacement.textNodeToTranslate.parentElement as
+                            HTMLElement
+                    )) {
+                        if (currentDomNodeFound) {
+                            replacement.currentLanguageDomNode =
+                                currentLanguageDomNode =
+                                domNode as HTMLItem
 
-                                return false
-                            }
+                            break
+                        }
 
-                            if (this === replacement.textNodeToTranslate[0])
-                                currentDomNodeFound = true
-                        })
+                        if (domNode === replacement.textNodeToTranslate)
+                            currentDomNodeFound = true
+                    }
                 }
 
-                const currentLanguage: string =
+                const currentLanguage: null | string =
                     currentLanguageDomNode.textContent
                 if (language === currentLanguage)
                     log.warn(
@@ -686,24 +693,35 @@ export class Internationalization<
                 const nodeName: string =
                     replacement.nodeToReplace.nodeName.toLowerCase()
                 if (nodeName === '#comment')
-                    replacement.textNodeToTranslate.after($(
-                        `<!--${currentLanguage}:${currentText}-->`
-                    ))
+                    replacement.textNodeToTranslate.after(
+                        (globalContext.document as Document).createComment(
+                            `${currentLanguage}:${currentText}`
+                        )
+                    )
+                else {
+                    const newNode =
+                        (globalContext.document as Document).createElement(
+                            nodeName
+                        )
+                    newNode.textContent = `${currentLanguage}:${currentText}`
+                    ;(replacement.textNodeToTranslate as HTMLElement)
+                        .style.visibility = 'hidden'
+                    replacement.textNodeToTranslate.after(newNode)
+                }
+
+                replacement.textNodeToTranslate.after(
+                    (globalContext.document as Document)
+                        .createComment(language)
+                )
+
+                if (Object.prototype.hasOwnProperty.call(
+                    replacement.textNodeToTranslate, 'innerHTML'
+                ))
+                    (replacement.textNodeToTranslate as HTMLElement)
+                        .innerHTML = replacement.textToReplace
                 else
-                    replacement.textNodeToTranslate.after($(
-                        `<${nodeName}>${currentLanguage}:${currentText}</` +
-                        `${nodeName}>`
-                    ).hide())
-
-                replacement.textNodeToTranslate.after($(`<!--${language}-->`))
-
-                if (replacement.textNodeToTranslate.nodeName === '#text')
                     replacement.textNodeToTranslate.textContent =
                         replacement.textToReplace
-                else
-                    replacement.textNodeToTranslate.html(
-                        replacement.textToReplace
-                    )
 
                 currentLanguageDomNode.remove()
                 replacement.nodeToReplace.remove()
@@ -711,10 +729,11 @@ export class Internationalization<
         }
 
         // Translate registered known text nodes.
-        for (const [content, node] of Object.entries(
+        for (const [content, domNodes] of Object.entries(
             this._textNodesWithKnownTranslation
         ))
-            node.textContent = content
+            for (const domNode of domNodes)
+                domNode.textContent = content
 
         if (globalContext.localStorage)
             globalContext.localStorage.setItem(
@@ -729,21 +748,21 @@ export class Internationalization<
      * @param language - The new language to switch to.
      */
     _switchCurrentLanguageIndicator(language: string) {
-        $(
+        for (const domNode of this.root.querySelectorAll(
             `a[href="#${this.options.languageHashPrefix}` +
             `${this.currentLanguage}"].` +
             this.options.currentLanguageIndicatorClassName
-        ).each((_index, node) => {
-            console.log('remove', node)
-            $(node).removeClass(this.options.currentLanguageIndicatorClassName)
-        })
+        ))
+            domNode.classList.remove(
+                this.options.currentLanguageIndicatorClassName
+            )
 
-        $(
+        for (const domNode of this.root.querySelectorAll(
             `a[href="#${this.options.languageHashPrefix}${language}"]`
-        ).each((_index, node) => {
-            console.log('add', node)
-            $(node).addClass(this.options.currentLanguageIndicatorClassName)
-        })
+        ))
+            domNode.classList.add(
+                this.options.currentLanguageIndicatorClassName
+            )
     }
     // endregion
 }
