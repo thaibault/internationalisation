@@ -14,19 +14,12 @@
     endregion
 */
 // region imports
-import {beforeAll, describe, expect, test} from '@jest/globals'
 import {
-    $,
-    $Global,
-    $T,
-    augment$,
-    currentRequire,
-    determine$,
-    FirstParameter,
-    HTMLItem,
-    Tools
+    createDomNodes, FirstParameter, globalContext, HTMLItem, isEquivalentDOM
 } from 'clientnode'
 import {getInitializedBrowser} from 'weboptimizer/browser'
+
+import {beforeAll, describe, expect, test} from '@jest/globals'
 
 /*
     NOTE: Import and use only as type. Since real loading should be delayed
@@ -36,53 +29,36 @@ import Internationalization from './index'
 // endregion
 describe('Internationalisation', (): void => {
     // region mockup
-    let $domNode: $T<HTMLBodyElement>
-    let internationalisation: Internationalization<HTMLBodyElement>
+    let root: Internationalization
 
     beforeAll(async (): Promise<void> => {
         await getInitializedBrowser()
 
-        if (currentRequire)
-            (globalThis as unknown as $Global).$ =
-                currentRequire<typeof import('jquery')>('jquery')
-
-        augment$(determine$())
-        /*
-            NOTE: Import plugin with side effects (augmenting "$" scope
-            registering plugin) when other imports are only used as type.
-        */
-        // eslint-disable-next-line @typescript-eslint/no-require-imports
-        require('./index')
-
         if (Object.prototype.hasOwnProperty.call(
-            globalThis.window, 'localStorage'
+            globalContext.window, 'localStorage'
         ))
-            globalThis.window.localStorage.removeItem('Internationalisation')
+            globalContext.window?.localStorage.removeItem(
+                'Internationalisation'
+            )
 
-        const $body = $(window.document.body as HTMLBodyElement)
-        $domNode = await $body.Internationalisation({
-            allowedLanguages: ['enUS', 'deDE', 'frFR'], initial: 'enUS'
-        })
+        customElements.define(
+            'test-internationalization', Internationalization
+        )
 
-        internationalisation = $domNode.data('Internationalisation') as
-            Internationalization<HTMLBodyElement>
+        root = (globalContext.document as Document)
+            .createElement('test-internationalization') as
+                Internationalization
+        globalContext.document?.body.appendChild(root)
     })
     // endregion
     // region tests
     /// region public methods
-    //// region special
-    test('initialize', (): Promise<void> =>
-        expect(internationalisation.initialize())
-            .resolves
-            .toStrictEqual($domNode)
-    )
-    //// endregion
     test('switch', async (): Promise<void> => {
-        expect(await internationalisation.switch('en')).toStrictEqual($domNode)
-        $domNode.html('<div>english<!--deDE:german--></div>')
-        await internationalisation.switch('deDE')
-        expect(Tools.isEquivalentDOM(
-            $domNode.html().replace(/[ \n]+/g, ' '),
+        expect(await root.switch('en')).toStrictEqual(root)
+        root.innerHTML = '<div>english<!--deDE:german--></div>'
+        await root.switch('deDE')
+        expect(isEquivalentDOM(
+            root.innerHTML.replace(/[ \n]+/g, ' '),
             (
                 '<div style="opacity: 1">' +
                     'german<!--deDE--><!--enUS:english-->' +
@@ -90,30 +66,29 @@ describe('Internationalisation', (): void => {
             )
         )).toStrictEqual(true)
 
-        await internationalisation.switch('deDE')
-        expect(Tools.isEquivalentDOM(
-            $domNode.html().replace(/[ \n]+/g, ' '),
+        await root.switch('deDE')
+        expect(isEquivalentDOM(
+            root.innerHTML.replace(/[ \n]+/g, ' '),
             '<div style="opacity: 1">' +
                 'german<!--deDE--><!--enUS:english-->' +
             '</div>'
         )).toStrictEqual(true)
-        await internationalisation.switch('en')
-        expect(Tools.isEquivalentDOM(
-            $domNode.html().replace(/[ \n]+/g, ' '),
+        await root.switch('en')
+        expect(isEquivalentDOM(
+            root.innerHTML.replace(/[ \n]+/g, ' '),
             '<div style="opacity: 1">' +
                 'english<!--enUS--><!--deDE:german-->' +
             '</div>'
         )).toStrictEqual(true)
-        $domNode.html(`
+        root.innerHTML = `
             <div class="toc">
                 <ul><li><a href="#">english</a></li></ul>
             </div>
             <div>english<!--deDE:german--></div>
-        `)
-        await internationalisation.initialize()
-        await internationalisation.switch('de')
-        expect(Tools.isEquivalentDOM(
-            $domNode.html().replace(/[ \n]+/g, ' '),
+        `
+        await root.switch('de')
+        expect(isEquivalentDOM(
+            root.innerHTML.replace(/[ \n]+/g, ' '),
             ' <div class="toc"> ' +
                 '<ul>' +
                     '<li style="opacity: 1">' +
@@ -129,7 +104,7 @@ describe('Internationalisation', (): void => {
         )).toStrictEqual(true)
     })
     test('refresh', (): Promise<void> =>
-        expect(internationalisation.refresh()).resolves.toStrictEqual($domNode)
+        expect(root.refresh()).resolves.toStrictEqual(root)
     )
     /// endregion
     /// region protected methods
@@ -149,105 +124,87 @@ describe('Internationalisation', (): void => {
             expected: ReturnType<Internationalization['_normalizeLanguage']>,
             given: FirstParameter<Internationalization['_normalizeLanguage']>
         ) => {
-            expect(internationalisation._normalizeLanguage(given))
-                .toStrictEqual(expected)
+            expect(root._normalizeLanguage(given)).toStrictEqual(expected)
         }
     )
     test('_determineUsefulLanguage', (): void => {
         if (typeof globalThis.window.localStorage !== 'undefined') {
-            globalThis.window.localStorage[
-                internationalisation.options.sessionDescription
-            ] = 'enUS'
-            expect(internationalisation._determineUsefulLanguage())
+            globalThis.window.localStorage[root.options.sessionDescription] =
+                'enUS'
+            expect(root._determineUsefulLanguage())
                 .toStrictEqual('enUS')
             delete globalThis.window.localStorage[
-                internationalisation.options.sessionDescription
+                root.options.sessionDescription
             ]
         }
-        let referenceLanguage: string = internationalisation.options.default
+        let referenceLanguage: string = root.options.default
         if (
             Object.prototype.hasOwnProperty.call(globalThis, 'navigator') &&
             typeof globalThis.navigator.language !== 'undefined'
         )
             referenceLanguage = globalThis.navigator.language
-        expect(internationalisation._normalizeLanguage(
-            internationalisation._determineUsefulLanguage()
-        )).toStrictEqual(
-            internationalisation._normalizeLanguage(referenceLanguage)
-        )
+        expect(root._normalizeLanguage(root._determineUsefulLanguage()))
+            .toStrictEqual(root._normalizeLanguage(referenceLanguage))
     })
     test('_handleSwitchEffect', (): Promise<void> =>
-        expect(internationalisation._handleSwitchEffect('deDE', false))
+        expect(root._handleSwitchEffect('deDE', false))
             .resolves
             .toBeUndefined()
     )
-    test('_addTextNodeToFade', () => {
-        internationalisation._addTextNodeToFade($domNode)
-
-        expect(internationalisation._$domNodeToFade?.has($domNode[0]).length)
-            .toStrictEqual(1)
-    })
     test('_registerTextNodeToChange', () => {
-        internationalisation._registerTextNodeToChange(
-            $domNode,
-            $domNode.children() as $T<HTMLItem>,
+        root._registerTextNodeToChange(
+            root,
+            root.children[0] as HTMLItem,
             ['1', '2', '3'],
-            $domNode.children()
+            root.children[0] as HTMLElement
         )
 
-        expect(internationalisation._replacements[0].$textNodeToTranslate)
-            .toStrictEqual($domNode)
+        expect(root._replacements[0].textNodeToTranslate)
+            .toStrictEqual(root)
 
-        expect(internationalisation._replacements).toHaveLength(1)
-        internationalisation._replacements = []
+        expect(root._replacements).toHaveLength(1)
+        root._replacements = []
     })
     test('_ensureLastTextNodeHavingLanguageIndicator', () => {
-        expect(internationalisation._ensureLastTextNodeHavingLanguageIndicator(
+        expect(root._ensureLastTextNodeHavingLanguageIndicator(
             null, null, false
         )).toStrictEqual(null)
     })
     test('_switchLanguage', async (): Promise<void> => {
-        const subInternationalisation: Internationalization<HTMLBodyElement> =
-            (await $domNode.Internationalisation())
-                .data('Internationalisation') as
-                    Internationalization<HTMLBodyElement>
+        root._switchLanguage('enUS')
+        expect(root.currentLanguage).toStrictEqual('enUS')
 
-        subInternationalisation._switchLanguage('enUS')
-        expect(subInternationalisation.currentLanguage)
-            .toStrictEqual('enUS')
-
-        subInternationalisation._switchLanguage('deDE')
-        expect(subInternationalisation.currentLanguage)
-            .toStrictEqual('deDE')
+        root._switchLanguage('deDE')
+        expect(root.currentLanguage).toStrictEqual('deDE')
     })
     test('_switchCurrentLanguageIndicator', () => {
-        const englishLink =
-            `#${internationalisation.options.languageHashPrefix}enUS`
-        const $englishLink = $(`<a href="${englishLink}">`)
-        const germanLink =
-            `#${internationalisation.options.languageHashPrefix}deDE`
-        const $germanLink = $(`<a href="${germanLink}">`)
-        $domNode.append($englishLink)
-        $domNode.append($germanLink)
+        const englishLink = createDomNodes(
+            `<a href="#${root.options.languageHashPrefix}enUS">`
+        ) as HTMLAnchorElement
+        const germanLink = createDomNodes(
+            `<a href="#${root.options.languageHashPrefix}deDE">`
+        ) as HTMLAnchorElement
+        root.append(englishLink)
+        root.append(germanLink)
 
-        internationalisation._switchCurrentLanguageIndicator('enUS')
-        internationalisation.currentLanguage = 'enUS'
+        root._switchCurrentLanguageIndicator('enUS')
+        root.currentLanguage = 'enUS'
 
-        expect($englishLink.hasClass(
-            internationalisation.options.currentLanguageIndicatorClassName
+        expect(englishLink.classList.contains(
+            root.options.currentLanguageIndicatorClassName
         )).toStrictEqual(true)
-        expect($germanLink.hasClass(
-            internationalisation.options.currentLanguageIndicatorClassName
+        expect(germanLink.classList.contains(
+            root.options.currentLanguageIndicatorClassName
         )).toStrictEqual(false)
 
-        internationalisation._switchCurrentLanguageIndicator('deDE')
-        internationalisation.currentLanguage = 'deDE'
+        root._switchCurrentLanguageIndicator('deDE')
+        root.currentLanguage = 'deDE'
 
-        expect($englishLink.hasClass(
-            internationalisation.options.currentLanguageIndicatorClassName
+        expect(englishLink.classList.contains(
+            root.options.currentLanguageIndicatorClassName
         )).toStrictEqual(false)
-        expect($germanLink.hasClass(
-            internationalisation.options.currentLanguageIndicatorClassName
+        expect(germanLink.classList.contains(
+            root.options.currentLanguageIndicatorClassName
         )).toStrictEqual(true)
     })
     /// endregion
