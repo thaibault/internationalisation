@@ -28,6 +28,7 @@ import {
     Lock,
     Logger,
     Mapping,
+    NOOP,
     format
 } from 'clientnode'
 import {property, Web} from 'web-component-wrapper'
@@ -128,16 +129,17 @@ export class Internationalization<
     lock = new Lock()
 
     @property()
-    options = {} as Options
+        options = {} as Options
 
     @property()
-    onEnsure = (language: string) => Promise.resolve()
+        onEnsure: (language: string) => Promise<void> = NOOP
     @property()
-    onSwitch = (oldLanguage: string, newLanguage: string) => Promise.resolve()
+        onSwitch: (oldLanguage: string, newLanguage: string) => Promise<void> =
+            NOOP
     @property()
-    onEnsured = (language: string) => {}
+        onEnsured: (language: string) => void = NOOP
     @property()
-    onSwitched = (oldLanguage: string, newLanguage: string) => {}
+        onSwitched: (oldLanguage: string, newLanguage: string) => void = NOOP
 
     _domNodesToFade: Array<HTMLElement> = []
     _replacements: Array<Replacement> = []
@@ -164,7 +166,6 @@ export class Internationalization<
     /**
      * Initializes the plugin. Current language is set and later needed dom
      * nodes are grabbed.
-     * @returns Nothing.
      */
     connectedCallback(): void {
         this.options.preReplacementLanguagePattern = format(
@@ -201,7 +202,7 @@ export class Internationalization<
 
                     const url = (
                         event.target as Element | null
-                    )?.getAttribute?.('href')
+                    )?.getAttribute('href')
                     if (url)
                         void this.switch(url.substring(
                             this.options.languageHashPrefix.length + 1
@@ -215,7 +216,7 @@ export class Internationalization<
             return
         }
 
-        this.switch(newLanguage, true)
+        void this.switch(newLanguage, true)
     }
     /// endregion
     /**
@@ -283,12 +284,12 @@ export class Internationalization<
     }
     /**
      * Ensures current selected language.
-     * @returns Returns the current instance wrapped in a promise.
+     * @returns Promise resolving to nothing when switching as finished.
      */
-    refresh() {
+    refresh(): Promise<void> {
         this._movePreReplacementNodes()
 
-        this.switch(true)
+        return this.switch(true)
     }
     /// endregion
     // region protected methods
@@ -304,7 +305,11 @@ export class Internationalization<
         language: string, ensure: boolean
     ): Promise<void> {
         const oldLanguage: string = this.currentLanguage
-        if (!ensure && this.options.useEffect && this._domNodesToFade.length > 0) {
+        if (
+            !ensure &&
+            this.options.useEffect &&
+            this._domNodesToFade.length > 0
+        ) {
             await Promise.all(
                 this._domNodesToFade.map((domNode) => fadeOut(domNode))
             )
@@ -357,7 +362,9 @@ export class Internationalization<
 
                     if (domNode.parentElement) {
                         let selfFound = false
-                        for (const subDomNode of getAll(domNode.parentElement)) {
+                        for (const subDomNode of getAll(
+                            domNode.parentElement
+                        )) {
                             if (selfFound && getText(subDomNode).length > 0) {
                                 domNode.appendChild(subDomNode)
 
@@ -575,11 +582,11 @@ export class Internationalization<
     }
     /**
      * Registers a text node to change its content with given replacement.
-     * @param $currentTextNodeToTranslate - Text node with content to
+     * @param currentTextNodeToTranslate - Text node with content to
      * translate.
-     * @param $currentDomNode - A comment node with replacement content.
+     * @param currentDomNode - A comment node with replacement content.
      * @param match - A matching array of replacement's text content.
-     * @param $currentLanguageDomNode - A potential given text node indicating
+     * @param currentLanguageDomNode - A potential given text node indicating
      * the language of given text node.
      */
     _registerTextNodeToChange(
@@ -603,8 +610,8 @@ export class Internationalization<
     /**
      * Checks if last text node has a language indication comment node. This
      * function is called after each parsed dom text node.
-     * @param $lastTextNodeToTranslate - Last text node to check.
-     * @param $lastLanguageDomNode - A potential given language indication
+     * @param lastTextNodeToTranslate - Last text node to check.
+     * @param lastLanguageDomNode - A potential given language indication
      * commend node.
      * @param ensure - Indicates if current language should be ensured again
      * every text node content.

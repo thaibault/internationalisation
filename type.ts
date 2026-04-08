@@ -16,9 +16,7 @@
     endregion
 */
 // region imports
-import {
-    HTMLItem, Mapping, Options as BaseOptions, UnknownFunction
-} from 'clientnode'
+import {HTMLItem, Mapping} from 'clientnode'
 // endregion
 // region exports
 export interface Replacement {

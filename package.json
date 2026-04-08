@@ -52,6 +52,7 @@
     "@babel/eslint-parser": "^7.28.6",
     "@babel/plugin-transform-proto-to-assign": "^7.27.1",
     "@babel/runtime": "^7.29.2",
+    "@eslint/js": "^10.0.1",
     "@stylistic/eslint-plugin": "^5.10.0",
     "@types/ejs": "^3.1.5",
     "@types/html-minifier": "^4.0.6",

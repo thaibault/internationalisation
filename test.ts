@@ -54,7 +54,7 @@ describe('Internationalisation', (): void => {
     // region tests
     /// region public methods
     test('switch', async (): Promise<void> => {
-        expect(await root.switch('en')).toStrictEqual(root)
+        await expect(root.switch('en')).resolves.toStrictEqual(root)
         root.innerHTML = '<div>english<!--deDE:german--></div>'
         await root.switch('deDE')
         expect(isEquivalentDOM(
@@ -170,7 +170,7 @@ describe('Internationalisation', (): void => {
             null, null, false
         )).toStrictEqual(null)
     })
-    test('_switchLanguage', async (): Promise<void> => {
+    test('_switchLanguage', () => {
         root._switchLanguage('enUS')
         expect(root.currentLanguage).toStrictEqual('enUS')
 
