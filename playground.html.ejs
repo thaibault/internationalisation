@@ -1,0 +1,38 @@
+<!doctype html>
+<%_ /*
+    region header
+    Copyright Torben Sickert (info["~at~"]torben.website) 16.12.2012
+
+    License
+    -------
+
+    This library written by Torben Sickert stand under a creative commons
+    naming 3.0 unported license.
+    See https://creativecommons.org/licenses/by/3.0/deed.de
+    endregion
+*/ _%>
+<html lang="en">
+    <!--region head-->
+    <head>
+        <meta charset="utf-8">
+        <!--Prevent browser caching-->
+        <meta http-equiv="cache-control" content="no-cache">
+        <meta http-equiv="expires" content="0">
+        <meta http-equiv="pragma" content="no-cache">
+        <title>playground</title>
+        <%-_.include('web-component-wrapper/polyfill.html') %>
+        <!--region script-->
+        <script>
+            window.onload = function() {
+                internationalization.index.webAPI.register('my-web')
+            }
+        </script>
+        <!--endregion-->
+    </head>
+    <!--endregion-->
+    <body>
+        <web-internationalization>
+
+        </web-internationalization>
+    </body>
+<html>

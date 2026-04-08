@@ -18,6 +18,7 @@
 */
 // region imports
 import {
+    camelCaseToDelimited,
     extend,
     fadeIn,
     fadeOut,
@@ -31,7 +32,9 @@ import {
     NOOP,
     format
 } from 'clientnode'
+import {func, object} from 'clientnode/property-types'
 import {property} from 'web-component-wrapper/decorator'
+import {WebComponentAPI} from 'web-component-wrapper/type'
 import {Web} from 'web-component-wrapper/Web'
 
 import {DefaultOptions, Options, Replacement} from './type'
@@ -96,7 +99,7 @@ export class Internationalization<
 > extends Web<
     TElement, ExternalProperties, InternalProperties
 > {
-    static _name = 'InternationalizationWebComponent'
+    static _name = 'WebInternationalization'
 
     static _defaultOptions: DefaultOptions = {
         currentLanguageIndicatorClassName: 'current',
@@ -122,6 +125,8 @@ export class Internationalization<
         templateDelimiter: {pre: '{{', post: '}}'}
     }
 
+    readonly self = Internationalization
+
     switchLanguageButtons = new NodeList()
 
     currentLanguage = 'enUS'
@@ -129,17 +134,17 @@ export class Internationalization<
 
     lock = new Lock()
 
-    @property()
+    @property({type: object})
         options = {} as Options
 
-    @property()
+    @property({type: func})
         onEnsure: (language: string) => Promise<void> = NOOP
-    @property()
+    @property({type: func})
         onSwitch: (oldLanguage: string, newLanguage: string) => Promise<void> =
             NOOP
-    @property()
+    @property({type: func})
         onEnsured: (language: string) => void = NOOP
-    @property()
+    @property({type: func})
         onSwitched: (oldLanguage: string, newLanguage: string) => void = NOOP
 
     _domNodesToFade: Array<HTMLElement> = []
@@ -160,7 +165,7 @@ export class Internationalization<
             this.options = extend<Options>(
                 true,
                 {} as Options,
-                Internationalization._defaultOptions,
+                this.self._defaultOptions,
                 this.options
             )
     }
@@ -176,10 +181,10 @@ export class Internationalization<
             )
         )
         this.options.lockDescription = format(
-            this.options.lockDescription, Internationalization.name
+            this.options.lockDescription, this.self._name
         )
         this.options.sessionDescription = format(
-            this.options.sessionDescription, Internationalization.name
+            this.options.sessionDescription, this.self._name
         )
 
         this.switchLanguageButtons = this.root.querySelectorAll(
@@ -773,6 +778,17 @@ export class Internationalization<
             )
     }
     // endregion
+}
+
+export const api: WebComponentAPI<
+    HTMLElement, Mapping<unknown>, Mapping<unknown>, typeof Web
+> = {
+    component: Internationalization,
+    register: (
+        tagName: string = camelCaseToDelimited(Internationalization._name)
+    ) => {
+        customElements.define(tagName, Web)
+    }
 }
 export default Internationalization
 // endregion
