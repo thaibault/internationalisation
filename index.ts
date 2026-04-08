@@ -31,7 +31,8 @@ import {
     NOOP,
     format
 } from 'clientnode'
-import {property, Web} from 'web-component-wrapper'
+import {property} from 'web-component-wrapper/decorator'
+import {Web} from 'web-component-wrapper/Web'
 
 import {DefaultOptions, Options, Replacement} from './type'
 // endregion
