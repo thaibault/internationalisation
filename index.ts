@@ -127,7 +127,7 @@ export class Internationalization<
 
     readonly self = Internationalization
 
-    switchLanguageButtons = new NodeList()
+    switchLanguageButtons: NodeList = null as unknown as NodeList
 
     currentLanguage = 'enUS'
     knownTranslations: Mapping = {}
@@ -159,6 +159,8 @@ export class Internationalization<
      * @param newValue - New updated value.
      */
     onUpdateAttribute(name: string, newValue: string) {
+        console.log('TODO 1', name, newValue)
+
         super.onUpdateAttribute(name, newValue)
 
         if (name === 'options')
@@ -174,6 +176,8 @@ export class Internationalization<
      * nodes are grabbed.
      */
     connectedCallback(): void {
+        console.log('TODO 2', this.options)
+
         this.options.preReplacementLanguagePattern = format(
             this.options.preReplacementLanguagePattern,
             this.options.replacementLanguagePattern.substring(
@@ -787,7 +791,7 @@ export const api: WebComponentAPI<
     register: (
         tagName: string = camelCaseToDelimited(Internationalization._name)
     ) => {
-        customElements.define(tagName, Web)
+        customElements.define(tagName, Internationalization)
     }
 }
 export default Internationalization

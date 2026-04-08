@@ -62,6 +62,7 @@
     "@types/webpack-env": "^1.18.8",
     "@typescript-eslint/eslint-plugin": "^8.58.1",
     "@typescript-eslint/parser": "^8.58.1",
+    "@webcomponents/webcomponentsjs": "^2.8.0",
     "clientnode": "^4.0.1380",
     "documentation-website": "^1.0.401",
     "eslint": "^10.2.0",
@@ -115,16 +116,6 @@
         "environments": [
           "jsdom"
         ]
-      }
-    },
-    "#": "Only reasonable if have a linked clientnode repository next to this one and updates their should be propagated directly in development mode.",
-    "development": {
-      "server": {
-        "contentBase": {
-          "__append__": {
-            "__evaluate__": "path.resolve(self.path.base, '../clientnode')"
-          }
-        }
       }
     },
     "target:bundle": {

@@ -24,7 +24,7 @@
         <!--region script-->
         <script>
             window.onload = function() {
-                internationalization.index.webAPI.register('my-web')
+                internationalisation.index.api.register()
             }
         </script>
         <!--endregion-->
@@ -32,7 +32,62 @@
     <!--endregion-->
     <body>
         <web-internationalization>
+            <a href="#language-deDE">de</a>
+            <br />
+            <a href="#language-enUS">en</a>
+            <br />
+            <a href="#language-frFR">fr</a>
 
+            <p>
+                Your englisch version.
+                <!--deDE:Ihre deutsche Variante.-->
+                <!--frFR:
+                    Sa version française.
+                -->
+            </p>
+
+            <p>
+                <lang-replace>
+                    Your englisch version with <strong>dom nodes</strong> inside.
+                </lang-replace>
+                <!--deDE:
+                    Ihre deutsche Variante mit eingebetteten <strong>dom Knoten</strong>.
+                -->
+                <!--frFR:
+                    Votre version français <strong>dom nodes</strong> à l'intérieur.
+                -->
+            </p>
+
+            <p>
+                <lang-replace>
+                    Your englisch version with <strong>dom nodes</strong> inside.
+                </lang-replace>
+                <lang-replacement>deDE:
+                    Ihre deutsche Variante mit eingebetteten <strong>dom Knoten</strong>.
+                </lang-replacement>
+                <lang-replacement>frFR:
+                    Votre version français <strong>dom nodes</strong> à l'intérieur.
+                </lang-replacement>
+            </p>
+
+            <p>
+                <!--|deDE:Ihre deutsche Variante.--><!--|frFR:Votre version français.-->
+                <p>Your englisch version.</p>
+            </p>
+
+            <div>
+                <!--The "div.toc" selector defines the default known language area.-->
+                <div class="toc">
+                    <ul>
+                        <li><a href="title-1">title 1</a></li>
+                        <ul>
+                            <li><a href="title-2">title 2</a></li>
+                        </ul>
+                    </ul>
+                </div>
+                <h1 id="title-1">title 1<!--deDE:Titel 1--><!--frFR:titre 1--></h1>
+                <h2 id="title-2">title 2<!--deDE:Titel 2--><!--frFR:titre 2--></h2>
+            </div>
         </web-internationalization>
     </body>
 <html>

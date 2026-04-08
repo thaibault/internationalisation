@@ -34,7 +34,7 @@ Use case
 --------
 
 A jQuery plugin to replace alternate version of text for client side
-internationalisation.
+internationalization.
 <!--deDE:
     Ein jQuery-Plugin zum klientseitigem Ersetzten von verschiedenen
     Textversionen. Perfekt für die Internationalisierung Ihres Webprojekts.
@@ -128,14 +128,14 @@ Usage
 To add two versions of a text string you can simply add your translation
 directly in markup. See how easy it is:
 <!--deDE:
-    Um zwei Sprachversionen eines Text Knotens im Markup anzubieten müssen
+    Um zwei Sprachversionen eines Textknotens im Markup anzubieten, müssen
     einfach nur per Kommentar alternative Versionen hinter dem zu übersetzenden
     String gesetzt werden.
 -->
 <!--frFR:
     Doit offrir deux versions linguistiques d'un nœud de texte dans la balise
-    facile à traduire que par Commentez versions alternatives derrière le
-    Chaîne à être réglé.
+    acile à traduire que par Commentez versions alternatives derrière le
+    Chaîne à être réglé.
 -->
 
 <!--showExample-->
@@ -151,7 +151,7 @@ directly in markup. See how easy it is:
 ```
 
 Sometimes you need to explicit mark a text node as text to replace with next
-translation node. In this case you can simple wrap a self defined dom node.
+translation node. In this case you can simply wrap a self defined dom node.
 <!--deDE:
     Manchmal muss man Textknoten explizit als übersetzbar markieren, da sie
     beispielsweise selbst aus mehr als nur einem Knoten bestehen. In solchen
@@ -178,7 +178,7 @@ translation node. In this case you can simple wrap a self defined dom node.
 ```
 
 It is also possible to use an alternative replacement node.
-<!--deDE:Man kann auch einen alternative Ersetzungsknoten einsetzten.-->
+<!--deDE:Man kann auch einen alternativen Ersetzungsknoten einsetzten.-->
 <!--frFR:
     Donc, il est possible d'utiliser alternative à nœud de remplacement.
 -->
@@ -207,7 +207,7 @@ containing text.
 -->
 <!--frFR:
     Normalement, le nœud DOM voix suit le nœud de texte de la traduction
-    devrait être. Il est doté d'une syntaxe spéciale possible une Nœud voix Dom
+    devrait être. Il est doté d'une syntaxe spéciale possible une Nœud voix Dom
     pour le nœud DOM prochaine à utiliser.
 -->
 
@@ -218,10 +218,10 @@ containing text.
 <p>Your englisch version.</p>
 ```
 
-Its possible to save one translation once if you specify the area with known
+It's possible to save one translation once if you specify the area with known
 translations.
 <!--deDE:
-    Es ist möglich eine Übersetzung an nur einem Ort zu speichern, sofern der
+    Es ist möglich, eine Übersetzung an nur einem Ort zu speichern, sofern der
     Bereich mit bekannten Übersetzungen markiert wird.
 -->
 <!--frFR:
@@ -245,8 +245,8 @@ translations.
 <h2 id="title-2">title 2<!--deDE:Titel 2--><!--frFR:titre 2--></h2>
 ```
 
-With the below initialisation you can simple add this links everywhere in your
-page to switch language. On click you will switch the current language
+With the below initialization you can simple add this links everywhere in your
+page to switch language. On click, you will switch the current language
 interactively. Try it by yourself:
 <!--deDE:
     Mit der unten aufgezeigten Konfiguration können Sie einfach folgenden Links
@@ -258,7 +258,7 @@ interactively. Try it by yourself:
     Avec la configuration au-dessous, vous pouvez simplement identifié les
     liens suivants placer n'importe où dans le balisage. Lorsque vous cliquez
     sur l' Langue échange de liens est la langue de votre site en conséquence
-    ajustée. Essayez par vous-même:
+    ajustée. Essayez par vous-même:
 -->
 
 <!--showExample-->
@@ -269,7 +269,7 @@ interactively. Try it by yourself:
 <a href="#language-frFR">fr</a>
 ```
 
-Here you can see a complete initialisation example with all available options
+Here you can see a complete initialization example with all available options
 to initialize the plugin with different configuration.
 <!--deDE:
     Hier können Sie ein Komplettbeispiel der Initialisierung sehen und alle
@@ -278,46 +278,16 @@ to initialize the plugin with different configuration.
 -->
 <!--frFR:
     Ici vous pouvez voir toutes les options disponibles pour le plug-in
-    différentes configurations pour initialiser.
+    différentes configurations pour initialiser.
 -->
 
 ```HTML
 <script
     src="https://torben.website/internationalisation/data/distributionBundle/index.js"
 ></script>
-
 <script>
-    $(($) => $.Language({
-        domNodeSelectorPrefix: 'body',
-        default: 'enUS',
-        selection: [],
-        initial: null,
-        templateDelimiter: {pre: '{{', post: '}}'},
-        fadeEffect: true,
-        textNodeParent: {
-            showAnimation: [{opacity: 1}, {duration: 'fast'}],
-            hideAnimation: [{opacity: 0}, {duration: 'fast'}]
-        },
-        preReplacementLanguagePattern: '^\\|({1})$',
-        replacementLanguagePattern: '^([a-z]{2}[A-Z]{2}):((.|\\s)*)$',
-        currentLanguagePattern: '^[a-z]{2}[A-Z]{2}$',
-        replacementDomNodeName: ['#comment', 'lang-replacement'],
-        replaceDomNodeNames: ['#text', 'lang-replace'],
-        toolsLockDescription: '{1}Switch',
-        languageHashPrefix: 'language-',
-        currentLanguageIndicatorClassName: 'current',
-        sessionDescription: '{1}',
-        languageMapping: {
-            deDE: ['de', 'de_de', 'de-de', 'german', 'deutsch'],
-            enUS: ['en', 'en_us', 'en-us'],
-            enEN: ['en_en', 'en-en', 'english'],
-            frFR: ['fr', 'fr_fr', 'fr-fr', 'french']
-        },
-        onSwitched: $.noop(),
-        onEnsured: $.noop(),
-        onSwitch: $.noop(),
-        onEnsure: $.noop(),
-        domNode: {knownTranslation: 'div.toc'}
-    }))
+    window.onload = function() {
+        internationalisation.index.api.register()
+    }
 </script>
 ```
