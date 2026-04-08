@@ -127,7 +127,8 @@ export class Internationalization<
 
     readonly self = Internationalization
 
-    switchLanguageButtons: NodeList = null as unknown as NodeList
+    switchLanguageButtons =
+        null as unknown as NodeListOf<HTMLAnchorElement>
 
     currentLanguage = 'enUS'
     knownTranslations: Mapping = {}
@@ -159,8 +160,6 @@ export class Internationalization<
      * @param newValue - New updated value.
      */
     onUpdateAttribute(name: string, newValue: string) {
-        console.log('TODO 1', name, newValue)
-
         super.onUpdateAttribute(name, newValue)
 
         if (name === 'options')
@@ -176,7 +175,8 @@ export class Internationalization<
      * nodes are grabbed.
      */
     connectedCallback(): void {
-        console.log('TODO 2', this.options)
+        if (Object.keys(this.options).length === 0)
+            this.onUpdateAttribute('options', '{}')
 
         this.options.preReplacementLanguagePattern = format(
             this.options.preReplacementLanguagePattern,
@@ -184,12 +184,10 @@ export class Internationalization<
                 1, this.options.replacementLanguagePattern.length - 1
             )
         )
-        this.options.lockDescription = format(
-            this.options.lockDescription, this.self._name
-        )
-        this.options.sessionDescription = format(
-            this.options.sessionDescription, this.self._name
-        )
+        this.options.lockDescription =
+            format(this.options.lockDescription, this.self._name)
+        this.options.sessionDescription =
+            format(this.options.sessionDescription, this.self._name)
 
         this.switchLanguageButtons = this.root.querySelectorAll(
             `a[href^="#${this.options.languageHashPrefix}"]`
@@ -204,7 +202,17 @@ export class Internationalization<
         */
         const newLanguage: string = this._determineUsefulLanguage()
 
-        for (const button of this.switchLanguageButtons)
+        const determineSelection = this.options.selection.length === 0
+
+        for (const button of this.switchLanguageButtons) {
+            if (determineSelection)
+                this.options.selection.push(
+                    (button.getAttribute('href') as string)
+                        .substring(
+                            `#${this.options.languageHashPrefix}`.length
+                        )
+                )
+
             button.addEventListener(
                 'click',
                 (event: Event) => {
@@ -219,6 +227,7 @@ export class Internationalization<
                         ))
                 }
             )
+        }
 
         if (this.currentLanguage === newLanguage) {
             this._switchCurrentLanguageIndicator(newLanguage)
@@ -238,7 +247,7 @@ export class Internationalization<
      * @param ensure - Indicates if a switch effect should be avoided.
      * @returns Returns the current instance wrapped in a promise.
      */
-    async switch(language: string|true, ensure = false): Promise<void> {
+    async switch(language: string | true, ensure = false): Promise<void> {
         if (
             language !== true &&
             this.options.selection.length &&
@@ -541,10 +550,9 @@ export class Internationalization<
      * @returns Returns the determined language.
      */
     _determineUsefulLanguage(): string {
-        let result: string|undefined
+        let result: string | undefined
         if (this.options.initial)
             result = this.options.initial
-
         else if (Object.prototype.hasOwnProperty.call(globalContext, 'window'))
             if (globalContext.window?.localStorage.getItem(
                 this.options.sessionDescription

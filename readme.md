@@ -264,9 +264,9 @@ interactively. Try it by yourself:
 <!--showExample-->
 
 ```HTML
-<a href="#language-deDE">de</a>
-<a href="#language-enUS">en</a>
-<a href="#language-frFR">fr</a>
+<a href="#lang-deDE">de</a>
+<a href="#lang-enUS">en</a>
+<a href="#lang-frFR">fr</a>
 ```
 
 Here you can see a complete initialization example with all available options
