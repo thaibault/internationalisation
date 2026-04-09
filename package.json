@@ -63,7 +63,7 @@
     "@typescript-eslint/eslint-plugin": "^8.58.1",
     "@typescript-eslint/parser": "^8.58.1",
     "@webcomponents/webcomponentsjs": "^2.8.0",
-    "clientnode": "^4.0.1380",
+    "clientnode": "^4.0.1382",
     "documentation-website": "^1.0.401",
     "eslint": "^10.2.0",
     "eslint-config-google": "^0.14.0",
@@ -116,6 +116,20 @@
         "environments": [
           "jsdom"
         ]
+      }
+    },
+    "module": {
+      "optimizer": {
+        "htmlMinifier": {
+          "ignoreCustomComments": [
+            {
+              "__evaluate__": "/^\\|?[a-z]{2}[A-Z]{2}:/"
+            },
+            {
+              "__evaluate__": "/^[a-z]{2}[A-Z]{2}$/"
+            }
+          ]
+        }
       }
     },
     "target:bundle": {

@@ -21,8 +21,8 @@ import {HTMLItem, Mapping} from 'clientnode'
 // region exports
 export interface Replacement {
     textNodeToTranslate: HTMLItem
-    nodeToReplace: HTMLItem
-    textToReplace: string
+    nodeToReplaceWith: HTMLItem
+    textToReplaceWith: string
     currentLanguageDomNode: HTMLItem | null
 }
 
@@ -37,12 +37,10 @@ export interface DefaultOptions {
     lockDescription: string
     preReplacementLanguagePattern: string
     replaceDomNodeNames: Array<string>
-    replacementDomNodeName: Array<string>
+    replacementDomNodeNames: Array<string>
     replacementLanguagePattern: string
     selection: Array<string>
-    selectors: {
-        knownTranslation: string
-    }
+    selectors: {knownTranslation: string}
     sessionDescription: string
     templateDelimiter: (
         null |
