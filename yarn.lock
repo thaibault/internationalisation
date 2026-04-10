@@ -8088,8 +8088,8 @@ __metadata:
     jsdoc: "npm:^4.0.5"
     prop-types: "npm:^15.8.1"
     typescript-eslint: "npm:^8.58.1"
-    web-component-wrapper: "npm:^0.0.553"
-    weboptimizer: "npm:^3.0.20"
+    web-component-wrapper: "npm:^0.0.554"
+    weboptimizer: "npm:^3.0.21"
     webpack-dev-server: "npm:^5.2.3"
   peerDependencies:
     "@babel/runtime": "*"
@@ -12317,9 +12317,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"web-component-wrapper@npm:^0.0.553":
-  version: 0.0.553
-  resolution: "web-component-wrapper@npm:0.0.553"
+"web-component-wrapper@npm:^0.0.554":
+  version: 0.0.554
+  resolution: "web-component-wrapper@npm:0.0.554"
   peerDependencies:
     "@babel/runtime": "*"
     "@types/react": "*"
@@ -12338,7 +12338,7 @@ __metadata:
       optional: true
     react-dom:
       optional: true
-  checksum: 10c0/5e6b9f8ca67819becffcb163e1f752385c65ad62fd3063724143216cec173fc2c02b708a14590a2e940a7b450c09b70e72f6d68d78a8716954b49048625f5270
+  checksum: 10c0/c7b28ebb1654382c3d27f63c15fe4f0ddecf7d43dfb51b6a8b5744550c970092789552f1e21b7399a8718fbadfd1cc4b29d62aa9447148c735b3be2404f5d23f
   languageName: node
   linkType: hard
 
@@ -12349,9 +12349,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"weboptimizer@npm:^3.0.20":
-  version: 3.0.20
-  resolution: "weboptimizer@npm:3.0.20"
+"weboptimizer@npm:^3.0.21":
+  version: 3.0.21
+  resolution: "weboptimizer@npm:3.0.21"
   dependencies:
     "@babel/core": "npm:^7.29.0"
     "@babel/plugin-proposal-class-properties": "npm:^7.18.6"
@@ -12498,7 +12498,7 @@ __metadata:
       optional: true
   bin:
     weboptimizer: index.js
-  checksum: 10c0/95e29e7f9f58f2386cafdc51ee855c0f19fcf576996d9d1692d81d7c8e792d07a086866d83b3a5d3b520ea2c6a92dce8ba023a3190ffad2cf03eb15b92b2dbb0
+  checksum: 10c0/46ac5c3af82ac7d9124ebc258df0cc88a53aaaeddab7d99d9f3e29586dac922bae4a643e605ec1919652b90374e598fe7ce07f169204a36fbd153e5f13249b4d
   languageName: node
   linkType: hard
 

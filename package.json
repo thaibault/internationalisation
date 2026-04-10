@@ -74,8 +74,8 @@
     "jsdoc": "^4.0.5",
     "prop-types": "^15.8.1",
     "typescript-eslint": "^8.58.1",
-    "web-component-wrapper": "^0.0.553",
-    "weboptimizer": "^3.0.20",
+    "web-component-wrapper": "^0.0.554",
+    "weboptimizer": "^3.0.21",
     "webpack-dev-server": "^5.2.3"
   },
   "peerDependencies": {
@@ -137,6 +137,15 @@
       }
     },
     "module": {
+      "html": {
+        "options": {
+          "sources": {
+            "urlFilter": {
+              "__evaluate__": "() => false"
+            }
+          }
+        }
+      },
       "optimizer": {
         "htmlMinifier": {
           "ignoreCustomComments": [

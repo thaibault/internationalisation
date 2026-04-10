@@ -17,9 +17,9 @@
 import {
     createDomNodes, FirstParameter, globalContext, HTMLItem, isEquivalentDOM
 } from 'clientnode'
-import {getInitializedBrowser} from 'weboptimizer/browser'
 
 import {beforeAll, describe, expect, test} from '@jest/globals'
+import '@webcomponents/webcomponentsjs/custom-elements-es5-adapter'
 
 /*
     NOTE: Import and use only as type. Since real loading should be delayed
@@ -27,62 +27,64 @@ import {beforeAll, describe, expect, test} from '@jest/globals'
 */
 import Internationalization from './index'
 // endregion
-describe('Internationalisation', (): void => {
+describe('Internationalization', (): void => {
     // region mockup
     let root: Internationalization
 
-    beforeAll(async (): Promise<void> => {
-        await getInitializedBrowser()
-
+    beforeAll((): void => {
         if (Object.prototype.hasOwnProperty.call(
             globalContext.window, 'localStorage'
         ))
             globalContext.window?.localStorage.removeItem(
-                'Internationalisation'
+                Internationalization._name
             )
 
         customElements.define(
             'test-internationalization', Internationalization
         )
-
-        root = (globalContext.document as Document)
-            .createElement('test-internationalization') as
-                Internationalization
-        globalContext.document?.body.appendChild(root)
-    })
-    test.only('mock', () => {
-        expect(true).toBe(true)
+        root = document.createElement('test-internationalization') as
+            Internationalization
+        document.body.appendChild(root)
     })
     // endregion
     // region tests
     /// region public methods
     test('switch', async (): Promise<void> => {
-        await expect(root.switch('en')).resolves.toStrictEqual(root)
+        await expect(root.switch('en')).resolves.toBeUndefined()
+
         root.innerHTML = '<div>english<!--deDE:german--></div>'
         await root.switch('deDE')
         expect(isEquivalentDOM(
             root.innerHTML.replace(/[ \n]+/g, ' '),
             (
-                '<div style="opacity: 1">' +
-                    'german<!--deDE--><!--enUS:english-->' +
-                '</div>'
+                '<div style="' +
+                    'visibility: visible; ' +
+                    'opacity: 1; ' +
+                    'transition: opacity 200ms linear;' +
+                '">german<!--deDE--><!--enUS:english--></div>'
             )
         )).toStrictEqual(true)
 
         await root.switch('deDE')
         expect(isEquivalentDOM(
             root.innerHTML.replace(/[ \n]+/g, ' '),
-            '<div style="opacity: 1">' +
-                'german<!--deDE--><!--enUS:english-->' +
-            '</div>'
+            '<div style="' +
+                'visibility: visible; ' +
+                'opacity: 1; ' +
+                'transition: opacity 200ms linear;' +
+            '">german<!--deDE--><!--enUS:english--></div>'
         )).toStrictEqual(true)
+
         await root.switch('en')
         expect(isEquivalentDOM(
             root.innerHTML.replace(/[ \n]+/g, ' '),
-            '<div style="opacity: 1">' +
-                'english<!--enUS--><!--deDE:german-->' +
-            '</div>'
+            '<div style="' +
+                'visibility: visible; ' +
+                'opacity: 1; ' +
+                'transition: opacity 200ms linear;' +
+            '">english<!--enUS--><!--deDE:german--></div>'
         )).toStrictEqual(true)
+
         root.innerHTML = `
             <div class="toc">
                 <ul><li><a href="#">english</a></li></ul>
@@ -94,20 +96,24 @@ describe('Internationalisation', (): void => {
             root.innerHTML.replace(/[ \n]+/g, ' '),
             ' <div class="toc"> ' +
                 '<ul>' +
-                    '<li style="opacity: 1">' +
-                        '<a href="#">' +
-                            'german' +
-                        '</a>' +
+                    '<li style="' +
+                        'visibility: visible; ' +
+                        'opacity: 1; ' +
+                        'transition: opacity 200ms linear;' +
+                    '">' +
+                        '<a href="#">german</a>' +
                     '</li>' +
                 '</ul>' +
             ' </div>' +
-            ' <div style="opacity: 1">' +
-                'german<!--deDE--><!--enUS:english-->' +
-            '</div> '
+            ' <div style="' +
+                'visibility: visible; ' +
+                'opacity: 1; ' +
+                'transition: opacity 200ms linear;' +
+            '">german<!--deDE--><!--enUS:english--></div> '
         )).toStrictEqual(true)
     })
     test('refresh', (): Promise<void> =>
-        expect(root.refresh()).resolves.toStrictEqual(root)
+        expect(root.refresh()).resolves.toBeUndefined()
     )
     /// endregion
     /// region protected methods
