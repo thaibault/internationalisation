@@ -5962,7 +5962,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"clientnode@npm:4.0.1383, clientnode@npm:^4.0.1383":
+"clientnode@npm:4.0.1383":
   version: 4.0.1383
   resolution: "clientnode@npm:4.0.1383"
   peerDependencies:
@@ -5980,6 +5980,27 @@ __metadata:
     prop-types:
       optional: true
   checksum: 10c0/bd3da8741dd28fc77c9cf129c5e7cabcdd39e617000a0c1e29665fbc389404d70793a95314deadf1e404bf3d9259cba206e9d44808a509c442bc0296b954c795
+  languageName: node
+  linkType: hard
+
+"clientnode@npm:^4.0.1384":
+  version: 4.0.1384
+  resolution: "clientnode@npm:4.0.1384"
+  peerDependencies:
+    "@babel/runtime": "*"
+    "@types/prop-types": "*"
+    node-fetch: "*"
+    prop-types: "*"
+  peerDependenciesMeta:
+    "@babel/runtime":
+      optional: true
+    "@types/prop-types":
+      optional: true
+    node-fetch:
+      optional: true
+    prop-types:
+      optional: true
+  checksum: 10c0/50c0276a60ac72c21eeec4a1752253c449d67e58952b99d5840d758519ee23c049f303c6afb1bd7c65477dd00126ad3a1853aea6be4edeb74d9c24269b0c54db
   languageName: node
   linkType: hard
 
@@ -8077,7 +8098,7 @@ __metadata:
     "@typescript-eslint/eslint-plugin": "npm:^8.58.1"
     "@typescript-eslint/parser": "npm:^8.58.1"
     "@webcomponents/webcomponentsjs": "npm:^2.8.0"
-    clientnode: "npm:^4.0.1383"
+    clientnode: "npm:^4.0.1384"
     documentation-website: "npm:^1.0.401"
     eslint: "npm:^10.2.0"
     eslint-config-google: "npm:^0.14.0"

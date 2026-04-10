@@ -172,7 +172,7 @@ export class Internationalization<
             )
     }
     /**
-     * Initializes the plugin. Current language is set and later needed dom
+     * Initializes the component. Current language is set and later needed dom
      * nodes are grabbed.
      */
     connectedCallback(): void {

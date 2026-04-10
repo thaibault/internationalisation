@@ -63,7 +63,7 @@
     "@typescript-eslint/eslint-plugin": "^8.58.1",
     "@typescript-eslint/parser": "^8.58.1",
     "@webcomponents/webcomponentsjs": "^2.8.0",
-    "clientnode": "^4.0.1383",
+    "clientnode": "^4.0.1384",
     "documentation-website": "^1.0.401",
     "eslint": "^10.2.0",
     "eslint-config-google": "^0.14.0",
