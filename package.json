@@ -147,6 +147,10 @@
         }
       },
       "optimizer": {
+        "babelMinify": {
+          "#": "Avoids TypeError: Cannot read properties of undefined (reading 'add')",
+          "module": null
+        },
         "htmlMinifier": {
           "ignoreCustomComments": [
             {
