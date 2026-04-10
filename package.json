@@ -58,12 +58,12 @@
     "@types/html-minifier": "^4.0.6",
     "@types/imagemin": "^9.0.1",
     "@types/jsdom": "^28.0.1",
-    "@types/node": "^25.5.2",
+    "@types/node": "^25.6.0",
     "@types/webpack-env": "^1.18.8",
     "@typescript-eslint/eslint-plugin": "^8.58.1",
     "@typescript-eslint/parser": "^8.58.1",
     "@webcomponents/webcomponentsjs": "^2.8.0",
-    "clientnode": "^4.0.1382",
+    "clientnode": "^4.0.1383",
     "documentation-website": "^1.0.401",
     "eslint": "^10.2.0",
     "eslint-config-google": "^0.14.0",
@@ -75,7 +75,7 @@
     "prop-types": "^15.8.1",
     "typescript-eslint": "^8.58.1",
     "web-component-wrapper": "^0.0.553",
-    "weboptimizer": "^3.0.16",
+    "weboptimizer": "^3.0.20",
     "webpack-dev-server": "^5.2.3"
   },
   "peerDependencies": {
@@ -116,6 +116,24 @@
         "environments": [
           "jsdom"
         ]
+      }
+    },
+    "generic": {
+      "supportedBrowsers": [
+        "browserslist config and supports es6-class"
+      ]
+    },
+    "injection": {
+      "external": {
+        "implicit": {
+          "pattern": {
+            "exclude": {
+              "__append__": {
+                "__evaluate__": "/(?:^|\\/)web-component-wrapper(?:$|\\/)/"
+              }
+            }
+          }
+        }
       }
     },
     "module": {

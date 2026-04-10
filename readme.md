@@ -33,14 +33,14 @@ Project status
 Use case
 --------
 
-A jQuery plugin to replace alternate version of text for client side
+A WebComponent to replace alternate version of text for client side
 internationalization.
 <!--deDE:
-    Ein jQuery-Plugin zum klientseitigem Ersetzten von verschiedenen
+    Eine Web-Komponente zum klientseitigem Ersetzten von verschiedenen
     Textversionen. Perfekt für die Internationalisierung Ihres Webprojekts.
 -->
 <!--frFR:
-    Un plugin jQuery pour remplacer version alternative de texte pour le côté
+    Un WebComponent pour remplacer version alternative de texte pour le côté
     client l'internationalisation.
 -->
 

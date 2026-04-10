@@ -400,7 +400,6 @@ export class Internationalization<
      * @param language - New language to use.
      * @param ensure - Indicates if the whole dom should be checked again
      * current language to ensure every text node has right content.
-     * @returns Return a tuple of last text and language dom node to translate.
      */
     _collectTextNodesToReplace(language: string, ensure: boolean): void {
         let currentTextNodeToTranslate: HTMLItem | null = null

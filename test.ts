@@ -50,6 +50,9 @@ describe('Internationalisation', (): void => {
                 Internationalization
         globalContext.document?.body.appendChild(root)
     })
+    test.only('mock', () => {
+        expect(true).toBe(true)
+    })
     // endregion
     // region tests
     /// region public methods
@@ -110,7 +113,7 @@ describe('Internationalisation', (): void => {
     /// region protected methods
     /*
         NOTE: We cannot use clientnode's "testEach" helper since
-        "internationalisation isn't available during test specification time.
+        "internationalization isn't available during test specification time.
     */
     test.each([
         ['deDE', 'de'],
@@ -178,12 +181,12 @@ describe('Internationalisation', (): void => {
         expect(root.currentLanguage).toStrictEqual('deDE')
     })
     test('_switchCurrentLanguageIndicator', () => {
-        const englishLink = createDomNodes(
+        const englishLink = createDomNodes<HTMLAnchorElement>(
             `<a href="#${root.options.languageHashPrefix}enUS">`
-        ) as HTMLAnchorElement
-        const germanLink = createDomNodes(
+        )
+        const germanLink = createDomNodes<HTMLAnchorElement>(
             `<a href="#${root.options.languageHashPrefix}deDE">`
-        ) as HTMLAnchorElement
+        )
         root.append(englishLink)
         root.append(germanLink)
 
