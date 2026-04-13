@@ -128,8 +128,7 @@ export class Internationalization<
 
     readonly self = Internationalization
 
-    switchLanguageButtons =
-        null as unknown as NodeListOf<HTMLAnchorElement>
+    switchLanguageButtonDomNodes: NodeListOf<HTMLAnchorElement> | null = null
 
     currentLanguage = 'enUS'
     knownTranslations: Mapping = {}
@@ -190,7 +189,7 @@ export class Internationalization<
         this.options.sessionDescription =
             format(this.options.sessionDescription, this.self._name)
 
-        this.switchLanguageButtons = this.root.querySelectorAll(
+        this.switchLanguageButtonDomNodes = this.root.querySelectorAll(
             `a[href^="#${this.options.languageHashPrefix}"]`
         )
 
@@ -205,29 +204,27 @@ export class Internationalization<
 
         const determineSelection = this.options.selection.length === 0
 
-        for (const button of this.switchLanguageButtons) {
+        for (const domNode of this.switchLanguageButtonDomNodes) {
             if (determineSelection)
                 this.options.selection.push(
-                    (button.getAttribute('href') as string)
+                    (domNode.getAttribute('href') as string)
                         .substring(
                             `#${this.options.languageHashPrefix}`.length
                         )
                 )
 
-            button.addEventListener(
-                'click',
-                (event: Event) => {
-                    event.preventDefault()
+            const handler = (event: Event) => {
+                event.preventDefault()
 
-                    const url = (
-                        event.target as Element | null
-                    )?.getAttribute('href')
-                    if (url)
-                        void this.switch(url.substring(
-                            this.options.languageHashPrefix.length + 1
-                        ))
-                }
-            )
+                const url = (
+                    event.target as Element | null
+                )?.getAttribute('href')
+                if (url)
+                    void this.switch(url.substring(
+                        this.options.languageHashPrefix.length + 1
+                    ))
+            }
+            this.addSecureEventListener(domNode, 'click', handler)
         }
 
         if (this.currentLanguage === newLanguage) {
