@@ -8080,6 +8080,49 @@ __metadata:
   languageName: node
   linkType: hard
 
+"internationalization@workspace:.":
+  version: 0.0.0-use.local
+  resolution: "internationalization@workspace:."
+  dependencies:
+    "@babel/eslint-parser": "npm:^7.28.6"
+    "@babel/plugin-transform-proto-to-assign": "npm:^7.27.1"
+    "@babel/runtime": "npm:^7.29.2"
+    "@eslint/js": "npm:^10.0.1"
+    "@stylistic/eslint-plugin": "npm:^5.10.0"
+    "@types/ejs": "npm:^3.1.5"
+    "@types/html-minifier": "npm:^4.0.6"
+    "@types/imagemin": "npm:^9.0.1"
+    "@types/jsdom": "npm:^28.0.1"
+    "@types/node": "npm:^25.6.0"
+    "@types/webpack-env": "npm:^1.18.8"
+    "@typescript-eslint/eslint-plugin": "npm:^8.58.1"
+    "@typescript-eslint/parser": "npm:^8.58.1"
+    "@webcomponents/webcomponentsjs": "npm:^2.8.0"
+    clientnode: "npm:^4.0.1386"
+    documentation-website: "npm:^1.0.401"
+    eslint: "npm:^10.2.0"
+    eslint-config-google: "npm:^0.14.0"
+    eslint-plugin-jsdoc: "npm:^62.9.0"
+    favicons-webpack-plugin: "npm:^6.0.1"
+    image-minimizer-webpack-plugin: "npm:^5.0.0"
+    jest: "npm:^30.3.0"
+    jsdoc: "npm:^4.0.5"
+    prop-types: "npm:^15.8.1"
+    typescript-eslint: "npm:^8.58.1"
+    web-component-wrapper: "npm:^0.0.557"
+    weboptimizer: "npm:^3.0.21"
+    webpack-dev-server: "npm:^5.2.3"
+  peerDependencies:
+    "@babel/runtime": "*"
+    clientnode: "*"
+    prop-types: ^15.8.1
+    web-component-wrapper: "*"
+  peerDependenciesMeta:
+    "@babel/runtime":
+      optional: true
+  languageName: unknown
+  linkType: soft
+
 "interpret@npm:^3.1.1":
   version: 3.1.1
   resolution: "interpret@npm:3.1.1"
@@ -12319,49 +12362,6 @@ __metadata:
   checksum: 10c0/7b6837f8d08d755672297b7098642664be15b90fb52c6fbb6f514315dfd1d597b78dbe52d0b530a1d11dd2eb405decdb4ae78505be92647c95af9a1abec04e56
   languageName: node
   linkType: hard
-
-"web-i18n@workspace:.":
-  version: 0.0.0-use.local
-  resolution: "web-i18n@workspace:."
-  dependencies:
-    "@babel/eslint-parser": "npm:^7.28.6"
-    "@babel/plugin-transform-proto-to-assign": "npm:^7.27.1"
-    "@babel/runtime": "npm:^7.29.2"
-    "@eslint/js": "npm:^10.0.1"
-    "@stylistic/eslint-plugin": "npm:^5.10.0"
-    "@types/ejs": "npm:^3.1.5"
-    "@types/html-minifier": "npm:^4.0.6"
-    "@types/imagemin": "npm:^9.0.1"
-    "@types/jsdom": "npm:^28.0.1"
-    "@types/node": "npm:^25.6.0"
-    "@types/webpack-env": "npm:^1.18.8"
-    "@typescript-eslint/eslint-plugin": "npm:^8.58.1"
-    "@typescript-eslint/parser": "npm:^8.58.1"
-    "@webcomponents/webcomponentsjs": "npm:^2.8.0"
-    clientnode: "npm:^4.0.1386"
-    documentation-website: "npm:^1.0.401"
-    eslint: "npm:^10.2.0"
-    eslint-config-google: "npm:^0.14.0"
-    eslint-plugin-jsdoc: "npm:^62.9.0"
-    favicons-webpack-plugin: "npm:^6.0.1"
-    image-minimizer-webpack-plugin: "npm:^5.0.0"
-    jest: "npm:^30.3.0"
-    jsdoc: "npm:^4.0.5"
-    prop-types: "npm:^15.8.1"
-    typescript-eslint: "npm:^8.58.1"
-    web-component-wrapper: "npm:^0.0.557"
-    weboptimizer: "npm:^3.0.21"
-    webpack-dev-server: "npm:^5.2.3"
-  peerDependencies:
-    "@babel/runtime": "*"
-    clientnode: "*"
-    prop-types: ^15.8.1
-    web-component-wrapper: "*"
-  peerDependenciesMeta:
-    "@babel/runtime":
-      optional: true
-  languageName: unknown
-  linkType: soft
 
 "webidl-conversions@npm:^7.0.0":
   version: 7.0.0
