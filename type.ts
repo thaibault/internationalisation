@@ -3,7 +3,7 @@
 'use strict'
 /* !
     region header
-    [Project page](https://torben.website/internationalization)
+    [Project page](https://torben.website/web-internationalization)
 
     Copyright Torben Sickert (info["~at~"]torben.website) 16.12.2012
 

@@ -25,25 +25,25 @@ import '@webcomponents/webcomponentsjs/custom-elements-es5-adapter'
     NOTE: Import and use only as type. Since real loading should be delayed
     until dom environment has been created.
 */
-import Internationalization from './index'
+import WebInternationalization from './index'
 // endregion
-describe('Internationalization', (): void => {
+describe('WebInternationalization', (): void => {
     // region mockup
-    let root: Internationalization
+    let root: WebInternationalization
 
     beforeAll((): void => {
         if (Object.prototype.hasOwnProperty.call(
             globalContext.window, 'localStorage'
         ))
             globalContext.window?.localStorage.removeItem(
-                Internationalization._name
+                WebInternationalization._name
             )
 
         customElements.define(
-            'test-internationalization', Internationalization
+            'test-internationalization', WebInternationalization
         )
         root = document.createElement('test-internationalization') as
-            Internationalization
+            WebInternationalization
         document.body.appendChild(root)
     })
     // endregion
@@ -130,8 +130,8 @@ describe('Internationalization', (): void => {
     ])(
         `'%s' === _normalizeLanguage('%s')`,
         (
-            expected: ReturnType<Internationalization['_normalizeLanguage']>,
-            given: FirstParameter<Internationalization['_normalizeLanguage']>
+            expected: ReturnType<WebInternationalization['_normalizeLanguage']>,
+            given: FirstParameter<WebInternationalization['_normalizeLanguage']>
         ) => {
             expect(root._normalizeLanguage(given)).toStrictEqual(expected)
         }

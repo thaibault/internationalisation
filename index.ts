@@ -1,10 +1,10 @@
 // #!/usr/bin/env babel-node
 // -*- coding: utf-8 -*-
-/** @module internationalization */
+/** @module web-internationalization */
 'use strict'
 /* !
     region header
-    [Project page](https://torben.website/internationalization)
+    [Project page](https://torben.website/web-internationalization)
 
     Copyright Torben Sickert (info["~at~"]torben.website) 16.12.2012
 
@@ -40,7 +40,7 @@ import {Web} from 'web-component-wrapper/Web'
 
 import {DefaultOptions, Options, Replacement} from './type'
 // endregion
-export const log = new Logger({name: 'internationalization'})
+export const log = new Logger({name: 'web-internationalization'})
 // region plugins/classes
 /**
  * This plugin holds all needed methods to extend a website for

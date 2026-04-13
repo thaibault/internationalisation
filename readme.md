@@ -13,20 +13,20 @@ endregion -->
 Project status
 --------------
 
-[![npm](https://img.shields.io/npm/v/internationalization?color=%23d55e5d&label=npm%20package%20version&logoColor=%23d55e5d&style=for-the-badge)](https://www.npmjs.com/package/internationalization)
-[![npm downloads](https://img.shields.io/npm/dy/internationalization.svg?style=for-the-badge)](https://www.npmjs.com/package/internationalization)
+[![npm](https://img.shields.io/npm/v/web-internationalization?color=%23d55e5d&label=npm%20package%20version&logoColor=%23d55e5d&style=for-the-badge)](https://www.npmjs.com/package/web-internationalization)
+[![npm downloads](https://img.shields.io/npm/dy/web-internationalization.svg?style=for-the-badge)](https://www.npmjs.com/package/web-internationalization)
 
-[![build](https://img.shields.io/github/actions/workflow/status/thaibault/internationalization/build.yaml?style=for-the-badge)](https://github.com/thaibault/internationalization/actions/workflows/build.yaml)
-[![build push package](https://img.shields.io/github/actions/workflow/status/thaibault/internationalization/build-package-and-push.yaml?label=build%20push%20package&style=for-the-badge)](https://github.com/thaibault/internationalization/actions/workflows/build-package-and-push.yaml)
+[![build](https://img.shields.io/github/actions/workflow/status/thaibault/web-internationalization/build.yaml?style=for-the-badge)](https://github.com/thaibault/web-internationalization/actions/workflows/build.yaml)
+[![build push package](https://img.shields.io/github/actions/workflow/status/thaibault/web-internationalization/build-package-and-push.yaml?label=build%20push%20package&style=for-the-badge)](https://github.com/thaibault/web-internationalization/actions/workflows/build-package-and-push.yaml)
 
-[![check types](https://img.shields.io/github/actions/workflow/status/thaibault/internationalization/check-types.yaml?label=check%20types&style=for-the-badge)](https://github.com/thaibault/internationalization/actions/workflows/check-types.yaml)
-[![lint](https://img.shields.io/github/actions/workflow/status/thaibault/internationalization/lint.yaml?label=lint&style=for-the-badge)](https://github.com/thaibault/internationalization/actions/workflows/lint.yaml)
-[![test](https://img.shields.io/github/actions/workflow/status/thaibault/internationalization/test-coverage-report.yaml?label=test&style=for-the-badge)](https://github.com/thaibault/internationalization/actions/workflows/test-coverage-report.yaml)
+[![check types](https://img.shields.io/github/actions/workflow/status/thaibault/web-internationalization/check-types.yaml?label=check%20types&style=for-the-badge)](https://github.com/thaibault/web-internationalization/actions/workflows/check-types.yaml)
+[![lint](https://img.shields.io/github/actions/workflow/status/thaibault/web-internationalization/lint.yaml?label=lint&style=for-the-badge)](https://github.com/thaibault/web-internationalization/actions/workflows/lint.yaml)
+[![test](https://img.shields.io/github/actions/workflow/status/thaibault/web-internationalization/test-coverage-report.yaml?label=test&style=for-the-badge)](https://github.com/thaibault/web-internationalization/actions/workflows/test-coverage-report.yaml)
 
-[![code coverage](https://img.shields.io/coverallsCoverage/github/thaibault/internationalization?label=code%20coverage&style=for-the-badge)](https://coveralls.io/github/thaibault/internationalization)
+[![code coverage](https://img.shields.io/coverallsCoverage/github/thaibault/web-internationalization?label=code%20coverage&style=for-the-badge)](https://coveralls.io/github/thaibault/web-internationalization)
 
-[![deploy documentation website](https://img.shields.io/github/actions/workflow/status/thaibault/internationalization/deploy-documentation-website.yaml?label=deploy%20documentation%20website&style=for-the-badge)](https://github.com/thaibault/internationalization/actions/workflows/deploy-documentation-website.yaml)
-[![documentation website](https://img.shields.io/website-up-down-green-red/https/torben.website/internationalization.svg?label=documentation-website&style=for-the-badge)](https://torben.website/internationalization)
+[![deploy documentation website](https://img.shields.io/github/actions/workflow/status/thaibault/web-internationalization/deploy-documentation-website.yaml?label=deploy%20documentation%20website&style=for-the-badge)](https://github.com/thaibault/web-internationalization/actions/workflows/deploy-documentation-website.yaml)
+[![documentation website](https://img.shields.io/website-up-down-green-red/https/torben.website/web-internationalization.svg?label=documentation-website&style=for-the-badge)](https://torben.website/web-internationalization)
 
 <!--|deDE:Einsatz-->
 <!--|frFR:Utilisier-->
