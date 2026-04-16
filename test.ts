@@ -21,11 +21,7 @@ import {
 import {beforeAll, describe, expect, test} from '@jest/globals'
 import '@webcomponents/webcomponentsjs/custom-elements-es5-adapter'
 
-/*
-    NOTE: Import and use only as type. Since real loading should be delayed
-    until dom environment has been created.
-*/
-import WebInternationalization from './index'
+import WebInternationalization, {api} from './index'
 // endregion
 describe('WebInternationalization', (): void => {
     // region mockup
@@ -39,10 +35,8 @@ describe('WebInternationalization', (): void => {
                 WebInternationalization._name
             )
 
-        customElements.define(
-            'test-internationalization', WebInternationalization
-        )
-        root = document.createElement('test-internationalization') as
+        api.register()
+        root = document.createElement('web-internationalization') as
             WebInternationalization
         document.body.appendChild(root)
     })
