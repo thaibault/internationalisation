@@ -93,7 +93,7 @@ export const log = new Logger({name: 'web-internationalization'})
  * @property _textNodesWithKnownTranslation - Saves a mapping of known text
  * snippets to their corresponding $-extended dom nodes.
  */
-export class Internationalization<
+export class WebInternationalization<
     TElement = HTMLElement,
     ExternalProperties extends Mapping<unknown> = Mapping<unknown>,
     InternalProperties extends Mapping<unknown> = Mapping<unknown>
@@ -126,7 +126,7 @@ export class Internationalization<
         templateDelimiter: {pre: '{{', post: '}}'}
     }
 
-    readonly self = Internationalization
+    readonly self = WebInternationalization
 
     switchLanguageButtonDomNodes: NodeListOf<HTMLAnchorElement> | null = null
 
@@ -354,18 +354,16 @@ export class Internationalization<
      * text to use the same translation algorithm for both.
      */
     _movePreReplacementNodes(): void {
-        const self: Internationalization<TElement> = this
-
         for (const domNode of getAll(this.root)) {
             const nodeName: string = domNode.nodeName.toLowerCase()
 
-            if (self.options.replacementDomNodeNames.includes(nodeName)) {
+            if (this.options.replacementDomNodeNames.includes(nodeName)) {
                 if (!['#comment', '#text'].includes(nodeName))
                     // NOTE: Hide replacement dom nodes.
                     (domNode as HTMLElement).style.visibility = 'hidden'
 
                 const regularExpression =
-                    new RegExp(self.options.preReplacementLanguagePattern)
+                    new RegExp(this.options.preReplacementLanguagePattern)
                 const match: RegExpMatchArray | null | undefined =
                     domNode.textContent?.match(regularExpression)
                 if (domNode.textContent && match && match[0]) {
@@ -479,8 +477,6 @@ export class Internationalization<
     _registerKnownTextNodes(): void {
         this._textNodesWithKnownTranslation = {}
 
-        const self: Internationalization<TElement> = this
-
         for (const domNode of this.root.querySelectorAll(
             this.options.selectors.knownTranslation
         ))
@@ -489,7 +485,7 @@ export class Internationalization<
                 // NOTE: We skip empty and nested text nodes.
                 if (
                     content &&
-                    !self.options.replaceDomNodeNames.includes(
+                    !this.options.replaceDomNodeNames.includes(
                         node.nodeName.toLowerCase()
                     ) &&
                     !getParents(node).some((domNode) =>
@@ -497,7 +493,7 @@ export class Internationalization<
                             .includes(domNode.nodeName.toLowerCase())
                     ) &&
                     Object.prototype.hasOwnProperty.call(
-                        self.knownTranslations, content
+                        this.knownTranslations, content
                     )
                 ) {
                     this._domNodesToFade.push(
@@ -506,16 +502,16 @@ export class Internationalization<
 
                     if (
                         Object.prototype.hasOwnProperty.call(
-                            self._textNodesWithKnownTranslation,
-                            self.knownTranslations[content]
+                            this._textNodesWithKnownTranslation,
+                            this.knownTranslations[content]
                         )
                     )
-                        self._textNodesWithKnownTranslation[
-                            self.knownTranslations[content]
+                        this._textNodesWithKnownTranslation[
+                            this.knownTranslations[content]
                         ].push(node as HTMLItem)
                     else
-                        self._textNodesWithKnownTranslation[
-                            self.knownTranslations[content]
+                        this._textNodesWithKnownTranslation[
+                            this.knownTranslations[content]
                         ] = [node as HTMLItem]
                 }
             }
@@ -787,12 +783,15 @@ export class Internationalization<
 export const api: WebComponentAPI<
     HTMLElement, Mapping<unknown>, Mapping<unknown>, typeof Web
 > = {
-    component: Internationalization,
+    component: WebInternationalization,
     register: (
-        tagName: string = camelCaseToDelimited(Internationalization._name)
+        tagName: string = camelCaseToDelimited(WebInternationalization._name)
     ) => {
-        customElements.define(tagName, Internationalization)
+        customElements.define(tagName, WebInternationalization)
     }
 }
-export default Internationalization
+export default WebInternationalization
+
+if ((globalContext as Mapping<boolean>).AUTO_DEFINE_WEB_INTERNATIONALIZATION)
+    api.register()
 // endregion
