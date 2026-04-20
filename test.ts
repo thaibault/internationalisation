@@ -15,7 +15,7 @@
 */
 // region imports
 import {
-    createDomNodes, FirstParameter, globalContext, HTMLItem, isEquivalentDOM
+    createDomNodes, FirstParameter, globalContext, HTMLItem, isEquivalent
 } from 'clientnode'
 
 import {beforeAll, describe, expect, test} from '@jest/globals'
@@ -48,7 +48,7 @@ describe('WebInternationalization', (): void => {
 
         root.innerHTML = '<div>english<!--deDE:german--></div>'
         await root.switch('deDE')
-        expect(isEquivalentDOM(
+        expect(isEquivalent(
             root.innerHTML.replace(/[ \n]+/g, ' '),
             (
                 '<div style="' +
@@ -60,7 +60,7 @@ describe('WebInternationalization', (): void => {
         )).toStrictEqual(true)
 
         await root.switch('deDE')
-        expect(isEquivalentDOM(
+        expect(isEquivalent(
             root.innerHTML.replace(/[ \n]+/g, ' '),
             '<div style="' +
                 'visibility: visible; ' +
@@ -70,7 +70,7 @@ describe('WebInternationalization', (): void => {
         )).toStrictEqual(true)
 
         await root.switch('en')
-        expect(isEquivalentDOM(
+        expect(isEquivalent(
             root.innerHTML.replace(/[ \n]+/g, ' '),
             '<div style="' +
                 'visibility: visible; ' +
@@ -86,7 +86,7 @@ describe('WebInternationalization', (): void => {
             <div>english<!--deDE:german--></div>
         `
         await root.switch('de')
-        expect(isEquivalentDOM(
+        expect(isEquivalent(
             root.innerHTML.replace(/[ \n]+/g, ' '),
             ' <div class="toc"> ' +
                 '<ul>' +
