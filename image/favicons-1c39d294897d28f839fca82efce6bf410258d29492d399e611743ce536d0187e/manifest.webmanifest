@@ -1,6 +1,6 @@
 {
-  "name": "documentation-website",
-  "short_name": "documentation-website",
+  "name": "web-documentation",
+  "short_name": "web-documentation",
   "description": "Declarative multilanguage documentation website generator",
   "dir": "auto",
   "lang": "en-US",
