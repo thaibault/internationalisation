@@ -127,14 +127,7 @@ export class WebInternationalization<
     }
 
     readonly self = WebInternationalization
-
-    switchLanguageButtonDomNodes: NodeListOf<HTMLAnchorElement> | null = null
-
-    currentLanguage = 'enUS'
-    knownTranslations: Mapping = {}
-
-    lock = new Lock()
-
+    // region api properties
     @property({type: object})
         options = {} as Options
 
@@ -147,6 +140,13 @@ export class WebInternationalization<
         onEnsured: (language: string) => void = NOOP
     @property({type: func})
         onSwitched: (oldLanguage: string, newLanguage: string) => void = NOOP
+    // endregion
+    switchLanguageButtonDomNodes: NodeListOf<HTMLAnchorElement> | null = null
+
+    currentLanguage = 'enUS'
+    knownTranslations: Mapping = {}
+
+    lock = new Lock()
 
     _domNodesToFade: Array<HTMLElement> = []
     _replacements: Array<Replacement> = []
