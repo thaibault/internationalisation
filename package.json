@@ -74,7 +74,7 @@
     "prop-types": "^15.8.1",
     "typescript-eslint": "^8.59.0",
     "web-component-wrapper": "^0.0.562",
-    "web-documentation": "^1.0.2",
+    "web-documentation": "^1.0.3",
     "weboptimizer": "^3.0.22",
     "webpack-dev-server": "^5.2.3"
   },
