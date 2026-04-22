@@ -779,7 +779,7 @@ export class WebInternationalization<
     }
     // endregion
 }
-
+// endregion
 export const api: WebComponentAPI<
     HTMLElement, Mapping<unknown>, Mapping<unknown>, typeof Web
 > = {
@@ -794,4 +794,3 @@ export default WebInternationalization
 
 if ((globalContext as Mapping<boolean>).AUTO_DEFINE_WEB_INTERNATIONALIZATION)
     api.register()
-// endregion
