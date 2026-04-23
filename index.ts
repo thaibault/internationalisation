@@ -168,10 +168,12 @@ export class WebInternationalization<
             )
     }
     /**
-     * Initializes the component. Current language is set and later needed dom
-     * nodes are grabbed.
+     * Updates controlled dom elements.
+     * @param reason - Why an update has been triggered.
      */
-    connectedCallback(): void {
+    async render(reason?: string): Promise<void> {
+        await super.render(reason)
+
         if (Object.keys(this.options).length === 0)
             this.onUpdateAttribute('options', '{}')
 
@@ -230,7 +232,7 @@ export class WebInternationalization<
             return
         }
 
-        void this.switch(newLanguage, true)
+        await this.switch(newLanguage, true)
     }
     /// endregion
     /**
