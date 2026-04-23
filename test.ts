@@ -81,7 +81,7 @@ describe('WebInternationalization', (): void => {
         )).toStrictEqual(true)
 
         root.innerHTML = `
-            <div class="toc">
+            <div class="web-internationalization-generated-content">
                 <ul><li><a href="#">english</a></li></ul>
             </div>
             <div>english<!--deDE:german--></div>
@@ -89,7 +89,7 @@ describe('WebInternationalization', (): void => {
         await root.switch('de')
         expect(isEquivalent(
             root.innerHTML.replace(/[ \n]+/g, ' '),
-            ' <div class="toc"> ' +
+            ' <div class="web-internationalization-generated-content"> ' +
                 '<ul>' +
                     '<li style="' +
                         'visibility: visible; ' +

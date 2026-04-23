@@ -121,7 +121,9 @@ export class WebInternationalization<
         replacementDomNodeNames: ['#comment', 'lang-replacement'],
         replacementLanguagePattern: '^([a-z]{2}[A-Z]{2}):((.|\\s)*)$',
         selection: [],
-        selectors: {knownTranslation: '.toc'},
+        selectors: {
+            knownTranslation: '.web-internationalization-generated-content'
+        },
         sessionDescription: '{1}',
         templateDelimiter: {pre: '{{', post: '}}'}
     }
