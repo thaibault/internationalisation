@@ -5976,9 +5976,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"clientnode@npm:^4.0.1388":
-  version: 4.0.1388
-  resolution: "clientnode@npm:4.0.1388"
+"clientnode@npm:^4.0.1389":
+  version: 4.0.1389
+  resolution: "clientnode@npm:4.0.1389"
   peerDependencies:
     "@babel/runtime": "*"
     "@types/prop-types": "*"
@@ -5993,7 +5993,7 @@ __metadata:
       optional: true
     prop-types:
       optional: true
-  checksum: 10c0/d2fb843201725769a849a19a2c39da710dbc7addc80a26a0511716aaf0ad41b8747e1ad1de1d179ac0502b938017b462de42b9a33b0102b50ec4cf7cf8a24647
+  checksum: 10c0/fc5edfc25f2adff41213b2ca071d50380aa558d06b5c03508ac774b977571baa0a97a2a65932dce61cce899f2c04d3f9d8ea14a76a9aa67fd8df328d799a17a1
   languageName: node
   linkType: hard
 
@@ -12286,9 +12286,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"web-component-wrapper@npm:^0.0.562":
-  version: 0.0.562
-  resolution: "web-component-wrapper@npm:0.0.562"
+"web-component-wrapper@npm:^0.0.566":
+  version: 0.0.566
+  resolution: "web-component-wrapper@npm:0.0.566"
   peerDependencies:
     "@babel/runtime": "*"
     "@types/react": "*"
@@ -12307,7 +12307,7 @@ __metadata:
       optional: true
     react-dom:
       optional: true
-  checksum: 10c0/0a3fa7b8cf9eca70e675164ba60734467fa46b56bb875724aab63d68fa06bb982b6d4243e30d6333e9918aa7e2f97dae393d081f2176ce3c21cc2c68dc663c6f
+  checksum: 10c0/46c508c48cd18ecaf89bba1ff2d3d1c8071501702fc5193fc27087ae06526d0d92884a665d720c63a5050989597bfdb06e3de4eae56a2a837ad997d331eb7472
   languageName: node
   linkType: hard
 
@@ -12338,7 +12338,7 @@ __metadata:
     "@typescript-eslint/eslint-plugin": "npm:^8.59.0"
     "@typescript-eslint/parser": "npm:^8.59.0"
     "@webcomponents/webcomponentsjs": "npm:^2.8.0"
-    clientnode: "npm:^4.0.1388"
+    clientnode: "npm:^4.0.1389"
     eslint: "npm:^10.2.1"
     eslint-config-google: "npm:^0.14.0"
     eslint-plugin-jsdoc: "npm:^62.9.0"
@@ -12348,7 +12348,7 @@ __metadata:
     jsdoc: "npm:^4.0.5"
     prop-types: "npm:^15.8.1"
     typescript-eslint: "npm:^8.59.0"
-    web-component-wrapper: "npm:^0.0.562"
+    web-component-wrapper: "npm:^0.0.566"
     web-documentation: "npm:^1.0.3"
     weboptimizer: "npm:^3.0.22"
     webpack-dev-server: "npm:^5.2.3"

@@ -163,9 +163,7 @@ export class WebInternationalization<
         super.onUpdateAttribute(name, newValue)
 
         if (name === 'options')
-            this.options = extend<Options>(
-                true, {}, this.self._defaultOptions, this.options
-            )
+            this._extendOptions()
     }
     /**
      * Updates controlled dom elements.
@@ -175,7 +173,7 @@ export class WebInternationalization<
         await super.render(reason)
 
         if (Object.keys(this.options).length === 0)
-            this.onUpdateAttribute('options', '{}')
+            this._extendOptions()
 
         this.options.preReplacementLanguagePattern = format(
             this.options.preReplacementLanguagePattern,
@@ -305,6 +303,14 @@ export class WebInternationalization<
     }
     /// endregion
     // region protected methods
+    /**
+     * Extends given options by default options.
+     */
+    _extendOptions() {
+        this.options = extend<Options>(
+            true, {}, this.self._defaultOptions, this.options
+        )
+    }
     /**
      * Depending on activated switching effect this method initialized the
      * effect of replace all text string directly.

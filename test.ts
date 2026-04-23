@@ -39,18 +39,15 @@ describe('WebInternationalization', (): void => {
             WebInternationalization
         document.body.appendChild(root)
 
-        await root.rendered
+        await root.renderState.promise
     })
     // region tests
     /// region public methods
-    test.only('switch', async (): Promise<void> => {
+    test('switch', async (): Promise<void> => {
         await expect(root.switch('en')).resolves.toBeUndefined()
 
         root.innerHTML = '<div>english<!--deDE:german--></div>'
-        console.log('A', root.innerHTML)
         await root.switch('deDE')
-
-        console.log('B', root.innerHTML)
 
         expect(isEquivalent(
             root.innerHTML.replace(/[ \n]+/g, ' '),
@@ -62,8 +59,6 @@ describe('WebInternationalization', (): void => {
                 '">german<!--deDE--><!--enUS:english--></div>'
             )
         )).toStrictEqual(true)
-
-return
 
         await root.switch('deDE')
         expect(isEquivalent(
