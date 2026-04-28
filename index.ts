@@ -156,6 +156,20 @@ export class WebInternationalization<
     // region public methods
     /// region live-cycle
     /**
+     * Defines dynamic getter and setter interface and resolves configuration
+     * object. Initializes the map implementation.
+     */
+    constructor() {
+        super()
+        /*
+            Babels property declaration transformation overwrites defined
+            properties at the end of an implicit constructor. So we have to
+            redefined them as long as we want to declare expected component
+            interface properties to enable static type checks.
+        */
+        this.defineGetterAndSetterInterface()
+    }
+    /**
      * Triggered when ever a given attribute has changed and triggers to update
      * configured dom content.
      * @param name - Attribute name which was updates.
@@ -317,8 +331,13 @@ export class WebInternationalization<
      * Extends given options by default options.
      */
     _extendOptions() {
-        this.options = extend<Options>(
-            true, {}, this.self._defaultOptions, this.options
+        /*
+            NOTE: Using the internal setter avoids to trigger an additinal
+            rendering.
+        */
+        this.setPropertyValue(
+            'options',
+            extend<Options>(true, {}, this.self._defaultOptions, this.options)
         )
     }
     /**
