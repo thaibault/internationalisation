@@ -235,10 +235,9 @@ export class WebInternationalization<
 
             if (this.currentLanguage === newLanguage)
                 this._switchCurrentLanguageIndicator(newLanguage)
+            else
+                void this.switch(newLanguage, true)
         })
-
-        if (this.currentLanguage !== newLanguage)
-            await this.switch(newLanguage, true)
 
         await this.resolveRenderingPromise(reason, resolveRendering)
     }
