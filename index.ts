@@ -170,9 +170,15 @@ export class WebInternationalization<
     /**
      * Updates controlled dom elements.
      * @param reason - Why an update has been triggered.
+     * @param resolveRendering - Indicates whether rendering should be resolved
+     * finally. Should be set to "false" via super calls in inherited render
+     * methods which do further dom manipulations afterwards and resolve the
+     * rendering process by their own.
+     * @returns A promise resolving when rendering has finished. A promise may
+     * be needed for classes inheriting from this class.
      */
-    async render(reason?: string): Promise<void> {
-        await super.render(reason)
+    async render(reason = 'unknown', resolveRendering = true): Promise<void> {
+        await super.render(reason, false)
 
         if (Object.keys(this.options).length === 0)
             this._extendOptions()
@@ -188,51 +194,53 @@ export class WebInternationalization<
         this.options.sessionDescription =
             format(this.options.sessionDescription, this.self._name)
 
-        this.switchLanguageButtonDomNodes = this.root.querySelectorAll(
-            `a[href^="#${this.options.languageHashPrefix}"]`
-        )
+        void Promise.all(this.self.pendingRenderPromises).then(() => {
+            this.switchLanguageButtonDomNodes = this.root.querySelectorAll(
+                `a[href^="#${this.options.languageHashPrefix}"]`
+            )
 
-        this._movePreReplacementNodes()
+            this._movePreReplacementNodes()
 
-        this.currentLanguage = this._normalizeLanguage(this.options.default)
-        /*
-            NOTE: Only switch current language indicator if we haven't an
-            initial language switch which will perform the indicator switch.
-        */
-        const newLanguage: string = this._determineUsefulLanguage()
+            this.currentLanguage = this._normalizeLanguage(this.options.default)
+            /*
+                NOTE: Only switch current language indicator if we haven't an
+                initial language switch which will perform the indicator switch.
+            */
+            const newLanguage: string = this._determineUsefulLanguage()
 
-        const determineSelection = this.options.selection.length === 0
+            const determineSelection = this.options.selection.length === 0
 
-        for (const domNode of this.switchLanguageButtonDomNodes) {
-            if (determineSelection)
-                this.options.selection.push(
-                    (domNode.getAttribute('href') as string)
-                        .substring(
-                            `#${this.options.languageHashPrefix}`.length
-                        )
-                )
+            for (const domNode of this.switchLanguageButtonDomNodes) {
+                if (determineSelection)
+                    this.options.selection.push(
+                        (domNode.getAttribute('href') as string)
+                            .substring(
+                                `#${this.options.languageHashPrefix}`.length
+                            )
+                    )
 
-            const handler = (event: Event) => {
-                event.preventDefault()
+                const handler = (event: Event) => {
+                    event.preventDefault()
 
-                const url = (
-                    event.target as Element | null
-                )?.getAttribute('href')
-                if (url)
-                    void this.switch(url.substring(
-                        this.options.languageHashPrefix.length + 1
-                    ))
+                    const url = (
+                        event.target as Element | null
+                    )?.getAttribute('href')
+                    if (url)
+                        void this.switch(url.substring(
+                            this.options.languageHashPrefix.length + 1
+                        ))
+                }
+                this.addSecureEventListener(domNode, 'click', handler)
             }
-            this.addSecureEventListener(domNode, 'click', handler)
-        }
 
-        if (this.currentLanguage === newLanguage) {
-            this._switchCurrentLanguageIndicator(newLanguage)
+            if (this.currentLanguage === newLanguage)
+                this._switchCurrentLanguageIndicator(newLanguage)
+        })
 
-            return
-        }
+        if (this.currentLanguage !== newLanguage)
+            await this.switch(newLanguage, true)
 
-        await this.switch(newLanguage, true)
+        await this.resolveRenderingPromise(reason, resolveRendering)
     }
     /// endregion
     /**
