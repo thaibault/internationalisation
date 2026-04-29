@@ -123,19 +123,6 @@
         "browserslist config and supports es6-class"
       ]
     },
-    "injection": {
-      "external": {
-        "implicit": {
-          "pattern": {
-            "exclude": {
-              "__append__": {
-                "__evaluate__": "/(?:^|\\/)web-component-wrapper(?:$|\\/)/"
-              }
-            }
-          }
-        }
-      }
-    },
     "module": {
       "html": {
         "options": {
