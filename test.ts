@@ -46,11 +46,11 @@ describe('WebInternationalization', (): void => {
     test('switch', async (): Promise<void> => {
         await expect(root.switch('en')).resolves.toBeUndefined()
 
-        root.rootDomNode.innerHTML = '<div>english<!--deDE:german--></div>'
+        root.hostDomNode.innerHTML = '<div>english<!--deDE:german--></div>'
         await root.switch('deDE')
 
         expect(isEquivalent(
-            root.rootDomNode.innerHTML.replace(/[ \n]+/g, ' '),
+            root.hostDomNode.innerHTML.replace(/[ \n]+/g, ' '),
             (
                 '<div style="' +
                     'visibility: visible; ' +
@@ -62,7 +62,7 @@ describe('WebInternationalization', (): void => {
 
         await root.switch('deDE')
         expect(isEquivalent(
-            root.rootDomNode.innerHTML.replace(/[ \n]+/g, ' '),
+            root.hostDomNode.innerHTML.replace(/[ \n]+/g, ' '),
             '<div style="' +
                 'visibility: visible; ' +
                 'opacity: 1; ' +
@@ -72,7 +72,7 @@ describe('WebInternationalization', (): void => {
 
         await root.switch('en')
         expect(isEquivalent(
-            root.rootDomNode.innerHTML.replace(/[ \n]+/g, ' '),
+            root.hostDomNode.innerHTML.replace(/[ \n]+/g, ' '),
             '<div style="' +
                 'visibility: visible; ' +
                 'opacity: 1; ' +
@@ -80,7 +80,7 @@ describe('WebInternationalization', (): void => {
             '">english<!--enUS--><!--deDE:german--></div>'
         )).toStrictEqual(true)
 
-        root.rootDomNode.innerHTML = `
+        root.hostDomNode.innerHTML = `
             <div class="web-internationalization-generated-content">
                 <ul><li><a href="#">english</a></li></ul>
             </div>
@@ -88,7 +88,7 @@ describe('WebInternationalization', (): void => {
         `
         await root.switch('de')
         expect(isEquivalent(
-            root.rootDomNode.innerHTML.replace(/[ \n]+/g, ' '),
+            root.hostDomNode.innerHTML.replace(/[ \n]+/g, ' '),
             ' <div class="web-internationalization-generated-content"> ' +
                 '<ul>' +
                     '<li style="' +

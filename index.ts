@@ -211,7 +211,7 @@ export class WebInternationalization<
         await this.waitForNestedComponentRendering()
 
         this.switchLanguageButtonDomNodes =
-            this.rootDomNode.querySelectorAll(
+            this.hostDomNode.querySelectorAll(
                 `a[href^="#${this.options.languageHashPrefix}"]`
             )
 
@@ -388,7 +388,7 @@ export class WebInternationalization<
      * text to use the same translation algorithm for both.
      */
     _movePreReplacementNodes(): void {
-        for (const domNode of getAll(this.rootDomNode)) {
+        for (const domNode of getAll(this.hostDomNode)) {
             const nodeName: string = domNode.nodeName.toLowerCase()
 
             if (this.options.replacementDomNodeNames.includes(nodeName)) {
@@ -436,7 +436,7 @@ export class WebInternationalization<
 
         this.knownTranslations = {}
 
-        for (const domNode of getAll(this.rootDomNode)) {
+        for (const domNode of getAll(this.hostDomNode)) {
             const nodeName: string = domNode.nodeName.toLowerCase()
             const nodeTextContent = getText(domNode)
 
@@ -511,7 +511,7 @@ export class WebInternationalization<
     _registerKnownTextNodes(): void {
         this._textNodesWithKnownTranslation = {}
 
-        for (const domNode of this.rootDomNode.querySelectorAll(
+        for (const domNode of this.hostDomNode.querySelectorAll(
             this.options.selectors.knownTranslation
         ))
             for (const node of getAll(domNode)) {
@@ -795,7 +795,7 @@ export class WebInternationalization<
      * @param language - The new language to switch to.
      */
     _switchCurrentLanguageIndicator(language: string) {
-        for (const domNode of this.rootDomNode.querySelectorAll(
+        for (const domNode of this.hostDomNode.querySelectorAll(
             `a[href="#${this.options.languageHashPrefix}` +
             `${this.currentLanguage}"].` +
             this.options.currentLanguageIndicatorClassName
@@ -804,7 +804,7 @@ export class WebInternationalization<
                 this.options.currentLanguageIndicatorClassName
             )
 
-        for (const domNode of this.rootDomNode.querySelectorAll(
+        for (const domNode of this.hostDomNode.querySelectorAll(
             `a[href="#${this.options.languageHashPrefix}${language}"]`
         ))
             domNode.classList.add(
