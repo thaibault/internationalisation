@@ -73,7 +73,7 @@
     "jsdoc": "^4.0.5",
     "prop-types": "^15.8.1",
     "typescript-eslint": "^8.59.1",
-    "web-component-wrapper": "^0.0.577",
+    "web-component-wrapper": "^0.0.578",
     "web-documentation": "^1.0.5",
     "weboptimizer": "^3.0.22",
     "webpack-dev-server": "^5.2.3"
